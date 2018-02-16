@@ -173,3 +173,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+.idea/
+Proyecto/CADHU/
+Proyecto/__init__.py
+Proyecto/db.sqlite3
+Proyecto/manage.py
+Proyecto/templates/
