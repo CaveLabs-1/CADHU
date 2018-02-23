@@ -1,20 +1,21 @@
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 class Prospecto(models.Model):
-    Nombre = models.Charfield(
+    Nombre = models.CharField(
         max_length=50,
         blank=False,
         null=False,
     )
 
-    Apellido_Paterno = models.Charfield(
+    Apellido_Paterno = models.CharField(
         max_length=50,
         blank=False,
         null=False,
     )
 
-    Apellido_Materno = models.Charfield(
+    Apellido_Materno = models.CharField(
         max_length=50,
         blank=False,
         null=False,
@@ -30,7 +31,7 @@ class Prospecto(models.Model):
         null=True,
     )
 
-    Email = models.Charfield(
+    Email = models.CharField(
         max_length=50,
         blank=False,
         null=False,
@@ -42,25 +43,25 @@ class Prospecto(models.Model):
         on_delete=models.CASCADE,
     )
 
-    Metodo_Captacion = models.Charfield(
+    Metodo_Captacion = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Interes = models.Charfield(
+    Interes = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Estado_Civil = models.Charfield(
+    Estado_Civil = models.CharField(
         max_length=15,
         blank=True,
         null=True,
     )
 
-    Ocupacion = models.Charfield(
+    Ocupacion = models.CharField(
         max_length=15,
         blank=True,
         null=True,
@@ -74,7 +75,7 @@ class Prospecto(models.Model):
         return self.Nombre +' '+ self.Apellido_Paterno +' '+ self.Apellido_Materno
 
 class Lugar(models.Model):
-    Calle = models.Charfield(
+    Calle = models.CharField(
         max_length=50,
         blank=True,
         null=True,
@@ -90,31 +91,31 @@ class Lugar(models.Model):
         null=True,
     )
 
-    Colonia = models.Charfield(
+    Colonia = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Ciudad = models.Charfield(
+    Ciudad = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Estado = models.Charfield(
+    Estado = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Pais = models.Charfield(
+    Pais = models.CharField(
         max_length=50,
         blank=True,
         null=True,
     )
 
-    Codigo_Postal = models.Charfield(
+    Codigo_Postal = models.CharField(
         max_length=5,
         blank=True,
         null=True,

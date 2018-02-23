@@ -13,7 +13,7 @@ class ProspectoForm(forms.ModelForm):
             'Email',
             'Metodo_Captacion',
             'Interes',
-            'EstadoCivil',
+            'Estado_Civil',
             'Ocupacion',
             'Hijos',
         )
