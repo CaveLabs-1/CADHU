@@ -80,12 +80,12 @@ class Lugar(models.Model):
         null=True,
     )
 
-    Numero_Interior = PositiveIntegerField(
+    Numero_Interior = models.PositiveIntegerField(
         blank=True,
         null=True,
     )
 
-    Numero_Exterior = PositiveIntegerField(
+    Numero_Exterior = models.PositiveIntegerField(
         blank=True,
         null=True,
     )
