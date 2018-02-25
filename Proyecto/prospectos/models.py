@@ -1,7 +1,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-# Create your models here.
+# Create your models h  ere.
 class Prospecto(models.Model):
     Nombre = models.CharField(
         max_length=50,
@@ -81,12 +81,14 @@ class Lugar(models.Model):
         null=True,
     )
 
-    Numero_Interior = models.PositiveIntegerField(
+    Numero_Interior = models.CharField(
+        max_length=6,
         blank=True,
         null=True,
     )
 
-    Numero_Exterior = models.PositiveIntegerField(
+    Numero_Exterior = models.CharField(
+        max_length=6,
         blank=True,
         null=True,
     )
