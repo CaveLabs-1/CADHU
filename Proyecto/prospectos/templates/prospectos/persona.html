@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <title>Registro de Prospecto</title>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript " src="https://code.jquery.com/jquery-2.1.1.min.js "></script>
+    <script type="text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js "></script>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection" />
+</head>
+
+<body>
+    <div class="row center">
+        <h5>Registro de Prospecto</h5>
+    </div>
+
+
+    <div class="container row">
+        <div class="input-field col s12 m4 l4">
+            <i class="material-icons prefix">person</i>
+            <input id="nombre" type="text" class="validate">
+            <label for="nombre">Nombre(s)</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+            <input id="apellido_p" type="text" class="validate">
+            <label for="apellido_p">Apellido paterno</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+            <input id="apellido_m" type="text" class="validate">
+            <label for="apellido_m">Apellido materno</label>
+        </div>
+    </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">phone</i>
+                    <input id="telefono" type="number" class="validate">
+                    <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">mail</i>
+                    <input id="email" type="email" class="validate">
+                    <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">laptop</i>
+                    <select>
+                        <option value="" disabled selected>Elija el m&eacute;todo de captaci&oacute;n</option>
+                        <option value="1">Facebook</option>
+                        <option value="2">Buscador</option>
+                        <option value="3">Sitio web</option>
+                        <option value="4">Email</option>
+                        <option value="5">Triptico/Cartel</option>
+                        <option value="6">Radio</option>
+                        <option value="7">Recomendaci&oacute;</option>
+                        <option value="8">Otro</option>
+                    </select>
+                    <label>M&eacute;todo de captaci&oacute;n</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m6 l4">
+                    <i class="material-icons prefix">radio</i>
+                    <input id="radio" type="text" class="validate">
+                    <label for="radio">Estaci&oacute;n de radio</label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <i class="material-icons prefix">person_outline</i>
+                    <input id="recomendacion" type="text" class="validate">
+                    <label for="recomendacion">Prospecto que lo recomend&oacute;</label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <i class="material-icons prefix">add_circle</i>
+                    <input id="otro" type="text" class="validate">
+                    <label for="otro">Otro m&eacute;todo de captaci&oacute;n</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">record_voice_over</i>
+                    <select>
+                        <option value="" disabled selected>Elija el nivel de inter&eacute;s</option>
+                        <option value="1">Ninguno</option>
+                        <option value="2">Bajo</option>
+                        <option value="3">Medio</option>
+                        <option value="4">Alto</option>
+                        <option value="5">Muy alto</option>
+                    </select>
+                    <label>Inter&eacute;s</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">people</i>
+                    <select>
+                        <option value="" disabled selected>Elija el estado civil</option>
+                        <option value="1">Soltero/a</option>
+                        <option value="2">Casado/a</option>
+                    </select>
+                    <label>Estado civil</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">child_friendly</i>
+                    <input id="hijos" type="number" class="validate">
+                    <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
+                </div>
+            </div>
+    <div class="container row">
+                <div class="input-field col s12 m4 l4">
+                    <i class="material-icons prefix">work</i>
+                    <input id="ocupacion" type="text" class="validate">
+                    <label for="ocupacion">Ocupaci&oacute;n</label>
+                </div>
+            </div>
+
+    <div class="container row">
+        <div class="input-field col s12 m4 l4">
+            <i class="material-icons prefix">public</i>
+            <select>
+                <option value="" disabled selected>Elija el pa&iacute;s</option>
+                <option value="1">M&eacute;xico</option>
+                <option value="2">Estados Unidos</option>
+            </select>
+            <label>Pa&iacute;s</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+            <select>
+                <option value="" disabled selected>Elija el estado</option>
+                <option value="1">Quer&eacute;taro</option>
+                <option value="2">Guanajuato</option>
+                <option value="3">Puebla</option>
+            </select>
+            <label>Estado</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+            <select>
+                <option value="" disabled selected>Elija la ciudad</option>
+                <option value="1">Quer&eacute;taro</option>
+                <option value="2">San Juan del Rio</option>
+            </select>
+            <label>Ciudad</label>
+        </div>
+    </div>
+    <div class="container row">
+        <div class="input-field col s12 m6 l3">
+            <i class="material-icons prefix">place</i>
+            <input id="colonia" type="text" class="validate">
+            <label for="colonia">Colonia</label>
+        </div>
+        <div class="input-field col s12 m6 l3">
+            <input id="calle" type="text" class="validate">
+            <label for="calle">Calle</label>
+        </div>
+        <div class="input-field col s6 m4 l2">
+            <input id="num_ext" type="number" class="validate">
+            <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
+        </div>
+         <div class="input-field col s6 m4 l2">
+            <input id="num_int" type="number" class="validate">
+            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+        </div>
+         <div class="input-field col s12 m4 l2">
+            <input id="codigo_p" type="number" class="validate">
+            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+        </div>
+    </div>
+
+    <div class="row center">
+        <a class="waves-effect waves-light btn">Guardar</a>
+    </div>
+
+    <script type="text/javascript ">
+        $(document).ready(function(){$('select').material_select();});
+    </script>
+
+</body>
+
+</html>
