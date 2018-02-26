@@ -126,7 +126,7 @@ class Lugar(models.Model):
 
 
 class Actividad(models.Model):
-    # Id_Seguimiento es la relacion Prospecto evento
+    #       Id_Seguimiento es la relacion Prospecto evento
     # Id_Seguimiento = models.ForeignKey()
     nombre = models.CharField(verbose_name='Actividad', max_length=500)
     fecha = models.DateField(verbose_name='Fecha de la actividad')
