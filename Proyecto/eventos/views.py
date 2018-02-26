@@ -5,14 +5,14 @@ from .forms import EventoForm
 
 def lista_evento(request):
     eventos = Evento.objects.all()
-    return render(request, 'eventos.html', {'eventos':eventos})
+    return render(request, 'eventos/eventos.html', {'eventos':eventos})
 
 def crear_evento(request):
-    form = EventoForm(request.Post or None)
+    form = EventoForm(request.POST or None)
 
     if form.is_valid():
         form.save()
-        return redirect('lista_eventos')
-    return render(request, 'crear_evento.html', {'form': form})
+        return redirect('eventos:lista_eventos')
+    return render(request, 'eventos/crear_evento.html', {'form': form})
 
 
