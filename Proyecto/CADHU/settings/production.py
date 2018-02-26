@@ -17,7 +17,7 @@ DATABASES = {
         'NAME': 'cadhu',
         'USER': 'cadhu',
         'PASSWORD': '8qX8vx1P*Xpu',
-        'HOST': 'sistemacadhu.com',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
