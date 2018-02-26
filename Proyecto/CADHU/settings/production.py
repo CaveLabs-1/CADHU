@@ -1,7 +1,7 @@
 from CADHU.settings.common import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.['SECRET_KEY']
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -17,7 +17,7 @@ DATABASES = {
         'NAME': 'cadhu',
         'USER': 'cadhu',
         'PASSWORD': '8qX8vx1P*Xpu',
-        'HOST': 'sistemacadhu.com',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
