@@ -5,5 +5,6 @@ from django.conf.urls.static import static
 
 app_name = 'prospectos'
 urlpatterns = [
+    # Crear actividad
 
 ] 
