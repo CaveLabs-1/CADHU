@@ -20,13 +20,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/',  admin.site.urls),
-    path(r'^$', auth_views.login, {'template_name': 'login/index.html'},name='login'),
-    path(r'^login/$', auth_views.login, {'template_name': 'login/index.html'},name='login'),
-    # path(r'^$', auth_views.login, {'template_name': 'login/index.html'},name='login'),
-    # path(r'^login/$', auth_views.login, {'template_name': 'login/index.html'},name='login'),
-    #url(r'^login/$', auth_views.login, name='login'),
-    #path('login', auth_views.login, {'template_name': 'templates/login/index.html'}, name='login'),
-    #path(r'^logout/$', auth_views.logout, name='logout'),
+    path('', include('django.contrib.auth.urls')),
     path('prospectos/', include('prospectos.urls', namespace='prospectos')),
     path('clientes/', include('clientes.urls', namespace='clientes')),
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
