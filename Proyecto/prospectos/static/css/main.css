@@ -2,7 +2,7 @@
   margin: 0;
 }
 #loginImg {
-    background-image: url("loginImg.jpg");
+    background-image: url("/static/img/loginImg.jpg");
     height: 100vh;
 }
 #loginDiv{

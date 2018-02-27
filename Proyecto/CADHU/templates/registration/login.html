@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 
     {% block content %}
 
@@ -7,18 +7,19 @@
         <div class="col l7 m6 s12" id="loginImg"></div>
         <div class="col l5 m6 s12 center" id="loginDiv">
           <div class="col l10 offset-l1 s12 loginForm">
-            <img src="logo_cadhu.png" style="height: 60px" id="logoHome"/>
-            <form action="/validar" method="POST" class="loginForm">
+            <img src="{% static 'img/logo_cadhu.png'%}" style="height: 60px" id="logoHome"/>
+            <form action="." method="POST" class="loginForm">
+              {%csrf_token%}
               <div class="row">
                 <div class="input-field col s12">
-                  <input class="validate" name="username" type="text" required=""/>
-                  <label for="loginUsuario">Usuario</label>
+                  <input class="validate" name="username" type="text"  name="{{form.username.html_name}}" id="{{ form.username.id_for_label }}" required/>
+                  <label for="{{form.username.id_for_label}}" data-error="Cuenta inválida" data-success="Cuenta Válida">Usuario</label>
                 </div>
               </div>
               <div class="row">
                 <div class="input-field col s12">
-                  <input class="validate" name="password" type="password" required=""/>
-                  <label for="loginPassword">Contraseña</label>
+                  <input class="validate" name="password" type="password" name="{{form.password.html_name}}" id="{{ form.password.id_for_label }}" required/>
+                  <label for="{{form.password.id_for_label}}" data-error="Password inválido" data-success="Password válido">Contraseña</label>
                 </div>
               </div>
               <div class="row center-align">
