@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.db.models import QuerySet
-
-from prospectos.models import Prospecto, Lugar
+from .models import Prospecto, Lugar
 
 # Create your tests here.
+
 
 class ProspectoTest(TestCase):
 
