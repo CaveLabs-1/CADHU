@@ -37,13 +37,24 @@ def prospecto_lista(request):
 
 
 
+class ListaActividades(generic.ListView):
+    model = Actividad
+    template_name = 'actividades/actividades.html'
+    context_object_name = 'actividades'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ListaActividades, self).get_context_data(**kwargs)
+        context['titulo'] = 'Actividades.'
+        context['agrega'] = 'Agregar actividad'
+        return context
+
+
 class CreaActividad(generic.CreateView):
     model = Actividad
     form_class = FormaActividad
-    template_name = ''
 
     def get_success_url(self):
-        return render(request, '')
+        return render(self.request, '')
 
     def get_context_data(self, **kwargs):
         context = super(CreaActividad, self).get_context_data(**kwargs)

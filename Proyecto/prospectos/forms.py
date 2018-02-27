@@ -41,7 +41,7 @@ class FormaActividad(ModelForm):
     class Meta:
         model = models.Actividad
         fields = [
-            'nombre',
+            'titulo',
             'fecha',
             'hora',
             'notas',

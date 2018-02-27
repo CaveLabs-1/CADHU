@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Actividades{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h1 class="col s6">{{ titulo }}</h1>
+        </div>
+        <div class="row">
+            <div class="col s8"></div>
+            <a class="col s4" href="{% url 'prospectos:crear_actividad' %}">
+                <button class="waves-effect waves-light btn btn-large green lighten-1">{{ agrega }}<i
+                        class="material-icons right">add</i></button>
+            </a>
+        </div>
+        <table class="striped">
+            <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Notas</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for actividad in actividades %}
+                <tr>
+                    <td>{{ actividad.titulo }}</td>
+                    <td>{{ actividad.fecha }}</td>
+                    <td>{{ actividad.hora }}</td>
+                    <td><a class="waves-effect waves-light btn modal-trigger" href="#modal{{ actividad.pk }}">Notas</a>
+                    </td>
+                </tr>
+                <!-- Modal Structure -->
+                <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                        <h4>Notas</h4>
+                        <p>{{ actividad.notas }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                    </div>
+                </div>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
