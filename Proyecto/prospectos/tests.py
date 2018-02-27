@@ -91,5 +91,3 @@ class ProspectoTest(TestCase):
         except:
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 1)
-
-

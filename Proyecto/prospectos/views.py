@@ -7,37 +7,32 @@ from .forms import FormaActividad, ProspectoForm, LugarForm
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
-
     if request.method == 'POST':
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
-            try:
-                P = Prospecto.objects.get(Email=NewProspectoForm.Email).count()
-                Error = 'El correo ya ha sido registrado'
-                context = {
-                    'NewProspectoForm': NewProspectoForm,
-                    'NewLugarForm': NewLugarForm,
-                    'Error': Error,
-                    'P': P,
-                }
-                return render(request, 'prospectos/prospectos_form.html', context)
-            except:
-                Lugar = NewLugarForm.save()
-                Prospecto = NewProspectoForm.save(commit=False)
-                Prospecto.Direccion = Lugar
-                Prospecto.save()
-                return prospecto_lista(request)
-    context = {
+            Lugar = NewLugarForm.save()
+            Prospecto = NewProspectoForm.save(commit=False)
+            Prospecto.Direccion = Lugar
+            Prospecto.save()
+            return prospecto_lista(request)
+        context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
         }
+        return render(request, 'prospectos/prospectos_form.html', context)
+    context = {
+        'NewProspectoForm': NewProspectoForm,
+        'NewLugarForm': NewLugarForm,
+    }
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
 def prospecto_lista(request):
-    ProspectoLista = Prospecto.objects.all()
-    context = {}
+    Prospecto = Prospecto.objects.all()
+    context = {
+        'Prospecto': Prospecto,
+    }
     return render(request, 'prospecto/prospecto_lista.html',context)
 
 
