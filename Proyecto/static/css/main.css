@@ -1,0 +1,53 @@
+.no-margin{
+  margin: 0;
+}
+#loginImg {
+    background-image: url("loginImg.jpg");
+    height: 100vh;
+}
+#loginDiv{
+  background-color: rgba(12,93,149,1);
+  height: 100vh;
+  padding-top: 10%;
+}
+#loginDiv #logoHome{
+  padding-bottom: 20px
+}
+
+.rounded-button{
+  border-radius: 50px;
+}
+
+.input-field label{
+  padding-left: 10px;
+}
+.loginForm .input-field label:not(.label-icon).active {
+  -webkit-transform: translateY(-22px) translateX(10px) scale(1);
+  -ms-transform: translateY(-22px) translateX(10px) scale(1);
+  transform: translateY(-22px) translateX(10px) scale(1);
+}
+.loginForm input[type=text]:not(.browser-default) {
+  padding-left: 10px;
+  border-radius: 50px;
+  background-color: white;
+}
+.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 2px solid white;
+}
+.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ddd;
+}
+.loginForm input[type=password]:not(.browser-default) {
+  padding-left: 10px;
+  border-radius: 50px;
+  background-color: white;
+}
+.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 2px solid white;
+}
+.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ddd;
+}
+.cadhu-blue-text{
+  color: rgba(12,93,149,1);
+}
