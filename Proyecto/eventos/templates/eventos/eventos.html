@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+    {% block title %}Eventos{% endblock %}
+      {% block content %}
+        <div class="container">
+            <div class="row">
+                <h1 class="col s6">Eventos</h1>
+            </div>
+            <div class="row">
+                <div class="col s8"></div>
+                <a class="col s4" href="{% url 'eventos:crear_eventos' %}">
+                    <button class="waves-effect waves-light btn btn-large green lighten-1">Nuevo Evento <i class="material-icons right">add</i></button>
+                </a>
+            </div>
+            <table class="striped">
+                <thead>
+                  <tr>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for evento in eventos %}
+                    <tr>
+                        <td>{{ evento.Nombre }}</td>
+                        <td>{{ evento.Descripcion }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+  {% endblock %}

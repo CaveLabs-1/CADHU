@@ -1,5 +1,4 @@
 from django.apps import AppConfig
 
-
-class ProspectosConfig(AppConfig):
+class prospectosConfig(AppConfig):
     name = 'prospectos'
