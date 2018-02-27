@@ -1,7 +1,6 @@
 from .models import Prospecto, Lugar
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from . import models
-
 
 class ProspectoForm(ModelForm):
     class Meta:
@@ -18,7 +17,9 @@ class ProspectoForm(ModelForm):
             'Estado_Civil',
             'Ocupacion',
             'Hijos',
+            'Recomendacion',
         )
+
 
 
 class LugarForm(ModelForm):

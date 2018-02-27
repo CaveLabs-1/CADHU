@@ -4,3 +4,4 @@ Postgres
 Django==2.0.2
 django-phonenumber-field
 psycopg2-binary
+django-widget-tweaks

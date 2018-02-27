@@ -3,6 +3,30 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 
+METODO_CAPTACION = (
+    ('Facebook', 'Facebook'),
+    ('Buscador', 'Buscador'),
+    ('Sitio Web', 'Sitio Web'),
+    ('Email', 'Email'),
+    ('Triptico/Cartel', 'Triptico/Cartel'),
+    ('Radio', 'Radio'),
+    ('Recomendacion', 'Recomendacion'),
+    ('Otro', 'Otro'),
+)
+
+TIPOS_INTERES = (
+    ('BAJO', 'BAJO'),
+    ('MEDIO', 'MEDIO'),
+    ('ALTO', 'ALTO'),
+    ('MUY ALTO', 'MUY ALTO'),
+)
+
+ESTADO_CIVIL = (
+    ('SOLTERO', 'SOLTERO'),
+    ('CASADO', 'CASADO'),
+    ('DIVORCIADO', 'DIVORCIADO'),
+    ('UNION LIBRE', 'UNION LIBRE'),
+)
 
 class Prospecto(models.Model):
     Nombre = models.CharField(
@@ -49,18 +73,21 @@ class Prospecto(models.Model):
         max_length=50,
         blank=True,
         null=True,
+        choices=METODO_CAPTACION,
     )
 
     Interes = models.CharField(
         max_length=50,
         blank=True,
         null=True,
+        choices=TIPOS_INTERES,
     )
 
     Estado_Civil = models.CharField(
         max_length=15,
         blank=True,
         null=True,
+        choices=ESTADO_CIVIL,
     )
 
     Ocupacion = models.CharField(
@@ -69,8 +96,16 @@ class Prospecto(models.Model):
         null=True,
     )
 
-    Hijos = models.BooleanField(
-        default=False,
+    Hijos = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+    )
+
+    Recomendacion = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     def  __str__(self):
