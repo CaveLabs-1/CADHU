@@ -4,20 +4,19 @@
     {% block content %}
 
       <div class="row no-margin">
-        <div class="col l7 m6 s12" id="loginImg"></div>
-        <div class="col l5 m6 s12 center" id="loginDiv">
-          <div class="col l10 offset-l1 s12 loginForm">
+        <div class="col s12 no-padding" id="loginImg">
+          <div class="col l5 offset-l7 s12 center loginForm" id="loginDiv">
             <img src="{% static 'img/logo_cadhu.png'%}" style="height: 60px" id="logoHome"/>
             <form action="." method="POST" class="loginForm">
               {%csrf_token%}
               <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s10 offset-s1">
                   <input class="validate" name="username" type="text"  name="{{form.username.html_name}}" id="{{ form.username.id_for_label }}" required/>
                   <label for="{{form.username.id_for_label}}" data-error="Cuenta inválida" data-success="Cuenta Válida">Usuario</label>
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s10 offset-s1">
                   <input class="validate" name="password" type="password" name="{{form.password.html_name}}" id="{{ form.password.id_for_label }}" required/>
                   <label for="{{form.password.id_for_label}}" data-error="Password inválido" data-success="Password válido">Contraseña</label>
                 </div>
@@ -28,8 +27,6 @@
                 </button>
               </div>
             </form><br/>
-            <!-- <hr/> -->
-            <!-- <div class="row center-align"><br/><a href="/misescenarios" class="white-text ">Recuperar Contraseña</a></div> -->
           </div>
         </div>
       </div>
