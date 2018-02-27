@@ -5,7 +5,6 @@ from .forms import FormaActividad, ProspectoForm, LugarForm
 
 # Create your views here.
 def prospecto_crear(request):
-    context = {}
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
 
@@ -14,27 +13,25 @@ def prospecto_crear(request):
         NewLugarForm = LugarForm(request.POST)
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
             try:
-                P = Prospecto.objects.get(Email = NewProspectoForm.Email)
-            except:
+                P = Prospecto.objects.get(Email=NewProspectoForm.Email).count()
                 Error = 'El correo ya ha sido registrado'
                 context = {
                     'NewProspectoForm': NewProspectoForm,
                     'NewLugarForm': NewLugarForm,
                     'Error': Error,
+                    'P': P,
                 }
                 return render(request, 'prospectos/prospectos_form.html', context)
-
-            Lugar = NewLugarForm.save()
-            Prospecto = NewProspectoForm.save(commit=False)
-            Prospecto.Direccion = Lugar
-            Prospecto.save()
-            return prospecto_lista(request)
+            except:
+                Lugar = NewLugarForm.save()
+                Prospecto = NewProspectoForm.save(commit=False)
+                Prospecto.Direccion = Lugar
+                Prospecto.save()
+                return prospecto_lista(request)
     context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
         }
-    return render(request, 'prospectos/prospectos_form.html', context)
-
     return render(request, 'prospectos/prospectos_form.html', context)
 
 

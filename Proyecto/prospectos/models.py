@@ -57,7 +57,7 @@ class Prospecto(models.Model):
         null=True,
     )
 
-    Email = models.CharField(
+    Email = models.EmailField(
         max_length=50,
         blank=False,
         null=False,
