@@ -73,3 +73,4 @@ def crearActividad(request):
         'titulo': 'Agregar actividad.'
     }
     return render(request, 'actividades/crear_actividad.html', context)
+
