@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
@@ -27,6 +28,7 @@ ESTADO_CIVIL = (
     ('DIVORCIADO', 'DIVORCIADO'),
     ('UNION LIBRE', 'UNION LIBRE'),
 )
+
 
 class Prospecto(models.Model):
     Nombre = models.CharField(
@@ -109,7 +111,7 @@ class Prospecto(models.Model):
     )
 
     def  __str__(self):
-        return self.Nombre +' '+ self.Apellido_Paterno +' '+ self.Apellido_Materno
+        return self.Nombre + ' ' + self.Apellido_Paterno + ' ' + self.Apellido_Materno
 
 
 class Lugar(models.Model):
@@ -164,9 +166,9 @@ class Lugar(models.Model):
 
 class Actividad(models.Model):
     # Id_Seguimiento es la relacion Prospecto evento
-    # Id_Seguimiento = models.ForeignKey()
+    # Id_Seguimiento =
     titulo = models.CharField(verbose_name='Actividad', max_length=500)
     fecha = models.DateField(verbose_name='Fecha de la actividad')
     hora = models.TimeField(verbose_name='Hora de la actividad')
-    notas = models.TextField(verbose_name='Notas de la actividad', max_length=4000)
-    # vendedor = models.ForeignKey()
+    notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000)
+    # vendedor = fk
