@@ -1,0 +1,18 @@
+{% for campo in form %}
+
+    {% if campo.errors %}
+        <h1>{{ campo.error }}</h1>
+    {% else %}
+
+
+        <div class="row">
+            <div class="col s3 m3"></div>
+            <div class="input-field col s6 m6">
+                <input type="text" name="{{ campo.html_name }}" id="{{ campo.id_for_label }}">
+                <label for="{{ campo.id_for_label }}" data-error="{{ campo.error }}"
+                       data-success="Campo correcto">{{ campo.label_tag }}</label>
+            </div>
+            <div class="col s3 m3"></div>
+        </div>
+    {% endif %}
+{% endfor %}
