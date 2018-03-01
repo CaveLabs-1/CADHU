@@ -1,34 +1,73 @@
-.no-margin{margin: 0;}
-.no-padding{padding: 0;}
+.no-margin{
+  margin: 0;
+}
+.no-padding{
+  padding: 0;
+}
+#loginImg {
+    background-image: url("/static/img/loginImg.jpg");
+    height: 100vh;
+    background-repeat: no-repeat;
+
+}
+#loginDiv{
+  /* background-color: rgba(12,93,149,.6); */
+  background-color: rgba(0,0,25,.9);
+  height: 100vh;
+  padding-top: 10%;
+}
+#loginDiv #logoHome{
+  padding-bottom: 20px
+}
 
 .rounded-button{
   border-radius: 50px;
 }
 
-.cadhu-blue-text{color: rgba(12,93,149,1);}
-
-/*SIDENAV*/
-header, main, footer{padding-left: 300px;}
-
-#sideNavView {background-color:#236093}
-#sideNavView  .light-text{font-weight:300}
-#sideNavView .user-view .background img{width:100%}
-#sideNavView li a{color:white;font-weight:400}
-#sideNavView li i{color:white}
-#sideNavView .navLogo{position:fixed;bottom:15%;left:25%}
-
-.profile_button{background-color: #1D874A; border-radius: 50px;}
-
-/*TEXT COLORS*/
-
-.text_blue_cadhu{color: #236093;}
-
+.input-field label{
+  padding-left: 10px;
+}
+.loginForm .input-field label:not(.label-icon).active {
+  -webkit-transform: translateY(-22px) translateX(10px) scale(1);
+  -ms-transform: translateY(-22px) translateX(10px) scale(1);
+  transform: translateY(-22px) translateX(10px) scale(1);
+}
+.loginForm input[type=text]:not(.browser-default) {
+  padding-left: 10px;
+  border-radius: 50px;
+  background-color: white;
+}
+.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 2px solid white;
+}
+.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ddd;
+}
+.loginForm input[type=password]:not(.browser-default) {
+  padding-left: 10px;
+  border-radius: 50px;
+  background-color: white;
+}
+.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 2px solid white;
+}
+.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ddd;
+}
+.cadhu-blue-text{
+  color: rgba(12,93,149,1);
+}
 /*MEDIA QUERIES*/
 
 
 @media only screen and (max-width: 993px) {
-  header, main, footer{padding-left: 0;}
+  #loginDiv{
+    padding-top: 20%;
+  }
 }
 
 @media only screen and (max-width: 600px) {
+  #loginDiv{
+    padding-top: 30%;
+  }
 }
