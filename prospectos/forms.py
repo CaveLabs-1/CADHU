@@ -1,6 +1,5 @@
 from .models import Prospecto, Lugar
 from django.forms import ModelForm, Textarea
-from django import forms
 from . import models
 
 class ProspectoForm(ModelForm):
@@ -50,10 +49,4 @@ class FormaActividad(ModelForm):
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',
             'hora': 'Este campo es opcional.',
-        }
-        widgets = {
-            'fecha': forms.DateInput(),
-            'time': forms.TimeInput(),
-            'notas': forms.Textarea()
-
         }
