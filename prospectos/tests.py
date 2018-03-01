@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db.models import QuerySet
-from .models import Prospecto, Lugar, Actividad
+from .models import Prospecto, Lugar
 
 # Create your tests here.
 

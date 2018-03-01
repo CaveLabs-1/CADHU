@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Prospecto, Lugar, Actividad
 from django.views import generic
 from .forms import FormaActividad, ProspectoForm, LugarForm
@@ -40,13 +40,11 @@ def prospecto_lista(request):
     return render(request, 'prospecto/prospecto_lista.html',context)
 
 
+
 class ListaActividades(generic.ListView):
     model = Actividad
     template_name = 'actividades/actividades.html'
     context_object_name = 'actividades'
-
-    def get_queryset(self):
-        return Actividad.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ListaActividades, self).get_context_data(**kwargs)
@@ -55,22 +53,14 @@ class ListaActividades(generic.ListView):
         return context
 
 
-def crearActividad(request):
-    NewActividadForm = FormaActividad()
-    if request.method == 'POST':
-        NewActividadForm = FormaActividad(request.POST)
-        if NewActividadForm.is_valid():
-            actividad = NewActividadForm.save()
-            return redirect('prospectos:actividades')
-        context = {
-            'form': NewActividadForm,
-            'titulo': 'Agregar actividad.',
-            'error_message': NewActividadForm.errors
-        }
-        return render(request, 'actividades/crear_actividad.html', context)
-    context = {
-        'form': NewActividadForm,
-        'titulo': 'Agregar actividad.'
-    }
-    return render(request, 'actividades/crear_actividad.html', context)
+class CreaActividad(generic.CreateView):
+    model = Actividad
+    form_class = FormaActividad
 
+    def get_success_url(self):
+        return render(self.request, '')
+
+    def get_context_data(self, **kwargs):
+        context = super(CreaActividad, self).get_context_data(**kwargs)
+        context['titulo'] = 'Agregar actividad.'
+        return context
