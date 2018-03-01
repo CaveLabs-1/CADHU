@@ -12,6 +12,7 @@ def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
+        Error = 'Forma invalida, favor de revisar sus respuestas'
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
@@ -19,8 +20,9 @@ def prospecto_crear(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
-            return prospecto_lista(request)
+            return lista_prospecto(request)
         context = {
+            'Error': Error,
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
         }
@@ -30,15 +32,6 @@ def prospecto_crear(request):
         'NewLugarForm': NewLugarForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
-
-
-def prospecto_lista(request):
-    Prospecto = Prospecto.objects.all()
-    context = {
-        'Prospecto': Prospecto,
-    }
-    return render(request, 'prospecto/prospecto_lista.html',context)
-
 
 class ListaActividades(generic.ListView):
     model = Actividad
