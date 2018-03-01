@@ -4,9 +4,18 @@
     {% block title %}Prospectos{% endblock %}
       {% block content %}
         <div class="container">
+          <div class="fixed-action-btn">
+
+            <a class="btn-floating btn-large orange lighten-1"><i class="material-icons">publish</i></a>
+            <a class="btn-floating btn-large red">
+              <i class="large material-icons">add</i>
+            </a>
+          </div>
+
             <div class="row">
                 <h1 class="col s6">Prospectos</h1>
             </div>
+
             <div class="row">
             </div>
             <table class="dataTable">
@@ -17,19 +26,33 @@
                       <th>Materno</th>
                       <th>Celular</th>
                       <th>Email</th>
-                      <th>WhatsApp</th>
+                      <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+
+                      <td>{{ prospecto.Nombre }}</td>
+                      <td>{{ prospecto.Apellido_Paterno }}</td>
+                      <td>{{ prospecto.Apellido_Materno }}</td>
+                      <td>{{ prospecto.Telefono_Celular }}</td>
+                      <td>{{ prospecto.Email }}</td>
+                      <td>
+                        <a class="btn-floating blue"><i class="material-icons">edit</i></a>
+                        <a class="btn-floating red"><i class="material-icons">delete</i></a>
+                      </td>
+                      <!-- <td><a target="_blank" href="https://api.whatsapp.com/send?phone={{ prospecto.Telefono_Celular }}">WhatsApp</a></td> -->
+                  </tr>
                 {% for prospecto in prospectos %}
                     <tr>
 
                         <td>{{ prospecto.Nombre }}</td>
                         <td>{{ prospecto.Apellido_Paterno }}</td>
                         <td>{{ prospecto.Apellido_Materno }}</td>
-                        <td>{{ prospecto.Telefono_Celular }}</td>
+                        <td><a target="_blank" href="https://api.whatsapp.com/send?phone={{ prospecto.Telefono_Celular }}"></a>{{ prospecto.Telefono_Celular }}</td>
                         <td>{{ prospecto.Email }}</td>
-                        <td><a target="_blank" href="https://api.whatsapp.com/send?phone={{ prospecto.Telefono_Celular }}">WhatsApp</a></td>
+                        <td><a class="btn-floating blue"><i class="material-icons">publish</i></a></td>
+                        <!-- <td><a target="_blank" href="https://api.whatsapp.com/send?phone={{ prospecto.Telefono_Celular }}">WhatsApp</a></td> -->
                     </tr>
                 {% endfor %}
                 </tbody>

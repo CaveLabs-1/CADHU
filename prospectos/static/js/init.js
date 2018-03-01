@@ -1,3 +1,8 @@
 $(document).ready(function() {
-    $('.dataTable').DataTable();
+    $('.dataTable').DataTable({
+      dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdf'
+        ]
+    });
 } );
