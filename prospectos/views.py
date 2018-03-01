@@ -3,9 +3,11 @@ from .models import Prospecto, Lugar, Actividad
 from django.views import generic
 from .forms import FormaActividad, ProspectoForm, LugarForm
 
+
 def lista_prospecto(request):
     prospectos = Prospecto.objects.all()
     return render(request, 'prospectos/prospectos.html', {'prospectos':prospectos})
+
 
 # Create your views here.
 def prospecto_crear(request):
@@ -33,11 +35,11 @@ def prospecto_crear(request):
 
 
 def prospecto_lista(request):
-    Prospecto = Prospecto.objects.all()
+    prospecto = Prospecto.objects.all()
     context = {
-        'Prospecto': Prospecto,
+        'Prospecto': prospecto,
     }
-    return render(request, 'prospecto/prospecto_lista.html',context)
+    return render(request, 'prospectos/prospectos.html', context)
 
 
 class ListaActividades(generic.ListView):
@@ -46,11 +48,11 @@ class ListaActividades(generic.ListView):
     context_object_name = 'actividades'
 
     def get_queryset(self):
-        return Actividad.objects.all()
+        return Actividad.objects.all().order_by('fecha').order_by('hora').order_by('titulo')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ListaActividades, self).get_context_data(**kwargs)
-        context['titulo'] = 'Actividades.'
+        context['titulo'] = 'Actividades'
         context['agrega'] = 'Agregar actividad'
         return context
 
@@ -62,15 +64,20 @@ def crearActividad(request):
         if NewActividadForm.is_valid():
             actividad = NewActividadForm.save()
             return redirect('prospectos:actividades')
-        context = {
-            'form': NewActividadForm,
-            'titulo': 'Agregar actividad.',
-            'error_message': NewActividadForm.errors
-        }
-        return render(request, 'actividades/crear_actividad.html', context)
+        else:
+            mensaje = ''
+            context = {
+                'form': NewActividadForm,
+                'titulo': 'Agregar actividad',
+            }
+            for field, errors in NewActividadForm.errors.items():
+                for error in errors:
+                    mensaje += error
+            context['mensaje_error'] = mensaje
+            return render(request, 'actividades/crear_actividad.html', context)
     context = {
         'form': NewActividadForm,
-        'titulo': 'Agregar actividad.'
+        'titulo': 'Agregar actividad'
     }
     return render(request, 'actividades/crear_actividad.html', context)
 

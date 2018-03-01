@@ -102,6 +102,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Formatos de fecha y timepo
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
+TIME_INPUT_FORMATS = ['%h:%i %A', '%H:%M %p', '%H:%M %A', '%h:%i %p']  # 14:30 PM/AM
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
