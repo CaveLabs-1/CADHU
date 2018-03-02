@@ -1,5 +1,5 @@
 from CADHU.settings.common import *
-
+import os
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '04x+s_*qi^^=g)y6x)^j_1dadrv$wg))5pico59(+&est)c8t%'
 
@@ -13,11 +13,7 @@ ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cadhu',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
