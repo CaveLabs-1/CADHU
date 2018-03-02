@@ -35,6 +35,8 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+# def prospecto_editar(request):
+
 class ListaActividades(generic.ListView):
     model = Actividad
     template_name = 'actividades/actividades.html'
