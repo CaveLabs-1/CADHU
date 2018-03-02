@@ -2,16 +2,19 @@ from django.shortcuts import render, redirect
 from .models import Prospecto, Lugar, Actividad
 from django.views import generic
 from .forms import FormaActividad, ProspectoForm, LugarForm
+from django.contrib.auth.decorators import login_required
+from CADHU.decorators import group_required
 
 def lista_prospecto(request):
     prospectos = Prospecto.objects.all()
     return render(request, 'prospectos/prospectos.html', {'prospectos':prospectos})
 
-# Create your views here.
+@login_required
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
+        Error = 'Forma invalida, favor de revisar sus respuestas'
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
@@ -19,8 +22,9 @@ def prospecto_crear(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
-            return prospecto_lista(request)
+            return lista_prospecto(request)
         context = {
+            'Error': Error,
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
         }
@@ -30,15 +34,6 @@ def prospecto_crear(request):
         'NewLugarForm': NewLugarForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
-
-
-def prospecto_lista(request):
-    Prospecto = Prospecto.objects.all()
-    context = {
-        'Prospecto': Prospecto,
-    }
-    return render(request, 'prospecto/prospecto_lista.html',context)
-
 
 class ListaActividades(generic.ListView):
     model = Actividad
@@ -73,4 +68,3 @@ def crearActividad(request):
         'titulo': 'Agregar actividad.'
     }
     return render(request, 'actividades/crear_actividad.html', context)
-
