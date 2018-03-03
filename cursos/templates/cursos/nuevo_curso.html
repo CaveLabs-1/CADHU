@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+    {% block title %}Nuevo Evento{% endblock %}
+{% block content %}
+
+  <div class="headerTitle">
+    <div class="row">
+      <div class="col l10 offset-l1 s12">
+        <h4>Nuevo Curso</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-margin">
+    <div class="col l8 offset-l2 s12">
+      <div class="card ">
+        <div class="card-content">
+          <!-- <form action="" method="post">{% csrf_token %}
+              {{ form.as_p }}
+              <input type="submit" value="Save" />
+          </form> -->
+
+          <form method="post" id="crear_evento" class="" action=".">
+            {% csrf_token %}
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" name="{{ form.Nombre.html_name }}"
+                       id="{{ form.Nombre.id_for_label }}" required>
+                <label>Nombre</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <select class="browser-default">
+                  <option value="" disabled selected>Selecciona el tipo de evento</option>
+                  {% for evento in eventos %}
+                    <option value="1">{{ evento.Nombre }}</option>
+                  {% endfor %}
+                </select>
+                <label>Eventos</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" class="datepicker" name="required {{form.Fecha.html_name}}">
+                <label>Fecha</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" required>
+                <label>Dirección</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" required>
+                <label>Descripción</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" class="timepicker" required>
+                <label>Hora</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="number" required step=".01" min="0">
+                <label>Costo</label>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <center>
+                <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Curso</button>
+              </center>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+
+
+
+
+
+      <!--
+          <br>
+          <br>
+          <br>
+          <div class="row">
+            <div class="col s12 m12">
+              <div class="card ">
+                <div class="card-content">
+                    <form method="post" id="crear_evento" class="" action=".">
+                    <br>
+                        <div class="row">
+                          <div class="col s3 m3"></div>
+                          <div class="input-field col s6 m6">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[^0-9]*" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras.')" oninput="setCustomValidity('')" required>
+                            <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre evento</label>
+                          </div>
+                          <div class="col s3 m3"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col s3 m3"></div>
+                          <div class="input-field col s6 m6">
+                            <i class="material-icons prefix">dehaze</i>
+                            <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}" pattern="[^0-9]*" class="validate"  oninvalid="setCustomValidity('Descripcion solo debe contener letras.')" oninput="setCustomValidity('')" required>
+                            <label for="{{form.Descripcion.id_for_label}}" data-error="Descripción inválida" data-success="Descripción válida">Descripcion</label>
+                          </div>
+                          <div class="col s3 m3"></div>
+                        </div>
+                    {%csrf_token%}
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <div class="row center">
+                          <div class="col s2 m2"></div>
+                          <a href="{% url 'eventos:lista_eventos' %}" class="waves-effect waves-light col s3 m3 btn btn-large light-blue lighten-1">Regresar <i class="material-icons left">arrow_back</i></a>
+                          <div class="col s2 m2"></div>
+                          <button type="submit" class="waves-effect waves-light col s3 m3 btn btn-large green lighten-1">Agregar <i class="material-icons right">done</i></button>
+                          <div class="col s2 m2"></div>
+                        </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        -->
+  {% endblock %}
