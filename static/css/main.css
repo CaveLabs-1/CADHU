@@ -12,12 +12,12 @@
 }
 #loginDiv{
   /* background-color: rgba(12,93,149,.6); */
-  background-color: rgba(0,0,25,.9);
+  background-color: rgba(0,0,25,.6);
   height: 100vh;
   padding-top: 10%;
 }
 #loginDiv #logoHome{
-  padding-bottom: 20px
+  padding-bottom: 20px;
 }
 
 .rounded-button{
@@ -26,6 +26,7 @@
 
 .input-field label{
   padding-left: 10px;
+  color: white;
 }
 .loginForm .input-field label:not(.label-icon).active {
   -webkit-transform: translateY(-22px) translateX(10px) scale(1);
