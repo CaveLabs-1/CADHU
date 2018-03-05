@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-    {% block title %}Nuevo Evento{% endblock %}
+    {% block title %}Nuevo Curso{% endblock %}
 {% block content %}
 
   <div class="headerTitle">
@@ -21,21 +21,22 @@
               <input type="submit" value="Save" />
           </form> -->
 
-          <form method="post" id="crear_evento" class="" action=".">
+          <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
             {% csrf_token %}
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{ form.Nombre.html_name }}"
-                       id="{{ form.Nombre.id_for_label }}" required>
-                <label>Nombre</label>
+                <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
+                <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
+                <!-- <input type="text" id="{{ form.Nombre.id_for_label }}" name="{{ form.Nombre.html_name }}" required>
+                <label>Nombre</label> -->
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default">
+                <select class="browser-default"  name="{{form.Evento.html_name}}" id="{{ form.Evento.id_for_label }}" oninvalid="setCustomValidity('Selecciona un evento de la lista')" required>
                   <option value="" disabled selected>Selecciona el tipo de evento</option>
                   {% for evento in eventos %}
-                    <option value="1">{{ evento.Nombre }}</option>
+                    <option value="{{ evento.id }}">{{ evento.Nombre }}</option>
                   {% endfor %}
                 </select>
                 <label>Eventos</label>
@@ -43,32 +44,32 @@
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" class="datepicker" name="required {{form.Fecha.html_name}}">
-                <label>Fecha</label>
+                <input type="text" name="{{form.Fecha.html_name}}" id="{{ form.Fecha.id_for_label }}"  class="datepicker" required>
+                <label for="{{form.Fecha.id_for_label}}" >Fecha</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" required>
-                <label>Dirección</label>
+                <input type="text" name="{{form.Direccion.html_name}}" id="{{ form.Direccion.id_for_label }}"   required>
+                <label for="{{form.Direccion.id_for_label}}">Dirección</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" required>
-                <label>Descripción</label>
+                <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}"  required>
+                <label for="{{form.Descripcion.id_for_label}}">Descripción</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" class="timepicker" required>
-                <label>Hora</label>
+                <input type="text" name="{{form.Hora.html_name}}" id="{{ form.Hora.id_for_label }}"  class="timepicker" required>
+                <label for="{{form.Hora.id_for_label}}">Hora</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" required step=".01" min="0">
-                <label>Costo</label>
+                <input type="number" name="{{form.Costo.html_name}}" id="{{ form.Costo.id_for_label }}" required step=".01" min="0">
+                <label for="{{form.Costo.id_for_label}}">Costo</label>
               </div>
             </div>
             <br>
