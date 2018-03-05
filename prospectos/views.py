@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Prospecto, Lugar, Actividad
+from .models import Empresa, Prospecto, Lugar, Actividad
 from datetime import time
 from django.views import generic
-from .forms import FormaActividad, ProspectoForm, LugarForm
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
@@ -14,6 +14,12 @@ def lista_prospectos(request):
         }
     return render(request, 'prospectos/prospectos.html', context)
 
+def lista_empresa(request):
+    empresas = Empresa.objects.all()
+    context = {
+        'empresas':empresas
+        }
+    return render(request, 'empresas/empresas.html', context)
 
 # Create your views here.
 # @login_required
@@ -44,6 +50,32 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+def empresa_crear(request):
+    NewEmpresaForm = EmpresaForm()
+    NewLugarForm = LugarForm()
+    if request.method == "POST":
+        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        NewEmpresaForm = EmpresaForm(request.POST)
+        NewLugarForm = LugarForm(request.POST)
+        if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
+            Lugar = NewLugarForm.save()
+            Empresa = NewEmpresaForm.save(commit=False)
+            Empresa.Direccion = Lugar
+            Empresa.save()
+            return lista_empresa(request)
+        context = {
+            'Error': Error,
+            'NewEmpresaForm': NewEmpresaForm,
+            'NewLugarForm': NewLugarForm,
+            'titulo': 'Registrar una Empresa',
+        }
+        return render(request, 'empresas/empresas_form.html', context)
+    context = {
+        'NewEmpresaForm': NewEmpresaForm,
+        'NewLugarForm': NewLugarForm,
+        'titulo': 'Registrar una Empresa',
+    }
+    return render(request, 'empresas/empresas_form.html', context)
 
 def prospecto_editar(request, id):
     prospecto = Prospecto.objects.get(id=id)
