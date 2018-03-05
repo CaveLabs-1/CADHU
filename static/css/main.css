@@ -1,15 +1,23 @@
-.no-margin{
-  margin: 0;
-}
-.no-padding{
-  padding: 0;
-}
-#loginImg {
-    background-image: url("/static/img/loginImg.jpg");
-    height: 100vh;
-    background-repeat: no-repeat;
+.no-margin{margin: 0;}
+.no-padding{padding: 0;}
 
+.rounded-button{
+  border-radius: 50px;
 }
+
+.cadhu-blue-text{color: rgba(12,93,149,1);}
+
+.cadhu-green{background-color: #1D874A;}
+
+.headerTitle{
+  position: fixed;
+}
+
+.form_button{
+  border-radius: 50px;
+  background-color: #1D874A;
+}
+
 #loginDiv{
   /* background-color: rgba(12,93,149,.6); */
   background-color: rgba(0,0,25,.6);
@@ -18,46 +26,120 @@
 }
 #loginDiv #logoHome{
   padding-bottom: 20px;
+
+.form_button:hover{
+  background-color: rgba(12,93,149,1);
 }
 
-.rounded-button{
+.under-shadow{
+  -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+
+}
+
+.padding-top-20 {
+  padding-top: 20px;
+}
+
+.light-text {
+  font-weight: 300;
+}
+
+.bold-text {
+  font-weight: 700;
+}
+
+/*BASE*/
+body {
+  padding-top: 60px;
+  font-family: 'Lato', sans-serif;
+  background-color: #eee;
+}
+main {
+  overflow: hidden;
+}
+
+#logo-nav {
+  height: 30px;
+  margin-top: -15px;
+  position: absolute;
+}
+
+.headerTitle{
+  top: 0;
+  color: black;
+  width: 100%;
+  z-index: 200;
+  height: 60px;
+  overflow-y: hidden;
+  background-color: white;
+  -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+}
+
+.headerTitle h4{
+  font-size: 1.7em;
+  color: #5f5f5f;
+  top: -5px;
+  position: absolute;
+}
+
+#structure {
+  position: fixed;
+  top: 20px;
+  z-index: 300;
+  width: 100%
+}
+
+#collapse-nav, #logout{
+  position: absolute;
+  float: left;
+}
+#collapse-nav a i, #logout a i{
+  color: #206082;
+}
+
+#collapse-nav{
+  left: 30px;
+}
+
+#logout {
+  right: 350px;
+}
+
+
+
+/*SIDENAV*/
+header, main, footer{padding-left: 300px;}
+
+
+.white-bar {
+  height: 60px;
+  background-color: white;
+}
+
+.sidenav {
+  box-shadow: inset -7px 0 20px -8px rgba(0,0,0,0.5);
+}
+
+.profile-image {
+  width: 50px;
   border-radius: 50px;
 }
 
-.input-field label{
-  padding-left: 10px;
+.left-content {
+  float: left;
+  margin-left: 30px;
+  width: 20%;
+}
+
+.right-content {
   color: white;
+  line-height: 15px;
 }
-.loginForm .input-field label:not(.label-icon).active {
-  -webkit-transform: translateY(-22px) translateX(10px) scale(1);
-  -ms-transform: translateY(-22px) translateX(10px) scale(1);
-  transform: translateY(-22px) translateX(10px) scale(1);
-}
-.loginForm input[type=text]:not(.browser-default) {
-  padding-left: 10px;
-  border-radius: 50px;
-  background-color: white;
-}
-.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) {
-  border-bottom: 2px solid white;
-}
-.loginForm input[type=text]:not(.browser-default):focus:not([readonly]) + label {
-  color: #ddd;
-}
-.loginForm input[type=password]:not(.browser-default) {
-  padding-left: 10px;
-  border-radius: 50px;
-  background-color: white;
-}
-.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) {
-  border-bottom: 2px solid white;
-}
-.loginForm input[type=password]:not(.browser-default):focus:not([readonly]) + label {
-  color: #ddd;
-}
-.cadhu-blue-text{
-  color: rgba(12,93,149,1);
-}
+
 
 /* DataTables */
 
@@ -65,17 +147,29 @@ a.dt-button.buttons-html5{
   border-radius: 25px;
 }
 
+#sideNavView {background-color:#206082}
+#sideNavView  .light-text{font-weight:300}
+#sideNavView .user-view .background img{width:100%}
+#sideNavView li a{color:white;font-weight:400}
+#sideNavView li i{color:white}
+#sideNavView .navLogo{position:fixed;bottom:15%;left:25%}
+
+.profile_button{background-color: #1D874A; border-radius: 50px;}
+
+/*TEXT COLORS*/
+
+.text_blue_cadhu{color: #236093;}
+
+
 /*MEDIA QUERIES*/
 
 
 @media only screen and (max-width: 993px) {
-  #loginDiv{
-    padding-top: 20%;
+  header, main, footer{padding-left: 0;}
+  #logout {
+    right: 30px;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  #loginDiv{
-    padding-top: 30%;
-  }
 }
