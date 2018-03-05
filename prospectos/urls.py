@@ -13,9 +13,9 @@ urlpatterns = [
 
     #Lista prospectos
     path('', views.lista_prospectos, name='lista_prospectos'),
-  
+
     #Crear Prospecto
-    path('crear/', views.prospecto_crear, name='crear_prospecto'),
+    path('crear', views.prospecto_crear, name='crear_prospecto'),
 
     # Editar Prospecto
     path('editar/<int:id>/', views.prospecto_editar, name='editar_prospecto'),

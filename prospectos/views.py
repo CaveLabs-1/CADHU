@@ -29,16 +29,18 @@ def prospecto_crear(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
-            return lista_prospecto(request)
+            return lista_prospectos(request)
         context = {
             'Error': Error,
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
+            'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
     context = {
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
+        'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -69,7 +71,6 @@ class ListaActividades(generic.ListView):
         context['titulo'] = 'Actividades'
         context['agrega'] = 'Agregar actividad'
         return context
-
 
 def crearActividad(request):
     NewActividadForm = FormaActividad()

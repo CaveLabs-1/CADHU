@@ -255,7 +255,7 @@ class ActividadTest(TestCase):
     def setUpTestData(self):
         Actividad.objects.create(
             titulo='Test de  titulo',
-            fecha='02-02-2018',
+            fecha='2018-02-02',
             hora='12:00',
             notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
         )
