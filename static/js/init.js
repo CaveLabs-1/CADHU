@@ -89,7 +89,7 @@ $(document).ready(function() {
     });
     $('.timepicker').timepicker({
         defaultTime: 'now',
-        twelveHour: false,
+        twelveHour: true,
         i18n: {
             clear: 'Borrar',
             cancel: 'Cancelar',
