@@ -18,15 +18,6 @@
   background-color: #1D874A;
 }
 
-#loginDiv{
-  /* background-color: rgba(12,93,149,.6); */
-  background-color: rgba(0,0,25,.6);
-  height: 100vh;
-  padding-top: 10%;
-}
-#loginDiv #logoHome{
-  padding-bottom: 20px;
-
 .form_button:hover{
   background-color: rgba(12,93,149,1);
 }
@@ -35,7 +26,6 @@
   -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
   -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
   box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
-
 }
 
 .padding-top-20 {
@@ -140,13 +130,6 @@ header, main, footer{padding-left: 300px;}
   line-height: 15px;
 }
 
-
-/* DataTables */
-
-a.dt-button.buttons-html5{
-  border-radius: 25px;
-}
-
 #sideNavView {background-color:#206082}
 #sideNavView  .light-text{font-weight:300}
 #sideNavView .user-view .background img{width:100%}
@@ -159,7 +142,6 @@ a.dt-button.buttons-html5{
 /*TEXT COLORS*/
 
 .text_blue_cadhu{color: #236093;}
-
 
 /*MEDIA QUERIES*/
 
