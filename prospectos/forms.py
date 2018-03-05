@@ -2,6 +2,7 @@ from .models import Prospecto, Lugar
 from django.forms import ModelForm, Textarea
 from django import forms
 from . import models
+from CADHU.settings import common
 
 class ProspectoForm(ModelForm):
     class Meta:
@@ -47,12 +48,13 @@ class FormaActividad(ModelForm):
             'hora',
             'notas',
         ]
+
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',
             'hora': 'Este campo es opcional.',
         }
         widgets = {
-            'fecha': forms.DateInput(),
+            'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
             'notas': forms.Textarea()
 
