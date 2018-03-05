@@ -32,7 +32,7 @@
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
                         <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
                         <td>
-                          <a class="btn-floating blue"><i class="material-icons">edit</i></a>
+                          <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}" class="btn-floating blue"><i class="material-icons">edit</i></a>
                           <a class="btn-floating red"><i class="material-icons">delete</i></a>
                         </td>
                     </tr>
