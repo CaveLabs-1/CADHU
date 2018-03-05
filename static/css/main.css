@@ -10,9 +10,7 @@
 .cadhu-green{background-color: #1D874A;}
 
 .headerTitle{
-  height: 100px;
-  background-color: #999;
-  color: white;
+  position: fixed;
 }
 
 .form_button{
@@ -24,10 +22,115 @@
   background-color: rgba(12,93,149,1);
 }
 
-/*SIDENAV*/
-header, main, footer{padding-left: 300px; background-color: #eee}
+.under-shadow{
+  -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+}
 
-#sideNavView {background-color:#236093}
+.padding-top-20 {
+  padding-top: 20px;
+}
+
+.light-text {
+  font-weight: 300;
+}
+
+.bold-text {
+  font-weight: 700;
+}
+
+/*BASE*/
+body {
+  padding-top: 60px;
+  font-family: 'Lato', sans-serif;
+  background-color: #eee;
+}
+main {
+  overflow: hidden;
+}
+
+#logo-nav {
+  height: 30px;
+  margin-top: -15px;
+  position: absolute;
+}
+
+.headerTitle{
+  top: 0;
+  color: black;
+  width: 100%;
+  z-index: 200;
+  height: 60px;
+  overflow-y: hidden;
+  background-color: white;
+  -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+}
+
+.headerTitle h4{
+  font-size: 1.7em;
+  color: #5f5f5f;
+  top: -5px;
+  position: absolute;
+}
+
+#structure {
+  position: fixed;
+  top: 20px;
+  z-index: 300;
+  width: 100%
+}
+
+#collapse-nav, #logout{
+  position: absolute;
+  float: left;
+}
+#collapse-nav a i, #logout a i{
+  color: #206082;
+}
+
+#collapse-nav{
+  left: 30px;
+}
+
+#logout {
+  right: 350px;
+}
+
+
+
+/*SIDENAV*/
+header, main, footer{padding-left: 300px;}
+
+
+.white-bar {
+  height: 60px;
+  background-color: white;
+}
+
+.sidenav {
+  box-shadow: inset -7px 0 20px -8px rgba(0,0,0,0.5);
+}
+
+.profile-image {
+  width: 50px;
+  border-radius: 50px;
+}
+
+.left-content {
+  float: left;
+  margin-left: 30px;
+  width: 20%;
+}
+
+.right-content {
+  color: white;
+  line-height: 15px;
+}
+
+#sideNavView {background-color:#206082}
 #sideNavView  .light-text{font-weight:300}
 #sideNavView .user-view .background img{width:100%}
 #sideNavView li a{color:white;font-weight:400}
@@ -45,6 +148,9 @@ header, main, footer{padding-left: 300px; background-color: #eee}
 
 @media only screen and (max-width: 993px) {
   header, main, footer{padding-left: 0;}
+  #logout {
+    right: 30px;
+  }
 }
 
 @media only screen and (max-width: 600px) {
