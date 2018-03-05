@@ -7,9 +7,12 @@ from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
 
-def lista_prospecto(request):
+def lista_prospectos(request):
     prospectos = Prospecto.objects.all()
-    return render(request, 'prospectos/prospectos.html', {'prospectos':prospectos})
+    context = {
+        'prospectos':prospectos
+        }
+    return render(request, 'prospectos/prospectos.html', context)
 
 
 # Create your views here.

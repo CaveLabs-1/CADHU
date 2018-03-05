@@ -1,5 +1,17 @@
 $(document).ready(function() {
-    $('.dataTable').DataTable();
+
+    $('.dataTable').DataTable({
+      dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdf'
+        ]
+    });
+} );
+
+$(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
+});
+
     $('.sidenav').sidenav();
     $('.tooltipped').tooltip({delay: 50});
     // $('.timepicker').timepicker();
