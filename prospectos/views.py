@@ -6,7 +6,8 @@ from .forms import FormaActividad, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
-
+@login_required
+@group_required('vendedora','administrador')
 def lista_prospectos(request):
     prospectos = Prospecto.objects.all()
     context = {
@@ -14,9 +15,8 @@ def lista_prospectos(request):
         }
     return render(request, 'prospectos/prospectos.html', context)
 
-
-# Create your views here.
-# @login_required
+@login_required
+@group_required('vendedora','administrador')
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
@@ -44,7 +44,8 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
-
+@login_required
+@group_required('vendedora','administrador')
 def prospecto_editar(request, id):
     prospecto = Prospecto.objects.get(id=id)
     NewProspectoForm = ProspectoForm(request.POST or None, instance=prospecto)
@@ -55,7 +56,6 @@ def prospecto_editar(request, id):
         return redirect('prospectos')
 
     return render(request, 'prospectos/prospectos_form.html',{'NewProspectoForm': NewProspectoForm, 'NewLugarForm':NewLugarForm, 'prospectos':prospecto})
-
 
 
 class ListaActividades(generic.ListView):
@@ -72,6 +72,8 @@ class ListaActividades(generic.ListView):
         context['agrega'] = 'Agregar actividad'
         return context
 
+@login_required
+@group_required('vendedora','administrador')
 def crearActividad(request):
     NewActividadForm = FormaActividad()
     if request.method == 'POST':
