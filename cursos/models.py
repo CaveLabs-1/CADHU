@@ -11,5 +11,5 @@ class Curso(models.Model):
     Fecha = models.DateField(blank=True, null=True)
     Direccion = models.CharField(max_length=100, blank=True, null=True)
     Descripcion = models.CharField(max_length=150, blank=True, null=True)
-    Hora = models.TimeField(blank=True, null=True)
+    # Hora = models.TimeField(blank=True, null=True)
     Costo = models.PositiveIntegerField(blank=True, null=True)
