@@ -1,4 +1,5 @@
 {% load static %}
+{% load grupos %}
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -45,11 +46,15 @@
             </div>
           </li>
           <br>
-          <li><a class="waves-effect" href="/admin/notificaciones"><i class="material-icons">person</i>Clientes</a></li>
-          <li><a class="waves-effect" href="/admin/escenarios"><i class="material-icons">person_add</i>Prospectos</a></li>
-          <li><a class="waves-effect" href="/admin/alumnos"><i class="material-icons">insert_invitation</i>Curso</a></li>
-          <li><a class="waves-effect" href="/admin/administradores"><i class="material-icons">playlist_add_check</i>Eventos</a></li>
-          <li><a class="waves-effect" href="/admin/periodos"><i class="material-icons">perm_contact_calendar</i>Administradores</a></li>
+          {% if request.user|has_group:"administrador"%}
+            <li><a class="waves-effect" href="/admin/notificaciones"><i class="material-icons">person</i>Clientes</a></li>
+          {% endif %}
+            <li><a class="waves-effect" href="/admin/escenarios"><i class="material-icons">person_add</i>Prospectos</a></li>
+          {% if request.user|has_group:"administrador"%}
+            <li><a class="waves-effect" href="/admin/alumnos"><i class="material-icons">insert_invitation</i>Curso</a></li>
+            <li><a class="waves-effect" href="/admin/administradores"><i class="material-icons">playlist_add_check</i>Eventos</a></li>
+            <li><a class="waves-effect" href="/admin/periodos"><i class="material-icons">perm_contact_calendar</i>Administradores</a></li>
+          {% endif %}
         </ul>
       </div>
     <div class="headerTitle">
