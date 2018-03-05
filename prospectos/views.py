@@ -35,7 +35,16 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
-# def prospecto_editar(request):
+def prospecto_editar(request):
+    prospecto = Prospecto.objects.get(id=id)
+    form = ProspectoForm(request.POST or None, instance=prospecto)
+    formlugar = LugarForm(request.Post or None, instance=Lugar)
+    if form.is_valid():
+        form.save()
+        return redirect('prospectos')
+
+    return render(request, 'prospectos_form.html',{'form':form, 'Lugar':formlugar, 'prospectos':prospecto})
+
 
 class ListaActividades(generic.ListView):
     model = Actividad
