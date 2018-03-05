@@ -15,8 +15,7 @@
 
 }
 #loginDiv{
-  /* background-color: rgba(12,93,149,.6); */
-  background-color: rgba(0,0,25,1);
+  background-color: rgba(255, 255, 255, 0.8);
   height: 100vh;
   padding-top: 10%;
 }
@@ -30,6 +29,7 @@
 
 .input-field label{
   padding-left: 10px;
+  color: #484848;
 }
 .loginForm .input-field label:not(.label-icon).active {
   -webkit-transform: translateY(-22px) translateX(10px) scale(1);
@@ -45,7 +45,7 @@
   border-bottom: 2px solid white;
 }
 .loginForm input[type=text]:not(.browser-default):focus:not([readonly]) + label {
-  color: #ddd;
+  color: #000;
 }
 .loginForm input[type=password]:not(.browser-default) {
   padding-left: 10px;
@@ -56,7 +56,7 @@
   border-bottom: 2px solid white;
 }
 .loginForm input[type=password]:not(.browser-default):focus:not([readonly]) + label {
-  color: #ddd;
+  color: #000;
 }
 
 @media only screen and (max-width: 993px) {
