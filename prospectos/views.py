@@ -46,15 +46,18 @@ def prospecto_crear(request):
 
 
 def prospecto_editar(request, id):
-    prospecto = Prospecto.objects.get(id=id)
-    NewProspectoForm = ProspectoForm(request.POST or None, instance=prospecto)
-    NewLugarForm = LugarForm(request.POST or None, instance=prospecto.Direccion)
-    if NewProspectoForm.is_valid():
-        NewProspectoForm.save()
-        NewLugarForm.save()
-        return redirect('prospectos')
+    idprospecto = Prospecto.objects.get(id=id)
+    NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
+    NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+    if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
 
-    return render(request, 'prospectos/prospectos_form.html',{'NewProspectoForm': NewProspectoForm, 'NewLugarForm':NewLugarForm, 'prospectos':prospecto})
+        prospecto = NewProspectoForm.save(commit=False)
+        Lugar = NewLugarForm.save()
+        Prospecto.Direccion =Lugar
+        prospecto.save()
+        return lista_prospectos(request)
+
+    return render(request, 'prospectos/prospectos_form.html',{'NewProspectoForm': NewProspectoForm, 'NewLugarForm':NewLugarForm, 'prospectos':idprospecto})
 
 
 
