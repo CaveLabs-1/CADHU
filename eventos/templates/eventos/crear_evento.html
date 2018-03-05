@@ -18,7 +18,7 @@
                           <div class="col s3 m3"></div>
                           <div class="input-field col s6 m6">
                             <i class="material-icons prefix">account_circle</i>
-                            <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[^0-9]*" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras.')" oninput="setCustomValidity('')" required>
+                            <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras.')" oninput="setCustomValidity('')" required>
                             <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre evento</label>
                           </div>
                           <div class="col s3 m3"></div>
@@ -27,7 +27,7 @@
                           <div class="col s3 m3"></div>
                           <div class="input-field col s6 m6">
                             <i class="material-icons prefix">dehaze</i>
-                            <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}" pattern="[^0-9]*" class="validate"  oninvalid="setCustomValidity('Descripcion solo debe contener letras.')" oninput="setCustomValidity('')" required>
+                            <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Descripcion solo debe contener letras.')" oninput="setCustomValidity('')" required>
                             <label for="{{form.Descripcion.id_for_label}}" data-error="Descripción inválida" data-success="Descripción válida">Descripcion</label>
                           </div>
                           <div class="col s3 m3"></div>
