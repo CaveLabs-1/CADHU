@@ -9,8 +9,8 @@ from .models import Prospecto, Lugar, Actividad
 
 
 class ProspectoTest(TestCase):
-
-    def setUp(self):
+    @classmethod
+    def setUpTestData(self):
         Lugar.objects.create(
             Calle='Paraiso',
             Numero_Interior='',
@@ -136,7 +136,7 @@ class ProspectoTest(TestCase):
         self.assertEquals(field_label, 'Codigo Postal')
 
     def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/prospectos/crear/')
+        resp = self.client.get('/prospectos/crear')
         self.assertEqual(resp.status_code, 200)
 
     #Test Django
@@ -151,7 +151,6 @@ class ProspectoTest(TestCase):
             Ciudad='Queretaro',
             Pais='Mexico',
             Codigo_Postal='76125'
-
         )
 
         Prospecto.objects.create(
@@ -196,3 +195,44 @@ class ProspectoTest(TestCase):
         except:
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 1)
+
+
+class ActividadTest(TestCase):
+    @classmethod
+    def setUpTestData(self):
+        Actividad.objects.create(
+            titulo='Test de  titulo',
+            fecha='02-02-2018',
+            hora='12:00',
+            notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
+        )
+
+    def test_view_url_exists_at_desired_location_and_uses_desired_template(self):
+        resp = self.client.get('/prospectos/actividades')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'actividades/actividades.html')
+
+    def test_createview_url_exists_at_desired_location_and_uses_desired_template(self):
+        resp = self.client.get('/prospectos/actividades/crear')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'actividades/crear_actividad.html')
+
+    def test_titulo_label(self):
+        actividad = Actividad.objects.get(pk=1)
+        field_label = actividad._meta.get_field('titulo').verbose_name
+        self.assertEqual(field_label, 'Actividad')
+
+    def test_fecha_label(self):
+        actividad = Actividad.objects.get(pk=1)
+        field_label = actividad._meta.get_field('fecha').verbose_name
+        self.assertEqual(field_label, 'Fecha de la actividad')
+
+    def test_hora_label(self):
+        actividad = Actividad.objects.get(pk=1)
+        field_label = actividad._meta.get_field('hora').verbose_name
+        self.assertEqual(field_label, 'Hora de la actividad')
+
+    def test_notas_label(self):
+        actividad = Actividad.objects.get(pk=1)
+        field_label = actividad._meta.get_field('hora').verbose_name
+        self.assertEqual(field_label, 'Notas de la actividad')

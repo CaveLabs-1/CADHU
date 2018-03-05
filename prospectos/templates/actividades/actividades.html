@@ -14,7 +14,7 @@
                         class="material-icons right">add</i></button>
             </a>
         </div>
-        <table class="striped">
+        <table class="dataTable">
             <thead>
             <tr>
                 <th>Titulo</th>
@@ -28,10 +28,13 @@
                 <tr>
                     <td>{{ actividad.titulo }}</td>
                     <td>{{ actividad.fecha }}</td>
-                    <td>{{ actividad.hora }}</td>
-                    <td><a class="waves-effect waves-light btn modal-trigger" href="#modal{{ actividad.pk }}">Notas</a>
+                    <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
+                    <td><a class="waves-effect waves-light btn modal-trigger" id="notas{{ actividad.pk }}"
+                           href="#modal{{ actividad.pk }}">Notas</a>
                     </td>
                 </tr>
+
+
                 <!-- Modal Structure -->
                 <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
                     <div class="modal-content">
@@ -48,4 +51,14 @@
         </table>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        {% for actividad in actividades %}
+            $("#notas{{ actividad.pk }}").on("click", function () {
+                $('#modal{{ actividad.pk }}').modal('open');
+            });
+        {% endfor %}
+    </script>
 {% endblock %}

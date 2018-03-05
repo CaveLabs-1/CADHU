@@ -105,6 +105,9 @@ USE_TZ = True
 
 TIME_INPUT_FORMATS = ('%I:%M %p',)
 
+# Formatos de fecha y timepo
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 

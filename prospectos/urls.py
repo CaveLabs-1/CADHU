@@ -20,4 +20,5 @@ urlpatterns = [
     # Editar Prospecto
     path('editar/<int:id>/', views.prospecto_editar, name='editar_prospecto'),
 
+
 ]
