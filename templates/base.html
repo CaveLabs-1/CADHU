@@ -40,8 +40,8 @@
               <img class="profile-image" src="{% static 'img/profile.png'%}"/>
             </div>
             <div class="right-content">
-              <p class="bold-text">Santiago Valencia</p>
-              <p class="light-text">santiago@mail.com</p>
+              <p class="bold-text">{{ user.get_username }}</p>
+              <p class="light-text">{{ user.email }}</p>
             </div>
           </li>
           <br>
