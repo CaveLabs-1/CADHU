@@ -31,6 +31,12 @@ ESTADO_CIVIL = (
     ('UNION LIBRE', 'UNION LIBRE'),
 )
 
+class Empresa(models.Model):
+    Nombre = models.CharField(max_length=50, blank=False, null=False)
+    Telefono = PhoneNumberField(blank=True, null=True)
+    Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
+    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
+    Razon_Social = models.CharField(max_length=50, blank=False, null=True)
 
 class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)

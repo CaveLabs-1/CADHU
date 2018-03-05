@@ -14,7 +14,13 @@ urlpatterns = [
     #Lista prospectos
     path('', views.lista_prospecto, name='lista_prospectos'),
 
+    #Lista empresas
+    path('empresas/', views.lista_empresa, name='lista_empresas'),
+
     #Crear Prospecto
     path('crear/', views.prospecto_crear, name='crear_prospecto'),
+
+    #Crear Empresa
+    path('empresa_crear/', views.empresa_crear, name='empresa_crear'),
 
 ]

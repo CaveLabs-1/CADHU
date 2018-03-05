@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
-from .models import Prospecto, Lugar, Actividad
+from .models import Empresa, Prospecto, Lugar, Actividad
 from django.views import generic
-from .forms import FormaActividad, ProspectoForm, LugarForm
+from .forms import EmpresaForm, FormaActividad, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
 def lista_prospecto(request):
     prospectos = Prospecto.objects.all()
     return render(request, 'prospectos/prospectos.html', {'prospectos':prospectos})
+
+def lista_empresa(request):
+    empresas = Empresa.objects.all()
+    return render(request, 'empresas/empresas.html', {'empresas':empresas})
 
 @login_required
 def prospecto_crear(request):
@@ -34,6 +38,33 @@ def prospecto_crear(request):
         'NewLugarForm': NewLugarForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
+
+@login_required
+def empresa_crear(request):
+    NewEmpresaForm = EmpresaForm()
+    NewLugarForm = LugarForm()
+    if request.method == "POST":
+        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        NewEmpresaForm = EmpresaForm(request.POST)
+        NewLugarForm = LugarForm(request.POST)
+        if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
+            Lugar = NewLugarForm.save()
+            Empresa = NewEmpresaForm.save(commit=False)
+            Empresa.Direccion = Lugar
+            Empresa.save()
+            return lista_empresa(request)
+        context = {
+            'Error': Error,
+            'NewEmpresaForm': NewEmpresaForm,
+            'NewLugarForm': NewLugarForm,
+        }
+        return render(request, 'empresas/empresas_form.html', context)
+    context = {
+        'NewEmpresaForm': NewEmpresaForm,
+        'NewLugarForm': NewLugarForm,
+    }
+    return render(request, 'empresas/empresas_form.html', context)
+
 
 class ListaActividades(generic.ListView):
     model = Actividad
