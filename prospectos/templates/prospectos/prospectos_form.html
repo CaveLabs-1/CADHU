@@ -4,6 +4,8 @@
 
     {% block content %}
     <p>{{ Error }}</p>
+        <div class="card ">
+        <div class="card-content">
     <form method="post">
         {% csrf_token %}
         <div class="container row">
@@ -113,8 +115,10 @@
             </div>
         </div>
         <div class="row center">
-            <button type="submit" class="waves-light btn green accent-2">Agregar Prospecto</button>
+            <button type="submit" class="btn waves-effect waves-light form_button">Agregar Prospecto</button>
         </div>
     </form>
+            </div>
+        </div>
 
     {% endblock %}
