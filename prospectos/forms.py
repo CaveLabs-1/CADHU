@@ -55,7 +55,7 @@ class FormaActividad(ModelForm):
         }
         widgets = {
             'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
-            'time': forms.TimeInput(format=common.TIME_INPUT_FORMATS),
+            'time': forms.TimeInput(),
             'notas': forms.Textarea()
 
         }

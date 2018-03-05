@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Prospecto, Lugar, Actividad
+from datetime import time
 from django.views import generic
 from .forms import FormaActividad, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
@@ -12,7 +13,7 @@ def lista_prospecto(request):
 
 
 # Create your views here.
-@login_required
+# @login_required
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
@@ -38,6 +39,7 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+
 class ListaActividades(generic.ListView):
     model = Actividad
     template_name = 'actividades/actividades.html'
@@ -58,7 +60,10 @@ def crearActividad(request):
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
         if NewActividadForm.is_valid():
-            actividad = NewActividadForm.save()
+            actividad = NewActividadForm.save(commit=False)
+            # hora = time.strftime(time(int(actividad.hora)), "%I:%M %p")
+            # actividad.hora = hora
+            actividad.save()
             return redirect('prospectos:actividades')
         else:
             mensaje = ''

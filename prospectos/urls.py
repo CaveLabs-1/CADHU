@@ -15,7 +15,7 @@ urlpatterns = [
     path('', views.lista_prospecto, name='lista_prospectos'),
 
     #Crear Prospecto
-    path('crear/', views.prospecto_crear, name='crear_prospecto'),
+    path('crear', views.prospecto_crear, name='crear_prospecto'),
     #Editar Prospecto
     # path('editar/', views.prospecto_editar, name='editar_prospecto'),
 

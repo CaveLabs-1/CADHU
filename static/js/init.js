@@ -61,7 +61,6 @@ $(document).ready(function() {
     $('.timepicker').timepicker({
         defaultTime: 'now',
         twelveHour: false,
-        format: 'hh:mm:ss ',
         i18n: {
             clear: 'Borrar',
             cancel: 'Cancelar',

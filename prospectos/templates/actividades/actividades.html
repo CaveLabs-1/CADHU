@@ -14,7 +14,7 @@
                         class="material-icons right">add</i></button>
             </a>
         </div>
-        <table class="striped">
+        <table class="dataTable">
             <thead>
             <tr>
                 <th>Titulo</th>
@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ actividad.titulo }}</td>
                     <td>{{ actividad.fecha }}</td>
-                    <td>{{ actividad.hora }}</td>
+                    <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                     <td><a class="waves-effect waves-light btn modal-trigger" id="notas{{ actividad.pk }}"
                            href="#modal{{ actividad.pk }}">Notas</a>
                     </td>
