@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
@@ -90,11 +91,15 @@ def editar_prospecto(request, id):
     NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
     NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
     if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+
         prospecto = NewProspectoForm.save(commit=False)
         Lugar = NewLugarForm.save()
         Prospecto.Direccion =Lugar
         prospecto.save()
+        messages.success(request, 'El prospecto ha sido actualizado.')
         return lista_prospectos(request)
+    else:
+        messages.success(request, 'Existe una falla en los campos.')
     context = {
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
