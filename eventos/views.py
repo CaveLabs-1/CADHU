@@ -26,7 +26,6 @@ def crear_evento(request):
     NewEventoForm = EventoForm(request.POST or None)
 
     if NewEventoForm.is_valid():
-        print("hola")
         Evento = NewEventoForm.save(commit=False)
         Evento.save()
         return redirect('eventos:lista_eventos')

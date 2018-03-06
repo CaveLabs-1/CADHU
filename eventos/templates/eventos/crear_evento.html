@@ -11,7 +11,6 @@
                         <div class="row">
                           <div class="col s3 m3"></div>
                           <div class="input-field col s10 m10">
-                            <i class="material-icons prefix">account_circle</i>
                             <input type="text" name="{{NewEventoForm.Nombre.html_name}}" id="{{ NewEventoForm.Nombre.id_for_label }}" class="validate" required>
                             <label for="{{NewEventoForm.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre evento</label>
                           </div>
@@ -20,8 +19,7 @@
                         <div class="row">
                           <div class="col s3 m3"></div>
                           <div class="input-field col s10 m10">
-                            <i class="material-icons prefix">dehaze</i>
-                            <input type="text" name="{{NewEventoForm.Descripcion.html_name}}" id="{{ NewEventoForm.Descripcion.id_for_label }}" class="validate" required>
+                              <textarea type="text" name="{{NewEventoForm.Descripcion.html_name}}" id="{{ NewEventoForm.Descripcion.id_for_label }}" class="validate materialize-textarea" required></textarea>
                             <label for="{{NewEventoForm.Descripcion.id_for_label}}" data-error="Descripción inválida" data-success="Descripción válida">Descripcion</label>
                           </div>
                           <div class="col s3 m3"></div>
