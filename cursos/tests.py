@@ -2,9 +2,18 @@ from django.test import TestCase
 from cursos.models import Curso
 from eventos.models import Evento
 from django.urls import reverse
+from django.contrib.auth.models import User, Group
 # Create your tests here.
 
 class CursoModelTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
     @classmethod
     def setUpTestData(cls):
         #Set up non-modified objects used by all test methods
