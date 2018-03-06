@@ -1,11 +1,66 @@
-from django.test import TestCase
+from django.test import TestCase, client
 from django.urls import reverse
 
 from .models import Prospecto, Lugar
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
+from django.contrib.auth.models import User
+
+from django.urls import reverse
+import string
+import random
 
 # Create your tests here.
+
+class ProspectoListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        number_of_prospectos = 20
+        N = 10
+
+        Lugar.objects.create(
+            Calle='Paraiso',
+            Numero_Interior='',
+            Numero_Exterior='38',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+
+        )
+
+        for prospecto in range(number_of_prospectos):
+
+            Prospecto.objects.create(
+                Nombre='Pablo',
+                Apellido_Paterno='Martinez',
+                Apellido_Materno='Villareal',
+                Telefono_Casa='+524422232226',
+                Telefono_Celular='+524422580662',
+                Email=''.join(random.choices(string.ascii_uppercase + string.digits, k=N)) + '@gmail.com',
+                Direccion=Lugar.objects.get(Calle='Paraiso'),
+                Metodo_Captacion='Facebook',
+                Interes='Alto',
+                Estado_Civil='Soltero',
+                Ocupacion='Estudiante',
+                Hijos=True,
+            )
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/prospectos/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('prospectos:lista_prospectos'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('prospectos:lista_prospectos'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'prospectos/prospectos.html')
+
 
 
 class ProspectoTest(TestCase):
@@ -202,10 +257,13 @@ class ActividadTest(TestCase):
     def setUpTestData(self):
         Actividad.objects.create(
             titulo='Test de  titulo',
-            fecha='02-02-2018',
+            fecha='2018-02-02',
             hora='12:00',
             notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
         )
+        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
+        usuario1.save()
+        self.client.login(username='testuser1', password='12345')
 
     def test_view_url_exists_at_desired_location_and_uses_desired_template(self):
         resp = self.client.get('/prospectos/actividades')
@@ -234,5 +292,5 @@ class ActividadTest(TestCase):
 
     def test_notas_label(self):
         actividad = Actividad.objects.get(pk=1)
-        field_label = actividad._meta.get_field('hora').verbose_name
+        field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')

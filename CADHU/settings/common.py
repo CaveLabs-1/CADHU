@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'clientes',
     'eventos',
     'usuarios',
+    'cursos',
 ]
 
 SITE_ID = 1
@@ -63,6 +64,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+            'grupos': 'CADHU.templatetags.grupos',
+
+            }
         },
     },
 ]
@@ -102,6 +107,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+TIME_INPUT_FORMATS = ('%I:%M %p',)
+
 # Formatos de fecha y timepo
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
@@ -115,4 +122,4 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = reverse_lazy('prospectos:crear_prospecto')
 LOGIN_URL = reverse_lazy('login')
-LOGOUT_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')

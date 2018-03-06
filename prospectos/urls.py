@@ -12,11 +12,18 @@ urlpatterns = [
     path('actividades/crear', views.crearActividad, name='crear_actividad'),
 
     #Lista prospectos
-    path('', views.lista_prospecto, name='lista_prospectos'),
+    path('', views.lista_prospectos, name='lista_prospectos'),
+
+    #Lista empresas
+    path('empresas/', views.lista_empresa, name='lista_empresas'),
 
     #Crear Prospecto
-    path('crear', views.prospecto_crear, name='crear_prospecto'),
-    #Editar Prospecto
-    # path('editar/', views.prospecto_editar, name='editar_prospecto'),
+    path('crear_prospecto', views.prospecto_crear, name='crear_prospecto'),
+
+    # Editar Prospecto
+    path('editar_prospecto/<int:id>/', views.editar_prospecto, name='editar_prospecto'),
+
+    #Crear Empresa
+    path('empresa_crear/', views.empresa_crear, name='empresa_crear'),
 
 ]
