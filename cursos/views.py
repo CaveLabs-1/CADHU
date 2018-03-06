@@ -20,9 +20,9 @@ def nuevo_curso(request):
         if Forma_nuevo_curso.is_valid():
             actividad = Forma_nuevo_curso.save()
             return redirect('/login')
-        else:
-            print ("Error")
-            print (Forma_nuevo_curso.errors)
+        # else:
+        #     print ("Error")
+        #     print (Forma_nuevo_curso.errors)
         context = {
             'form': Forma_nuevo_curso,
             'titulo': 'Agregar curso.',
