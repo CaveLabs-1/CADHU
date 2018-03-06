@@ -5,6 +5,7 @@ from django.views import generic
 from .forms import FormaActividad, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
+from django.contrib import messages
 
 
 def lista_prospectos(request):
@@ -21,7 +22,6 @@ def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
-        Error = 'Forma invalida, favor de revisar sus respuestas'
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
@@ -29,9 +29,9 @@ def prospecto_crear(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
-            return lista_prospectos(request)
+            return redirect('prospectos')
+
         context = {
-            'Error': Error,
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Prospecto',
