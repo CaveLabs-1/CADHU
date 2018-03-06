@@ -52,7 +52,7 @@ class ProspectoListViewTest(TestCase):
                 Interes='ALTO',
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
-                Hijos=True,
+                Hijos=1,
             )
 
     def test_view_url_exists_at_desired_location(self):
@@ -106,7 +106,7 @@ class ProspectoTest(TestCase):
             Interes='ALTO',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
-            Hijos=True,
+            Hijos=1,
         )
 
     def test_nombre_label(self):
@@ -254,7 +254,7 @@ class ProspectoTest(TestCase):
                 Interes='ALTO',
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
-                Hijos=True,
+                Hijos=1,
             )
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 0)
