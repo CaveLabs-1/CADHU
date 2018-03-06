@@ -41,8 +41,8 @@
               <img class="profile-image" src="{% static 'img/profile.png'%}"/>
             </div>
             <div class="right-content">
-              <p class="bold-text">{{ user.get_username }}</p>
-                <p>{{ user.email }}</p>
+              <p class="bold-text">{{ user.first_name }} {{ user.last_name }}</p>
+              <p class="light-text">{{ user.get_username }}</p>
             </div>
           </li>
           <br>
