@@ -1,30 +1,29 @@
 from django.test import TestCase
 from eventos.models import Evento
 from django.urls import reverse
+from django.contrib.auth.models import User, Group
 # Create your tests here.
 
 class EventoModelTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
     @classmethod
     def setUpTestData(cls):
         #Set up non-modified objects used by all test methods
         Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
 
-    def test_Nombre_label(self):
-        evento=Evento.objects.get(id=1)
-        field_label = evento._meta.get_field('Nombre').verbose_name
-        self.assertEquals(field_label,'Nombre')
-
-    def test_Descripcion_label(self):
-        evento=Evento.objects.get(id=1)
-        field_label = evento._meta.get_field('Descripcion').verbose_name
-        self.assertEquals(field_label,'Descripcion')
-
     def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/eventos/new')
+        resp = self.client.get('/eventos/nuevo_evento')
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get('/eventos/new')
+        resp = self.client.get('/eventos/nuevo_evento')
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'eventos/crear_evento.html')
 

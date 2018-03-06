@@ -4,7 +4,7 @@ from django.urls import reverse
 from .models import Prospecto, Lugar
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from django.urls import reverse
 import string
@@ -13,6 +13,14 @@ import random
 # Create your tests here.
 
 class ProspectoListViewTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
     @classmethod
     def setUpTestData(cls):
         number_of_prospectos = 20
@@ -41,10 +49,9 @@ class ProspectoListViewTest(TestCase):
                 Email=''.join(random.choices(string.ascii_uppercase + string.digits, k=N)) + '@gmail.com',
                 Direccion=Lugar.objects.get(Calle='Paraiso'),
                 Metodo_Captacion='Facebook',
-                Interes='Alto',
+                Interes='ALTO',
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
-                Hijos=True,
             )
 
     def test_view_url_exists_at_desired_location(self):
@@ -64,6 +71,14 @@ class ProspectoListViewTest(TestCase):
 
 
 class ProspectoTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
     @classmethod
     def setUpTestData(self):
         Lugar.objects.create(
@@ -87,10 +102,10 @@ class ProspectoTest(TestCase):
             Email='pmartinez@gmail.com',
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Metodo_Captacion='Facebook',
-            Interes='Alto',
+            Interes='ALTO',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
-            Hijos=True,
+            Hijos=1,
         )
 
     def test_nombre_label(self):
@@ -128,11 +143,6 @@ class ProspectoTest(TestCase):
         prospecto = Prospecto.objects.get(Nombre='Pablo')
         field_label = prospecto._meta.get_field('Metodo_Captacion').verbose_name
         self.assertEquals(field_label, 'Metodo Captacion')
-
-    def test_interes_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Interes').verbose_name
-        self.assertEquals(field_label, 'Interes')
 
     def test_estado_civil_label(self):
         prospecto = Prospecto.objects.get(Nombre='Pablo')
@@ -190,10 +200,6 @@ class ProspectoTest(TestCase):
         field_label = lugar._meta.get_field('Codigo_Postal').verbose_name
         self.assertEquals(field_label, 'Codigo Postal')
 
-    def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/prospectos/crear')
-        self.assertEqual(resp.status_code, 200)
-
     #Test Django
     def test_crear_prospecto(self):
 
@@ -217,10 +223,10 @@ class ProspectoTest(TestCase):
             Email='a01209537@itesm.mx',
             Direccion=Lugar.objects.get(Calle='Lourdes'),
             Metodo_Captacion='Facebook',
-            Interes='Alto',
+            Interes='ALTO',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
-            Hijos=True,
+            Hijos=1,
         )
 
         Prospecto_acum = Prospecto.objects.filter(Email='a01209537@itesm.mx').count()
@@ -239,10 +245,10 @@ class ProspectoTest(TestCase):
                 Email='pmartinez@gmail.com',
                 Direccion=Lugar.objects.get(Calle='Paraiso'),
                 Metodo_Captacion='Facebook',
-                Interes='Alto',
+                Interes='ALTO',
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
-                Hijos=True,
+                Hijos=1,
             )
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 0)
@@ -253,6 +259,14 @@ class ProspectoTest(TestCase):
 
 
 class ActividadTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
     @classmethod
     def setUpTestData(self):
         Actividad.objects.create(
@@ -261,19 +275,6 @@ class ActividadTest(TestCase):
             hora='12:00',
             notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
         )
-        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
-        usuario1.save()
-        self.client.login(username='testuser1', password='12345')
-
-    def test_view_url_exists_at_desired_location_and_uses_desired_template(self):
-        resp = self.client.get('/prospectos/actividades')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'actividades/actividades.html')
-
-    def test_createview_url_exists_at_desired_location_and_uses_desired_template(self):
-        resp = self.client.get('/prospectos/actividades/crear')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'actividades/crear_actividad.html')
 
     def test_titulo_label(self):
         actividad = Actividad.objects.get(pk=1)

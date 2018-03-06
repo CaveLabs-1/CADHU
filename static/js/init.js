@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     $('.dataTable').DataTable({
       dom: 'Bfrtip',
+      "scrollX": true,
       buttons: [
           'excel', 'pdf'
       ]
