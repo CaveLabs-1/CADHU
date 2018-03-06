@@ -64,6 +64,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+            'grupos': 'CADHU.templatetags.grupos',
+
+            }
         },
     },
 ]
@@ -118,4 +122,4 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = reverse_lazy('prospectos:crear_prospecto')
 LOGIN_URL = reverse_lazy('login')
-LOGOUT_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')

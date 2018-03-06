@@ -3,7 +3,8 @@ from .models import Curso
 from eventos.models import Evento
 from django.views import generic
 from .forms import FormaCurso
-
+from django.contrib.auth.decorators import login_required
+from CADHU.decorators import group_required
 
 # class CreaCurso(generic.CreateView):
 #     model = Curso
@@ -11,6 +12,8 @@ from .forms import FormaCurso
 #     # fields = ['Nombre', 'Fecha', 'Direccion', 'Descripcion', 'Hora', 'Costo', 'Evento']
 #     template_name = 'cursos/nuevo_curso.html'
 
+@login_required
+@group_required('administrador')
 def nuevo_curso(request):
     # NewActividadForm = FormaActividad()
     Forma_nuevo_curso = FormaCurso()

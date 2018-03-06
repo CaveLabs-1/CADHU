@@ -6,7 +6,8 @@ from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
-
+@login_required
+@group_required('vendedora','administrador')
 def lista_prospectos(request):
     prospectos = Prospecto.objects.all()
     context = {
@@ -14,6 +15,8 @@ def lista_prospectos(request):
         }
     return render(request, 'prospectos/prospectos.html', context)
 
+@login_required
+@group_required('vendedora','administrador')
 def lista_empresa(request):
     empresas = Empresa.objects.all()
     context = {
@@ -21,8 +24,8 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
-# Create your views here.
-# @login_required
+@login_required
+@group_required('vendedora','administrador')
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
@@ -50,6 +53,8 @@ def prospecto_crear(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+@login_required
+@group_required('vendedora','administrador')
 def empresa_crear(request):
     NewEmpresaForm = EmpresaForm()
     NewLugarForm = LugarForm()
@@ -77,17 +82,24 @@ def empresa_crear(request):
     }
     return render(request, 'empresas/empresas_form.html', context)
 
-def prospecto_editar(request, id):
-    prospecto = Prospecto.objects.get(id=id)
-    NewProspectoForm = ProspectoForm(request.POST or None, instance=prospecto)
-    NewLugarForm = LugarForm(request.POST or None, instance=prospecto.Direccion)
-    if NewProspectoForm.is_valid():
-        NewProspectoForm.save()
-        NewLugarForm.save()
-        return redirect('prospectos')
-
-    return render(request, 'prospectos/prospectos_form.html',{'NewProspectoForm': NewProspectoForm, 'NewLugarForm':NewLugarForm, 'prospectos':prospecto})
-
+@login_required
+@group_required('vendedora','administrador')
+def editar_prospecto(request, id):
+    idprospecto = Prospecto.objects.get(id=id)
+    NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
+    NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+    if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+        prospecto = NewProspectoForm.save(commit=False)
+        Lugar = NewLugarForm.save()
+        Prospecto.Direccion =Lugar
+        prospecto.save()
+        return lista_prospectos(request)
+    context = {
+        'NewProspectoForm': NewProspectoForm,
+        'NewLugarForm': NewLugarForm,
+        'prospecto': idprospecto,
+    }
+    return render(request, 'prospectos/prospectos_form.html', context)
 
 
 class ListaActividades(generic.ListView):
@@ -104,6 +116,8 @@ class ListaActividades(generic.ListView):
         context['agrega'] = 'Agregar actividad'
         return context
 
+@login_required
+@group_required('vendedora','administrador')
 def crearActividad(request):
     NewActividadForm = FormaActividad()
     if request.method == 'POST':
