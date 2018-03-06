@@ -6,3 +6,6 @@
     - python manage.py test
   notifications:
     email: false
+  branches:
+  only:
+    - "master"
