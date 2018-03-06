@@ -3,6 +3,7 @@ from django import forms
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
 import datetime
+from cursos.models import Curso
 
 # Create your models here.
 
@@ -31,6 +32,12 @@ ESTADO_CIVIL = (
     ('UNION LIBRE', 'UNION LIBRE'),
 )
 
+class Empresa(models.Model):
+    Nombre = models.CharField(max_length=50, blank=False, null=False)
+    Telefono = PhoneNumberField(blank=True, null=True)
+    Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
+    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
+    Razon_Social = models.CharField(max_length=50, blank=False, null=True)
 
 class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
@@ -41,7 +48,6 @@ class Prospecto(models.Model):
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
     Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
-    Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
     Estado_Civil = models.CharField(max_length=15, blank=True, null=True, choices=ESTADO_CIVIL)
     Ocupacion = models.CharField(max_length=15, blank=True, null=True)
     Hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
@@ -67,8 +73,8 @@ class Actividad(models.Model):
     # Id_Seguimiento =
     titulo = models.CharField(verbose_name='Actividad', max_length=500)
     fecha = models.DateField(verbose_name='Fecha de la actividad')
-    hora = models.TimeField(verbose_name='Hora de la actividad')
-    notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000)
+    hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
+    notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     # vendedor = fk
 
     def __str__(self):
@@ -81,3 +87,11 @@ class Actividad(models.Model):
     def agenta_pasado(self):
         ahora = timezone.now()
         return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+
+
+class ProspectoEvento(models.Model):
+    Prospecto = models.ForeignKey('Prospecto', on_delete=models.CASCADE, null=True)
+    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    Fecha = models.DateField(null=True, blank=True)
+    Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
+    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
