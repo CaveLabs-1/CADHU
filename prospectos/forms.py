@@ -14,6 +14,7 @@ class EmpresaForm(ModelForm):
             'Razon_Social',
         )
 
+
 class ProspectoForm(ModelForm):
     class Meta:
         model = Prospecto
@@ -25,13 +26,11 @@ class ProspectoForm(ModelForm):
             'Telefono_Celular',
             'Email',
             'Metodo_Captacion',
-            'Interes',
             'Estado_Civil',
             'Ocupacion',
             'Hijos',
             'Recomendacion',
         )
-
 
 
 class LugarForm(ModelForm):

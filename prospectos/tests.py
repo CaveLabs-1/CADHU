@@ -129,11 +129,6 @@ class ProspectoTest(TestCase):
         field_label = prospecto._meta.get_field('Metodo_Captacion').verbose_name
         self.assertEquals(field_label, 'Metodo Captacion')
 
-    def test_interes_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Interes').verbose_name
-        self.assertEquals(field_label, 'Interes')
-
     def test_estado_civil_label(self):
         prospecto = Prospecto.objects.get(Nombre='Pablo')
         field_label = prospecto._meta.get_field('Estado_Civil').verbose_name

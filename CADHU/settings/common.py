@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'widget_tweaks',
-    'prospectos.apps.prospectosConfig',
+    'prospectos',
     'phonenumber_field',
     'clientes',
     'eventos',
