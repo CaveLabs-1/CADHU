@@ -38,7 +38,7 @@ def prospecto_crear(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
-            return redirect('prospectos')
+            return redirect('prospectos:lista_prospectos')
 
         context = {
             'NewProspectoForm': NewProspectoForm,

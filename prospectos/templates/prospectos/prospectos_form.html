@@ -5,20 +5,30 @@
     {% block title %}Prospecto{% endblock %}
     {% block content %}
 
-        {% if NewProspectoForm.errors %}
-            {% for field in NewProspectoForm %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
+        {% block js %}
+            <script type="text/javascript">
+            {% if NewProspectoForm.errors %}
+                {% for field in NewProspectoForm %}
+                    {% for error in field.errors %}
+                        M.toast({html: '{{ error|escape }}'})
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            {% for error in NewProspectoForm.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
+                {% for error in NewProspectoForm.non_field_errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endif %}
+            {% if NewLugarForm.errors %}
+                {% for field in NewLugarForm %}
+                    {% for error in field.errors %}
+                        M.toast({html: '{{ error|escape }}'})
+                    {% endfor %}
+                {% endfor %}
+                {% for error in NewLugarForm.non_field_errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endif %}
+            </script>
+        {% endblock js %}
 
         <div class="card ">
             <div class="card-content">
