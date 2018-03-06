@@ -1,140 +1,125 @@
+{% extends "base.html" %}
+{% load staticfiles %}
 {% load widget_tweaks %}
 
-<html>
-
-<head>
-    <title>Registro de Prospecto</title>
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript " src="https://code.jquery.com/jquery-2.1.1.min.js "></script>
-    <script type="text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js "></script>
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection" />
-</head>
-
-<body class="container">
-    <div class="row center">
-        <h5>Registro de Prospecto</h5>
-    </div>
+    {% block title %}Prospecto{% endblock %}
+    {% block content %}
     <p>{{ Error }}</p>
-    <form method="post">
-        {% csrf_token %}
-        <div class="container row">
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">person</i>
-                {{ NewProspectoForm.Nombre | add_class:'form-control' }}
-                <label for="Nombre">Nombre(s)</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                {{ NewProspectoForm.Apellido_Paterno | add_class:'form-control' }}
-                <label for="apellido_p">Apellido paterno</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                {{ NewProspectoForm.Apellido_Materno | add_class:'form-control' }}
-                <label for="apellido_m">Apellido materno</label>
+        <div class="card ">
+            <div class="card-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">person</i>
+                            {{ NewProspectoForm.Nombre | add_class:'form-control' }}
+                            <label for="Nombre">Nombre(s)</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewProspectoForm.Apellido_Paterno | add_class:'form-control' }}
+                            <label for="apellido_p">Apellido paterno</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewProspectoForm.Apellido_Materno | add_class:'form-control' }}
+                            <label for="apellido_m">Apellido materno</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">phone</i>
+                            {{ NewProspectoForm.Telefono_Celular | add_class:'form-control' }}
+                            <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Celular</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewProspectoForm.Telefono_Casa | add_class:'form-control' }}
+                            <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Casa</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">mail</i>
+                            {{ NewProspectoForm.Email | add_class:'form-control' }}
+                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">laptop</i>
+                            {{ NewProspectoForm.Metodo_Captacion | add_class:'form-control' }}
+                            <label>M&eacute;todo de captaci&oacute;n</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">add_circle</i>
+                            {{ NewProspectoForm.Recomendacion | add_class:'form-control' }}
+                            <label for="otro">Radio/Recomendacion </label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">work</i>
+                            {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
+                            <label for="ocupacion">Ocupaci&oacute;n</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">record_voice_over</i>
+                            {{ NewProspectoForm.Interes | add_class:'form-control' }}
+                            <label>Inter&eacute;s</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">people</i>
+                            {{ NewProspectoForm.Estado_Civil | add_class:'form-control' }}
+                            <label>Estado civil</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">child_friendly</i>
+                            {{ NewProspectoForm.Hijos | add_class:'form-control' }}
+                            <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <h5>Direcci&oacute;n</h5>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m4 l4">
+                            <i class="material-icons prefix">public</i>
+                            {{ NewLugarForm.Pais | add_class:'form-control' }}
+                            <label>Pa&iacute;s</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewLugarForm.Estado | add_class:'form-control' }}
+                            <label>Estado</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewLugarForm.Ciudad | add_class:'form-control' }}
+                            <label>Ciudad</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m6 l3">
+                            <i class="material-icons prefix">place</i>
+                            {{ NewLugarForm.Colonia | add_class:'form-control' }}
+                            <label for="colonia">Colonia</label>
+                        </div>
+                        <div class="input-field col s12 m6 l3">
+                            {{ NewLugarForm.Calle | add_class:'form-control' }}
+                            <label for="calle">Calle</label>
+                        </div>
+                        <div class="input-field col s6 m4 l2">
+                            {{ NewLugarForm.Numero_Exterior | add_class:'form-control' }}
+                            <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
+                        </div>
+                        <div class="input-field col s6 m4 l2">
+                             {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
+                            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+                        </div>
+                        <div class="input-field col s12 m4 l2">
+                            {{ NewLugarForm.Codigo_Postal | add_class:'form-control' }}
+                            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="container row">
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">phone</i>
-                {{ NewProspectoForm.Telefono_Celular | add_class:'form-control' }}
-                <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Celular</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                {{ NewProspectoForm.Telefono_Casa | add_class:'form-control' }}
-                <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Casa</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">mail</i>
-                {{ NewProspectoForm.Email | add_class:'form-control' }}
-                <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
-            </div>
-        </div>
-        <div class="container row">
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">laptop</i>
-                {{ NewProspectoForm.Metodo_Captacion | add_class:'form-control' }}
-                <label>M&eacute;todo de captaci&oacute;n</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">add_circle</i>
-                {{ NewProspectoForm.Recomendacion | add_class:'form-control' }}
-                <label for="otro">Radio/ Recomendaci&oacute;n/ Otro</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">work</i>
-                {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
-                <label for="ocupacion">Ocupaci&oacute;n</label>
-            </div>
-        </div>
-        <div class="container row">
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">record_voice_over</i>
-                {{ NewProspectoForm.Interes | add_class:'form-control' }}
-                <label>Inter&eacute;s</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">people</i>
-                {{ NewProspectoForm.Estado_Civil | add_class:'form-control' }}
-                <label>Estado civil</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">child_friendly</i>
-                {{ NewProspectoForm.Hijos | add_class:'form-control' }}
-                <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
-            </div>
-        </div>
-        <div class="row center">
-            <h5>Direcci&oacute;n</h5>
-        </div>
-        <div class="container row">
-            <div class="input-field col s12 m4 l4">
-                <i class="material-icons prefix">public</i>
-                {{ NewLugarForm.Pais | add_class:'form-control' }}
-                <label>Pa&iacute;s</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                {{ NewLugarForm.Estado | add_class:'form-control' }}
-                <label>Estado</label>
-            </div>
-            <div class="input-field col s12 m4 l4">
-                {{ NewLugarForm.Ciudad | add_class:'form-control' }}
-                <label>Ciudad</label>
-            </div>
-        </div>
-        <div class="container row">
-            <div class="input-field col s12 m6 l3">
-                <i class="material-icons prefix">place</i>
-                {{ NewLugarForm.Colonia | add_class:'form-control' }}
-                <label for="colonia">Colonia</label>
-            </div>
-            <div class="input-field col s12 m6 l3">
-                {{ NewLugarForm.Calle | add_class:'form-control' }}
-                <label for="calle">Calle</label>
-            </div>
-            <div class="input-field col s6 m4 l2">
-                {{ NewLugarForm.Numero_Exterior | add_class:'form-control' }}
-                <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
-            </div>
-            <div class="input-field col s6 m4 l2">
-                 {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
-                <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
-            </div>
-            <div class="input-field col s12 m4 l2">
-                {{ NewLugarForm.Codigo_Postal | add_class:'form-control' }}
-                <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
-            </div>
-        </div>
-        <div class="row center">
-            <button type="submit" class="waves-light btn green accent-2">Agregar Prospecto</button>
-        </div>
-    </form>
 
-    <script type="text/javascript ">
-        $(document).ready(function(){$('select').material_select();});
-    </script>
-
-</body>
-
-</html>
+    {% endblock %}

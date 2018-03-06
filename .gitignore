@@ -180,8 +180,8 @@ venv.bak/
 .mypy_cache/
 
 .idea/
-Proyecto/db.sqlite3
+db.sqlite3
 
 ### Django ###
 migrations/
-
+development.py
