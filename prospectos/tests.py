@@ -1,9 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, client
 from django.urls import reverse
 
 from .models import Prospecto, Lugar
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
+from django.contrib.auth.models import User
+
 from django.urls import reverse
 import string
 import random
@@ -259,6 +261,9 @@ class ActividadTest(TestCase):
             hora='12:00',
             notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
         )
+        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
+        usuario1.save()
+        self.client.login(username='testuser1', password='12345')
 
     def test_view_url_exists_at_desired_location_and_uses_desired_template(self):
         resp = self.client.get('/prospectos/actividades')
@@ -287,5 +292,5 @@ class ActividadTest(TestCase):
 
     def test_notas_label(self):
         actividad = Actividad.objects.get(pk=1)
-        field_label = actividad._meta.get_field('hora').verbose_name
+        field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
