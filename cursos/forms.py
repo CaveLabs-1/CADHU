@@ -23,11 +23,11 @@ class FormaCurso(forms.ModelForm):
             'Fecha',
             'Direccion',
             'Descripcion',
-            'Hora',
+            # 'Hora',
             'Costo',
         ]
         widgets = {
             'Fecha': forms.DateInput(),
-            'Hora': forms.TimeInput()
+            # 'Hora': forms.TimeInput()
 
         }
