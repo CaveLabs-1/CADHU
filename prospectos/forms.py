@@ -1,7 +1,19 @@
-from .models import Prospecto, Lugar
+from .models import Empresa, Prospecto, Lugar
 from django.forms import ModelForm, Textarea
 from django import forms
 from . import models
+from CADHU.settings import common
+
+class EmpresaForm(ModelForm):
+    class Meta:
+        model = Empresa
+        fields = (
+            'Nombre',
+            'Telefono',
+            'Email',
+            'Razon_Social',
+        )
+
 
 class ProspectoForm(ModelForm):
     class Meta:
@@ -14,13 +26,11 @@ class ProspectoForm(ModelForm):
             'Telefono_Celular',
             'Email',
             'Metodo_Captacion',
-            'Interes',
             'Estado_Civil',
             'Ocupacion',
             'Hijos',
             'Recomendacion',
         )
-
 
 
 class LugarForm(ModelForm):
@@ -47,12 +57,13 @@ class FormaActividad(ModelForm):
             'hora',
             'notas',
         ]
+
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',
             'hora': 'Este campo es opcional.',
         }
         widgets = {
-            'fecha': forms.DateInput(),
+            'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
             'notas': forms.Textarea()
 

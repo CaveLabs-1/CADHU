@@ -1,0 +1,11 @@
+  language: python
+  python:
+    - "3.6"
+    - "3.5"
+  script:
+    - python manage.py test
+  notifications:
+    email: false
+  branches:
+  only:
+    - "master"
