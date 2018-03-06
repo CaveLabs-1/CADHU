@@ -52,7 +52,6 @@ class ProspectoListViewTest(TestCase):
                 Interes='ALTO',
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
-                Hijos=1,
             )
 
     def test_view_url_exists_at_desired_location(self):
@@ -232,7 +231,7 @@ class ProspectoTest(TestCase):
             Interes='ALTO',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
-            Hijos=True,
+            Hijos=1,
         )
 
         Prospecto_acum = Prospecto.objects.filter(Email='a01209537@itesm.mx').count()
