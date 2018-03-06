@@ -3,37 +3,41 @@
 
     {% block title %}Prospectos{% endblock %}
       {% block content %}
-        <div class="container">
-            <div class="row">
-                <h1 class="col s6">Prospectos</h1>
-            </div>
-            <div class="row">
-            </div>
+          <div class="fixed-action-btn">
+            <a class="btn-floating btn-large orange">
+              <i class="large material-icons">add</i>
+            </a>
+            <ul>
+              <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+            </ul>
+          </div>
+
             <table class="dataTable">
                 <thead>
                   <tr>
-                      <th>Nombre</th>
+                      <th class="border-radius-left">Nombre</th>
                       <th>Paterno</th>
                       <th>Materno</th>
-                      <th>Celular</th>
-                      <th>Email</th>
                       <th>WhatsApp</th>
+                      <th>Email</th>
+                      <th class="border-radius-right">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                {% for prospecto in prospectos %}
+                {% for prospecto in prospectos   %}
                     <tr>
-
                         <td>{{ prospecto.Nombre }}</td>
                         <td>{{ prospecto.Apellido_Paterno }}</td>
                         <td>{{ prospecto.Apellido_Materno }}</td>
-                        <td>{{ prospecto.Telefono_Celular }}</td>
-                        <td>{{ prospecto.Email }}</td>
-                        <td><a target="_blank" href="https://api.whatsapp.com/send?phone={{ prospecto.Telefono_Celular }}">WhatsApp</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
+                        <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
+                        <td>
+                          <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
 
   {% endblock %}
