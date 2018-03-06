@@ -1,8 +1,18 @@
-from .models import Prospecto, Lugar
+from .models import Empresa, Prospecto, Lugar
 from django.forms import ModelForm, Textarea
 from django import forms
 from . import models
 from CADHU.settings import common
+
+class EmpresaForm(ModelForm):
+    class Meta:
+        model = Empresa
+        fields = (
+            'Nombre',
+            'Telefono',
+            'Email',
+            'Razon_Social',
+        )
 
 class ProspectoForm(ModelForm):
     class Meta:

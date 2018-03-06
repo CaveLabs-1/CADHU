@@ -4,7 +4,32 @@
 
     {% block title %}Prospecto{% endblock %}
     {% block content %}
-    <p>{{ Error }}</p>
+
+        {% block js %}
+            <script type="text/javascript">
+            {% if NewProspectoForm.errors %}
+                {% for field in NewProspectoForm %}
+                    {% for error in field.errors %}
+                        M.toast({html: '{{ error|escape }}'})
+                    {% endfor %}
+                {% endfor %}
+                {% for error in NewProspectoForm.non_field_errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endif %}
+            {% if NewLugarForm.errors %}
+                {% for field in NewLugarForm %}
+                    {% for error in field.errors %}
+                        M.toast({html: '{{ error|escape }}'})
+                    {% endfor %}
+                {% endfor %}
+                {% for error in NewLugarForm.non_field_errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endif %}
+            </script>
+        {% endblock js %}
+
         <div class="card ">
             <div class="card-content">
                 <form method="post">
