@@ -13,14 +13,14 @@
           </div>
 
             <table class="dataTable">
-                <thead class="table_header">
+                <thead>
                   <tr>
-                      <th class="table_radius_left">Nombre</th>
+                      <th class="border-radius-left">Nombre</th>
                       <th>Paterno</th>
                       <th>Materno</th>
                       <th>WhatsApp</th>
                       <th>Email</th>
-                      <th class="table_radius_right">Acciones</th>
+                      <th class="border-radius-right">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -32,8 +32,8 @@
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
                         <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
                         <td>
-                          <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}" class="btn-floating blue"><i class="material-icons">edit</i></a>
-                          <a class="btn-floating red"><i class="material-icons">delete</i></a>
+                          <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a><i class="material-icons text-rojo-cadhu">delete</i></a>
                         </td>
                     </tr>
                 {% endfor %}
