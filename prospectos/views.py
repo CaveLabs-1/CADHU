@@ -4,6 +4,7 @@ from datetime import time
 from django.views import generic
 from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 
@@ -102,6 +103,8 @@ def editar_prospecto(request, id):
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(group_required('vendedora', 'administrador'), name='dispatch')
 class ListaActividades(generic.ListView):
     model = Actividad
     template_name = 'actividades/actividades.html'
@@ -115,6 +118,7 @@ class ListaActividades(generic.ListView):
         context['titulo'] = 'Actividades'
         context['agrega'] = 'Agregar actividad'
         return context
+
 
 @login_required
 @group_required('vendedora','administrador')

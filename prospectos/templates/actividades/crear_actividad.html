@@ -4,67 +4,76 @@
 
 {% block title %}Crear Actividad{% endblock %}
 {% block content %}
-    <div class="container">
-        <h1 class="center">{{ titulo }}</h1>
-        <br>
-        <br>
-        {% for error in mensaje_error %}
-            {{ error }}
-        {% endfor %}
-        <div class="row center-align">
-            <div class="col s12 m12">
-                <div class="card">
-                    <div class="card-content">
-                        <form method="post" id="crear_actividad" class="" action="">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="input-field col s12 m12 l12">
-                                    <i class="material-icons prefix">person</i>
-                                    <input type="text" name="{{ form.titulo.html_name }}"
-                                           id="{{ form.titulo.id_for_label }}" required>
-                                    <label for="{{ form.titulo.id_for_label }}">Actividad:</label>
-                                </div>
+    <br>
+    <br>
+    {% block js %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                M.toast({html: '{{ error|escape }}'})
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+
+    <div class="row center-align">
+        <div class="col s12 m12">
+            <div class="card">
+                <div class="card-content">
+                    <form method="post" id="crear_actividad" class="" action="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s12 m12 l12">
+                                <input type="text" name="{{ form.titulo.html_name }}"
+                                       id="{{ form.titulo.id_for_label }}" required>
+                                <label for="{{ form.titulo.id_for_label }}">Actividad:</label>
                             </div>
+                        </div>
 
 
-                            <!---- HORA Y FECHA------>
-                            <div class="row">
-                                <div class="input-field col s12 m4 offset-m2">
-                                    <i class="material-icons prefix">event</i>
-                                    <input type="text" class="datepicker" name="{{ form.fecha.html_name }}"
-                                           id="{{ form.fecha.id_for_label }}" required>
-                                    <label for="{{ form.fecha.id_for_label }}">Fecha:</label>
-                                </div>
-                                <div class="input-field col s12 m4 l4">
-                                    <i class="material-icons prefix">access_time</i>
-                                    <input type="text" class="timepicker" name="{{ form.hora.html_name }}"
-                                           id="{{ form.hora.id_for_label }}">
-                                    <label for="{{ form.hora.id_for_label }}">Hora:</label>
-                                </div>
+                        <!---- HORA Y FECHA------>
+                        <div class="row">
+                            <div class="input-field col s12 m4 offset-m2">
+                                <input type="text" class="datepicker" name="{{ form.fecha.html_name }}"
+                                       id="{{ form.fecha.id_for_label }}" required>
+                                <label for="{{ form.fecha.id_for_label }}">Fecha:</label>
                             </div>
-                            <!-------TERMINA HORA Y FECHA------------>
+                            <div class="input-field col s12 m4 l4">
+                                <input type="text" class="timepicker" name="{{ form.hora.html_name }}"
+                                       id="{{ form.hora.id_for_label }}">
+                                <label for="{{ form.hora.id_for_label }}">Hora:</label>
+                            </div>
+                        </div>
+                        <!-------TERMINA HORA Y FECHA------------>
 
-                            <div class="row">
-                                <div class="input-field col s12 m10 offset-m1 ">
-                                    <i class="material-icons prefix">comment</i>
-                                    <textarea id="{{ form.notas.id_for_label }}" name="{{ form.notas.html_name }}"
-                                              class="materialize-textarea"></textarea>
-                                    <label for="{{ form.notas.id_for_label }}">Notas:</label>
-                                </div>
+                        <div class="row">
+                            <div class="input-field col s12 m10 offset-m1 ">
+                                <textarea id="{{ form.notas.id_for_label }}" name="{{ form.notas.html_name }}"
+                                          class="materialize-textarea"></textarea>
+                                <label for="{{ form.notas.id_for_label }}">Notas:</label>
+                            </div>
+                        </div>
+
+
+                        <div class="text-center">
+
+                            <div class="row center">
+                                <div class="col s2 m2"></div>
+                                <a href="{% url 'prospectos:actividades' %}"
+                                   class="btn waves-effect waves-light col s3 m3 back_button">Regresar <i
+                                        class="material-icons left">arrow_back</i></a>
+                                <div class="col s2 m2"></div>
+                                <button type="submit" class="btn waves-effect waves-light col s3 m3 form_button">
+                                    Guardar
+                                </button>
+                                <div class="col s2 m2"></div>
                             </div>
 
-                            <div class="text-center">
-                                <div class="row center">
-                                    <a href="{% url 'prospectos:actividades' %}"
-                                       class="waves-effect waves-light col s5 offset-s1 m3 offset-m2 btn btn-large light-blue lighten-1">Regresar
-                                        <i class="material-icons left">arrow_back</i></a>
-                                    <button type="submit"
-                                            class="waves-effect waves-light col s5 offset-s1 m3 offset-m2 btn btn-large green lighten-1">
-                                        Agregar <i class="material-icons right">done</i></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
