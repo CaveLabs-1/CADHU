@@ -29,7 +29,7 @@ def lista_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
-def prospecto_crear(request):
+def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
