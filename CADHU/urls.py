@@ -17,9 +17,11 @@ from django.urls import include, path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('admin/',  admin.site.urls),
+    path('', views.redireccionar, name='redireccionar'),
     path('', include('django.contrib.auth.urls')),
     path('prospectos/', include('prospectos.urls', namespace='prospectos')),
     path('clientes/', include('clientes.urls', namespace='clientes')),
