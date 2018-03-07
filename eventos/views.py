@@ -26,34 +26,8 @@ def crear_evento(request):
     NewEventoForm = EventoForm(request.POST or None)
 
     if NewEventoForm.is_valid():
-        print("hola")
         Evento = NewEventoForm.save(commit=False)
         Evento.save()
-        return redirect('eventos:lista_eventos')
+        return redirect('eventos:lista_evento')
     return render(request, 'eventos/crear_evento.html', {'NewEventoForm': NewEventoForm})
 
-    # NewProspectoForm = ProspectoForm()
-    # NewLugarForm = LugarForm()
-    # if request.method == 'POST':
-    #     Error = 'Forma invalida, favor de revisar sus respuestas'
-    #     NewProspectoForm = ProspectoForm(request.POST)
-    #     NewLugarForm = LugarForm(request.POST)
-    #     if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
-    #         Lugar = NewLugarForm.save()
-    #         Prospecto = NewProspectoForm.save(commit=False)
-    #         Prospecto.Direccion = Lugar
-    #         Prospecto.save()
-    #         return lista_prospectos(request)
-    #     context = {
-    #         'Error': Error,
-    #         'NewProspectoForm': NewProspectoForm,
-    #         'NewLugarForm': NewLugarForm,
-    #         'titulo': 'Registrar un Prospecto',
-    #     }
-    #     return render(request, 'prospectos/prospectos_form.html', context)
-    # context = {
-    #     'NewProspectoForm': NewProspectoForm,
-    #     'NewLugarForm': NewLugarForm,
-    #     'titulo': 'Registrar un Prospecto',
-    # }
-    # return render(request, 'prospectos/prospectos_form.html', context)

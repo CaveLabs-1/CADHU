@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
@@ -28,7 +29,7 @@ def lista_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
-def prospecto_crear(request):
+def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
@@ -53,6 +54,43 @@ def prospecto_crear(request):
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
+
+
+@login_required
+@group_required('vendedora','administrador')
+def editar_prospecto(request, id):
+    idprospecto = Prospecto.objects.get(id=id)
+    NewProspectoForm = ProspectoForm(instance=idprospecto)
+    NewLugarForm = LugarForm(instance=idprospecto.Direccion)
+
+    if request.method == 'POST':
+        NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
+        NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+
+            prospecto = NewProspectoForm.save(commit=False)
+            Lugar = NewLugarForm.save()
+            Prospecto.Direccion =Lugar
+            prospecto.save()
+            messages.success(request, 'El prospecto ha sido actualizado.')
+            return redirect('prospectos:lista_prospectos')
+
+        else:
+            messages.success(request, 'Existe una falla en los campos.')
+            context = {
+                'NewProspectoForm': NewProspectoForm,
+                'NewLugarForm': NewLugarForm,
+                'prospecto': idprospecto,
+            }
+            return render(request, 'prospectos/prospectos_form.html', context)
+
+    context = {
+        'NewProspectoForm': NewProspectoForm,
+        'NewLugarForm': NewLugarForm,
+        'prospecto': idprospecto,
+    }
+    return render(request, 'prospectos/prospectos_form.html', context)
+
 
 @login_required
 @group_required('vendedora','administrador')
@@ -83,24 +121,7 @@ def empresa_crear(request):
     }
     return render(request, 'empresas/empresas_form.html', context)
 
-@login_required
-@group_required('vendedora','administrador')
-def editar_prospecto(request, id):
-    idprospecto = Prospecto.objects.get(id=id)
-    NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
-    NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
-    if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
-        prospecto = NewProspectoForm.save(commit=False)
-        Lugar = NewLugarForm.save()
-        Prospecto.Direccion =Lugar
-        prospecto.save()
-        return lista_prospectos(request)
-    context = {
-        'NewProspectoForm': NewProspectoForm,
-        'NewLugarForm': NewLugarForm,
-        'prospecto': idprospecto,
-    }
-    return render(request, 'prospectos/prospectos_form.html', context)
+
 
 
 @method_decorator(login_required, name='dispatch')
