@@ -12,6 +12,8 @@ class EventoModelTest(TestCase):
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
+        self.test_eventoinstance1=Evento.objects.create(Nombre='test_taller',Descripcion='Creacion de test de eventos')
+
 
     @classmethod
     def setUpTestData(cls):
@@ -19,15 +21,14 @@ class EventoModelTest(TestCase):
         Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
 
     def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/eventos/nuevo_evento')
+        resp = self.client.get('/eventos/crear_evento')
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get('/eventos/nuevo_evento')
+        resp = self.client.get('/eventos/crear_evento')
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'eventos/crear_evento.html')
 
-    # def test_get_absolute_url(self):
-    #     evento = Evento.objects.get(id=1)
-    #     # This will also fail if the urlconf is not defined.
-    #     self.assertEquals(evento.get_absolute_url(), '/eventos/1')
+    def test_view_crear_evento(self):
+        resp = self.client.post('/eventos/crear_evento',  {'Nombre':'Taller prueba', 'Desctipcion':'Este es el evento de pruebas automoatizadas.'},follow=True )
+        self.assertEqual(resp.status_code, 200)

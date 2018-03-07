@@ -295,3 +295,8 @@ class ActividadTest(TestCase):
         actividad = Actividad.objects.get(pk=1)
         field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
+
+    def test_view_editar_prospecto(self):
+        resp = self.client.post('/prospectos/editar_prospecto',  {'Nombre':'Marco Antonio', 'Apellido_Paterno':'Luna'},follow=True )
+        respx = self.client.post('/prospectos/editar_prospecto', {'Nombre': 'Marco Antonio', 'Apellido_Paterno': 'Rodriguez'},follow=True)
+        self.assertEqual(resp.status_code, respx.status_code)
