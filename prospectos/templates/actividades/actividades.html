@@ -6,17 +6,16 @@
     <div class="container">
         <div class="row">
         </div>
-        <div class="row">
-            <div class="col s8"></div>
-            <a class="col s4" href="{% url 'prospectos:crear_actividad' %}">
-                <button class="waves-effect waves-light btn btn-large green lighten-1">{{ agrega }}<i
-                        class="material-icons right">add</i></button>
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large orange" href="{% url 'prospectos:crear_actividad' id %}">
+              <i class="large material-icons">add</i>
             </a>
         </div>
         <table class="dataTable">
             <thead>
             <tr>
-                <th>Titulo</th>
+                <th>Descripción</th>
+                <th>Curso</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Notas</th>
@@ -26,6 +25,7 @@
             {% for actividad in actividades %}
                 <tr>
                     <td>{{ actividad.titulo }}</td>
+                    <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
                     <td>{{ actividad.fecha }}</td>
                     <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                     <td><a class="waves-effect waves-light btn modal-trigger" id="notas{{ actividad.pk }}"

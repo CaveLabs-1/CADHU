@@ -25,11 +25,13 @@
                 <div class="card-content">
                     <form method="post" id="crear_actividad" class="" action="">
                         {% csrf_token %}
+                        <input type="number" name="prospecto_evento"
+                               id="id_prospecto_evento" value="{{id}}"hidden>
                         <div class="row">
                             <div class="input-field col s12 m12 l12">
                                 <input type="text" name="{{ form.titulo.html_name }}"
                                        id="{{ form.titulo.id_for_label }}" required>
-                                <label for="{{ form.titulo.id_for_label }}">Actividad:</label>
+                                <label for="{{ form.titulo.id_for_label }}">Descripción:</label>
                             </div>
                         </div>
 
@@ -50,7 +52,7 @@
                         <!-------TERMINA HORA Y FECHA------------>
 
                         <div class="row">
-                            <div class="input-field col s12 m10 offset-m1 ">
+                            <div class="input-field col s12 m12 ">
                                 <textarea id="{{ form.notas.id_for_label }}" name="{{ form.notas.html_name }}"
                                           class="materialize-textarea"></textarea>
                                 <label for="{{ form.notas.id_for_label }}">Notas:</label>
@@ -62,7 +64,7 @@
 
                             <div class="row center">
                                 <div class="col s2 m2"></div>
-                                <a href="{% url 'prospectos:actividades' %}"
+                                <a href="{% url 'prospectos:lista_actividades' id %}"
                                    class="btn waves-effect waves-light col s3 m3 back_button">Regresar <i
                                         class="material-icons left">arrow_back</i></a>
                                 <div class="col s2 m2"></div>

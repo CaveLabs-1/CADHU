@@ -3,16 +3,11 @@
 
     {% block title %}Eventos{% endblock %}
       {% block content %}
-        <div class="container">
-            <div class="row">
-                <h1 class="col s6">Eventos</h1>
-            </div>
-            <div class="row">
-                <div class="col s8"></div>
-                <a class="col s4" href="{% url 'eventos:crear_evento' %}">
-                    <button class="waves-effect waves-light btn btn-large green lighten-1">Nuevo Evento <i class="material-icons right">add</i></button>
-                </a>
-            </div>
+      <div class="fixed-action-btn">
+        <a href="{% url 'eventos:crear_evento' %}" class="btn-floating btn-large orange">
+          <i class="large material-icons">add</i>
+        </a>
+      </div>
             <table class="dataTable">
                 <thead>
                   <tr>
@@ -30,6 +25,5 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
 
   {% endblock %}
