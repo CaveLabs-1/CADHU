@@ -152,14 +152,6 @@ table th {
     color: white;
 }
 
-.border-radius-left {
-    border-radius: 20px 0px 0px 0px;
-}
-
-.border-radius-right {
-    border-radius: 0px 20px 0px 0px;
-}
-
 .dataTables_wrapper .dataTables_paginate .paginate_button a:hover {
     color: black;
 }
@@ -181,11 +173,13 @@ table th {
     border-radius: 50px;
 }
 
-.dt-button.buttons-html5{
+.dt-button.buttons-html5, .dt-button.buttons-collection.buttons-colvis{
   border-radius: 25px;
   background-image: none;
   background-color: white;
 }
+
+
 
 
 /*MEDIA QUERIES*/

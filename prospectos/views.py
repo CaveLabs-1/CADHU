@@ -14,7 +14,8 @@ from django.contrib import messages
 def lista_prospectos(request):
     prospectos = Prospecto.objects.all()
     context = {
-        'prospectos':prospectos
+        'prospectos':prospectos,
+        'titulo': 'Prospectos',
         }
     return render(request, 'prospectos/prospectos.html', context)
 
