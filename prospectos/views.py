@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
+from django.urls import reverse
 
 
 @login_required
@@ -124,36 +125,30 @@ def empresa_crear(request):
 
 
 
-@method_decorator(login_required, name='dispatch')
-@method_decorator(group_required('vendedora', 'administrador'), name='dispatch')
-class ListaActividades(generic.ListView):
-    model = Actividad
-    template_name = 'actividades/actividades.html'
-    context_object_name = 'actividades'
-
-    def get_queryset(self):
-        return Actividad.objects.all().order_by('fecha').order_by('hora').order_by('titulo')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ListaActividades, self).get_context_data(**kwargs)
-        context['titulo'] = 'Actividades'
-        context['agrega'] = 'Agregar actividad'
-        return context
+@login_required
+@group_required('vendedora','administrador')
+def lista_actividades(request,id):
+    actividades = Actividad.objects.filter(prospecto_evento=id)
+    context = {
+        'actividades':actividades,
+        'id':id
+        }
+    return render(request, 'actividades/actividades.html', context)
 
 
 @login_required
 @group_required('vendedora','administrador')
-def crearActividad(request):
+def crear_actividad(request,id):
     NewActividadForm = FormaActividad()
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
         if NewActividadForm.is_valid():
+            print('jai')
             actividad = NewActividadForm.save(commit=False)
-            # hora = time.strftime(time(int(actividad.hora)), "%I:%M %p")
-            # actividad.hora = hora
             actividad.save()
-            return redirect('prospectos:actividades')
+            return redirect(reverse('prospectos:lista_actividades',kwargs={'id':id}))
         else:
+            print('hola')
             mensaje = ''
             context = {
                 'form': NewActividadForm,
@@ -166,6 +161,7 @@ def crearActividad(request):
             return render(request, 'actividades/crear_actividad.html', context)
     context = {
         'form': NewActividadForm,
-        'titulo': 'Agregar actividad'
+        'titulo': 'Agregar actividad',
+        'id':id
     }
     return render(request, 'actividades/crear_actividad.html', context)

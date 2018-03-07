@@ -6,10 +6,10 @@ from django.conf.urls.static import static
 app_name = 'prospectos'
 urlpatterns = [
     # Lista de actividades
-    path('actividades/', views.ListaActividades.as_view(), name='actividades'),
+    path('actividades/<int:id>/', views.lista_actividades, name='lista_actividades'),
 
     # Crear actividad
-    path('actividades/crear', views.crearActividad, name='crear_actividad'),
+    path('actividades/<int:id>/crear', views.crear_actividad, name='crear_actividad'),
 
     #Lista prospectos
     path('', views.lista_prospectos, name='lista_prospectos'),

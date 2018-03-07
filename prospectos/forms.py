@@ -53,6 +53,7 @@ class FormaActividad(ModelForm):
         model = models.Actividad
         fields = [
             'titulo',
+            'prospecto_evento',
             'fecha',
             'hora',
             'notas',
