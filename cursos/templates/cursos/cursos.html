@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+    {% block title %}Cursos{% endblock %}
+    {% block content %}
+
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large orange" href='nuevo_curso'>
+          <i class="large material-icons">add</i>
+        </a>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col l10 offset-l1 s12"> -->
+          <table class="dataTable">
+              <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Dirección</th>
+                    <th>Descripción</th>
+                    <th>Costo</th>
+                    <th>Evento</th>
+                    <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for curso in cursos %}
+                  <tr>
+                      <td>{{ curso.Nombre }}</td>
+                      <td>{{ curso.Fecha  }}</td> <!--| date:'d/m/y' -->
+                      <td>{{ curso.Direccion }}</td>
+                      <td>{{ curso.Descripcion }}</td>
+                      <td>{{ curso.Costo }}</td>
+                      <td>{{ curso.Evento }}</td>
+                      <td>
+                        <a href="#"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="#"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                      </td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+        <!-- </div>
+      </div> -->
+  {% endblock %}
+
+  {% block js %}
+    <script>
+      // function format_date(date){
+      //   return moment(date).format('l');
+      // }
+      // console.log("hola");
+
+    </script>
+  {% endblock js %}

@@ -51,12 +51,21 @@ class CursoModelTest(TestCase):
         self.assertEquals(field_label,'Costo')
 
     def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/cursos/nuevo_curso')
+        resp = self.client.get(reverse('cursos:nuevo_curso'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get('/cursos/nuevo_curso')
+        resp = self.client.get(reverse('cursos:nuevo_curso'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'cursos/nuevo_curso.html')
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get(reverse('cursos:cursos'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('cursos:cursos'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'cursos/cursos.html')
 
 # Create your tests here.

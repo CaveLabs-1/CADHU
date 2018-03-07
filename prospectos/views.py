@@ -30,7 +30,7 @@ def lista_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
-def prospecto_crear(request):
+def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
     if request.method == 'POST':
@@ -82,6 +82,7 @@ def editar_prospecto(request, id):
                 'NewProspectoForm': NewProspectoForm,
                 'NewLugarForm': NewLugarForm,
                 'prospecto': idprospecto,
+                'titulo': 'Editar Prospecto',
             }
             return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -89,6 +90,7 @@ def editar_prospecto(request, id):
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'prospecto': idprospecto,
+        'titulo': 'Editar Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 

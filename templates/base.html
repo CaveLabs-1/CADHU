@@ -62,9 +62,13 @@
           </div>
         </div>
     </div>
-    <div class="container padding-top-20">
-      {% block content %}
-      {% endblock content %}
+    <div class="padding-top-20">
+      <div class="row">
+        <div class="col l10 offset-l1 s12">
+          {% block content %}
+          {% endblock content %}
+        </div>
+      </div>
     </div>
     </main>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -76,8 +80,8 @@
     <script type="text/javascript" src="{% static "js/init.js"%}"></script>
     <script type="text/javascript" src="{% static "js/trigger.js"%}"></script>
 
-
-    </script>
+<!--
+    </script> -->
     {% block js %}{% endblock js %}
     {% if messages %}
     <script type="text/javascript">
