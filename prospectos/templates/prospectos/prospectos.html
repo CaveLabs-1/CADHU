@@ -4,7 +4,7 @@
     {% block title %}Prospectos{% endblock %}
       {% block content %}
           <div class="fixed-action-btn">
-            <a class="btn-floating btn-large orange">
+            <a href="{% url 'prospectos:crear_prospecto' %}" class="btn-floating btn-large orange">
               <i class="large material-icons">add</i>
             </a>
             <ul>
@@ -15,12 +15,12 @@
             <table class="dataTable">
                 <thead>
                   <tr>
-                      <th class="border-radius-left">Nombre</th>
+                      <th>Nombre</th>
                       <th>Paterno</th>
                       <th>Materno</th>
                       <th>WhatsApp</th>
                       <th>Email</th>
-                      <th class="border-radius-right">Acciones</th>
+                      <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>

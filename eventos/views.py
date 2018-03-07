@@ -18,7 +18,11 @@ from CADHU.decorators import group_required
 @group_required('administrador')
 def lista_evento(request):
     eventos = Evento.objects.all()
-    return render(request, 'eventos/eventos.html', {'eventos':eventos})
+    context = {
+    'eventos':eventos,
+    'titulo': 'Eventos',
+    }
+    return render(request, 'eventos/eventos.html', context)
 
 @login_required
 @group_required('administrador')
@@ -30,4 +34,3 @@ def crear_evento(request):
         Evento.save()
         return redirect('eventos:lista_evento')
     return render(request, 'eventos/crear_evento.html', {'NewEventoForm': NewEventoForm})
-

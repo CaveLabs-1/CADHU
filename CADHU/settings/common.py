@@ -120,6 +120,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGIN_REDIRECT_URL = reverse_lazy('prospectos:crear_prospecto')
+LOGIN_REDIRECT_URL = reverse_lazy('prospectos:lista_prospectos')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
