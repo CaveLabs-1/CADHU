@@ -81,6 +81,7 @@ def editar_prospecto(request, id):
                 'NewProspectoForm': NewProspectoForm,
                 'NewLugarForm': NewLugarForm,
                 'prospecto': idprospecto,
+                'titulo': 'Editar Prospecto',
             }
             return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -88,6 +89,7 @@ def editar_prospecto(request, id):
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'prospecto': idprospecto,
+        'titulo': 'Editar Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
