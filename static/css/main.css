@@ -52,8 +52,7 @@ main {
 
 #logo-nav {
   height: 30px;
-  margin-top: -15px;
-  position: absolute;
+  margin-top: 15px
 }
 
 .headerTitle{
@@ -130,12 +129,12 @@ header, main, footer{padding-left: 300px;}
   line-height: 15px;
 }
 
-#sideNavView {background-color:#206082}
-#sideNavView  .light-text{font-weight:300}
-#sideNavView .user-view .background img{width:100%}
-#sideNavView li a{color:white;font-weight:400}
+.sideNavView {background-color:#206082}
+.sideNavView  .light-text{font-weight:300}
+.sideNavView .user-view .background img{width:100%}
+.sideNavView li a{color:white;font-weight:400}
 #sideNavView li i{color:white}
-#sideNavView .navLogo{position:fixed;bottom:15%;left:25%}
+.sideNavView .navLogo{position:fixed;bottom:15%;left:25%}
 
 .profile_button{background-color: #1D874A; border-radius: 50px;}
 
