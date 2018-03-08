@@ -290,6 +290,7 @@ class ActividadTest(TestCase):
         field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
 
+    #ID_AC 4.1, 4.2
     def test_view_editar_prospecto(self):
         Lugar.objects.create(
             Calle='Lourdes',
