@@ -290,7 +290,32 @@ class ActividadTest(TestCase):
         field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
 
+    #ID_AC 4.1, 4.2
     def test_view_editar_prospecto(self):
-        resp = self.client.post('/prospectos/editar_prospecto',  {'Nombre':'Marco Antonio', 'Apellido_Paterno':'Luna'},follow=True )
-        respx = self.client.post('/prospectos/editar_prospecto', {'Nombre': 'Marco Antonio', 'Apellido_Paterno': 'Rodriguez'},follow=True)
-        self.assertEqual(resp.status_code, respx.status_code)
+        Lugar.objects.create(
+            Calle='Lourdes',
+            Numero_Interior='4',
+            Numero_Exterior='105',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+        )
+
+        Prospecto.objects.create(
+            id='1',
+            Nombre='Marco Antonio',
+            Apellido_Paterno='Luna',
+            Apellido_Materno='Calvillo',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='a01209537@itesm.mx',
+            Direccion=Lugar.objects.get(Calle='Lourdes'),
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+        resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id':1}))
+        self.assertEqual(resp.status_code, 200)
