@@ -39,6 +39,9 @@ class Empresa(models.Model):
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
     Razon_Social = models.CharField(max_length=50, blank=False, null=True)
 
+    def __str__(self):
+        return self.Nombre
+
 class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
     Apellido_Paterno = models.CharField(max_length=50, blank=False, null=False)

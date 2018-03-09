@@ -1,34 +1,37 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+  {% load staticfiles %}
 
-    {% block title %}Empresas{% endblock %}
-      {% block content %}
-        <div class="container">
-            <div class="row">
-                <h1 class="col s6">Empresas</h1>
+      {% block title %}Empresas{% endblock %}
+        {% block content %}
+            <div class="fixed-action-btn">
+              <a class="btn-floating btn-large orange">
+                <i class="large material-icons">add</i>
+              </a>
+              <ul>
+                <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+              </ul>
             </div>
-            <div class="row">
-            </div>
-            <table class="dataTable">
-                <thead>
-                  <tr>
-                      <th>Nombre</th>
-                      <th>Telefono</th>
-                      <th>Email</th>
-                      <th>Raz&oacute;n Social</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for empresa in empresas %}
+
+              <table class="dataTable">
+                  <thead>
                     <tr>
-                        <td>{{ empresa.Nombre }}</td>
-                        <td>{{ empresa.Telefono }}</td>
-                        <td>{{ empresa.Email }}</td>
-                        <td>{{ empresa.Razon_Social }}</td>
+                        <th class="border_radius_left">Nombre</th>
+                        <th>Telefono</th>
+                        <th>Email</th>
+                        <th class="border_radius_right">Raz&oacute;n Social</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                  </thead>
+                  <tbody>
+                  {% for empresa in empresas   %}
+                      <tr>
+                          <td>{{ empresa.Nombre }}</td>
+                          <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ empresa.Telefono }}</a></td>
+                          <td><a href="mailto:"{{ prospecto.Email }}"">{{ empresa.Email }}</a></td>
+                          <td>{{ empresa.Razon_Social }}</td>
 
-  {% endblock %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+
+    {% endblock %}
