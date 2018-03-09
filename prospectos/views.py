@@ -29,14 +29,21 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
+#US3
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
+
+    #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
+
+        #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
+
+        #Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
             Lugar = NewLugarForm.save()
             Prospecto = NewProspectoForm.save(commit=False)
@@ -44,12 +51,15 @@ def crear_prospecto(request):
             Prospecto.save()
             return redirect('prospectos:lista_prospectos')
 
+            #Si la forma no es válida, volverla a mandar
         context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
+
+    #Si no es POST, volverla a mandar
     context = {
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
