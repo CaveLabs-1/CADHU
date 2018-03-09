@@ -17,14 +17,19 @@ def lista_evento(request):
 
 @login_required
 @group_required('administrador')
+#ID 32
 def crear_evento(request):
+    #Crea la forma en la vista
     NewEventoForm = EventoForm()
+    #Pide el metodo post
     if request.method == 'POST':
         NewEventoForm = EventoForm(request.POST or None)
+        #Valida la forma, la guarda y redirecciona
         if NewEventoForm.is_valid():
             Evento = NewEventoForm.save(commit=False)
             Evento.save()
             return redirect('eventos:lista_evento')
+        #Envia la informacion necesaria.
         context = {
             'NewEventoForm': NewEventoForm,
             'titulo': 'Registrar un Evento',
