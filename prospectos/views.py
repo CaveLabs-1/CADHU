@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .models import Empresa, Prospecto, Lugar, Actividad
+from .resources import ProspectoResource
+from tablib import Dataset
 from datetime import time
 from django.views import generic
 from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
@@ -19,6 +21,30 @@ def lista_prospectos(request):
         'titulo': 'Prospectos',
         }
     return render(request, 'prospectos/prospectos.html', context)
+
+
+def carga_masiva(request):
+    if request.method == 'POST':
+        resource_prospecto = ProspectoResource()
+        dataset = Dataset()
+        nuevos_prospectos = request.FILES['archivo']
+
+        imported_data = dataset.load(nuevos_prospectos.read().decode('utf-8'), format='csv')
+        print(imported_data.height)
+        # imported_data =dataset.load('xlsx', open(nuevos_prospectos, 'rb').read())
+        resultado = resource_prospecto.import_data(dataset, dry_run=True)
+        if not resultado.has_errors():
+            resource_prospecto.import_data(dataset, dry_run=False)
+            context = {
+                'errores': 'No hay errores',
+            }
+            return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
+        else:
+            context = {
+                'errores': resultado.base_errors,
+            }
+            return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
+
 
 @login_required
 @group_required('vendedora','administrador')
@@ -141,8 +167,6 @@ def crear_empresa(request):
         'titulo': 'Registrar una Empresa',
     }
     return render(request, 'empresas/empresas_form.html', context)
-
-
 
 #US
 @login_required

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'eventos',
     'usuarios',
     'cursos',
+    'import_export',
 ]
 
 SITE_ID = 1
@@ -123,3 +124,6 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = reverse_lazy('prospectos:lista_prospectos')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+# No tocar, se usa para carga masiva
+IMPORT_EXPORT_USE_TRANSACTIONS = True
