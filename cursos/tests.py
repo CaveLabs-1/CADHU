@@ -68,4 +68,9 @@ class CursoModelTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'cursos/cursos.html')
 
+    def test_view_curso_existe(self):
+        resp = self.client.get(reverse('cursos:cursos'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertQuerysetEqual(resp.context['cursos'],['<Curso: Curso object (1)>'])
+
 # Create your tests here.
