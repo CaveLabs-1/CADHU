@@ -1,7 +1,9 @@
 from django.test import TestCase, client
 from django.urls import reverse
-
 from .models import Empresa, Prospecto, Lugar
+from .models import Prospecto, Lugar, ProspectoEvento
+from eventos.models import Evento
+from cursos.models import Curso
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
 from django.contrib.auth.models import User, Group
@@ -123,19 +125,15 @@ class ProspectoListViewTest(TestCase):
                 Ocupacion='Estudiante',
             )
 
+    #Acceptance citeria: 7.1
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/prospectos/')
         self.assertEqual(resp.status_code, 200)
 
-    def test_view_url_accessible_by_name(self):
+    def test_view_prospectos_20(self):
         resp = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('prospectos:lista_prospectos'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'prospectos/prospectos.html')
+        self.assertEqual(len(resp.context['prospectos']),20)
 
 class ProspectoTest(TestCase):
 
@@ -303,6 +301,45 @@ class ProspectoTest(TestCase):
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 1)
 
+    # ID_AC 4.1, 4.2
+    def test_editar_prospecto(self):
+        Lugar.objects.create(
+            Calle='Lourdes',
+            Numero_Interior='4',
+            Numero_Exterior='105',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+        )
+
+        Prospecto.objects.create(
+            id='1',
+            Nombre='Marco Antonio',
+            Apellido_Paterno='Luna',
+            Apellido_Materno='Calvillo',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='a01209537@itesm.mx',
+            Direccion=Lugar.objects.get(Calle='Lourdes'),
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+
+        resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id': 1}),{
+            'Nombre': 'Luis Alfredo', 'Apellido_Paterno': 'Rodriguez', 'Apellido_Materno': 'Santos',
+            'Telefono_Casa': '+524422232226', 'Telefono_Celular': '+524422580662','Direccion':Lugar.objects.get(Calle='Lourdes'),
+            'Email': 'a01209537@itesm.mx', 'Metodo_Captacion': 'Facebook',
+            'Estado_Civil': 'SOLTERO', 'Ocupacion': 'Estudiante', 'Hijos': 1
+        },follow=True)
+
+        actualizado = Prospecto.objects.get(id=1)
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
 
 # class ActividadTest(TestCase):
 #
@@ -346,3 +383,4 @@ class ProspectoTest(TestCase):
 #         resp = self.client.post('/prospectos/editar_prospecto',  {'Nombre':'Marco Antonio', 'Apellido_Paterno':'Luna'},follow=True )
 #         respx = self.client.post('/prospectos/editar_prospecto', {'Nombre': 'Marco Antonio', 'Apellido_Paterno': 'Rodriguez'},follow=True)
 #         self.assertEqual(resp.status_code, respx.status_code)
+
