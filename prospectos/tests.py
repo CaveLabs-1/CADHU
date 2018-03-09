@@ -1,7 +1,9 @@
 from django.test import TestCase, client
 from django.urls import reverse
 
-from .models import Prospecto, Lugar
+from .models import Prospecto, Lugar, ProspectoEvento
+from eventos.models import Evento
+from cursos.models import Curso
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
 from django.contrib.auth.models import User, Group
@@ -51,19 +53,15 @@ class ProspectoListViewTest(TestCase):
                 Ocupacion='Estudiante',
             )
 
+    #Acceptance citeria: 7.1
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/prospectos/')
         self.assertEqual(resp.status_code, 200)
 
-    def test_view_url_accessible_by_name(self):
+    def test_view_prospectos_20(self):
         resp = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('prospectos:lista_prospectos'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'prospectos/prospectos.html')
+        self.assertEqual(len(resp.context['prospectos']),20)
 
 
 
@@ -306,11 +304,50 @@ class ActividadTest(TestCase):
 
     @classmethod
     def setUpTestData(self):
+        Lugar.objects.create(
+            Calle='Lourdes',
+            Numero_Interior='4',
+            Numero_Exterior='105',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+        )
+
+        Prospecto.objects.create(
+            id='1',
+            Nombre='Marco Antonio',
+            Apellido_Paterno='Luna',
+            Apellido_Materno='Calvillo',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='a01209537@itesm.mx',
+            Direccion=Lugar.objects.get(Calle='Lourdes'),
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+
+        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+
+        ProspectoEvento.objects.create(
+            id='1',
+            Prospecto=Prospecto.objects.get(id='1'),
+            Curso=curso,
+            Fecha='2018-02-02',
+            Interes='BAJO',
+            FlagCADHU=False
+        )
+
         Actividad.objects.create(
+            prospecto_evento_id='1',
             titulo='Test de  titulo',
             fecha='2018-02-02',
             hora='12:00',
-            notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
+            notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario',
         )
 
     def test_titulo_label(self):
@@ -332,4 +369,3 @@ class ActividadTest(TestCase):
         actividad = Actividad.objects.get(pk=1)
         field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
-
