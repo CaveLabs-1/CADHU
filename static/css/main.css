@@ -42,7 +42,7 @@
 
 /*BASE*/
 body {
-  padding-top: 60px;
+  /* padding-top: 60px; */
   font-family: 'Lato', sans-serif;
   background-color: #eee;
 }
@@ -56,16 +56,8 @@ main {
 }
 
 .headerTitle{
-  top: 0;
-  color: black;
-  width: 100%;
-  z-index: 200;
-  height: 60px;
-  overflow-y: hidden;
-  background-color: white;
-  -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
-  -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
-  box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
+  position: relative;
+  top: -12px;
 }
 
 .headerTitle h4{
@@ -73,13 +65,6 @@ main {
   color: #5f5f5f;
   top: -5px;
   position: absolute;
-}
-
-#structure {
-  position: fixed;
-  top: 20px;
-  z-index: 300;
-  width: 100%
 }
 
 #collapse-nav, #logout{
@@ -105,7 +90,7 @@ header, main, footer{padding-left: 300px;}
 
 
 .white-bar {
-  height: 60px;
+  height: 64px;
   background-color: white;
 }
 

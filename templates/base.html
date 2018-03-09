@@ -19,18 +19,27 @@
   </head>
   <body>
     <main>
-      <div id="structure">
-        <div id="collapse-nav">
-          <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger hide-on-large-only"><i class="material-icons">menu</i></a>
-          <!-- <a id="sidenavBtn" href="#" data-target="nav-mobile" class="sidenav-trigger hide-on-large-only	button-collapse"><i class="material-icons">menu</i></a> -->
+      <nav class="white black-text">
+        <div class="row">
+          <div class="col l2 m3 s4">
+            <!-- <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
+            <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger">
+              <i class="material-icons black-text left">menu</i>
+            </a>
+          </div>
+          <div class="col l8 m6 s4 center">
+            <h4 class="headerTitle truncate">{{ titulo }}</h4>
+          </div>
+          <div class="col l2 m3 s4">
+            <a href="{% url 'logout' %}">
+              <i class="material-icons black-text right" style="padding-right: 10px">exit_to_app</i>
+            </a>
+          </div>
         </div>
-        <div id="logout">
-          <a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a>
-        </div>
-      </div>
+      </nav>
 
       <div id="sideNavView">
-        <ul id="slide-out" class="sidenav sidenav-fixed sideNavView">
+        <ul id="slide-out" class="sidenav sideNavView sidenav-fixed">
           <li class="white-bar under-shadow">
             <div class="row">
               <div class="col s12 center">
@@ -61,13 +70,13 @@
         </ul>
       </div>
 
-    <div class="headerTitle">
+    <!-- <div class="headerTitle">
         <div class="row">
           <div class="col s10 offset-s2">
             <h4 class="center">{{ titulo }}</h4>
           </div>
         </div>
-    </div>
+    </div> -->
     <div class="padding-top-20">
       <div class="row">
         <div class="col l10 offset-l1 s12">
@@ -77,6 +86,7 @@
       </div>
     </div>
     </main>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
