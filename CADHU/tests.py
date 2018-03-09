@@ -10,13 +10,10 @@ class NoAuthenticationViewTests(TestCase):
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
 
-
-    def test_no_login(self):
-        """
-        Si no ha iniciado sesión, lo manda a la pantalla de log in.
-        """
+    #Acceptance Criteria: 1.1
+    def test_1_2(self):
         response = self.client.get(reverse('prospectos:lista_prospectos'))
-        self.assertRedirects(response, '/login/?next=/prospectos/lista_prospectos')
+        self.assertRedirects(response, '/login/?next=/prospectos/')
 
 
 class AuthenticationViewTests(TestCase):
@@ -28,19 +25,15 @@ class AuthenticationViewTests(TestCase):
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
 
-    def test_login(self):
-        """
-        Iniciar sesión y comprobar que el usuario está adentro del sistema.
-        """
+    #Acceptance Criteria: 1.1
+    def test_1_1(self):
         response = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(str(response.context['user']), 'testuser1')
 
-    def test_logout(self):
-        """
-        Inicia sesión, se cierra sesión y se comprueba que la sesión se cerró.
-        """
+    #Acceptance Criteria: 2.1
+    def test_2_1(self):
         response = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(str(response.context['user']), 'testuser1')
         self.client.logout()
         response = self.client.get(reverse('prospectos:lista_prospectos'))
-        self.assertRedirects(response, '/login/?next=/prospectos/lista_prospectos')
+        self.assertRedirects(response, '/login/?next=/prospectos/')

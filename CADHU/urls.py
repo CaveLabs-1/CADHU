@@ -22,6 +22,8 @@ from . import views
 urlpatterns = [
     path('admin/',  admin.site.urls),
     path('', views.redireccionar, name='redireccionar'),
+    #Ligas del login, logout, reset password.
+    #ID: US1
     path('', include('django.contrib.auth.urls')),
     path('prospectos/', include('prospectos.urls', namespace='prospectos')),
     path('clientes/', include('clientes.urls', namespace='clientes')),
