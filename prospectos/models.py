@@ -46,7 +46,7 @@ class Prospecto(models.Model):
     Telefono_Casa = PhoneNumberField(blank=True, null=True)
     Telefono_Celular = PhoneNumberField(blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
-    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
+    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, null=True, blank=True)
     Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
     Estado_Civil = models.CharField(max_length=15, blank=True, null=True, choices=ESTADO_CIVIL)
     Ocupacion = models.CharField(max_length=15, blank=True, null=True)
