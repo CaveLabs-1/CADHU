@@ -251,6 +251,49 @@ class ProspectoTest(TestCase):
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 1)
 
+    # ID_AC 4.1, 4.2
+    def test_editar_prospecto(self):
+        Lugar.objects.create(
+            Calle='Lourdes',
+            Numero_Interior='4',
+            Numero_Exterior='105',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+        )
+
+        Prospecto.objects.create(
+            id='1',
+            Nombre='Marco Antonio',
+            Apellido_Paterno='Luna',
+            Apellido_Materno='Calvillo',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='a01209537@itesm.mx',
+            Direccion=Lugar.objects.get(Calle='Lourdes'),
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+
+        resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id': 1}),{
+            'Nombre': 'Luis Alfredo', 'Apellido_Paterno': 'Rodriguez', 'Apellido_Materno': 'Santos',
+            'Telefono_Casa': '+524422232226', 'Telefono_Celular': '+524422580662','Direccion':Lugar.objects.get(Calle='Lourdes'),
+            'Email': 'a01209537@itesm.mx', 'Metodo_Captacion': 'Facebook',
+            'Estado_Civil': 'SOLTERO', 'Ocupacion': 'Estudiante', 'Hijos': 1
+        },follow=True)
+
+        actualizado = Prospecto.objects.get(id=1)
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
+
+
+
+
 
 class ActividadTest(TestCase):
 
@@ -290,32 +333,3 @@ class ActividadTest(TestCase):
         field_label = actividad._meta.get_field('notas').verbose_name
         self.assertEqual(field_label, 'Notas de la actividad')
 
-    #ID_AC 4.1, 4.2
-    def test_view_editar_prospecto(self):
-        Lugar.objects.create(
-            Calle='Lourdes',
-            Numero_Interior='4',
-            Numero_Exterior='105',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
-        )
-
-        Prospecto.objects.create(
-            id='1',
-            Nombre='Marco Antonio',
-            Apellido_Paterno='Luna',
-            Apellido_Materno='Calvillo',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
-            Email='a01209537@itesm.mx',
-            Direccion=Lugar.objects.get(Calle='Lourdes'),
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-        )
-        resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id':1}))
-        self.assertEqual(resp.status_code, 200)
