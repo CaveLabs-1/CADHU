@@ -33,9 +33,9 @@ class EmpresaTest(TestCase):
             Codigo_Postal='76125'
         )
 
-    #ACCEPTANCE CRITERIA: 13.2 Si el usuario llena todos los campos con los tipos de datos correctos obligatorios al dar click en 'GUARDAR' le aparece una pantalla con todas las empresas agregadas.
+    #ACCEPTANCE CRITERIA: 13.2
     def test_ac_13_2(self):
-        resp = self.client.post(reverse('prospectos:empresa_crear'),{
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
             'Telefono':'+524422232226',
             'Email':'escuela@itesm.com',
@@ -43,20 +43,18 @@ class EmpresaTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertQuerysetEqual(resp.context['empresas'],['<Empresa: ITESM>'])
 
-    #ACCEPTANCE CRITERIA: 13.3 Si el usuario llena todos los campos menos alguno(s) o todos los campos obligatorios  inmediatamente le apareceran en rojo recordando que los llene correctamente y no podrá dar click 'GUARDAR' hasta que lo corrija.
+    #ACCEPTANCE CRITERIA: 13.3
     def test_ac_13_3(self):
-        resp = self.client.post(reverse('prospectos:empresa_crear'),{
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Telefono':'+524422232226',
             'Email':'correo@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
-
-
-    #ACCEPTANCE CRITERIA: 13.4 Si el usuario llena alguno(self.assertRedirects(resp, reverse('all-borrowed') )s) de los campos obligatorios con los tipos de dato equivocado inmediatamente le apareceran en rojo recordando que los llene correctamente y no podrá dar click en 'GUARDAR' hasta que lo corrija.
+    #ACCEPTANCE CRITERIA: 13.4
     def test_ac_13_4(self):
-        resp = self.client.post(reverse('prospectos:empresa_crear'),{
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
             'Telefono':'ABC',
             'Email':'correo@itesm.com',
@@ -64,9 +62,7 @@ class EmpresaTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
-
-
-    #ACCEPTANCE CRITERIA: 13.6 Si se intenta ingresar un correo ya registrado, se señalará que ya existe el prospecto
+    #ACCEPTANCE CRITERIA: 13.6
     def test_ac_13_6(self):
         Empresa.objects.create(
             Nombre='ITESM',
@@ -75,7 +71,7 @@ class EmpresaTest(TestCase):
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Razon_Social='Escuela'
         )
-        resp = self.client.post(reverse('prospectos:empresa_crear'),{
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
             'Telefono':'+524422232226',
             'Email':'correo@itesm.com',

@@ -99,7 +99,7 @@ def editar_prospecto(request, id):
 # US13
 @login_required
 @group_required('vendedora','administrador')
-def empresa_crear(request):
+def crear_empresa(request):
     NewEmpresaForm = EmpresaForm()
     NewLugarForm = LugarForm()
     #Si el método HTTP es post procesar la información de la forma:
