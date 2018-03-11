@@ -7,12 +7,10 @@ from cursos.models import Curso
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
 from django.contrib.auth.models import User, Group
-
 from django.urls import reverse
 import string
 import random
-
-# Create your tests here.
+import datetime
 
 class EmpresaTest(TestCase):
     def setUp(self):
@@ -337,46 +335,57 @@ class ProspectoTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
 
-# class ActividadTest(TestCase):
-#
-#     def setUp(self):
-#         Group.objects.create(name="administrador")
-#         Group.objects.create(name="vendedora")
-#         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
-#         usuario1.save()
-#         login = self.client.login(username='testuser1', password='12345')
-#
-#     @classmethod
-#     def setUpTestData(self):
-#         Actividad.objects.create(
-#             titulo='Test de  titulo',
-#             fecha='2018-02-02',
-#             hora='12:00',
-#             notas='Prueba de notas largas par al acreacion de un objeto que no es completamente necesario'
-#         )
-#
-#     def test_titulo_label(self):
-#         actividad = Actividad.objects.get(pk=1)
-#         field_label = actividad._meta.get_field('titulo').verbose_name
-#         self.assertEqual(field_label, 'Actividad')
-#
-#     def test_fecha_label(self):
-#         actividad = Actividad.objects.get(pk=1)
-#         field_label = actividad._meta.get_field('fecha').verbose_name
-#         self.assertEqual(field_label, 'Fecha de la actividad')
-#
-#     def test_hora_label(self):
-#         actividad = Actividad.objects.get(pk=1)
-#         field_label = actividad._meta.get_field('hora').verbose_name
-#         self.assertEqual(field_label, 'Hora de la actividad')
-#
-#     def test_notas_label(self):
-#         actividad = Actividad.objects.get(pk=1)
-#         field_label = actividad._meta.get_field('notas').verbose_name
-#         self.assertEqual(field_label, 'Notas de la actividad')
-#
-#     def test_view_editar_prospecto(self):
-#         resp = self.client.post('/prospectos/editar_prospecto',  {'Nombre':'Marco Antonio', 'Apellido_Paterno':'Luna'},follow=True )
-#         respx = self.client.post('/prospectos/editar_prospecto', {'Nombre': 'Marco Antonio', 'Apellido_Paterno': 'Rodriguez'},follow=True)
-#         self.assertEqual(resp.status_code, respx.status_code)
+class ActividadTest(TestCase):
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+        lugar = Lugar.objects.create(
+            Calle='Paraiso',
+            Numero_Interior='',
+            Numero_Exterior='38',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
 
+        )
+
+        prospecto = Prospecto.objects.create(
+            Nombre='Pablo',
+            Apellido_Paterno='Martinez',
+            Apellido_Materno='Villareal',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='pmartinez@gmail.com',
+            Direccion=lugar,
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+
+        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        relacion = ProspectoEvento.objects.create(Prospecto = prospecto,Curso=curso,Interes='ALTO')
+
+    #ACCEPTANCE CRITERIA: 12.1
+    def test_ac_12_1(self):
+        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':1}),{
+            'titulo':'Llamada con el prospecto',
+            'fecha':datetime.datetime.now().date(),
+            'notas':'Llamada con el prosecto',
+            'prospecto_evento':1})
+        self.assertQuerysetEqual(resp.context['actividades'],['<Actividad: Llamada con el prospecto>'])
+
+    #ACCEPTANCE CRITERIA: 12.2
+    def test_ac_12_2(self):
+        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':1}),{
+            'titulo':'Llamada con el prospecto',
+            'fecha':'2018-03-07',
+            'hora':'Hora',
+            'notas':'Llamada con el prosecto'})
+        self.assertEqual(resp.context['titulo'],'Agregar actividad')
