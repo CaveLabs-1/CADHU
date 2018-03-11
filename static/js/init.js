@@ -31,6 +31,7 @@ $(document).ready(function() {
     $('.fixed-action-btn').floatingActionButton();
 
     $('.sidenav').sidenav();
+    // $(".button-collapse").sideNav();
     $('.tooltipped').tooltip({delay: 50});
     // $('.timepicker').timepicker();
     $('select').select();
@@ -62,6 +63,10 @@ $(document).ready(function() {
     });
 });
 
+
+$('#sidenavBtn').on('click', function(){
+  console.log("asd");
+});
 
 //
 // tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);

@@ -14,3 +14,6 @@ class Curso(models.Model):
     # Hora = models.TimeField(blank=True, null=True)
     Costo = models.PositiveIntegerField(blank=True, null=True)
     Activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.Nombre
