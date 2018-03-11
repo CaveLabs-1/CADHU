@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
-
+from django.http import *
 
 @login_required
 @group_required('vendedora','administrador')
@@ -144,7 +144,7 @@ def crear_empresa(request):
 
 
 
-
+#US
 @login_required
 @group_required('vendedora','administrador')
 def lista_actividades(request,id):
@@ -155,7 +155,7 @@ def lista_actividades(request,id):
         }
     return render(request, 'actividades/actividades.html', context)
 
-
+#US12
 @login_required
 @group_required('vendedora','administrador')
 def crear_actividad(request,id):
@@ -163,21 +163,19 @@ def crear_actividad(request,id):
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
         if NewActividadForm.is_valid():
-            print('jai')
             actividad = NewActividadForm.save(commit=False)
             actividad.save()
-            return redirect(reverse('prospectos:lista_actividades',kwargs={'id':id}))
+            #Mensaje éxito
+            messages.success(request, 'La actividad ha sido agregada')
+            return lista_actividades(request,id)
         else:
-            print('hola')
-            mensaje = ''
+            #Mensaje error
+            messages.success(request, 'Forma inválida')
             context = {
                 'form': NewActividadForm,
                 'titulo': 'Agregar actividad',
+                'id':id
             }
-            for field, errors in NewActividadForm.errors.items():
-                for error in errors:
-                    mensaje += error
-            context['mensaje_error'] = mensaje
             return render(request, 'actividades/crear_actividad.html', context)
     context = {
         'form': NewActividadForm,
