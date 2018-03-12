@@ -153,11 +153,14 @@ def lista_actividades(request,id):
 @group_required('vendedora','administrador')
 def crear_actividad(request,id):
     NewActividadForm = FormaActividad()
+    # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
+        # SI LA FORMA ES VÁLIDA
         if NewActividadForm.is_valid():
             print('jai')
             actividad = NewActividadForm.save(commit=False)
+            # SE GUARDA LA NOTA
             actividad.save()
             return redirect(reverse('prospectos:lista_actividades',kwargs={'id':id}))
         else:
@@ -170,8 +173,11 @@ def crear_actividad(request,id):
             for field, errors in NewActividadForm.errors.items():
                 for error in errors:
                     mensaje += error
+            # MANDAR LOS ERRORES EN CONTEXTO
             context['mensaje_error'] = mensaje
+            print(mensaje)
             return render(request, 'actividades/crear_actividad.html', context)
+    # CARGAR LA VISTA
     context = {
         'form': NewActividadForm,
         'titulo': 'Agregar actividad',
