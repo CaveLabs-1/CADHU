@@ -5,4 +5,5 @@ Django==2.0.2
 django-phonenumber-field
 psycopg2-binary
 django-widget-tweaks
-django-import-export
+tablib==0.12.1
+
