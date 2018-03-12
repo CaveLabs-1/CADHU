@@ -16,7 +16,7 @@ class CursoModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        #Set up non-modified objects used by all test methods
+        # Set up non-modified objects used by all test methods
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         Curso.objects.create(Nombre='Curso', Evento= evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
 
@@ -67,5 +67,18 @@ class CursoModelTest(TestCase):
         resp = self.client.get(reverse('cursos:cursos'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'cursos/cursos.html')
+
+    def test_view_crear_curso(self):
+        evento = Evento.objects.create(Nombre='Mi Evento 2', Descripcion='Este es el evento de pruebas automoatizadas.')
+        resp = self.client.post('/cursos/nuevo_curso',  {
+            'Nombre': 'Curso',
+            'Evento': evento,
+            'Fecha': '2018-03-16',
+            'Direccion': 'Calle',
+            'Descripcion': 'Evento de marzo',
+            'Costo': 1000},
+            follow=True
+        )
+        self.assertEqual(resp.status_code, 200)
 
 # Create your tests here.
