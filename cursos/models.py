@@ -12,3 +12,6 @@ class Curso(models.Model):
     Descripcion = models.CharField(max_length=150, blank=True, null=True)
     Costo = models.PositiveIntegerField(blank=True, null=True)
     Activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.Nombre

@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Empresa, Prospecto, Lugar, Actividad
+from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
 from datetime import time
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
+from django.http import *
 
 
 @login_required
@@ -20,6 +21,7 @@ def lista_prospectos(request):
         }
     return render(request, 'prospectos/prospectos.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_empresa(request):
@@ -29,12 +31,14 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
-#US3
+
+#US3/ #US31
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
 
     #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
@@ -42,20 +46,31 @@ def crear_prospecto(request):
         #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST)
 
-        #Validar la forma y guardar en BD
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+        # Validar la forma y guardar en BD
+        if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
+
             Lugar = NewLugarForm.save()
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
+
+            # Guardar los Cursos del Prospecto
+            ProspectoEvento = NewProspectoEventoForm.save(commit=False)
+            for PE in ProspectoEvento:
+                PE.Prospecto = Prospecto
+                PE.save()
+            messages.success(request, 'El prospecto ha sido creado exitosamente')
             return redirect('prospectos:lista_prospectos')
 
             #Si la forma no es válida, volverla a mandar
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Prospecto',
+            'formset': NewProspectoEventoForm,
         }
         return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -64,6 +79,7 @@ def crear_prospecto(request):
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar un Prospecto',
+        'formset': NewProspectoEventoForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -106,21 +122,27 @@ def editar_prospecto(request, id):
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
+# US13
 @login_required
 @group_required('vendedora','administrador')
-def empresa_crear(request):
+def crear_empresa(request):
     NewEmpresaForm = EmpresaForm()
     NewLugarForm = LugarForm()
+    #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
+        #Definir el error para forma invalida:
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        #Crear y llenar la forma
         NewEmpresaForm = EmpresaForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
+        #Si la forma es válida guardar la información en la base de datos:
         if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
             Lugar = NewLugarForm.save()
             Empresa = NewEmpresaForm.save(commit=False)
             Empresa.Direccion = Lugar
             Empresa.save()
             return lista_empresa(request)
+        #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         context = {
             'Error': Error,
             'NewEmpresaForm': NewEmpresaForm,
@@ -128,6 +150,7 @@ def empresa_crear(request):
             'titulo': 'Registrar una Empresa',
         }
         return render(request, 'empresas/empresas_form.html', context)
+    #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewEmpresaForm': NewEmpresaForm,
         'NewLugarForm': NewLugarForm,
@@ -136,8 +159,7 @@ def empresa_crear(request):
     return render(request, 'empresas/empresas_form.html', context)
 
 
-
-
+#US
 @login_required
 @group_required('vendedora','administrador')
 def lista_actividades(request,id):
@@ -149,29 +171,32 @@ def lista_actividades(request,id):
     return render(request, 'actividades/actividades.html', context)
 
 
+#US12
 @login_required
 @group_required('vendedora','administrador')
 def crear_actividad(request,id):
     NewActividadForm = FormaActividad()
+    # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
+        # SI LA FORMA ES VÁLIDA
         if NewActividadForm.is_valid():
-            print('jai')
             actividad = NewActividadForm.save(commit=False)
+            # SE GUARDA LA NOTA
             actividad.save()
-            return redirect(reverse('prospectos:lista_actividades',kwargs={'id':id}))
+            #Mensaje éxito
+            messages.success(request, 'La actividad ha sido agregada')
+            return lista_actividades(request,id)
         else:
-            print('hola')
-            mensaje = ''
+            #Mensaje error
+            messages.success(request, 'Forma inválida')
             context = {
                 'form': NewActividadForm,
                 'titulo': 'Agregar actividad',
+                'id':id
             }
-            for field, errors in NewActividadForm.errors.items():
-                for error in errors:
-                    mensaje += error
-            context['mensaje_error'] = mensaje
             return render(request, 'actividades/crear_actividad.html', context)
+    # CARGAR LA VISTA
     context = {
         'form': NewActividadForm,
         'titulo': 'Agregar actividad',

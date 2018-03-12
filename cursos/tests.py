@@ -62,12 +62,7 @@ class CursoModelTest(TestCase):
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get(reverse('cursos:cursos'))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('cursos:cursos'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'cursos/cursos.html')
-
+        
     def test_view_crear_curso(self):
         evento = Evento.objects.create(Nombre='Mi Evento 2', Descripcion='Este es el evento de pruebas automoatizadas.')
         resp = self.client.post('/cursos/nuevo_curso',  {
@@ -80,5 +75,31 @@ class CursoModelTest(TestCase):
             follow=True
         )
         self.assertEqual(resp.status_code, 200)
+
+class CursoViewTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
+        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        Curso.objects.create(Nombre='Curso', Evento= evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+
+    #Acceptance criteria: 29.1
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('cursos:cursos'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'cursos/cursos.html')
+        
+    #Acceptance criteria: 29.2
+    def test_view_curso_existe(self):
+        resp = self.client.get(reverse('cursos:cursos'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertQuerysetEqual(resp.context['cursos'],['<Curso: Curso>'])
 
 # Create your tests here.

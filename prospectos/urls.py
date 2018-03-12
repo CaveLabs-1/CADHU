@@ -5,11 +5,11 @@ from django.conf.urls.static import static
 
 app_name = 'prospectos'
 urlpatterns = [
-    # Lista de actividades
+    # Lista de actividades para una relación Prospecto - Evento
     path('actividades/<int:id>/', views.lista_actividades, name='lista_actividades'),
 
-    # Crear actividad
-    path('actividades/<int:id>/crear', views.crear_actividad, name='crear_actividad'),
+    # Crear actividad para una relación Prospecto - Evento
+    path('actividades/crear/<int:id>/', views.crear_actividad, name='crear_actividad'),
 
     #Lista prospectos
     path('', views.lista_prospectos, name='lista_prospectos'),
@@ -24,6 +24,6 @@ urlpatterns = [
     path('editar_prospecto/<int:id>/', views.editar_prospecto, name='editar_prospecto'),
 
     #Crear Empresa
-    path('empresa_crear/', views.empresa_crear, name='empresa_crear'),
+    path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
 ]
