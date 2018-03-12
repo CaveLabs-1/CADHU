@@ -7,19 +7,12 @@
   <div class="row no-margin padding-top-20">
       <div class="card ">
         <div class="card-content">
-          <!-- <form action="" method="post">{% csrf_token %}
-              {{ form.as_p }}
-              <input type="submit" value="Save" />
-          </form> -->
-
           <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
             {% csrf_token %}
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
                 <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
-                <!-- <input type="text" id="{{ form.Nombre.id_for_label }}" name="{{ form.Nombre.html_name }}" required>
-                <label>Nombre</label> -->
               </div>
             </div>
             <div class="row no-margin">
@@ -51,12 +44,6 @@
                 <label for="{{form.Descripcion.id_for_label}}">Descripción</label>
               </div>
             </div>
-            <!-- <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Hora.html_name}}" id="{{ form.Hora.id_for_label }}"  class="timepicker" required>
-                <label for="{{form.Hora.id_for_label}}">Hora</label>
-              </div>
-            </div> -->
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="number" name="{{form.Costo.html_name}}" id="{{ form.Costo.id_for_label }}" required step=".01" min="0">
