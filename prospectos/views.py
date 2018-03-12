@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Empresa, Prospecto, Lugar, Actividad
-from .resources import ProspectoResource
+from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
+from cursos.models import Curso
 from tablib import Dataset
-from datetime import time
+import datetime
 from django.views import generic
 from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
 from django.contrib.auth.decorators import login_required
@@ -26,25 +26,78 @@ def lista_prospectos(request):
 
 def carga_masiva(request):
     if request.method == 'POST':
-        resource_prospecto = ProspectoResource()
+        # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
         dataset = Dataset()
         nuevos_prospectos = request.FILES['archivo']
-
         imported_data = dataset.load(nuevos_prospectos.read().decode('utf-8'), format='csv')
-        print(imported_data.height)
+
+        # por cada fila del excel llena ...
+        for i in range(1, imported_data.height):
+        # Intenta crear un lugar A partir de csv o obtener un lugar ya existente (Para no guardar repetidos)
+            lugar = Lugar.objects.get_or_create(
+                Calle=imported_data['Calle'][i],
+                Numero_Interior=imported_data['Numero interior'][i],
+                Numero_Exterior=imported_data['Numero exterior'][i],
+                Colonia=imported_data['Colonia'][i],
+                Ciudad=imported_data['Ciudad'][i],
+                Estado=imported_data['Estado'][i],
+                Pais=imported_data['Pais'][i],
+                Codigo_Postal=imported_data['Codigo postal'][i],
+            )
+
+            # busca la bd por si existe este prospecto para solo crear la relacion
+            prospecto = Prospecto.objects.get_or_create(
+                Nombre=imported_data['Nombre'][i],
+                Apellido_Paterno=imported_data['Apellido paterno'][i],
+                Apellido_Materno=imported_data['Apellido materno'][i],
+                Email=imported_data['Email'][i],
+                Telefono_Casa=imported_data['Telefono casa'][i],
+                Telefono_Celular=imported_data['Telefono celular'][i],
+                Metodo_Captacion=imported_data['Metodo captacion'][i],
+                Estado_Civil=imported_data['Estadp civil'][i],
+                Ocupacion=imported_data['Ocupacion'][i],
+                Hijos=int(imported_data['Hijos'][i]),
+                Recomendacion=imported_data['Recomendacion'][i],
+                Direccion=lugar[0],
+            )
+            #Si el resultado es true significa que se creo el objeto si es false significa que ya existia
+            if prospecto[1]:
+                print('Si se importo esta madre')
+            else:
+                print('No se importo esta madre porque ya existe sacate ALV')
+
+            # obtiene el curso
+            curso = Curso.objects.get(id=imported_data['ID curso'][i])
+            # crea la relacion
+            prospectoEvento = ProspectoEvento.objects.get_or_create(
+                Prospecto=prospecto[0],
+                Curso=curso,
+                Fecha=datetime.datetime.now().date(),
+                Interes=('BAJO', 'BAJO'),
+                FlagCADHU=False,
+            )
+            if prospectoEvento[1]:
+                print('se crea la relacion')
+            else:
+                print('no se creo la relacion')
+
+
+
+
+
         # imported_data =dataset.load('xlsx', open(nuevos_prospectos, 'rb').read())
-        resultado = resource_prospecto.import_data(dataset, dry_run=True)
-        if not resultado.has_errors():
-            resource_prospecto.import_data(dataset, dry_run=False)
-            context = {
-                'errores': 'No hay errores',
-            }
-            return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
-        else:
-            context = {
-                'errores': resultado.base_errors,
-            }
-            return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
+        # resultado = resource_prospecto.import_data(dataset, dry_run=True)
+        # if not resultado.has_er rors():
+        #     resource_prospecto.import_data(dataset, dry_run=False)
+        #     context = {
+        #         'errores': 'No hay errores',
+        #     }
+        #     return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
+        # else:
+        #     context = {
+        #         'errores': resultado.base_errors,
+        #     }
+        #     return HttpResponseRedirect(reverse('prospectos:lista_prospectos'), context)
 
 
 @login_required
@@ -165,8 +218,8 @@ def lista_actividades(request,id):
 
 
 @login_required
-@group_required('vendedora','administrador')
-def crear_actividad(request,id):
+@group_required('vendedora', 'administrador')
+def crear_actividad(request, id):
     NewActividadForm = FormaActividad()
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
@@ -190,6 +243,6 @@ def crear_actividad(request,id):
     context = {
         'form': NewActividadForm,
         'titulo': 'Agregar actividad',
-        'id':id
+        'id': id
     }
     return render(request, 'actividades/crear_actividad.html', context)

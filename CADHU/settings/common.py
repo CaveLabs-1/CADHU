@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'eventos',
     'usuarios',
     'cursos',
-    'import_export',
 ]
 
 SITE_ID = 1

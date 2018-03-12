@@ -54,7 +54,7 @@ class Prospecto(models.Model):
     Recomendacion = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
-        return self.Nombre + ' ' + self.Apellido_Paterno + ' ' + self.Apellido_Materno
+        return self.Nombre + ' ' + self.Apellidos + ' ' + self.Apellido_Materno
 
 
 class Lugar(models.Model):
