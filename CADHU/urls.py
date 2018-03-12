@@ -30,4 +30,4 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
     path('eventos/', include('eventos.urls', namespace='eventos')),
     path('cursos/', include('cursos.urls', namespace='cursos')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
