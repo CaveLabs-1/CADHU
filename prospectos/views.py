@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
-from datetime import time
+from cursos.models import Curso
+from tablib import Dataset
+import datetime
+from django.db.utils import IntegrityError
 from django.views import generic
 from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
 from django.contrib.auth.decorators import login_required
@@ -20,6 +23,76 @@ def lista_prospectos(request):
         'titulo': 'Prospectos',
         }
     return render(request, 'prospectos/prospectos.html', context)
+
+
+# US43
+def carga_masiva(request):
+    if request.method == 'POST':
+        # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
+        dataset = Dataset()
+        resultado = []
+        nuevos_prospectos = request.FILES['archivo']
+        imported_data = dataset.load(nuevos_prospectos.read().decode('utf-8'), format='csv')
+
+        # por cada fila del excel llena ...
+        for i in range(0, imported_data.height):
+            resultado.append('')
+            # Intenta crear un lugar A partir de csv o obtener un lugar ya existente (Para no guardar repetidos)
+            lugar = Lugar.objects.get_or_create(
+                Calle=imported_data['Calle'][i],
+                Numero_Interior=imported_data['Numero interior'][i],
+                Numero_Exterior=imported_data['Numero exterior'][i],
+                Colonia=imported_data['Colonia'][i],
+                Ciudad=imported_data['Ciudad'][i],
+                Estado=imported_data['Estado'][i],
+                Pais=imported_data['Pais'][i],
+                Codigo_Postal=imported_data['Codigo postal'][i],
+            )
+            try:
+                # Busca en la base de datos por si existe este prospecto para solo crear la relacion
+                prospecto = Prospecto.objects.get_or_create(
+                    Nombre=imported_data['Nombre'][i],
+                    Apellido_Paterno=imported_data['Apellido paterno'][i],
+                    Apellido_Materno=imported_data['Apellido materno'][i],
+                    Email=imported_data['Email'][i],
+                    Telefono_Casa=imported_data['Telefono casa'][i],
+                    Telefono_Celular=imported_data['Telefono celular'][i],
+                    Metodo_Captacion=imported_data['Metodo captacion'][i],
+                    Estado_Civil=imported_data['Estado civil'][i],
+                    Ocupacion=imported_data['Ocupacion'][i],
+                    Hijos=int(imported_data['Hijos'][i]),
+                    Recomendacion=imported_data['Recomendacion'][i],
+                    Direccion=lugar[0],
+                )
+                if prospecto[1]:
+                    resultado[i] = 'El prospecto se creó con éxito '
+                else:
+                    resultado[i] = 'El prospecto ya existía '
+                # obtiene el curso
+                curso = Curso.objects.get(id=imported_data['ID curso'][i])
+                if curso:
+                    # crea la relacion
+                    prospectoEvento = ProspectoEvento.objects.get_or_create(
+                        Prospecto=prospecto[0],
+                        Curso=curso,
+                        Fecha=datetime.datetime.now().date(),
+                        Interes=('BAJO', 'BAJO'),
+                    )
+                    if prospectoEvento[1]:
+                        resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
+                    else:
+                        resultado[i] += ' ya existía la relacón con el curso: ' + curso.Nombre
+                else:
+                    resultado[i] += ' y no se creo ninguna relacion.'
+            except IntegrityError:
+                resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar  repetidos en el sistema'
+
+        dataset.append_col(resultado, header='Estado')
+        with open('resultado.xls', 'wb') as f:
+            f.write(dataset.export('xls'))
+            response = HttpResponseRedirect()
+            f.close()
+        return response
 
 
 @login_required
@@ -173,8 +246,8 @@ def lista_actividades(request,id):
 
 #US12
 @login_required
-@group_required('vendedora','administrador')
-def crear_actividad(request,id):
+@group_required('vendedora', 'administrador')
+def crear_actividad(request, id):
     NewActividadForm = FormaActividad()
     # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
@@ -200,6 +273,6 @@ def crear_actividad(request,id):
     context = {
         'form': NewActividadForm,
         'titulo': 'Agregar actividad',
-        'id':id
+        'id': id
     }
     return render(request, 'actividades/crear_actividad.html', context)
