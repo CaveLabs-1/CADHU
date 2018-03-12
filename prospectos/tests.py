@@ -12,6 +12,7 @@ import string
 import random
 import datetime
 
+
 class EmpresaTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
@@ -129,6 +130,7 @@ class ProspectoListViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.context['prospectos']),20)
 
+
 class ProspectoTest(TestCase):
 
     def setUp(self):
@@ -165,80 +167,24 @@ class ProspectoTest(TestCase):
             Ocupacion='Estudiante',
             Hijos=1,
         )
-    def test_nombre_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Nombre').verbose_name
-        self.assertEquals(field_label,'Nombre')
-    def test_apellido_paterno_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Apellido_Paterno').verbose_name
-        self.assertEquals(field_label, 'Apellido Paterno')
-    def test_apellido_materno_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Apellido_Materno').verbose_name
-        self.assertEquals(field_label, 'Apellido Materno')
-    def test_telefono_casa_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Telefono_Casa').verbose_name
-        self.assertEquals(field_label, 'Telefono Casa')
-    def test_telefono_celular_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Telefono_Celular').verbose_name
-        self.assertEquals(field_label, 'Telefono Celular')
-    def test_email_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Email').verbose_name
-        self.assertEquals(field_label, 'Email')
-    def test_metodo_captacion_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Metodo_Captacion').verbose_name
-        self.assertEquals(field_label, 'Metodo Captacion')
-    def test_estado_civil_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Estado_Civil').verbose_name
-        self.assertEquals(field_label, 'Estado Civil')
-    def test_estado_civil_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Estado_Civil').verbose_name
-        self.assertEquals(field_label, 'Estado Civil')
-    def test_ocupacion_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Ocupacion').verbose_name
-        self.assertEquals(field_label, 'Ocupacion')
-    def test_hijos_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Hijos').verbose_name
-        self.assertEquals(field_label, 'Hijos')
-    def test_recomendacion_label(self):
-        prospecto = Prospecto.objects.get(Nombre='Pablo')
-        field_label = prospecto._meta.get_field('Recomendacion').verbose_name
-        self.assertEquals(field_label, 'Recomendacion')
 
-    #Test Label Modelo Lugar
-    def test_calle_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Calle').verbose_name
-        self.assertEquals(field_label, 'Calle')
-    def test_numero_exterior_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Numero_Exterior').verbose_name
-        self.assertEquals(field_label, 'Numero Exterior')
-    def test_numero_interior_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Numero_Interior').verbose_name
-        self.assertEquals(field_label, 'Numero Interior')
-    def test_colonia_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Colonia').verbose_name
-        self.assertEquals(field_label, 'Colonia')
-    def test_ciudad_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Ciudad').verbose_name
-        self.assertEquals(field_label, 'Ciudad')
-    def test_codigo_postal_label(self):
-        lugar = Lugar.objects.get(Calle='Paraiso')
-        field_label = lugar._meta.get_field('Codigo_Postal').verbose_name
-        self.assertEquals(field_label, 'Codigo Postal')
+    def test_ac_13_2(self):
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
+            'Nombre':'ITESM',
+            'Telefono':'+524422232226',
+            'Email':'escuela@itesm.com',
+            'Razon_Social':'Escuela'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertQuerysetEqual(resp.context['empresas'],['<Empresa: ITESM>'])
+
+    #ACCEPTANCE CRITERIA: 13.3
+    def test_ac_13_3(self):
+        resp = self.client.post(reverse('prospectos:crear_empresa'),{
+            'Telefono':'+524422232226',
+            'Email':'correo@itesm.com',
+            'Razon_Social':'Escuela'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
     #Test Django
     def test_crear_prospecto(self):
@@ -334,6 +280,7 @@ class ProspectoTest(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
+
 
 class ActividadTest(TestCase):
     def setUp(self):

@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import *
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
@@ -20,6 +21,7 @@ def lista_prospectos(request):
         }
     return render(request, 'prospectos/prospectos.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_empresa(request):
@@ -29,36 +31,41 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
-#US3
+
+#US3/ #US31
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
 
     #Si es petición POST, procesar la información de la forma
-    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
     if request.method == 'POST':
 
         #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
         NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST)
+
+        # Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
 
-        #Validar la forma y guardar en BD
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
             Lugar = NewLugarForm.save()
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
+
+            # Guardar los Cursos del Prospecto
             ProspectoEvento = NewProspectoEventoForm.save(commit=False)
             for PE in ProspectoEvento:
                 PE.Prospecto = Prospecto
                 PE.save()
+            messages.success(request, 'El prospecto ha sido creado exitosamente')
             return redirect('prospectos:lista_prospectos')
 
             #Si la forma no es válida, volverla a mandar
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
@@ -152,8 +159,6 @@ def crear_empresa(request):
     return render(request, 'empresas/empresas_form.html', context)
 
 
-
-
 #US
 @login_required
 @group_required('vendedora','administrador')
@@ -164,6 +169,7 @@ def lista_actividades(request,id):
         'id':id
         }
     return render(request, 'actividades/actividades.html', context)
+
 
 #US12
 @login_required

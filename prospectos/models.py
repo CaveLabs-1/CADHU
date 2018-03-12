@@ -80,7 +80,7 @@ class Lugar(models.Model):
     Codigo_Postal = models.CharField(max_length=5, blank=True, null=True)
 
 class ProspectoEvento(models.Model):
-    Prospecto = models.ForeignKey('Prospecto', on_delete=models.CASCADE, null=True)
+    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
     Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
@@ -107,11 +107,3 @@ class Actividad(models.Model):
     def agenta_pasado(self):
         ahora = timezone.now()
         return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
-
-
-class ProspectoEvento(models.Model):
-    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
-    Fecha = models.DateField(null=True, blank=True)
-    Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
-    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
