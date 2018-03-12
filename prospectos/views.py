@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Empresa, Prospecto, Lugar, Actividad
+from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
 from datetime import time
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -37,11 +37,14 @@ def crear_prospecto(request):
     NewLugarForm = LugarForm()
 
     #Si es petición POST, procesar la información de la forma
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
     if request.method == 'POST':
 
         #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST)
+        if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
 
         #Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
@@ -49,6 +52,10 @@ def crear_prospecto(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
+            ProspectoEvento = NewProspectoEventoForm.save(commit=False)
+            for PE in ProspectoEvento:
+                PE.Prospecto = Prospecto
+                PE.save()
             return redirect('prospectos:lista_prospectos')
 
             #Si la forma no es válida, volverla a mandar
@@ -56,6 +63,7 @@ def crear_prospecto(request):
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Prospecto',
+            'formset': NewProspectoEventoForm,
         }
         return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -64,6 +72,7 @@ def crear_prospecto(request):
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar un Prospecto',
+        'formset': NewProspectoEventoForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -144,6 +153,7 @@ def crear_empresa(request):
 
 
 
+
 #US
 @login_required
 @group_required('vendedora','administrador')
@@ -176,6 +186,10 @@ def crear_actividad(request,id):
                 'titulo': 'Agregar actividad',
                 'id':id
             }
+            for field, errors in NewActividadForm.errors.items():
+                for error in errors:
+                    mensaje += error
+            context['mensaje_error'] = mensaje
             return render(request, 'actividades/crear_actividad.html', context)
     context = {
         'form': NewActividadForm,

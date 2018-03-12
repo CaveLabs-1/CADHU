@@ -95,7 +95,7 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    
+
 
     def __str__(self):
         return self.titulo
@@ -107,3 +107,11 @@ class Actividad(models.Model):
     def agenta_pasado(self):
         ahora = timezone.now()
         return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+
+
+class ProspectoEvento(models.Model):
+    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
+    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
+    Fecha = models.DateField(null=True, blank=True)
+    Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
+    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
