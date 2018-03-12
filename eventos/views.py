@@ -3,6 +3,7 @@ from .models import Evento
 from .forms import EventoForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
+from django.contrib import messages
 
 
 @login_required
@@ -28,15 +29,22 @@ def crear_evento(request):
         if NewEventoForm.is_valid():
             Evento = NewEventoForm.save(commit=False)
             Evento.save()
+            #Mensaje de exito
+            messages.success(request, 'El evento ha sido creado.')
             return redirect('eventos:lista_evento')
+
+        else:
+            #Mensaje de error
+            messages.success(request, 'Existe una falla en los campos.')
         #Envia la informacion necesaria.
-        context = {
-            'NewEventoForm': NewEventoForm,
-            'titulo': 'Registrar un Evento',
-        }
-        return render(request, 'eventos/crear_evento.html', context)
+            context = {
+                'NewEventoForm': NewEventoForm,
+                'titulo': 'Registrar un Evento',
+            }
+            return render(request, 'eventos/crear_evento.html', context)
     context = {
         'NewEventoForm': NewEventoForm,
         'titulo': 'Registrar un Evento',
     }
     return render(request, 'eventos/crear_evento.html', context)
+
