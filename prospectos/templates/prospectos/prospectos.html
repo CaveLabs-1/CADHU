@@ -53,15 +53,15 @@
                               <div class="file-field input-field">
                                   <div class="btn">
                                       <span>Seleccionar</span>
-                                      <input type="file" name="archivo" id="archivo" accept="text/csv">
+                                      <input type="file" name="archivo" id="archivo" accept="text/csv" required>
                                   </div>
                                   <div class="file-path-wrapper valign-wrapper">
-                                      <input class="file-path validate" type="text" accept="text/csv">
+                                      <input class="file-path validate" type="text" accept="text/csv" required>
                                   </div>
                               </div>
                               <div class="row valign-wrapper">
                                   <div class="col s12 center">
-                                      <button type="submit" class="btn waves-effect waves-light form_button">
+                                      <button type="submit" class="btn waves-effect waves-light form_button" href="#!">
                                           Subir
                                       </button>
                                   </div>
@@ -75,5 +75,20 @@
               </div>
           </div>
 
+      {% endblock %}
 
+      {% block js %}
+
+      <script>
+
+            {% if messages %}
+              {%for message in messages %}
+                  {% if message.level == 40 %}
+                      var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
+                      M.toast({html: mensaje})
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+
+      </script>
       {% endblock %}

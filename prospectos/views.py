@@ -12,6 +12,8 @@ from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import *
+import os
+from django.conf import settings
 
 
 @login_required
@@ -76,23 +78,23 @@ def carga_masiva(request):
                         Prospecto=prospecto[0],
                         Curso=curso,
                         Fecha=datetime.datetime.now().date(),
-                        Interes=('BAJO', 'BAJO'),
+                        Interes='BAJO',
                     )
                     if prospectoEvento[1]:
                         resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
                     else:
-                        resultado[i] += ' ya existía la relacón con el curso: ' + curso.Nombre
+                        resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
                 else:
-                    resultado[i] += ' y no se creo ninguna relacion.'
+                    resultado[i] += ' y no se creo ninguna relación.'
             except IntegrityError:
                 resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar  repetidos en el sistema'
 
         dataset.append_col(resultado, header='Estado')
-        with open('resultado.xls', 'wb') as f:
+        with open('media/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
-            response = HttpResponseRedirect()
             f.close()
-        return response
+        messages.error(request,'La carga masiva ha sido exitosa')
+        return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
 @login_required
