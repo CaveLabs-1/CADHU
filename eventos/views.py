@@ -5,10 +5,11 @@ from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 from django.contrib import messages
 
-
+#US29
 @login_required
 @group_required('administrador')
 def lista_evento(request):
+    #Se hacer render de la lista de prospectos
     eventos = Evento.objects.all()
     context = {
     'eventos':eventos,
@@ -47,4 +48,3 @@ def crear_evento(request):
         'titulo': 'Registrar un Evento',
     }
     return render(request, 'eventos/crear_evento.html', context)
-
