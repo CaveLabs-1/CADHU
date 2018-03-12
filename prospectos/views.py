@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Empresa, Prospecto, Lugar, Actividad
+from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
 from datetime import time
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -31,26 +31,33 @@ def lista_empresa(request):
 def prospecto_crear(request):
     NewProspectoForm = ProspectoForm()
     NewLugarForm = LugarForm()
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
     if request.method == 'POST':
         NewProspectoForm = ProspectoForm(request.POST)
         NewLugarForm = LugarForm(request.POST)
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST)
+        if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
             Lugar = NewLugarForm.save()
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.save()
+            ProspectoEvento = NewProspectoEventoForm.save(commit=False)
+            for PE in ProspectoEvento:
+                PE.Prospecto = Prospecto
+                PE.save()
             return redirect('prospectos:lista_prospectos')
-
         context = {
             'NewProspectoForm': NewProspectoForm,
             'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Prospecto',
+            'formset': NewProspectoEventoForm,
         }
         return render(request, 'prospectos/prospectos_form.html', context)
     context = {
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar un Prospecto',
+        'formset': NewProspectoEventoForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
@@ -82,6 +89,7 @@ def empresa_crear(request):
         'titulo': 'Registrar una Empresa',
     }
     return render(request, 'empresas/empresas_form.html', context)
+
 
 @login_required
 @group_required('vendedora','administrador')

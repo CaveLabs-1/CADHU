@@ -90,8 +90,8 @@ class Actividad(models.Model):
 
 
 class ProspectoEvento(models.Model):
-    Prospecto = models.ForeignKey('Prospecto', on_delete=models.CASCADE, null=True)
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
+    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
     FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')

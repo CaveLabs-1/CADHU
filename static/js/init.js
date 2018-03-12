@@ -13,6 +13,7 @@ $(document).ready(function() {
     $('.tooltipped').tooltip({delay: 50});
     // $('.timepicker').timepicker();
     $('select').select();
+    $('.modal').modal();
     //
     // tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     //
