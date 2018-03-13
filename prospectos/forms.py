@@ -89,7 +89,7 @@ ProspectoEventoFormSet = forms.modelformset_factory(
 ProspectoEventoInlineFormSet = forms.inlineformset_factory(
     Prospecto,
     ProspectoEvento,
-    fields = ('Curso', 'Interes', 'FlagCADHU'),
+    fields=('Curso', 'Interes', 'FlagCADHU'),
     formset=ProspectoEventoFormSet,
     extra=1,
     can_delete=True,

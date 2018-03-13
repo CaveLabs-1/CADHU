@@ -207,6 +207,9 @@
                 if (!showAddButton()) buttonRow.hide();
                 // If a post-add callback was supplied, call it with the added form:
                 if (options.added) options.added(row);
+
+                $('select').formSelect();
+
                 return false;
             });
         }
@@ -228,4 +231,5 @@
         added: null,                     // Function called each time a new form is added
         removed: null                    // Function called each time a form is deleted
     };
+
 })(jQuery);

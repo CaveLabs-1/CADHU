@@ -58,7 +58,6 @@ $(document).ready(function() {
     //
     // console.log('hola');
 
-    $('.modal').modal();
     $('.datepicker').datepicker({
         format: 'yyyy-mm-dd',
         i18n: {

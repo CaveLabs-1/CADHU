@@ -6,7 +6,6 @@ import datetime
 from cursos.models import Curso
 from django.contrib.auth.models import User
 from django.conf import settings
-
 # Create your models here.
 
 METODO_CAPTACION = (
@@ -65,6 +64,7 @@ class Prospecto(models.Model):
     Recomendacion = models.CharField(max_length=150, blank=True, null=True)
     Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
     Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Fecha_Creacion = models.DateField(null=True)
 
 
     def __str__(self):
