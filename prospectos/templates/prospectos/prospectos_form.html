@@ -6,7 +6,6 @@
     {% block content %}
 
         <!--
-        {% block js %}
             <script type="text/javascript">
             {% if NewProspectoForm.errors %}
                 {% for field in NewProspectoForm %}
@@ -39,7 +38,6 @@
                 {% endfor %}
             {% endif %}
             </script>
-        {% endblock js %}
         -->
 
         <div class="card ">
@@ -52,12 +50,12 @@
                             <label for="Nombre">Nombre(s)</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Apellido_Paterno | add_class:'form-control' }}
-                            <label for="apellido_p">Apellido paterno</label>
+                            {{ NewProspectoForm.Apellidos | add_class:'form-control' }}
+                            <label for="apellido_p">Apellidos</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Apellido_Materno | add_class:'form-control' }}
-                            <label for="apellido_m">Apellido materno</label>
+                            {{ NewProspectoForm.Email | add_class:'form-control' }}
+                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
                         </div>
                     </div>
                     <div class="row">
@@ -70,8 +68,8 @@
                             <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Casa</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Email | add_class:'form-control' }}
-                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                            {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
+                            <label for="ocupacion">Ocupaci&oacute;n</label>
                         </div>
                     </div>
                     <div class="row">
@@ -84,15 +82,11 @@
                             <label for="otro">Radio/Recomendacion </label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
-                            <label for="ocupacion">Ocupaci&oacute;n</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Estado_Civil | add_class:'form-control' }}
                             <label>Estado civil</label>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Hijos | add_class:'form-control' }}
                             <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
@@ -141,8 +135,7 @@
                         <h5>Cursos de Interes</h5>
                     </div>
 
-                    {{ formset.management_form }}
-                    <table role="grid">
+                    <table id="formset_table" border="0" cellpadding="0" cellspacing="0">
                         <thead>
                             <tr>
                                 <th class="text-center">Curso</th>
@@ -151,15 +144,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for form in formset %}
-                            <tr class="ProspectoEvento-form{% if form.instance.pk %}item{% else %}new{% endif %}">
-                                <td>{{ form.id }} {{ form.Curso }}</td>
-                                <td>{{ form.Interes }}</td>
-                                <td>{{ form.FlagCADHU }}</td>
+                        {% for form in formset.forms %}
+                            <tr>
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    {{ form.id | add_class:'form-control' }} {{ form.Curso | add_class:'form-control'}}
+                                </td>
+                                <td>{{ form.Interes | add_class:'form-control' }}</td>
+                                <td>{{ form.FlagCADHU | add_class:'form-control' }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
+                    {{ formset.management_form }}
                     <br><br>
                     <div class="row center">
                         <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
@@ -167,4 +164,17 @@
                 </form>
             </div>
         </div>
+
+        {% block js %}
+            <script type="text/javascript">
+            $(function() {
+                $('#formset_table tbody tr').formset({
+                    addText: 'Agregar Curso',
+                    deleteText: 'Eliminar Curso',
+                    prefix: '{{ formset.prefix }}',
+                });
+            })
+            </script>
+        {% endblock js %}
+
     {% endblock %}

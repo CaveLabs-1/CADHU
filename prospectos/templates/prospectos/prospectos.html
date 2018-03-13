@@ -16,8 +16,7 @@
                 <thead>
                   <tr>
                       <th>Nombre</th>
-                      <th>Paterno</th>
-                      <th>Materno</th>
+                      <th>Apellidos</th>
                       <th>WhatsApp</th>
                       <th>Email</th>
                       <th>Acciones</th>
@@ -27,8 +26,7 @@
                 {% for prospecto in prospectos   %}
                     <tr>
                         <td>{{ prospecto.Nombre }}</td>
-                        <td>{{ prospecto.Apellido_Paterno }}</td>
-                        <td>{{ prospecto.Apellido_Materno }}</td>
+                        <td>{{ prospecto.Apellidos }}</td>
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
                         <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
                         <td>
