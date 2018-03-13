@@ -15,9 +15,21 @@ from django.http import *
 import os
 from django.conf import settings
 
-queryset = ProspectoEvento.objects.none()
+#US7
+@login_required
+@group_required('vendedora','administrador')
+def lista_prospectos(request):
+    # Tomar los  los prospectos de la base de datos:
+    prospectos = Prospecto.objects.all()
+    context = {
+        'prospectos':prospectos,
+        'titulo': 'Prospectos',
+        }
+    # Desplegar la página de prospectos con enlistados con la información de la base de datos
+    return render(request, 'prospectos/prospectos.html', context)
+ 
 
-# US43
+#US43
 def carga_masiva(request):
     if request.method == 'POST':
         # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
@@ -91,6 +103,7 @@ def carga_masiva(request):
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
+    queryset = ProspectoEvento.objects.none()
     NewProspectoForm = ProspectoForm(prefix='NewProspectoForm')
     NewLugarForm = LugarForm(prefix='NewLugarForm')
     NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=queryset, prefix='NewProspectoEventoForm')
@@ -220,6 +233,7 @@ def crear_empresa(request):
             Empresa.save()
             return lista_empresa(request)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': Error,
             'NewEmpresaForm': NewEmpresaForm,
