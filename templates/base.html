@@ -58,7 +58,8 @@
             </div>
           </li>
           <br>
-          <li><a class="waves-effect" href="{% url 'prospectos:lista_prospectos' %}"><i class="material-icons">person_add</i>Prospectos</a></li>
+          <li><a class="waves-effect" href="{% url 'prospectos:lista_prospectos' %}"><i class="material-icons">person_outline</i>Prospectos</a></li>
+          <li><a class="waves-effect" href="{% url 'prospectos:lista_empresas' %}"><i class="material-icons">business</i>Empresas</a></li>
           {% if request.user|has_group:"administrador"%}
             <li><a class="waves-effect" href="#"><i class="material-icons">person</i>Clientes</a></li>
             <li><a class="waves-effect" href="#"><i class="material-icons">insert_invitation</i>Curso</a></li>
