@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_prospecto.html" %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
@@ -132,32 +132,37 @@
                         </div>
                     </div>
                     <a class="btn-flat modal-trigger" href="#modal1">Cursos</a>
-                    <div class="row center">
-                        <h5>Cursos de Interes</h5>
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Cursos del Usuario</h4>
+                            <table id="formset_table" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Curso</th>
+                                        <th class="text-center">Interes</th>
+                                        <th class="text-center">Flag</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for form in formset.forms %}
+                                    <tr id="formset_row">
+                                        <td>
+                                            {{ form.id }} {{ form.Curso }}
+                                        </td>
+                                        <td>{{ form.Interes }}</td>
+                                        <td>{{ form.FlagCADHU }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {{ formset.management_form }}
+                            <br>
+                            <!-- <a class="btn-flat modal-trigger">Agregar Curso</a> -->
+                        </div>
+                        <div class="modal-footer">
+                        </div>
                     </div>
 
-                    <table id="formset_table" border="0" cellpadding="0" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Curso</th>
-                                <th class="text-center">Interes</th>
-                                <th class="text-center">Flag</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for form in formset.forms %}
-                            <tr>
-                                <td>
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                    {{ form.id | add_class:'form-control' }} {{ form.Curso | add_class:'form-control'}}
-                                </td>
-                                <td>{{ form.Interes | add_class:'form-control' }}</td>
-                                <td>{{ form.FlagCADHU | add_class:'form-control' }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    {{ formset.management_form }}                            
                     <br><br>
                     <div class="row center">
                         <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
@@ -168,15 +173,33 @@
 
     {% endblock %}
 
-        {% block js %}
-            <script type="text/javascript">
-            $(function() {
-                $('#formset_table tbody tr').formset({
-                    addText: 'Agregar Curso',
-                    deleteText: 'Eliminar Curso',
-                    prefix: '{{ formset.prefix }}',
-                });
+{% block js %}
+    <script type="text/javascript">
+        $(function() {
+            $('#formset_table tbody tr').formset({
+                addText: 'Agregar Curso',
+                deleteText: 'Eliminar Curso',
+                prefix: '{{ formset.prefix }}',
+            });
 
-            })
-            </script>
-        {% endblock js %}
+        })
+
+        function agregar_cursos(){
+            var template = $('#formset_table tbody tr').clone();
+            template.appendTo('#formset_table');
+        };
+
+        var elem = document.querySelector('#id_NewProspectoForm-Metodo_Captacion');
+        var elem2 = document.querySelector('#id_NewProspectoForm-Estado_Civil');
+        var elem3 = document.querySelector('#id_Metodo_Captacion');
+        var elem4 = document.querySelector('#id_Estado_Civil');
+
+        M.FormSelect.init(elem);
+        M.FormSelect.init(elem2);
+        M.FormSelect.init(elem3);
+        M.FormSelect.init(elem4);
+        //M.FormSelect.init(elem5);
+
+
+    </script>
+{% endblock js %}

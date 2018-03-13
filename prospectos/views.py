@@ -167,10 +167,12 @@ def editar_prospecto(request, id):
     idprospecto = Prospecto.objects.get(id=id)
     NewProspectoForm = ProspectoForm(instance=idprospecto)
     NewLugarForm = LugarForm(instance=idprospecto.Direccion)
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=ProspectoEvento.objects.get(Prospecto=idprospecto))
 
     if request.method == 'POST':
         NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
         NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=ProspectoEvento.objects.order_by('-Curso'))
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
 
             prospecto = NewProspectoForm.save(commit=False)
@@ -194,6 +196,7 @@ def editar_prospecto(request, id):
         'NewProspectoForm': NewProspectoForm,
         'NewLugarForm': NewLugarForm,
         'prospecto': idprospecto,
+        'formset': NewProspectoEventoForm,
         'titulo': 'Editar Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
