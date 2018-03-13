@@ -56,8 +56,7 @@ def carga_masiva(request):
                 # Busca en la base de datos por si existe este prospecto para solo crear la relacion
                 prospecto = Prospecto.objects.get_or_create(
                     Nombre=imported_data['Nombre'][i],
-                    Apellido_Paterno=imported_data['Apellido paterno'][i],
-                    Apellido_Materno=imported_data['Apellido materno'][i],
+                    Apellidos=imported_data['Apellidos'][i],
                     Email=imported_data['Email'][i],
                     Telefono_Casa=imported_data['Telefono casa'][i],
                     Telefono_Celular=imported_data['Telefono celular'][i],
@@ -72,22 +71,23 @@ def carga_masiva(request):
                     resultado[i] = 'El prospecto se creó con éxito '
                 else:
                     resultado[i] = 'El prospecto ya existía '
-                # Obtiene el curso
-                curso = Curso.objects.get(id=imported_data['ID curso'][i])
-                if curso:
-                    # Crea la relacion
-                    prospectoEvento = ProspectoEvento.objects.get_or_create(
-                        Prospecto=prospecto[0],
-                        Curso=curso,
-                        Fecha=datetime.datetime.now().date(),
-                        Interes='BAJO',
-                    )
-                    if prospectoEvento[1]:
-                        resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
-                    else:
-                        resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
-                else:
-                    resultado[i] += ' y no se creo ninguna relación.'
+                # obtiene el curso
+                try:
+                    curso = Curso.objects.get(id=imported_data['ID curso'][i])
+                    if curso:
+                        # crea la relacion
+                        prospectoEvento = ProspectoEvento.objects.get_or_create(
+                            Prospecto=prospecto[0],
+                            Curso=curso,
+                            Fecha=datetime.datetime.now().date(),
+                            Interes='BAJO',
+                        )
+                        if prospectoEvento[1]:
+                            resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
+                        else:
+                            resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
+                except Curso.DoesNotExist:
+                    resultado[i] += ' y no existe este curso.'
             except IntegrityError:
                 resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar  repetidos en el sistema'
 
