@@ -4,12 +4,9 @@
       {% block title %}Empresas{% endblock %}
         {% block content %}
             <div class="fixed-action-btn">
-              <a class="btn-floating btn-large orange">
+              <a href="{% url 'prospectos:crear_empresa' %}" class="btn-floating btn-large orange">
                 <i class="large material-icons">add</i>
               </a>
-              <ul>
-                <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-              </ul>
             </div>
 
               <table class="dataTable">

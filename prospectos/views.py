@@ -27,7 +27,7 @@ def lista_prospectos(request):
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
- 
+
 
 #US43
 def carga_masiva(request):
@@ -72,10 +72,10 @@ def carga_masiva(request):
                     resultado[i] = 'El prospecto se creó con éxito '
                 else:
                     resultado[i] = 'El prospecto ya existía '
-                # obtiene el curso
+                # Obtiene el curso
                 curso = Curso.objects.get(id=imported_data['ID curso'][i])
                 if curso:
-                    # crea la relacion
+                    # Crea la relacion
                     prospectoEvento = ProspectoEvento.objects.get_or_create(
                         Prospecto=prospecto[0],
                         Curso=curso,
