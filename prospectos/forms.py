@@ -20,8 +20,7 @@ class ProspectoForm(ModelForm):
         model = Prospecto
         fields = (
             'Nombre',
-            'Apellido_Paterno',
-            'Apellido_Materno',
+            'Apellidos',
             'Telefono_Casa',
             'Telefono_Celular',
             'Email',
@@ -92,4 +91,6 @@ ProspectoEventoInlineFormSet = forms.inlineformset_factory(
     ProspectoEvento,
     fields = ('Curso', 'Interes', 'FlagCADHU'),
     formset=ProspectoEventoFormSet,
+    extra=1,
+    can_delete=True,
 )

@@ -39,14 +39,14 @@ def nuevo_curso(request):
         # se renderea la forma nuevamente con los errores marcados
         context = {
             'form': Forma_nuevo_curso,
-            'titulo': 'Agregar curso.',
+            'titulo': 'Agregar Curso',
             'error_message': Forma_nuevo_curso.errors
         }
         return render(request, 'cursos/nuevo_curso.html', context)
     # se renderea la página
     context = {
         'form': Forma_nuevo_curso,
-        'titulo': 'Agregar curso.',
+        'titulo': 'Agregar Curso',
         'eventos': Evento.objects.all().order_by('Nombre')
     }
     return render(request, 'cursos/nuevo_curso.html', context)
