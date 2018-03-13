@@ -131,6 +131,7 @@
                             <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
                         </div>
                     </div>
+                    <a class="btn-flat modal-trigger" href="#modal1">Cursos</a>
                     <div class="row center">
                         <h5>Cursos de Interes</h5>
                     </div>
@@ -156,7 +157,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    {{ formset.management_form }}
+                    {{ formset.management_form }}                            
                     <br><br>
                     <div class="row center">
                         <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
@@ -164,6 +165,8 @@
                 </form>
             </div>
         </div>
+
+    {% endblock %}
 
         {% block js %}
             <script type="text/javascript">
@@ -173,8 +176,7 @@
                     deleteText: 'Eliminar Curso',
                     prefix: '{{ formset.prefix }}',
                 });
+
             })
             </script>
         {% endblock js %}
-
-    {% endblock %}

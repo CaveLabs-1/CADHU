@@ -95,11 +95,11 @@
     <script type="text/javascript" src="{% static "js/init.js"%}"></script>
     <script type="text/javascript" src="{% static "js/trigger.js"%}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
-
 <!--
     </script> -->
     {% block js %}{% endblock js %}
     {% if messages %}
+
     <script type="text/javascript">
       {%for message in messages %}
           {% if message.level != 40 %}
@@ -107,6 +107,7 @@
           {% endif %}
       {% endfor %}
     </script>
+
     {% endif %}
   </body>
 </html>

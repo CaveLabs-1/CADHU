@@ -5,17 +5,16 @@ from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet, ProspectoEventoForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import *
+from django.utils.timezone import now
 import os
 from django.conf import settings
-
-queryset = ProspectoEvento.objects.none()
 
 # US43
 def carga_masiva(request):
@@ -93,7 +92,7 @@ def carga_masiva(request):
 def crear_prospecto(request):
     NewProspectoForm = ProspectoForm(prefix='NewProspectoForm')
     NewLugarForm = LugarForm(prefix='NewLugarForm')
-    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=queryset, prefix='NewProspectoEventoForm')
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=ProspectoEvento.objects.none(), prefix='NewProspectoEventoForm')
 
     #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
@@ -101,7 +100,7 @@ def crear_prospecto(request):
         #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
         NewLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
-        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST, queryset=queryset, prefix='NewProspectoEventoForm')
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST, queryset=ProspectoEvento.objects.none(), prefix='NewProspectoEventoForm')
 
         # Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
@@ -110,11 +109,12 @@ def crear_prospecto(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.Usuario = request.user
+            Prospecto.Fecha_Creacion = now()
             Prospecto.save()
 
             # Guardar los Cursos del Prospecto
-            ProspectoEvento = NewProspectoEventoForm.save(commit=False)
-            for PE in ProspectoEvento:
+            prospectoEvento = NewProspectoEventoForm.save(commit=False)
+            for PE in prospectoEvento:
                 PE.Prospecto = Prospecto
                 PE.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
