@@ -13,6 +13,7 @@ class FormaCurso(forms.ModelForm):
             'Direccion',
             'Descripcion',
             'Costo',
+            'Encargado',
         ]
         widgets = {
             'Fecha': forms.DateInput(),

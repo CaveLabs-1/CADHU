@@ -1,10 +1,11 @@
 from django.db import models
 from cursos.models import Curso
 from django import forms
-from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
 import datetime
 from cursos.models import Curso
+from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 
@@ -41,7 +42,7 @@ ESTADO_CIVIL = (
 
 class Empresa(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
-    Telefono = PhoneNumberField(blank=True, null=True)
+    Telefono = models.CharField(max_length=10,blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
     Razon_Social = models.CharField(max_length=50, blank=False, null=True)
@@ -49,12 +50,12 @@ class Empresa(models.Model):
     def __str__(self):
         return self.Nombre
 
+
 class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
-    Apellido_Paterno = models.CharField(max_length=50, blank=False, null=False)
-    Apellido_Materno = models.CharField(max_length=50, blank=False, null=False)
-    Telefono_Casa = PhoneNumberField(blank=True, null=True)
-    Telefono_Celular = PhoneNumberField(blank=True, null=True)
+    Apellidos = models.CharField(max_length=120, blank=False, null=False)
+    Telefono_Casa = models.CharField(max_length=10, blank=True, null=True)
+    Telefono_Celular = models.CharField(max_length=10,blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, null=True, blank=True)
     Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
@@ -62,11 +63,12 @@ class Prospecto(models.Model):
     Ocupacion = models.CharField(max_length=15, blank=True, null=True)
     Hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
     Recomendacion = models.CharField(max_length=150, blank=True, null=True)
-    Cursos = models.ManyToManyField(Curso ,through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
+    Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
+    Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self):
-        return self.Nombre + ' ' + self.Apellidos + ' ' + self.Apellido_Materno
+        return self.Nombre + ' ' + self.Apellidos
 
 
 class Lugar(models.Model):
@@ -78,6 +80,7 @@ class Lugar(models.Model):
     Estado = models.CharField(max_length=50, blank=True, null=True)
     Pais = models.CharField(max_length=50, blank=True, null=True, )
     Codigo_Postal = models.CharField(max_length=5, blank=True, null=True)
+
 
 class ProspectoEvento(models.Model):
     Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)

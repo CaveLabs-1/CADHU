@@ -27,7 +27,7 @@ def lista_prospectos(request):
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
-
+ 
 
 #US43
 def carga_masiva(request):
@@ -99,31 +99,22 @@ def carga_masiva(request):
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
-@login_required
-@group_required('vendedora','administrador')
-def lista_empresa(request):
-    empresas = Empresa.objects.all()
-    context = {
-        'empresas':empresas
-        }
-    return render(request, 'empresas/empresas.html', context)
-
-
 #US3/ #US31
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
-    NewProspectoForm = ProspectoForm()
-    NewLugarForm = LugarForm()
-    NewProspectoEventoForm = ProspectoEventoInlineFormSet()
+    queryset = ProspectoEvento.objects.none()
+    NewProspectoForm = ProspectoForm(prefix='NewProspectoForm')
+    NewLugarForm = LugarForm(prefix='NewLugarForm')
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=queryset, prefix='NewProspectoEventoForm')
 
     #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
 
         #Crear la instancia de la forma y llenarla con los datos
-        NewProspectoForm = ProspectoForm(request.POST)
-        NewLugarForm = LugarForm(request.POST)
-        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST)
+        NewProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
+        NewLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST, queryset=queryset, prefix='NewProspectoEventoForm')
 
         # Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
@@ -131,6 +122,7 @@ def crear_prospecto(request):
             Lugar = NewLugarForm.save()
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
+            Prospecto.Usuario = request.user
             Prospecto.save()
 
             # Guardar los Cursos del Prospecto
@@ -159,6 +151,27 @@ def crear_prospecto(request):
         'formset': NewProspectoEventoForm,
     }
     return render(request, 'prospectos/prospectos_form.html', context)
+
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_prospectos(request):
+    prospectos = Prospecto.objects.all()
+    context = {
+        'prospectos':prospectos,
+        'titulo': 'Prospectos',
+        }
+    return render(request, 'prospectos/prospectos.html', context)
+
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_empresa(request):
+    empresas = Empresa.objects.all()
+    context = {
+        'empresas':empresas
+        }
+    return render(request, 'empresas/empresas.html', context)
 
 
 @login_required
