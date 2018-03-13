@@ -56,8 +56,7 @@ def carga_masiva(request):
                 # Busca en la base de datos por si existe este prospecto para solo crear la relacion
                 prospecto = Prospecto.objects.get_or_create(
                     Nombre=imported_data['Nombre'][i],
-                    Apellido_Paterno=imported_data['Apellido paterno'][i],
-                    Apellido_Materno=imported_data['Apellido materno'][i],
+                    Apellidos=imported_data['Apellidos'][i],
                     Email=imported_data['Email'][i],
                     Telefono_Casa=imported_data['Telefono casa'][i],
                     Telefono_Celular=imported_data['Telefono celular'][i],
