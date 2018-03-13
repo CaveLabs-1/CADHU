@@ -72,21 +72,22 @@ def carga_masiva(request):
                 else:
                     resultado[i] = 'El prospecto ya existía '
                 # obtiene el curso
-                curso = Curso.objects.get(id=imported_data['ID curso'][i])
-                if curso:
-                    # crea la relacion
-                    prospectoEvento = ProspectoEvento.objects.get_or_create(
-                        Prospecto=prospecto[0],
-                        Curso=curso,
-                        Fecha=datetime.datetime.now().date(),
-                        Interes='BAJO',
-                    )
-                    if prospectoEvento[1]:
-                        resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
-                    else:
-                        resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
-                else:
-                    resultado[i] += ' y no se creo ninguna relación.'
+                try:
+                    curso = Curso.objects.get(id=imported_data['ID curso'][i])
+                    if curso:
+                        # crea la relacion
+                        prospectoEvento = ProspectoEvento.objects.get_or_create(
+                            Prospecto=prospecto[0],
+                            Curso=curso,
+                            Fecha=datetime.datetime.now().date(),
+                            Interes='BAJO',
+                        )
+                        if prospectoEvento[1]:
+                            resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
+                        else:
+                            resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
+                except Curso.DoesNotExist:
+                    resultado[i] += ' y no existe este curso.'
             except IntegrityError:
                 resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar  repetidos en el sistema'
 
