@@ -336,3 +336,55 @@ class ActividadTest(TestCase):
             'hora':'Hora',
             'notas':'Llamada con el prosecto'})
         self.assertEqual(resp.context['titulo'],'Agregar actividad')
+
+
+class CargaMastivaTest(TestCase):
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+        lugar = Lugar.objects.create(
+            Calle='Paraiso',
+            Numero_Interior='',
+            Numero_Exterior='38',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+
+        )
+
+        prospecto = Prospecto.objects.create(
+            Nombre='Pablo',
+            Apellido_Paterno='Martinez',
+            Apellido_Materno='Villareal',
+            Telefono_Casa='+524422232226',
+            Telefono_Celular='+524422580662',
+            Email='mancha@cadhu.com',
+            Direccion=lugar,
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
+
+        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        relacion = ProspectoEvento.objects.create(Prospecto = prospecto,Curso=curso,Interes='ALTO')
+        csv = {'Nombre,Apellido paterno,Apellido materno,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso \n Alejandro,Salmon,FD,asalmon@cadhu.com,,,,,,0,,,,,,,,,,1 \n Marco,Luna,Cal,marco@cadhu.com,,,,,,0,,,,,,,,,,1\n Marqui,Mancha,bla,mancha@cadhu.com,,,,,,0,,,,,,,,,,2\n Alamito,tellez,ajlssdf,alam@cadhu.com,,,,,,2,,,,,,,,,,1'}
+        with open('/test.csv', 'w') as f:
+            f.write(csv)
+            f.close()
+
+        def test_ac_43_1(self):
+            archivo = {'archivo': open('/test.csv', 'r')}
+            resp = self.request.post(reverse('prospectos:carga_masiva'),{
+                'archivo': archivo['archivo']
+            })
+            archivos = {'profile_picture': open(profile['profile_picture'], 'rb')}
+            requests.put(url, data=jsonn, files=archivos)
+
+        def test_ac_43_2(self):
