@@ -189,7 +189,8 @@ def lista_prospectos(request):
 def lista_empresa(request):
     empresas = Empresa.objects.all()
     context = {
-        'empresas':empresas
+        'empresas':empresas,
+        'titulo': 'Empresas',
         }
     return render(request, 'empresas/empresas.html', context)
 
