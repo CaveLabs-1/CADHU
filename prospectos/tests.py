@@ -383,3 +383,5 @@ class CargaMastivaTest(TestCase):
             })
             self.assertEqual(resp.context['archivo'], open('/test.csv', 'r'))
 
+
+

@@ -79,18 +79,6 @@ class ProspectoEventoForm(ModelForm):
             'FlagCADHU',
         )
 
-
-ProspectoEventoFormSet = forms.modelformset_factory(
-    ProspectoEvento,
-    form=ProspectoEventoForm,
-)
-
-
-ProspectoEventoInlineFormSet = forms.inlineformset_factory(
-    Prospecto,
-    ProspectoEvento,
-    fields=('Curso', 'Interes', 'FlagCADHU'),
-    formset=ProspectoEventoFormSet,
-    extra=1,
-    can_delete=True,
-)
+        widgets = {
+            'FlagCADHU': forms.CheckboxInput,
+        }

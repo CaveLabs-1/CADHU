@@ -17,16 +17,19 @@ urlpatterns = [
     # Carga masiva
     path('carga', views.carga_masiva, name='carga'),
 
-    #Lista empresas
+    # Lista empresas
     path('empresas/', views.lista_empresa, name='lista_empresas'),
 
-    #ID_US32 Crear Prospecto
+    # Crear Prospecto
     path('crear_prospecto', views.crear_prospecto, name='crear_prospecto'),
+
+    # Registrar Cursos a Prospecto
+    path('<int:id>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),
 
     # Editar Prospecto
     path('editar_prospecto/<int:id>/', views.editar_prospecto, name='editar_prospecto'),
 
-    #Crear Empresa
+    # Crear Empresa
     path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
 ]
