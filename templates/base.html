@@ -61,10 +61,10 @@
           <li><a class="waves-effect" href="{% url 'prospectos:lista_prospectos' %}"><i class="material-icons">person_outline</i>Prospectos</a></li>
           <li><a class="waves-effect" href="{% url 'prospectos:lista_empresas' %}"><i class="material-icons">business</i>Empresas</a></li>
           {% if request.user|has_group:"administrador"%}
-            <li><a class="waves-effect" href="#"><i class="material-icons">person</i>Clientes</a></li>
+            <!-- <li><a class="waves-effect" href="#"><i class="material-icons">person</i>Clientes</a></li> -->
             <li><a class="waves-effect" href="{% url 'cursos:cursos' %}"><i class="material-icons">insert_invitation</i>Curso</a></li>
             <li><a class="waves-effect" href="{% url 'eventos:lista_evento' %}"><i class="material-icons">playlist_add_check</i>Eventos</a></li>
-            <li><a class="waves-effect" href="#"><i class="material-icons">perm_contact_calendar</i>Administradores</a></li>
+            <!-- <li><a class="waves-effect" href="#"><i class="material-icons">perm_contact_calendar</i>Administradores</a></li> -->
           {% endif %}
         </ul>
       </div>
