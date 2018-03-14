@@ -5,31 +5,18 @@ from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet
+from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoInlineFormSet, ProspectoEventoForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import *
+from django.utils.timezone import now
 import os
 from django.conf import settings
 
-#US7
-@login_required
-@group_required('vendedora','administrador')
-def lista_prospectos(request):
-    # Tomar los  los prospectos de la base de datos:
-    prospectos = Prospecto.objects.all()
-    context = {
-        'prospectos':prospectos,
-        'titulo': 'Prospectos',
-        }
-    # Desplegar la página de prospectos con enlistados con la información de la base de datos
-    return render(request, 'prospectos/prospectos.html', context)
- 
-
-#US43
+# US43
 def carga_masiva(request):
     if request.method == 'POST':
         # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
@@ -103,10 +90,9 @@ def carga_masiva(request):
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
-    queryset = ProspectoEvento.objects.none()
     NewProspectoForm = ProspectoForm(prefix='NewProspectoForm')
     NewLugarForm = LugarForm(prefix='NewLugarForm')
-    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=queryset, prefix='NewProspectoEventoForm')
+    NewProspectoEventoForm = ProspectoEventoInlineFormSet(queryset=ProspectoEvento.objects.none(), prefix='NewProspectoEventoForm')
 
     #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
@@ -114,7 +100,7 @@ def crear_prospecto(request):
         #Crear la instancia de la forma y llenarla con los datos
         NewProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
         NewLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
-        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST, queryset=queryset, prefix='NewProspectoEventoForm')
+        NewProspectoEventoForm = ProspectoEventoInlineFormSet(request.POST, queryset=ProspectoEvento.objects.none(), prefix='NewProspectoEventoForm')
 
         # Validar la forma y guardar en BD
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid() and NewProspectoEventoForm.is_valid():
@@ -123,11 +109,12 @@ def crear_prospecto(request):
             Prospecto = NewProspectoForm.save(commit=False)
             Prospecto.Direccion = Lugar
             Prospecto.Usuario = request.user
+            Prospecto.Fecha_Creacion = now()
             Prospecto.save()
 
             # Guardar los Cursos del Prospecto
-            ProspectoEvento = NewProspectoEventoForm.save(commit=False)
-            for PE in ProspectoEvento:
+            prospectoEvento = NewProspectoEventoForm.save(commit=False)
+            for PE in prospectoEvento:
                 PE.Prospecto = Prospecto
                 PE.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
@@ -152,15 +139,17 @@ def crear_prospecto(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
-
+#US7
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
+    # Tomar los  los prospectos de la base
     prospectos = Prospecto.objects.all()
     context = {
         'prospectos':prospectos,
         'titulo': 'Prospectos',
         }
+    # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
 
