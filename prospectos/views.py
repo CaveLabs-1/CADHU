@@ -29,54 +29,59 @@ def carga_masiva(request):
         for i in range(0, imported_data.height):
             resultado.append('')
             # Intenta crear un lugar A partir de csv o obtener un lugar ya existente (Para no guardar repetidos)
-            lugar = Lugar.objects.get_or_create(
-                Calle=imported_data['Calle'][i],
-                Numero_Interior=imported_data['Numero interior'][i],
-                Numero_Exterior=imported_data['Numero exterior'][i],
-                Colonia=imported_data['Colonia'][i],
-                Ciudad=imported_data['Ciudad'][i],
-                Estado=imported_data['Estado'][i],
-                Pais=imported_data['Pais'][i],
-                Codigo_Postal=imported_data['Codigo postal'][i],
-            )
             try:
-                # Busca en la base de datos por si existe este prospecto para solo crear la relacion
-                prospecto = Prospecto.objects.get_or_create(
-                    Nombre=imported_data['Nombre'][i],
-                    Apellidos=imported_data['Apellidos'][i],
-                    Email=imported_data['Email'][i],
-                    Telefono_Casa=imported_data['Telefono casa'][i],
-                    Telefono_Celular=imported_data['Telefono celular'][i],
-                    Metodo_Captacion=imported_data['Metodo captacion'][i],
-                    Estado_Civil=imported_data['Estado civil'][i],
-                    Ocupacion=imported_data['Ocupacion'][i],
-                    Hijos=int(imported_data['Hijos'][i]),
-                    Recomendacion=imported_data['Recomendacion'][i],
-                    Direccion=lugar[0],
+                lugar, created = Lugar.objects.get_or_create(
+                    Calle=imported_data['Calle'][i],
+                    Numero_Interior=imported_data['Numero interior'][i],
+                    Numero_Exterior=imported_data['Numero exterior'][i],
+                    Colonia=imported_data['Colonia'][i],
+                    Ciudad=imported_data['Ciudad'][i],
+                    Estado=imported_data['Estado'][i],
+                    Pais=imported_data['Pais'][i],
+                    Codigo_Postal=imported_data['Codigo postal'][i],
                 )
-                if prospecto[1]:
-                    resultado[i] = 'El prospecto se creó con éxito '
-                else:
-                    resultado[i] = 'El prospecto ya existía '
-                # obtiene el curso
                 try:
-                    curso = Curso.objects.get(id=imported_data['ID curso'][i])
-                    if curso:
-                        # crea la relacion
-                        prospectoEvento = ProspectoEvento.objects.get_or_create(
-                            Prospecto=prospecto[0],
-                            Curso=curso,
-                            Fecha=datetime.datetime.now().date(),
-                            Interes='BAJO',
-                        )
-                        if prospectoEvento[1]:
-                            resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
-                        else:
-                            resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
-                except Curso.DoesNotExist:
-                    resultado[i] += ' y no existe este curso.'
-            except IntegrityError:
-                resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar  repetidos en el sistema'
+                    # Busca en la base de datos por si existe este prospecto para solo crear la relacion
+                    prospecto = Prospecto.objects.get_or_create(
+                        Nombre=imported_data['Nombre'][i],
+                        Apellidos=imported_data['Apellidos'][i],
+                        Email=imported_data['Email'][i],
+                        Telefono_Casa=imported_data['Telefono casa'][i],
+                        Telefono_Celular=imported_data['Telefono celular'][i],
+                        Metodo_Captacion=imported_data['Metodo captacion'][i],
+                        Estado_Civil=imported_data['Estado civil'][i],
+                        Ocupacion=imported_data['Ocupacion'][i],
+                        Hijos=int(imported_data['Hijos'][i]),
+                        Recomendacion=imported_data['Recomendacion'][i],
+                        Direccion=lugar,
+                    )
+                    print(lugar)
+                    print(prospecto[0].Direccion)
+                    if prospecto[1]:
+                        resultado[i] = 'El prospecto se creó con éxito '
+                    else:
+                        resultado[i] = 'El prospecto ya existía '
+                    # obtiene el curso
+                    try:
+                        curso = Curso.objects.get(id=imported_data['ID curso'][i])
+                        if curso:
+                            # crea la relacion
+                            prospectoEvento = ProspectoEvento.objects.get_or_create(
+                                Prospecto=prospecto[0],
+                                Curso=curso,
+                                Fecha=datetime.datetime.now().date(),
+                                Interes='BAJO',
+                            )
+                            if prospectoEvento[1]:
+                                resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
+                            else:
+                                resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
+                    except Curso.DoesNotExist:
+                        resultado[i] += ' y no existe este curso.'
+                except IntegrityError:
+                    resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar repetidos en el sistema'
+            except:
+                resultado[i] = ''
 
         dataset.append_col(resultado, header='Estado')
         with open('media/resultado.xls', 'wb') as f:
