@@ -38,7 +38,7 @@ class EmpresaTest(TestCase):
     def test_ac_13_2(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
-            'Telefono':'+524422232226',
+            'Telefono':'4422232226',
             'Email':'escuela@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
@@ -47,7 +47,7 @@ class EmpresaTest(TestCase):
     #ACCEPTANCE CRITERIA: 13.3
     def test_ac_13_3(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Telefono':'+524422232226',
+            'Telefono':'4422232226',
             'Email':'correo@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
@@ -67,14 +67,14 @@ class EmpresaTest(TestCase):
     def test_ac_13_6(self):
         Empresa.objects.create(
             Nombre='ITESM',
-            Telefono='+524422232226',
+            Telefono='4422232226',
             Email='correo@itesm.com',
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Razon_Social='Escuela'
         )
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
-            'Telefono':'+524422232226',
+            'Telefono':'4422232226',
             'Email':'correo@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
@@ -111,10 +111,9 @@ class ProspectoListViewTest(TestCase):
 
             Prospecto.objects.create(
                 Nombre='Pablo',
-                Apellido_Paterno='Martinez',
-                Apellido_Materno='Villareal',
-                Telefono_Casa='+524422232226',
-                Telefono_Celular='+524422580662',
+                Apellidos='Martinez Villareal',
+                Telefono_Casa='4422232226',
+                Telefono_Celular='4422580662',
                 Email=''.join([random.choice(string.ascii_letters + string.digits)for n in range(32)]) + '@gmail.com',
                 Direccion=Lugar.objects.get(Calle='Paraiso'),
                 Ocupacion='Estudiante',
@@ -156,10 +155,9 @@ class ProspectoTest(TestCase):
 
         Prospecto.objects.create(
             Nombre='Pablo',
-            Apellido_Paterno='Martinez',
-            Apellido_Materno='Villareal',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
+            Apellidos='Martinez Villareal',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
             Email='pmartinez@gmail.com',
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Metodo_Captacion='Facebook',
@@ -171,7 +169,7 @@ class ProspectoTest(TestCase):
     def test_ac_13_2(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
-            'Telefono':'+524422232226',
+            'Telefono':'4422232226',
             'Email':'escuela@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
@@ -180,7 +178,7 @@ class ProspectoTest(TestCase):
     #ACCEPTANCE CRITERIA: 13.3
     def test_ac_13_3(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Telefono':'+524422232226',
+            'Telefono':'4422232226',
             'Email':'correo@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
@@ -202,10 +200,9 @@ class ProspectoTest(TestCase):
 
         Prospecto.objects.create(
             Nombre='Marco Antonio',
-            Apellido_Paterno='Luna',
-            Apellido_Materno='Calvillo',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
+            Apellidos='Luna Calvillo',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
             Email='a01209537@itesm.mx',
             Direccion=Lugar.objects.get(Calle='Lourdes'),
             Metodo_Captacion='Facebook',
@@ -223,10 +220,9 @@ class ProspectoTest(TestCase):
 
             Prospecto.objects.get_or_create(
                 Nombre='Marco Antonio',
-                Apellido_Paterno='Luna',
-                Apellido_Materno='Calvillo',
-                Telefono_Casa='+524422232226',
-                Telefono_Celular='+524422580662',
+                Apellidos='Luna Calvillo',
+                Telefono_Casa='4422232226',
+                Telefono_Celular='4422580662',
                 Email='pmartinez@gmail.com',
                 Direccion=Lugar.objects.get(Calle='Paraiso'),
                 Metodo_Captacion='Facebook',
@@ -257,10 +253,9 @@ class ProspectoTest(TestCase):
         Prospecto.objects.create(
             id='1',
             Nombre='Marco Antonio',
-            Apellido_Paterno='Luna',
-            Apellido_Materno='Calvillo',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
+            Apellidos='Luna Calvillo',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
             Email='a01209537@itesm.mx',
             Direccion=Lugar.objects.get(Calle='Lourdes'),
             Metodo_Captacion='Facebook',
@@ -270,8 +265,8 @@ class ProspectoTest(TestCase):
         )
 
         resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id': 1}),{
-            'Nombre': 'Luis Alfredo', 'Apellido_Paterno': 'Rodriguez', 'Apellido_Materno': 'Santos',
-            'Telefono_Casa': '+524422232226', 'Telefono_Celular': '+524422580662','Direccion':Lugar.objects.get(Calle='Lourdes'),
+            'Nombre': 'Luis Alfredo', 'Apellidos': 'Rodriguez Santos',
+            'Telefono_Casa': '4422232226', 'Telefono_Celular': '4422580662','Direccion':Lugar.objects.get(Calle='Lourdes'),
             'Email': 'a01209537@itesm.mx', 'Metodo_Captacion': 'Facebook',
             'Estado_Civil': 'SOLTERO', 'Ocupacion': 'Estudiante', 'Hijos': 1
         },follow=True)
@@ -303,10 +298,9 @@ class ActividadTest(TestCase):
 
         prospecto = Prospecto.objects.create(
             Nombre='Pablo',
-            Apellido_Paterno='Martinez',
-            Apellido_Materno='Villareal',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
+            Apellidos='Martinez Villareal',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
             Email='pmartinez@gmail.com',
             Direccion=lugar,
             Metodo_Captacion='Facebook',
@@ -359,10 +353,9 @@ class CargaMastivaTest(TestCase):
 
         prospecto = Prospecto.objects.create(
             Nombre='Pablo',
-            Apellido_Paterno='Martinez',
-            Apellido_Materno='Villareal',
-            Telefono_Casa='+524422232226',
-            Telefono_Celular='+524422580662',
+            Apellidos='Martinez Villareal',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
             Email='mancha@cadhu.com',
             Direccion=lugar,
             Metodo_Captacion='Facebook',
@@ -374,7 +367,11 @@ class CargaMastivaTest(TestCase):
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto = prospecto,Curso=curso,Interes='ALTO')
-        csv = {'Nombre,Apellido paterno,Apellido materno,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso \n Alejandro,Salmon,FD,asalmon@cadhu.com,,,,,,0,,,,,,,,,,1 \n Marco,Luna,Cal,marco@cadhu.com,,,,,,0,,,,,,,,,,1\n Marqui,Mancha,bla,mancha@cadhu.com,,,,,,0,,,,,,,,,,2\n Alamito,tellez,ajlssdf,alam@cadhu.com,,,,,,2,,,,,,,,,,1'}
+        csv = ['Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso'
+               ' \n Alejandro,Salmon FD,asalmon@cadhu.com,4423596210,,,,,0,,,,,,,,,,1 '
+               '\n Marco,Luna Cal,marco@cadhu.com,,4423596210,,,,0,,,,,,,,,,1 '
+               '\n Marqui,Mancha bla,mancha@cadhu.com,,,,,,0,,,,,,,,,,2 '
+               '\n Alamito,tellez ajlssdf,alam@cadhu.com,,,,,,2,,,,,,,,,,1']
         with open('/test.csv', 'w') as f:
             f.write(csv)
             f.close()
@@ -384,7 +381,5 @@ class CargaMastivaTest(TestCase):
             resp = self.request.post(reverse('prospectos:carga_masiva'),{
                 'archivo': archivo['archivo']
             })
-            archivos = {'profile_picture': open(profile['profile_picture'], 'rb')}
-            requests.put(url, data=jsonn, files=archivos)
+            self.assertEqual(resp.context['archivo'], open('/test.csv', 'r'))
 
-        def test_ac_43_2(self):
