@@ -293,7 +293,7 @@ class ActividadTest(TestCase):
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO')
+        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
 
     #ACCEPTANCE CRITERIA: 12.1
     def test_ac_12_1(self):
@@ -360,7 +360,7 @@ class CargaMasivaTest(TestCase):
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO')
+        relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
 
     def test_ac_43_1(self):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
@@ -460,6 +460,3 @@ class CargaMasivaTest(TestCase):
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, 1)
         self.assertEqual(prospecto_rel, 0)
-
-
-

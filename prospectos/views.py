@@ -55,8 +55,6 @@ def carga_masiva(request):
                         Recomendacion=imported_data['Recomendacion'][i],
                         Direccion=lugar,
                     )
-                    print(lugar)
-                    print(prospecto[0].Direccion)
                     if prospecto[1]:
                         resultado[i] = 'El prospecto se creó con éxito '
                     else:
@@ -71,6 +69,7 @@ def carga_masiva(request):
                                 Curso=curso,
                                 Fecha=datetime.datetime.now().date(),
                                 Interes='BAJO',
+                                FlagCADHU=False,
                             )
                             if prospectoEvento[1]:
                                 resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
@@ -82,7 +81,7 @@ def carga_masiva(request):
                     resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar repetidos en el sistema'
             except:
                 resultado[i] = ''
-
+        # escribe el resultado en ultima columna del excel
         dataset.append_col(resultado, header='Estado')
         with open('media/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
