@@ -8,9 +8,7 @@ from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
-import string
-import random
-import datetime
+import string, random, datetime, os
 
 
 class EmpresaTest(TestCase):
@@ -217,7 +215,6 @@ class ProspectoTest(TestCase):
     def test_prospecto_mismo_mail(self):
 
         try:
-
             Prospecto.objects.get_or_create(
                 Nombre='Marco Antonio',
                 Apellidos='Luna Calvillo',
@@ -284,6 +281,9 @@ class ActividadTest(TestCase):
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
         lugar = Lugar.objects.create(
             Calle='Paraiso',
             Numero_Interior='',
@@ -293,9 +293,7 @@ class ActividadTest(TestCase):
             Ciudad='Queretaro',
             Pais='Mexico',
             Codigo_Postal='76125'
-
         )
-
         prospecto = Prospecto.objects.create(
             Nombre='Pablo',
             Apellidos='Martinez Villareal',
@@ -308,10 +306,9 @@ class ActividadTest(TestCase):
             Ocupacion='Estudiante',
             Hijos=1,
         )
-
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto = prospecto,Curso=curso,Interes='ALTO')
+        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO')
 
     #ACCEPTANCE CRITERIA: 12.1
     def test_ac_12_1(self):
@@ -339,6 +336,9 @@ class CargaMastivaTest(TestCase):
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
         lugar = Lugar.objects.create(
             Calle='Paraiso',
             Numero_Interior='',
@@ -348,38 +348,131 @@ class CargaMastivaTest(TestCase):
             Ciudad='Queretaro',
             Pais='Mexico',
             Codigo_Postal='76125'
-
         )
-
         prospecto = Prospecto.objects.create(
-            Nombre='Pablo',
-            Apellidos='Martinez Villareal',
+            Nombre='Alejandro',
+            Apellidos='Salmon FD',
             Telefono_Casa='4422232226',
             Telefono_Celular='4422580662',
-            Email='mancha@cadhu.com',
+            Email='asalmon@cadhu.com',
             Direccion=lugar,
             Metodo_Captacion='Facebook',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
         )
-
+        prospecto2 = Prospecto.objects.create(
+            Nombre='Alejandro',
+            Apellidos='Salmon FD',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
+            Email='salmon@cadhu.com',
+            Direccion=lugar,
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+        )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto = prospecto,Curso=curso,Interes='ALTO')
-        csv = ['Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso'
-               ' \n Alejandro,Salmon FD,asalmon@cadhu.com,4423596210,,,,,0,,,,,,,,,,1 '
-               '\n Marco,Luna Cal,marco@cadhu.com,,4423596210,,,,0,,,,,,,,,,1 '
-               '\n Marqui,Mancha bla,mancha@cadhu.com,,,,,,0,,,,,,,,,,2 '
-               '\n Alamito,tellez ajlssdf,alam@cadhu.com,,,,,,2,,,,,,,,,,1']
-        with open('/test.csv', 'w') as f:
+        relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO')
+
+    def test_ac_43_1(self):
+        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
+              '\n Alejandro,Salmon FD,mancha@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
+        with open('test.csv', 'w') as f:
             f.write(csv)
             f.close()
+        archivo = open('test.csv', 'r')
+        post = {'archivo': archivo}
+        resp = self.client.post(reverse('prospectos:carga'), post)
+        archivo.close()
+        os.remove('test.csv')
+        os.remove('media/resultado.xls')
+        prospecto = Prospecto.objects.get(Email='mancha@cadhu.com')
+        prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
+        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        prospecto2_rel = ProspectoEvento.objects.filter(Prospecto_id=3).count()
+        self.assertEqual(prospecto_count, 1)
+        self.assertEqual(prospecto_rel, 1)
+        self.assertEqual(prospecto2_rel, 0)
 
-        def test_ac_43_1(self):
-            archivo = {'archivo': open('/test.csv', 'r')}
-            resp = self.request.post(reverse('prospectos:carga_masiva'),{
-                'archivo': archivo['archivo']
-            })
-            self.assertEqual(resp.context['archivo'], open('/test.csv', 'r'))
+
+    def test_ac_43_2(self):
+        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
+              '\n Alejandro,Salmon FD,salmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
+        prospecto = Prospecto.objects.get(Email='salmon@cadhu.com')
+        with open('test.csv', 'w') as f:
+            f.write(csv)
+            f.close()
+        archivo = open('test.csv', 'r')
+        post = {'archivo': archivo}
+        resp = self.client.post(reverse('prospectos:carga'), post)
+        archivo.close()
+        os.remove('test.csv')
+        os.remove('media/resultado.xls')
+        prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
+        prospecto_rel = ProspectoEvento.objects.filter(Prospecto_id=prospecto.id).count()
+        self.assertEqual(prospecto_count, 1)
+        self.assertEqual(prospecto_rel, 1)
+
+    def test_ac_43_3(self):
+        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
+              '\n Alejandro,Salmon FD,asalmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
+        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto_count_antes = Prospecto.objects.filter(id=prospecto.id).count()
+        prospecto_rel_antes = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        with open('test.csv', 'w') as f:
+            f.write(csv)
+            f.close()
+        archivo = open('test.csv', 'r')
+        post = {'archivo': archivo}
+        resp = self.client.post(reverse('prospectos:carga'), post)
+        archivo.close()
+        os.remove('test.csv')
+        os.remove('media/resultado.xls')
+        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
+        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        self.assertEqual(prospecto_count, prospecto_count_antes)
+        self.assertEqual(prospecto_rel, prospecto_rel_antes)
+
+    def test_ac_43_4(self):
+        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
+              '\n Pedro,Salmon FD,asalmon@cadhu.com,1234567890,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
+        with open('test.csv', 'w') as f:
+            f.write(csv)
+            f.close()
+        archivo = open('test.csv', 'r')
+        post = {'archivo': archivo}
+        resp = self.client.post(reverse('prospectos:carga'), post)
+        archivo.close()
+        os.remove('test.csv')
+        os.remove('media/resultado.xls')
+        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
+        self.assertEqual(prospecto_count, 1)
+
+    def test_ac_43_5(self):
+        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
+              '\n Alejandro,Salmon FD,salmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,102'
+        with open('test.csv', 'w') as f:
+            f.write(csv)
+            f.close()
+        archivo = open('test.csv', 'r')
+        post = {'archivo': archivo}
+        resp = self.client.post(reverse('prospectos:carga'), post)
+        archivo.close()
+        os.remove('test.csv')
+        os.remove('media/resultado.xls')
+        prospecto = Prospecto.objects.get(Email='salmon@cadhu.com')
+        prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
+        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        self.assertEqual(prospecto_count, 1)
+        self.assertEqual(prospecto_rel, 0)
 

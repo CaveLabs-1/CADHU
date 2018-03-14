@@ -82,7 +82,7 @@ def carga_masiva(request):
         with open('media/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
             f.close()
-        messages.error(request,'La carga masiva ha sido exitosa')
+        messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
