@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+    {% block title %}Asignar Curso a Prospecto{% endblock %}
+    {% block content %}
+        <div class="card ">
+            <div class="card-content">
+                <h5 class="center">Registrar Curso</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row center">
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                            <label for="Curso">Curso</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                            <label for="Interes">Interes</label>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Curso</button>
+                    </div>
+                </form>
+                <br><br>
+                <h5 class="center">Cursos Interesados</h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Interes</th>
+                            <th>Flag</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for curso in cursos %}
+                        <tr>
+                            <td>{{ curso.Curso }}</td>
+                            <td>{{ curso.Interes }}</td>
+                            {% if curso.FlagCADHU == True %}
+                                <td><a><i class="material-icons">check</i></a></td>
+                            {% else %}
+                                <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                                <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            <br><br>
+            <div class="center">
+                <button onclick="location.href='{% url 'prospectos:lista_prospectos' %}'" class="btn waves-effect waves-light form_button">Regresar a Lista</button>
+            </div>
+            </div>
+        </div>
+
+    {% endblock content %}

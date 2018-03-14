@@ -336,3 +336,5 @@ class ActividadTest(TestCase):
             'hora':'Hora',
             'notas':'Llamada con el prosecto'})
         self.assertEqual(resp.context['titulo'],'Agregar actividad')
+
+

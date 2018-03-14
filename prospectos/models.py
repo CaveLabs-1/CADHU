@@ -30,6 +30,7 @@ TIPOS_INTERES = (
     ('MEDIO', 'MEDIO'),
     ('ALTO', 'ALTO'),
     ('MUY ALTO', 'MUY ALTO'),
+    ('PAGADO', 'PAGADO'),
 )
 
 ESTADO_CIVIL = (
@@ -45,6 +46,7 @@ class Empresa(models.Model):
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
     Razon_Social = models.CharField(max_length=50, blank=False, null=True)
+    Activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.Nombre
@@ -65,6 +67,8 @@ class Prospecto(models.Model):
     Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
     Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Fecha_Creacion = models.DateField(null=True)
+    Activo = models.BooleanField(default=True)
+    Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
 
 
     def __str__(self):
@@ -87,7 +91,7 @@ class ProspectoEvento(models.Model):
     Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
-    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
+    FlagCADHU = models.BooleanField(verbose_name='Bandera de interes')
     status = models.CharField(max_length=50, choices=ESTATUS, default='INTERESADO')
     #pagos
 
