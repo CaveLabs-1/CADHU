@@ -5,25 +5,31 @@ from django.conf.urls.static import static
 
 app_name = 'prospectos'
 urlpatterns = [
-    # Lista de actividades
+    # Lista de actividades para una relación Prospecto - Evento
     path('actividades/<int:id>/', views.lista_actividades, name='lista_actividades'),
 
-    # Crear actividad
-    path('actividades/<int:id>/crear', views.crear_actividad, name='crear_actividad'),
+    # Crear actividad para una relación Prospecto - Evento
+    path('actividades/crear/<int:id>/', views.crear_actividad, name='crear_actividad'),
 
-    #Lista prospectos
+    # Lista prospectos
     path('', views.lista_prospectos, name='lista_prospectos'),
 
-    #Lista empresas
+    # Carga masiva
+    path('carga', views.carga_masiva, name='carga'),
+
+    # Lista empresas
     path('empresas/', views.lista_empresa, name='lista_empresas'),
 
-    #Crear Prospecto
+    # Crear Prospecto
     path('crear_prospecto', views.crear_prospecto, name='crear_prospecto'),
+
+    # Registrar Cursos a Prospecto
+    path('<int:id>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),
 
     # Editar Prospecto
     path('editar_prospecto/<int:id>/', views.editar_prospecto, name='editar_prospecto'),
 
-    #Crear Empresa
-    path('empresa_crear/', views.empresa_crear, name='empresa_crear'),
+    # Crear Empresa
+    path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
 ]

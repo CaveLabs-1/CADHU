@@ -8,7 +8,8 @@
               <i class="large material-icons">add</i>
             </a>
             <ul>
-              <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                <li><a class="btn-floating green modal-trigger" href="#modalCarga"><i class="material-icons">publish</i></a>
+                </li>
             </ul>
           </div>
 
@@ -16,8 +17,7 @@
                 <thead>
                   <tr>
                       <th>Nombre</th>
-                      <th>Paterno</th>
-                      <th>Materno</th>
+                      <th>Apellidos</th>
                       <th>WhatsApp</th>
                       <th>Email</th>
                       <th>Acciones</th>
@@ -27,8 +27,7 @@
                 {% for prospecto in prospectos   %}
                     <tr>
                         <td>{{ prospecto.Nombre }}</td>
-                        <td>{{ prospecto.Apellido_Paterno }}</td>
-                        <td>{{ prospecto.Apellido_Materno }}</td>
+                        <td>{{ prospecto.Apellidos }}</td>
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
                         <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
                         <td>
@@ -40,4 +39,54 @@
                 </tbody>
             </table>
 
-  {% endblock %}
+          <!-- Modal Structure -->
+          <div id="modalCarga" class="modal modal-fixed-footer">
+              <div class="modal-content">
+                  <h4>Carga masiva</h4>
+                  <div class=" row valign-wrapper">
+                      <div class="col s12">
+                          <form method="post" class="s12" action="{% url 'prospectos:carga' %}"
+                                enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="file-field input-field">
+                                  <div class="btn">
+                                      <span>Seleccionar</span>
+                                      <input type="file" name="archivo" id="archivo" accept="text/csv" required>
+                                  </div>
+                                  <div class="file-path-wrapper valign-wrapper">
+                                      <input class="file-path validate" type="text" accept="text/csv" required>
+                                  </div>
+                              </div>
+                              <div class="row valign-wrapper">
+                                  <div class="col s12 center">
+                                      <button type="submit" class="btn waves-effect waves-light form_button" href="#!">
+                                          Subir
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+              </div>
+          </div>
+
+      {% endblock %}
+
+      {% block js %}
+
+      <script>
+
+            {% if messages %}
+              {%for message in messages %}
+                  {% if message.level == 40 %}
+                      var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
+                      M.toast({html: mensaje})
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+
+      </script>
+      {% endblock %}

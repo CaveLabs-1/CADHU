@@ -3,14 +3,10 @@ from .models import Curso
 from eventos.models import Evento
 from django.views import generic
 from .forms import FormaCurso
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
-# class CreaCurso(generic.CreateView):
-#     model = Curso
-#     form_class = CursosForm
-#     # fields = ['Nombre', 'Fecha', 'Direccion', 'Descripcion', 'Hora', 'Costo', 'Evento']
-#     template_name = 'cursos/nuevo_curso.html'
 
 @login_required
 @group_required('administrador')
@@ -26,26 +22,31 @@ def cursos(request):
 @login_required
 @group_required('administrador')
 def nuevo_curso(request):
-    # NewActividadForm = FormaActividad()
+    # recibir forma
     Forma_nuevo_curso = FormaCurso()
+    # si se recibe una forma con post
     if request.method == 'POST':
-        # NewActividadForm = FormaActividad(request.POST)
         Forma_nuevo_curso = FormaCurso(request.POST)
+        # si la forma es válida
         if Forma_nuevo_curso.is_valid():
+            # se guarda la forma
             actividad = Forma_nuevo_curso.save()
-            return redirect('/cursos')
-        # else:
-        #     print ("Error")
-        #     print (Forma_nuevo_curso.errors)
+            # se redirige a la próxima vista
+            messages.success(request, '¡Curso agregado exitosamente!')
+
+            # return redirect('cursos:lista_cursos')
+            return redirect('/cursos/lista_cursos')
+        # se renderea la forma nuevamente con los errores marcados
         context = {
             'form': Forma_nuevo_curso,
-            'titulo': 'Agregar curso.',
+            'titulo': 'Agregar Curso',
             'error_message': Forma_nuevo_curso.errors
         }
         return render(request, 'cursos/nuevo_curso.html', context)
+    # se renderea la página
     context = {
         'form': Forma_nuevo_curso,
-        'titulo': 'Agregar curso.',
+        'titulo': 'Agregar Curso',
         'eventos': Evento.objects.all().order_by('Nombre')
     }
     return render(request, 'cursos/nuevo_curso.html', context)

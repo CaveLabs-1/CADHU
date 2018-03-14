@@ -5,7 +5,7 @@
     {% block title %}Prospecto{% endblock %}
     {% block content %}
 
-        {% block js %}
+        <!--
             <script type="text/javascript">
             {% if NewProspectoForm.errors %}
                 {% for field in NewProspectoForm %}
@@ -27,8 +27,18 @@
                     M.toast({html: '{{ error|escape }}'})
                 {% endfor %}
             {% endif %}
+            {% if formset.errors %}
+                {% for field in formset %}
+                    {% for error in field.errors %}
+                        M.toast({html: '{{ error|escape }}'})
+                    {% endfor %}
+                {% endfor %}
+                {% for error in formset.non_field_errors %}
+                    M.toast({html: '{{ error|escape }}'})
+                {% endfor %}
+            {% endif %}
             </script>
-        {% endblock js %}
+        -->
 
         <div class="card ">
             <div class="card-content">
@@ -40,12 +50,12 @@
                             <label for="Nombre">Nombre(s)</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Apellido_Paterno | add_class:'form-control' }}
-                            <label for="apellido_p">Apellido paterno</label>
+                            {{ NewProspectoForm.Apellidos | add_class:'form-control' }}
+                            <label for="apellido_p">Apellidos</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Apellido_Materno | add_class:'form-control' }}
-                            <label for="apellido_m">Apellido materno</label>
+                            {{ NewProspectoForm.Email | add_class:'form-control' }}
+                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
                         </div>
                     </div>
                     <div class="row">
@@ -58,8 +68,8 @@
                             <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Casa</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Email | add_class:'form-control' }}
-                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                            {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
+                            <label for="ocupacion">Ocupaci&oacute;n</label>
                         </div>
                     </div>
                     <div class="row">
@@ -72,15 +82,11 @@
                             <label for="otro">Radio/Recomendacion </label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoForm.Ocupacion | add_class:'form-control' }}
-                            <label for="ocupacion">Ocupaci&oacute;n</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Estado_Civil | add_class:'form-control' }}
                             <label>Estado civil</label>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Hijos | add_class:'form-control' }}
                             <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
@@ -104,36 +110,31 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12 m6 l3">
+                        <div class="input-field col s12 m6">
                             {{ NewLugarForm.Colonia | add_class:'form-control' }}
                             <label for="colonia">Colonia</label>
                         </div>
-                        <div class="input-field col s12 m6 l3">
+                        <div class="input-field col s12 m6">
                             {{ NewLugarForm.Calle | add_class:'form-control' }}
                             <label for="calle">Calle</label>
                         </div>
-                        <div class="input-field col s6 m4 l2">
+                        <div class="input-field col s6 m4">
                             {{ NewLugarForm.Numero_Exterior | add_class:'form-control' }}
                             <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
                         </div>
-                        <div class="input-field col s6 m4 l2">
-                             {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
+                        <div class="input-field col s6 m4">
+                            {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
                             <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
                         </div>
-                        <div class="input-field col s12 m4 l2">
+                        <div class="input-field col s12 m4">
                             {{ NewLugarForm.Codigo_Postal | add_class:'form-control' }}
                             <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
                         </div>
                     </div>
                     <div class="row center">
-                        <h5>Cursos de Interes</h5>
-                    </div>
-
-                    <div class="row center">
-                        <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+                        <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Curso</button>
                     </div>
                 </form>
             </div>
         </div>
-
     {% endblock %}

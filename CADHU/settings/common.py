@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'widget_tweaks',
     'prospectos',
-    'phonenumber_field',
     'clientes',
     'eventos',
     'usuarios',
@@ -119,7 +118,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = reverse_lazy('prospectos:lista_prospectos')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+# No tocar, se usa para carga masiva
+IMPORT_EXPORT_USE_TRANSACTIONS = True

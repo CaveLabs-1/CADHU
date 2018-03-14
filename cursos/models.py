@@ -1,8 +1,6 @@
 from django.db import models
-from django import forms
-from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import User
 from django.utils import timezone
-# from eventos.models import Evento
 import datetime
 
 class Curso(models.Model):
@@ -11,6 +9,9 @@ class Curso(models.Model):
     Fecha = models.DateField(blank=True, null=True)
     Direccion = models.CharField(max_length=100, blank=True, null=True)
     Descripcion = models.CharField(max_length=150, blank=True, null=True)
-    # Hora = models.TimeField(blank=True, null=True)
     Costo = models.PositiveIntegerField(blank=True, null=True)
     Activo = models.BooleanField(default=True)
+    Encargado = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.Nombre

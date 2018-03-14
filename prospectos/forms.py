@@ -1,5 +1,5 @@
-from .models import Empresa, Prospecto, Lugar
-from django.forms import ModelForm, Textarea
+from .models import Empresa, Prospecto, Lugar, ProspectoEvento
+from django.forms import ModelForm, inlineformset_factory
 from django import forms
 from . import models
 from CADHU.settings import common
@@ -20,8 +20,7 @@ class ProspectoForm(ModelForm):
         model = Prospecto
         fields = (
             'Nombre',
-            'Apellido_Paterno',
-            'Apellido_Materno',
+            'Apellidos',
             'Telefono_Casa',
             'Telefono_Celular',
             'Email',
@@ -68,4 +67,18 @@ class FormaActividad(ModelForm):
             'time': forms.TimeInput(),
             'notas': forms.Textarea()
 
+        }
+
+
+class ProspectoEventoForm(ModelForm):
+    class Meta:
+        model = ProspectoEvento
+        fields = (
+            'Curso',
+            'Interes',
+            'FlagCADHU',
+        )
+
+        widgets = {
+            'FlagCADHU': forms.CheckboxInput,
         }
