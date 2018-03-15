@@ -136,6 +136,7 @@ def crear_prospecto(request):
 
 @login_required
 @group_required('vendedora','administrador')
+#US4
 def editar_prospecto(request, id):
     idprospecto = Prospecto.objects.get(id=id)
     NewProspectoForm = ProspectoForm(instance=idprospecto)
@@ -147,8 +148,8 @@ def editar_prospecto(request, id):
         if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
 
             prospecto = NewProspectoForm.save(commit=False)
-            Lugar = NewLugarForm.save()
-            Prospecto.Direccion =Lugar
+            lugar = NewLugarForm.save()
+            prospecto.Direccion =lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
             return redirect('prospectos:lista_prospectos')
