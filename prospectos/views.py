@@ -134,6 +134,45 @@ def crear_prospecto(request):
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
+@login_required
+@group_required('vendedora','administrador')
+def editar_prospecto(request, id):
+    idprospecto = Prospecto.objects.get(id=id)
+    NewProspectoForm = ProspectoForm(instance=idprospecto)
+    NewLugarForm = LugarForm(instance=idprospecto.Direccion)
+
+    if request.method == 'POST':
+        NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
+        NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+
+            prospecto = NewProspectoForm.save(commit=False)
+            Lugar = NewLugarForm.save()
+            Prospecto.Direccion =Lugar
+            prospecto.save()
+            messages.success(request, 'El prospecto ha sido actualizado.')
+            return redirect('prospectos:lista_prospectos')
+
+        else:
+            messages.success(request, 'Existe una falla en los campos.')
+            context = {
+                'NewProspectoForm': NewProspectoForm,
+                'NewLugarForm': NewLugarForm,
+                'prospecto': idprospecto,
+                'titulo': 'Editar Prospecto',
+            }
+            return render(request, 'prospectos/prospectos_form.html', context)
+
+    context = {
+        'NewProspectoForm': NewProspectoForm,
+        'NewLugarForm': NewLugarForm,
+        'prospecto': idprospecto,
+        'titulo': 'Editar Prospecto',
+    }
+    return render(request, 'prospectos/prospectos_form.html', context)
+
+
+
 def registrar_cursos(request, id):
     prospecto = Prospecto.objects.get(id=id)
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
@@ -193,44 +232,6 @@ def lista_empresa(request):
         'titulo': 'Empresas',
         }
     return render(request, 'empresas/empresas.html', context)
-
-
-@login_required
-@group_required('vendedora','administrador')
-def editar_prospecto(request, id):
-    idprospecto = Prospecto.objects.get(id=id)
-    NewProspectoForm = ProspectoForm(instance=idprospecto)
-    NewLugarForm = LugarForm(instance=idprospecto.Direccion)
-
-    if request.method == 'POST':
-        NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
-        NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
-
-            prospecto = NewProspectoForm.save(commit=False)
-            Lugar = NewLugarForm.save()
-            Prospecto.Direccion =Lugar
-            prospecto.save()
-            messages.success(request, 'El prospecto ha sido actualizado.')
-            return redirect('prospectos:lista_prospectos')
-
-        else:
-            messages.success(request, 'Existe una falla en los campos.')
-            context = {
-                'NewProspectoForm': NewProspectoForm,
-                'NewLugarForm': NewLugarForm,
-                'prospecto': idprospecto,
-                'titulo': 'Editar Prospecto',
-            }
-            return render(request, 'prospectos/prospectos_form.html', context)
-
-    context = {
-        'NewProspectoForm': NewProspectoForm,
-        'NewLugarForm': NewLugarForm,
-        'prospecto': idprospecto,
-        'titulo': 'Editar Prospecto',
-    }
-    return render(request, 'prospectos/prospectos_form.html', context)
 
 
 # US13
