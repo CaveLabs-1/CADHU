@@ -54,6 +54,7 @@ def carga_masiva(request):
                         Hijos=int(imported_data['Hijos'][i]),
                         Recomendacion=imported_data['Recomendacion'][i],
                         Direccion=lugar,
+                        Activo=True,
                     )
                     if prospecto[1]:
                         resultado[i] = 'El prospecto se creó con éxito '
