@@ -8,8 +8,8 @@
               <i class="large material-icons">add</i>
             </a>
             <ul>
-                <li><a class="btn-floating green modal-trigger" href="#modalCarga"><i class="material-icons">publish</i></a>
-                </li>
+                <li><a class="btn-floating blue" href="{% static 'files/TemplateCargaMasiva.xlsx'%}"><i class="material-icons">get_app</i></a></li>
+                <li><a class="btn-floating green modal-trigger" href="#modalCarga"><i class="material-icons">publish</i></a></li>
             </ul>
           </div>
 
@@ -29,7 +29,7 @@
                         <td>{{ prospecto.Nombre }}</td>
                         <td>{{ prospecto.Apellidos }}</td>
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
-                        <td><a href="mailto:"{{ prospecto.Email }}"">{{ prospecto.Email }}</a></td>
+                        <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
                         <td>
                           <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                           <a><i class="material-icons text-rojo-cadhu">delete</i></a>
