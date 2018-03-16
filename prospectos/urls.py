@@ -14,7 +14,7 @@ urlpatterns = [
     # Lista prospectos
     path('', views.lista_prospectos, name='lista_prospectos'),
 
-    # Carga masiva
+    # Carga masiva de prospectos
     path('carga', views.carga_masiva, name='carga'),
 
     # Lista empresas

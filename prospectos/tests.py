@@ -81,7 +81,6 @@ class EmpresaTest(TestCase):
 
 
 class ProspectoListViewTest(TestCase):
-
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
@@ -112,6 +111,7 @@ class ProspectoListViewTest(TestCase):
                 Email=''.join([random.choice(string.ascii_letters + string.digits)for n in range(32)]) + '@gmail.com',
                 Direccion=Lugar.objects.get(Calle='Paraiso'),
                 Ocupacion='Estudiante',
+                Activo=True,
             )
 
     #Acceptance citeria: 7.1
@@ -156,6 +156,7 @@ class ProspectoTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
 
     def test_ac_13_2(self):
@@ -199,6 +200,7 @@ class ProspectoTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
         Prospecto_acum = Prospecto.objects.filter(Email='a01209537@itesm.mx').count()
         self.assertEqual(Prospecto_acum, 1)
@@ -216,6 +218,7 @@ class ProspectoTest(TestCase):
                 Estado_Civil='Soltero',
                 Ocupacion='Estudiante',
                 Hijos=1,
+                Activo=True,
             )
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 0)
@@ -247,6 +250,7 @@ class ProspectoTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
         resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id': 1}),{
             'Nombre': 'Luis Alfredo', 'Apellidos': 'Rodriguez Santos',
@@ -290,6 +294,7 @@ class ActividadTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
@@ -345,6 +350,7 @@ class CargaMasivaTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
         prospecto2 = Prospecto.objects.create(
             Nombre=' Alejandro',
@@ -357,6 +363,7 @@ class CargaMasivaTest(TestCase):
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
+            Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
