@@ -1,4 +1,4 @@
-from .models import Empresa, Prospecto, Lugar, ProspectoEvento
+from .models import Empresa, Prospecto, Lugar, ProspectoEvento, Cliente
 from django.forms import ModelForm, inlineformset_factory
 from django import forms
 from . import models
@@ -9,8 +9,14 @@ class EmpresaForm(ModelForm):
         model = Empresa
         fields = (
             'Nombre',
-            'Telefono',
-            'Email',
+            'Contacto1',
+            'Contacto2',
+            'Telefono1',
+            'Telefono2',
+            'Email1',
+            'Email2',
+            'Puesto1',
+            'Puesto2',
             'Razon_Social',
         )
 
@@ -61,7 +67,9 @@ class FormaActividad(ModelForm):
             'hora',
             'notas',
         ]
-
+        exclude = [
+            'prospecto_evento'
+        ]
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',
             'hora': 'Este campo es opcional.',
@@ -70,7 +78,6 @@ class FormaActividad(ModelForm):
             'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
             'notas': forms.Textarea()
-
         }
 
 
@@ -85,4 +92,15 @@ class ProspectoEventoForm(ModelForm):
 
         widgets = {
             'FlagCADHU': forms.CheckboxInput,
+        }
+
+class ClienteForm(ModelForm):
+    class Meta:
+        model = Cliente
+        fields = (
+            'Matricula',
+        )
+        excludes = {
+            'ProspectoEvento',
+            'Fecha',
         }

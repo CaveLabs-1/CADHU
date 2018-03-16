@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
+from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
 from cursos.models import Curso
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -84,11 +84,51 @@ def carga_masiva(request):
                 resultado[i] = ''
         # escribe el resultado en ultima columna del excel
         dataset.append_col(resultado, header='Estado')
-        with open('media/resultado.xls', 'wb') as f:
+        with open('static/files/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
             f.close()
         messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
+
+# US31
+@login_required
+@group_required('vendedora','administrador')
+def crear_cliente(request, id):
+    NewClienteForm = ClienteForm()
+    #Si el método HTTP es post procesar la información de la forma:
+    if request.method == "POST":
+        #Definir el error para forma invalida:
+        #Crear y llenar la forma
+        NewClienteForm = ClienteForm(request.POST)
+        pago = Pago.objects.get(id=id)
+        fecha = pago.Fecha
+        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospectoEvento)
+        #Si la forma es válida guardar la información en la base de datos:
+        if NewClienteForm.is_valid():
+            cliente = NewClienteForm.save(commit=False)
+            cliente.ProspectoEvento = prospectoevento
+            clente.Fecha = fecha
+            prospectoevento.status = 'CURSANDO'
+            prospectoevento.save()
+            cliente.save()
+            clientes = Cliente.objects.all()
+            context = {
+
+                }
+            return render(request, '', context)
+        #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        context = {
+            'NewClienteForm': NewClienteForm,
+            'titulo': 'Registrar un Cliente',
+        }
+        return render(request, 'clientes/crear_cliente.html', context)
+    #Si el método HTTP no es post, volver a enviar la forma:
+    context = {
+        'NewClienteForm': NewClienteForm,
+        'titulo': 'Registrar un Cliente',
+    }
+    return render(request, 'clientes/crear_cliente.html', context)
 
 
 #US3
@@ -175,6 +215,7 @@ def editar_prospecto(request, id):
 
 
 
+#US26
 def registrar_cursos(request, id):
     prospecto = Prospecto.objects.get(id=id)
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
@@ -320,10 +361,12 @@ def crear_actividad(request, id):
     # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
+        prospectoEvento = ProspectoEvento.objects.get(id=id)
         # SI LA FORMA ES VÁLIDA
         if NewActividadForm.is_valid():
             actividad = NewActividadForm.save(commit=False)
             # SE GUARDA LA NOTA
+            actividad.prospecto_evento = prospectoEvento
             actividad.save()
             #Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')

@@ -369,6 +369,7 @@ class CargaMasivaTest(TestCase):
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
 
+    #ACCEPTANCE CRITERIA: 43.1
     def test_ac_43_1(self):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
@@ -381,7 +382,7 @@ class CargaMasivaTest(TestCase):
         resp = self.client.post(reverse('prospectos:carga'), post)
         archivo.close()
         os.remove('test.csv')
-        os.remove('media/resultado.xls')
+        os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='mancha@cadhu.com')
         prospecto2 = Prospecto.objects.get(Email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
@@ -391,6 +392,7 @@ class CargaMasivaTest(TestCase):
         self.assertEqual(prospecto_rel, 1)
         self.assertEqual(prospecto2_rel, 0)
 
+    #ACCEPTANCE CRITERIA: 43.2
     # def test_ac_43_2(self):
     #     curso = Curso.objects.get(Nombre='CursoPrueba').id
     #     csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
@@ -403,13 +405,14 @@ class CargaMasivaTest(TestCase):
     #     resp = self.client.post(reverse('prospectos:carga'), post)
     #     archivo.close()
     #     os.remove('test.csv')
-    #     os.remove('media/resultado.xls')
+    #     os.remove('static/files/resultado.xls')
     #     prospecto = Prospecto.objects.get(Email='prospecto2@cadhu.com')
     #     prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
     #     prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
     #     self.assertEqual(prospecto_count, 1)
     #     self.assertEqual(prospecto_rel, 1)
 
+    #ACCEPTANCE CRITERIA: 43.3
     def test_ac_43_3(self):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
@@ -425,13 +428,14 @@ class CargaMasivaTest(TestCase):
         resp = self.client.post(reverse('prospectos:carga'), post)
         archivo.close()
         os.remove('test.csv')
-        os.remove('media/resultado.xls')
+        os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, prospecto_count_antes)
         self.assertEqual(prospecto_rel, prospecto_rel_antes)
 
+    #ACCEPTANCE CRITERIA: 43.4
     def test_ac_43_4(self):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
@@ -444,11 +448,12 @@ class CargaMasivaTest(TestCase):
         resp = self.client.post(reverse('prospectos:carga'), post)
         archivo.close()
         os.remove('test.csv')
-        os.remove('media/resultado.xls')
+        os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         self.assertEqual(prospecto_count, 1)
 
+    #ACCEPTANCE CRITERIA: 43.5
     def test_ac_43_5(self):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
@@ -461,7 +466,7 @@ class CargaMasivaTest(TestCase):
         resp = self.client.post(reverse('prospectos:carga'), post)
         archivo.close()
         os.remove('test.csv')
-        os.remove('media/resultado.xls')
+        os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()

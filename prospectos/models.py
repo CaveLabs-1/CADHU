@@ -48,12 +48,17 @@ ACTIVO = (
 
 class Empresa(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
-    Telefono = models.CharField(max_length=10,blank=True, null=True)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    Telefono = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
-    Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
+    Contacto1 = models.CharField(max_length=50, blank=True, null=False)
+    Contacto2 = models.CharField(max_length=50, blank=True, null=False)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: '+999999999'. Se permiten 15 digitos.")
+    Telefono1 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
+    Telefono2 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
+    Email1 = models.EmailField(max_length=50, blank=True, null=False)
+    Email2 = models.EmailField(max_length=50, blank=True, null=False)
+    Puesto1 = models.CharField(max_length=50, blank=True, null=False)
+    Puesto2 = models.CharField(max_length=50, blank=True, null=False)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
-    Razon_Social = models.CharField(max_length=50, blank=False, null=True)
+    Razon_Social = models.CharField(max_length=50, blank=True, null=True)
     Activo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -64,7 +69,7 @@ class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
     Apellidos = models.CharField(max_length=120, blank=False, null=False)
     Telefono_Casa = models.CharField(max_length=10, blank=True, null=True)
-    Telefono_Celular = models.CharField(max_length=10,blank=True, null=True)
+    Telefono_Celular = models.CharField(max_length=10, blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, null=True, blank=True)
     Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
@@ -77,7 +82,6 @@ class Prospecto(models.Model):
     Fecha_Creacion = models.DateField(null=True)
     Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
-
 
     def __str__(self):
         return self.Nombre + ' ' + self.Apellidos
@@ -99,9 +103,15 @@ class ProspectoEvento(models.Model):
     Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
-    FlagCADHU = models.BooleanField(verbose_name='Bandera de interes')
+    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
     status = models.CharField(max_length=50, choices=ESTATUS, default='INTERESADO')
-    #pagos
+    #Pago = models.ForeignKey('Pago', on_delete=models.CASCADE)
+
+
+class Cliente(models.Model):
+    ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    Matricula = models.CharField(max_length=10, blank=False, null=False)
+    Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
 
 
 class Actividad(models.Model):
@@ -110,7 +120,6 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.titulo
