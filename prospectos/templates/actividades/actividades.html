@@ -3,7 +3,7 @@
 
 {% block title %}Actividades{% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="">
         <div class="row">
         </div>
         <div class="fixed-action-btn">
@@ -28,12 +28,10 @@
                     <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
                     <td>{{ actividad.fecha }}</td>
                     <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
-                    <td><a class="waves-effect waves-light btn modal-trigger" id="notas{{ actividad.pk }}"
-                           href="#modal{{ actividad.pk }}">Notas</a>
+                    <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
+                           href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                     </td>
                 </tr>
-
-
                 <!-- Modal Structure -->
                 <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
                     <div class="modal-content">
