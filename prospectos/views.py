@@ -153,7 +153,7 @@ def editar_prospecto(request, id):
             prospecto.Direccion =lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
-            return redirect('prospectos:lista_prospectos')
+            return redirect('prospectos:registrar_cursos', id=prospecto.id)
 
         else:
             messages.success(request, 'Existe una falla en los campos.')
@@ -216,14 +216,27 @@ def registrar_cursos(request, id):
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
     # Tomar los  los prospectos de la base
-    prospectos = Prospecto.objects.all()
+    #prospectos = Prospecto.objects.all()
+    prostpecto_activo = Prospecto.objects.filter(Activo=True)
     context = {
-        'prospectos':prospectos,
+        'prospectos':prostpecto_activo,
         'titulo': 'Prospectos',
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
+@login_required
+@group_required('vendedora','administrador')
+def lista_prospectos_inactivo(request):
+    # Tomar los  los prospectos de la base
+    #prospectos = Prospecto.objects.all()
+    prostpecto_inactivo = Prospecto.objects.filter(Activo=False)
+    context = {
+        'prospectos':prostpecto_inactivo,
+        'titulo': 'Prospectos inactivos',
+        }
+    # Desplegar la página de prospectos con enlistados con la información de la base de datos
+    return render(request, 'prospectos/prospectos.html', context)
 
 @login_required
 @group_required('vendedora','administrador')

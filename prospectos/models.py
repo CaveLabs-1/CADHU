@@ -41,6 +41,11 @@ ESTADO_CIVIL = (
     ('UNION LIBRE', 'UNION LIBRE'),
 )
 
+ACTIVO = (
+    (True, 'Activo'),
+    (False, 'Inactivo'),
+)
+
 class Empresa(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
     Telefono = models.CharField(max_length=10,blank=True, null=True)
@@ -70,7 +75,7 @@ class Prospecto(models.Model):
     Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
     Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Fecha_Creacion = models.DateField(null=True)
-    Activo = models.BooleanField(default=True)
+    Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
 
 
