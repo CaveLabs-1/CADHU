@@ -84,7 +84,7 @@ def carga_masiva(request):
                 resultado[i] = ''
         # escribe el resultado en ultima columna del excel
         dataset.append_col(resultado, header='Estado')
-        with open('media/resultado.xls', 'wb') as f:
+        with open('static/files/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
             f.close()
         messages.error(request, 'La carga masiva ha sido exitosa')
