@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+  {% block title %}Cliente{% endblock %}
+  {% block content %}
+
+  {% block js %}
+      <script type="text/javascript">
+      {% if NewClienteForm.errors %}
+          {% for field in NewClienteForm %}
+              {% for error in field.errors %}
+                  M.toast({html: '{{ error|escape }}'})
+              {% endfor %}
+          {% endfor %}
+          {% for error in NewClienteForm.non_field_errors %}
+              M.toast({html: '{{ error|escape }}'})
+          {% endfor %}
+      {% endif %}
+    </script>
+  {% endblock js %}
+
+    <div class="card ">
+        <div class="card-content">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s12">
+                        {{ NewClienteForm.Matricula | add_class:'form-control' }}
+                        <label for="Matricula">Matricula</label>
+                    </div>
+                </div>
+                <div class="row center">
+                    <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+                </div>
+            </form>
+          </div>
+      </div>
+
+  {% endblock %}

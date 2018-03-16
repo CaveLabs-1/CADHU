@@ -1,4 +1,4 @@
-from .models import Empresa, Prospecto, Lugar, ProspectoEvento
+from .models import Empresa, Prospecto, Lugar, ProspectoEvento, Cliente
 from django.forms import ModelForm, inlineformset_factory
 from django import forms
 from . import models
@@ -81,4 +81,15 @@ class ProspectoEventoForm(ModelForm):
 
         widgets = {
             'FlagCADHU': forms.CheckboxInput,
+        }
+
+class ClienteForm(ModelForm):
+    class Meta:
+        model = Cliente
+        fields = (
+            'Matricula',
+        )
+        excludes = {
+            'ProspectoEvento',
+            'Fecha',
         }
