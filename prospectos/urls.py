@@ -11,8 +11,13 @@ urlpatterns = [
     # Crear actividad para una relación Prospecto - Evento
     path('actividades/crear/<int:id>/', views.crear_actividad, name='crear_actividad'),
 
-    # Lista prospectos
+    # Lista prospectos activos
     path('', views.lista_prospectos, name='lista_prospectos'),
+
+    # Lista prospectos inactivos
+    path('inactivo', views.lista_prospectos_inactivo, name='lista_prospectos_inactivo'),
+
+    path('<int:id>/baja_prospecto', views.baja_prospecto, name='baja_prospecto'),
 
     # Carga masiva de prospectos
     path('carga', views.carga_masiva, name='carga'),
