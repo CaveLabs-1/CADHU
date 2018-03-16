@@ -43,7 +43,6 @@ ESTADO_CIVIL = (
 
 class Empresa(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
-    Telefono = models.CharField(max_length=10,blank=True, null=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     Telefono = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
@@ -73,7 +72,6 @@ class Prospecto(models.Model):
     Activo = models.BooleanField(default=True)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
 
-
     def __str__(self):
         return self.Nombre + ' ' + self.Apellidos
 
@@ -94,9 +92,15 @@ class ProspectoEvento(models.Model):
     Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
-    FlagCADHU = models.BooleanField(verbose_name='Bandera de interes')
+    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
     status = models.CharField(max_length=50, choices=ESTATUS, default='INTERESADO')
-    #pagos
+    #Pago = models.ForeignKey('Pago', on_delete=models.CASCADE)
+
+
+class Cliente(models.Model):
+    ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    Matricula = models.CharField(max_length=10, blank=False, null=False)
+    Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
 
 
 class Actividad(models.Model):
@@ -105,7 +109,6 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.titulo
