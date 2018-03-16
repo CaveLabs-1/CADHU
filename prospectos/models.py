@@ -43,11 +43,17 @@ ESTADO_CIVIL = (
 
 class Empresa(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    Telefono = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
-    Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
+    Contacto1 = models.CharField(max_length=50, blank=True, null=False)
+    Contacto2 = models.CharField(max_length=50, blank=True, null=False)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: '+999999999'. Se permiten 15 digitos.")
+    Telefono1 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
+    Telefono2 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
+    Email1 = models.EmailField(max_length=50, blank=True, null=False)
+    Email2 = models.EmailField(max_length=50, blank=True, null=False)
+    Puesto1 = models.CharField(max_length=50, blank=True, null=False)
+    Puesto2 = models.CharField(max_length=50, blank=True, null=False)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
-    Razon_Social = models.CharField(max_length=50, blank=False, null=True)
+    Razon_Social = models.CharField(max_length=50, blank=True, null=True)
     Activo = models.BooleanField(default=True)
 
     def __str__(self):
