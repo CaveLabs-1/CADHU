@@ -63,8 +63,8 @@ class Empresa(models.Model):
 class Prospecto(models.Model):
     Nombre = models.CharField(max_length=50, blank=False, null=False)
     Apellidos = models.CharField(max_length=120, blank=False, null=False)
-    Telefono_Casa = models.CharField(max_length=10, blank=True, null=True)
-    Telefono_Celular = models.CharField(max_length=10,blank=True, null=True)
+    Telefono_Casa = models.CharField(min_length=10, max_length=10, blank=True, null=True)
+    Telefono_Celular = models.CharField(min_length=10, max_length=10, blank=True, null=True)
     Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, null=True, blank=True)
     Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
