@@ -163,8 +163,13 @@ table th {
   background-color: white;
 }
 
-
-
+.elipsis{
+    max-width: 25vw;
+    height: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 /*MEDIA QUERIES*/
 

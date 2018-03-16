@@ -57,7 +57,9 @@ class FormaActividad(ModelForm):
             'hora',
             'notas',
         ]
-
+        exclude = [
+            'prospecto_evento'
+        ]
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',
             'hora': 'Este campo es opcional.',
@@ -66,7 +68,6 @@ class FormaActividad(ModelForm):
             'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
             'notas': forms.Textarea()
-
         }
 
 

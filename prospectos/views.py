@@ -335,10 +335,12 @@ def crear_actividad(request, id):
     # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
         NewActividadForm = FormaActividad(request.POST)
+        prospectoEvento = ProspectoEvento.objects.get(id=id)
         # SI LA FORMA ES VÁLIDA
         if NewActividadForm.is_valid():
             actividad = NewActividadForm.save(commit=False)
             # SE GUARDA LA NOTA
+            actividad.prospecto_evento = prospectoEvento
             actividad.save()
             #Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')
