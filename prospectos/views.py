@@ -276,6 +276,43 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
+@login_required
+@group_required('vendedora','administrador')
+#US14
+def editar_empresa(request, id):
+    idempresa = Empresa.objects.get(id=id)
+    NewEmpresaForm = EmpresaForm(instance=idempresa)
+    NewLugarForm = LugarForm(instance=idempresa.Direccion)
+
+    if request.method == 'POST':
+        NewEmpresaForm = EmpresaForm(request.POST or None, instance=idempresa)
+        NewLugarForm = LugarForm(request.POST or None, instance=idempresa.Direccion)
+        if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
+
+            empresa = NewEmpresaForm.save(commit=False)
+            lugar = NewLugarForm.save()
+            empresa.Direccion = lugar
+            empresa.save()
+            messages.success(request, 'La empresa ha sido actualizada.')
+            return redirect('prospectos:lista_empresas')
+
+        else:
+            messages.success(request, 'Existe una falla en los campos.')
+            context = {
+                'NewEmpresaForm': NewEmpresaForm,
+                'NewLugarForm': NewLugarForm,
+                'empresa': idempresa,
+                'titulo': 'Editar Empresa',
+            }
+            return render(request, 'empresas/empresas_form.html', context)
+
+    context = {
+        'NewEmpresaForm': NewEmpresaForm,
+        'NewLugarForm': NewLugarForm,
+        'empresa': idempresa,
+        'titulo': 'Editar Empresa',
+    }
+    return render(request, 'empresas/empresas_form.html', context)
 
 # US13
 @login_required

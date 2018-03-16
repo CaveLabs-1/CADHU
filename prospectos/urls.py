@@ -32,6 +32,9 @@ urlpatterns = [
     # Crear Empresa
     path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
+    # Editar Prospecto
+    path('editar_empresa/<int:id>/', views.editar_empresa, name='editar_empresa'),
+
     # Crear Cliente
     path('crear_cliente/<int:id>/', views.crear_cliente, name='crear_cliente'),
 

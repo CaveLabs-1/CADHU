@@ -42,10 +42,10 @@ ESTADO_CIVIL = (
 )
 
 class Empresa(models.Model):
-    Nombre = models.CharField(max_length=50, blank=False, null=False)
+    Nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     Contacto1 = models.CharField(max_length=50, blank=True, null=False)
     Contacto2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: '+999999999'. Se permiten 15 digitos.")
+    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: '999999999'. Se permiten 10 digitos.")
     Telefono1 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
     Telefono2 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
     Email1 = models.EmailField(max_length=50, blank=True, null=False)
