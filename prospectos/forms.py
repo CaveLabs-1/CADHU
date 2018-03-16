@@ -9,8 +9,14 @@ class EmpresaForm(ModelForm):
         model = Empresa
         fields = (
             'Nombre',
-            'Telefono',
-            'Email',
+            'Contacto1',
+            'Contacto2',
+            'Telefono1',
+            'Telefono2',
+            'Email1',
+            'Email2',
+            'Puesto1',
+            'Puesto2',
             'Razon_Social',
         )
 

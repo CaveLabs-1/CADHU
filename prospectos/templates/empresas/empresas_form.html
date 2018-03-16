@@ -37,21 +37,47 @@
                 <div class="row">
                     <div class="input-field col s6">
                         {{ NewEmpresaForm.Nombre | add_class:'form-control' }}
-                        <label for="Nombre">Nombre(s)</label>
-                    </div>
-                    <div class="input-field col s6">
-                        {{ NewEmpresaForm.Telefono | add_class:'form-control' }}
-                        <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        {{ NewEmpresaForm.Email | add_class:'form-control' }}
-                        <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                        <label for="nombre1">Nombre de la empresa</label>
                     </div>
                     <div class="input-field col s6">
                         {{ NewEmpresaForm.Razon_Social | add_class:'form-control' }}
                         <label for="razon_social">Raz&oacute;n Social</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Contacto1 | add_class:'form-control' }}
+                        <label for="contacto1">Contacto 1</label>
+                    </div>
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Telefono1 | add_class:'form-control' }}
+                        <label for="telefono1" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
+                    </div>
+                    <div class="input-field col s3">
+                      {{ NewEmpresaForm.Puesto1 | add_class:'form-control' }}
+                      <label for="puesto1">Puesto</label>
+                    </div>
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Email1 | add_class:'form-control' }}
+                        <label for="email1" data-error="Use el formato ejemplo@mail.com">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Contacto2 | add_class:'form-control' }}
+                        <label for="contacto2">Contacto 2</label>
+                    </div>
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Telefono2 | add_class:'form-control' }}
+                        <label for="telefono2" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
+                    </div>
+                    <div class="input-field col s3">
+                      {{ NewEmpresaForm.Puesto2 | add_class:'form-control' }}
+                      <label for="puesto2">Puesto</label>
+                    </div>
+                    <div class="input-field col s3">
+                        {{ NewEmpresaForm.Email2 | add_class:'form-control' }}
+                        <label for="email2" data-error="Use el formato ejemplo@mail.com">Email</label>
                     </div>
                 </div>
                 <div class="row center">
