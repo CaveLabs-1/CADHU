@@ -229,7 +229,7 @@ def lista_prospectos(request):
 @group_required('vendedora','administrador')
 def lista_prospectos_inactivo(request):
     # Tomar los  los prospectos de la base
-    #prospectos = Prospecto.objects.all()
+    # prospectos = Prospecto.objects.all()
     prostpecto_inactivo = Prospecto.objects.filter(Activo=False)
     context = {
         'prospectos':prostpecto_inactivo,
@@ -237,6 +237,19 @@ def lista_prospectos_inactivo(request):
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
+def baja_prospecto(request, id):
+    prospecto = Prospecto.objects.get(id=id)
+    if prospecto.Activo:
+        prospecto.Activo = False
+        prospecto.save()
+        return redirect(reverse('prospectos:lista_prospectos'))
+    else:
+        prospecto.Activo = True
+        prospecto.save()
+        return redirect(reverse('prospectos:lista_prospectos_inactivo'))
 
 @login_required
 @group_required('vendedora','administrador')

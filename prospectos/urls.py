@@ -17,6 +17,8 @@ urlpatterns = [
     # Lista prospectos inactivos
     path('inactivo', views.lista_prospectos_inactivo, name='lista_prospectos_inactivo'),
 
+    path('<int:id>/baja_prospecto', views.baja_prospecto, name='baja_prospecto'),
+
     # Carga masiva de prospectos
     path('carga', views.carga_masiva, name='carga'),
 

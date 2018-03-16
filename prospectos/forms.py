@@ -31,6 +31,9 @@ class ProspectoForm(ModelForm):
             'Recomendacion',
             'Activo',
         )
+        exclude = [
+            'Activo',
+        ]
 
 
 class LugarForm(ModelForm):
