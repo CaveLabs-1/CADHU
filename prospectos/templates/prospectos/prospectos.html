@@ -93,7 +93,7 @@
               {%for message in messages %}
                   {% if message.level == 40 %}
                       var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
-                      M.toast({html: mensaje})
+                      M.toast({html: mensaje, displayLength: 60000})
                   {% endif %}
               {% endfor %}
             {% endif %}
