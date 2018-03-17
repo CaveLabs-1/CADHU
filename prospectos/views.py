@@ -107,7 +107,7 @@ def crear_cliente(request, id):
         if NewClienteForm.is_valid():
             cliente = NewClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
-            clente.Fecha = fecha
+            cliente.Fecha = fecha
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
