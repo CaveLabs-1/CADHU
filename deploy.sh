@@ -1,6 +1,4 @@
 #!/bin/bash
-source my_env/bin/activate
-cd CADHU
 pip install -r requirements.txt
 for linea in `cat apps.txt`
 do

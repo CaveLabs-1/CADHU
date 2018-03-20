@@ -31,7 +31,7 @@ TIPOS_INTERES = (
     ('MEDIO', 'MEDIO'),
     ('ALTO', 'ALTO'),
     ('MUY ALTO', 'MUY ALTO'),
-    ('PAGADO', 'PAGADO'),
+    # ('PAGADO', 'PAGADO'),
 )
 
 ESTADO_CIVIL = (
@@ -39,6 +39,11 @@ ESTADO_CIVIL = (
     ('CASADO', 'CASADO'),
     ('DIVORCIADO', 'DIVORCIADO'),
     ('UNION LIBRE', 'UNION LIBRE'),
+)
+
+ACTIVO = (
+    (True, 'Activo'),
+    (False, 'Inactivo'),
 )
 
 class Empresa(models.Model):
@@ -75,7 +80,7 @@ class Prospecto(models.Model):
     Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
     Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Fecha_Creacion = models.DateField(null=True)
-    Activo = models.BooleanField(default=True)
+    Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -126,3 +131,20 @@ class Actividad(models.Model):
     def agenta_pasado(self):
         ahora = timezone.now()
         return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+
+class Pago(models.Model):
+
+    # cliente
+    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    fecha = models.DateField(blank=True, null=True)
+    monto = models.IntegerField(blank=True, null=True)
+    referencia = models.CharField(max_length=25, blank=True, null=True)
+
+    # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
+    # Nombre = models.CharField(max_length=25, blank=True, null=True)
+    # Fecha = models.DateField(blank=True, null=True)
+    # Direccion = models.CharField(max_length=100, blank=True, null=True)
+    # Descripcion = models.CharField(max_length=150, blank=True, null=True)
+    # Costo = models.PositiveIntegerField(blank=True, null=True)
+    # Activo = models.BooleanField(default=True)
+    # Encargado = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

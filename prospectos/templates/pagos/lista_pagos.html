@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+    {% block title %}Nuevo Pago{% endblock %}
+{% block content %}
+
+<div class="row no-margin padding-top-20">
+  <div class="card ">
+    <div class="card-content">
+      <div class="row">
+        <div class="col l6 s12 center">
+          <h5>
+            <b> Mauricio Hernández </b>
+          </h5>
+        </div>
+        <div class="col l6 s12 center">
+          <h5> CA113213-12 </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h6>
+            Total: $30,000.00
+          </h6>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h6>
+            Lista de Pagos
+          </h6>
+        </div>
+      </div>
+      <div class="row no-margin">
+        <ul class="collapsible expandable">
+          <li>
+            <div class="collapsible-header">$10,000.00</div>
+            <div class="collapsible-body">
+              <div class="row">
+                <div class="col s12">
+                  <i class="material-icons left">event</i>
+                  <b>Fecha:</b> 12/08/2018
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <i class="material-icons left">label</i>
+                  <b>No. de referencia:</b> 2155816512852
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header">$10,000.00</div>
+            <div class="collapsible-body">
+              <div class="row">
+                <div class="col s12">
+                  <i class="material-icons left">event</i>
+                  <b>Fecha:</b> 12/08/2018
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <i class="material-icons left">label</i>
+                  <b>No. de referencia:</b> 2155816512852
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+  {% endblock %}

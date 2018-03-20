@@ -32,15 +32,23 @@
                         <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
                         <td>
                           <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                          <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                          <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                           <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
-
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-
+            {% if titulo == 'Prospectos' %}
+                <div class="row center">
+                    <a href="{% url 'prospectos:lista_prospectos_inactivo' %}" class="btn waves-effect waves-light green darken-1">Activos</a>
+                </div>
+            {% endif %}
+            {% if titulo == 'Prospectos inactivos' %}
+                <div class="row center">
+                    <a href="{% url 'prospectos:lista_prospectos' %}" class="btn waves-effect waves-light amber darken-1">Inactivos</a>
+                </div>
+            {% endif %}
           <!-- Modal Structure -->
           <div id="modalCarga" class="modal modal-fixed-footer">
               <div class="modal-content">
@@ -87,13 +95,49 @@
 
       {% block js %}
 
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
       <script>
+
+            function cambiar_estatusProspecto(element, event){
+              event.preventDefault();
+              $.confirm({
+                title: '¿Deseas cambiar el estatus del prospecto?',
+                content: 'Se inactiva el prospecto.',
+                {% if titulo == 'Prospectos' %}
+                    type: 'red',
+                {% endif %}
+                {% if titulo == 'Prospectos inactivos' %}
+                    type: 'green',
+                {% endif %}
+                closeIcon: true,
+                columnClass: 'col l6 offset-l3 s12',
+                typeAnimated: true,
+                buttons: {
+                  continuar: {
+                      {% if titulo == 'Prospectos' %}
+                        text: 'Inactivar',
+                        btnClass: 'btn-red',
+                      {% endif %}
+                      {% if titulo == 'Prospectos inactivos' %}
+                        text: 'Activar',
+                        btnClass: 'btn-green',
+                      {% endif %}
+
+                    action: function(){
+                      window.location.href = $(element).attr("href");
+                    }
+                  }
+                }
+              });
+            }
+
 
             {% if messages %}
               {%for message in messages %}
                   {% if message.level == 40 %}
                       var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
-                      M.toast({html: mensaje})
+                      M.toast({html: mensaje, displayLength: 60000})
                   {% endif %}
               {% endfor %}
             {% endif %}

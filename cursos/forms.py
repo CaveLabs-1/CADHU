@@ -9,7 +9,8 @@ class FormaCurso(forms.ModelForm):
         fields = [
             'Nombre',
             'Evento',
-            'Fecha',
+            'Fecha_Inicio',
+            'Fecha_Fin',
             'Direccion',
             'Descripcion',
             'Costo',

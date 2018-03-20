@@ -36,6 +36,7 @@ $(document).ready(function() {
     // $('.timepicker').timepicker();
     $('select').select();
     $('.modal').modal();
+    $('.collapsible').collapsible();
     //
     // tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     //
