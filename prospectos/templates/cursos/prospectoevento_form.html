@@ -57,21 +57,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for curso in cursos %}
+                    {% for prospecto_evento in cursos %}
                         <tr>
                           <td class="center">
                               <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                               <a><i class="material-icons text-rojo-cadhu">delete</i></a>
                           </td>
-                          <td>{{ curso.Curso }}</td>
-                          <td>{{ curso.Interes }}</td>
-                          {% if curso.FlagCADHU == True %}
+                          <td>{{ prospecto_evento.Curso }}</td>
+                          <td>{{ prospecto_evento.Interes }}</td>
+                          <!-- <td>{{ curso.id }}</td> -->
+                          {% if prospecto_evento.FlagCADHU == True %}
                               <td class="center"><a><i class="material-icons">check</i></a></td>
                           {% else %}
                               <td class="center"><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                           {% endif %}
                           <td class="center">
-                            <a href="/prospectos/lista_pagos" class="btn waves-effect waves-light form_button">+ Pago</button>
+                            <a href="{% url 'prospectos:lista_pagos' prospecto.id prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</button>
                           </td>
                         </tr>
                     {% endfor %}
