@@ -13,6 +13,8 @@
                   <thead>
                     <tr>
                         <th class="border_radius_left">Nombre</th>
+                        <th>Contacto</th>
+                        <th>Puesto</th>
                         <th>Telefono</th>
                         <th>Email</th>
                         <th class="border_radius_right">Raz&oacute;n Social</th>
@@ -22,8 +24,10 @@
                   {% for empresa in empresas   %}
                       <tr>
                           <td>{{ empresa.Nombre }}</td>
-                          <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ empresa.Telefono }}</a></td>
-                          <td><a href="mailto:"{{ prospecto.Email }}"">{{ empresa.Email }}</a></td>
+                          <td>{{ empresa.Contacto1 }}</td>
+                          <td>{{ empresa.Puesto1 }}</td>
+                          <td>{{ empresa.Telefono1 }}</a></td>
+                          <td><a href="mailto:"{{ prospecto.Email1 }}"">{{ empresa.Email1 }}</a></td>
                           <td>{{ empresa.Razon_Social }}</td>
 
                       </tr>
