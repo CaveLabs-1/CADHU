@@ -7,7 +7,7 @@
   <div class="row no-margin padding-top-20">
       <div class="card ">
         <div class="card-content">
-          <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
+          <form method="post" id="nuevo_pago">
             {% csrf_token %}
             <!-- <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
@@ -31,20 +31,20 @@
             </div> -->
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="monto" id="monto" required step=".01" min="0">
-                <label for="monto">Monto de Pago</label>
+                <input type="number" name="{{form.monto.html_name}}" id="{{ form.monto.id_for_label }}" required step=".01" min="0">
+                <label for="{{form.monto.html_name}}">Monto de Pago</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="fecha_pago" id="fecha_pago"  class="datepicker" required>
-                <label for="fecha_pago" >Fecha de pago</label>
+                <input type="text" name="{{form.fecha.html_name}}" id="{{form.fecha.html_name}}"  class="datepicker" required>
+                <label for="{{form.fecha.html_name}}" >Fecha de pago</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="referencia" id="referencia" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('No. de referencia solo debe contener letras o números.')" required>
-                <label for="referencia" data-error="No. referencia inválido">No. Referencia</label>
+                <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('No. de referencia solo debe contener letras o números.')" required>
+                <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia</label>
               </div>
             </div>
             <!-- <div class="row no-margin">
