@@ -31,7 +31,7 @@ TIPOS_INTERES = (
     ('MEDIO', 'MEDIO'),
     ('ALTO', 'ALTO'),
     ('MUY ALTO', 'MUY ALTO'),
-    ('PAGADO', 'PAGADO'),
+    # ('PAGADO', 'PAGADO'),
 )
 
 ESTADO_CIVIL = (

@@ -9,7 +9,45 @@
         <div class="card-content">
           <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
             {% csrf_token %}
+            <!-- <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <select class="browser-default"  name="cliente" id="cliente" oninvalid="setCustomValidity('Selecciona un cliente de la lista')" required>
+                  <option value="" disabled selected>Selecciona el cliente</option>
+                  <option value="1">Mauricio Hernández</option>
+                  <option value="1">Santiago Valencia</option>
+                </select>
+                <label>Cliente</label>
+              </div>
+            </div>
             <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <select class="browser-default"  name="curso" id="curso" oninvalid="setCustomValidity('Selecciona un curso de la lista')" required>
+                  <option value="" disabled selected>Selecciona el curso</option>
+                  <option value="1">Diplomado 1</option>
+                  <option value="1">Diplomado 2</option>
+                </select>
+                <label>Curso</label>
+              </div>
+            </div> -->
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="number" name="monto" id="monto" required step=".01" min="0">
+                <label for="monto">Monto de Pago</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" name="fecha_pago" id="fecha_pago"  class="datepicker" required>
+                <label for="fecha_pago" >Fecha de pago</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" name="referencia" id="referencia" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('No. de referencia solo debe contener letras o números.')" required>
+                <label for="referencia" data-error="No. referencia inválido">No. Referencia</label>
+              </div>
+            </div>
+            <!-- <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
                 <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
@@ -61,11 +99,11 @@
                   {{ form.Encargado }}
                   <label>Encargado</label>
                 </div>
-            </div>
+            </div> -->
             <br>
             <div class="row">
               <center>
-                <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Curso</button>
+                <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</button>
               </center>
             </div>
           </form>

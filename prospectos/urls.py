@@ -32,4 +32,10 @@ urlpatterns = [
     # Crear Empresa
     path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
+    #Lista de pagos
+    path('lista_pagos/', views.lista_pagos, name='lista_pagos'),
+
+    #Nuevo pago
+    path('nuevo_pago', views.nuevo_pago, name='nuevo_pago'),
+
 ]
