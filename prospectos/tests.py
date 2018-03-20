@@ -120,6 +120,16 @@ class ProspectoListViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_prospectos_20(self):
+        resp = self.client.get(reverse('prospectos:lista_prospectos_inactivo'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context['prospectos']),20)
+
+    #Acceptance criteria 8.1
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get(reverse('prospectos:lista_prospectos_inactivo'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_prospectos_20(self):
         resp = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.context['prospectos']),20)
@@ -261,7 +271,36 @@ class ProspectoTest(TestCase):
         actualizado = Prospecto.objects.get(id=1)
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
-
+    #Acceptance Criteria 8.1
+    def test_baja_prospecto(self):
+        Lugar.objects.create(
+            Calle='Lourdes',
+            Numero_Interior='4',
+            Numero_Exterior='105',
+            Colonia='Satelite',
+            Estado='Queretaro',
+            Ciudad='Queretaro',
+            Pais='Mexico',
+            Codigo_Postal='76125'
+        )
+        Prospecto.objects.create(
+            id='1',
+            Nombre='Marco Antonio',
+            Apellidos='Luna Calvillo',
+            Telefono_Casa='4422232226',
+            Telefono_Celular='4422580662',
+            Email='a01209537@itesm.mx',
+            Direccion=Lugar.objects.get(Calle='Lourdes'),
+            Metodo_Captacion='Facebook',
+            Estado_Civil='Soltero',
+            Ocupacion='Estudiante',
+            Hijos=1,
+            Activo=True,
+        )
+        resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1}),follow=True)
+        actualizado = Prospecto.objects.get(id=1)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(actualizado.Activo, False)
 
 class ActividadTest(TestCase):
     def setUp(self):
