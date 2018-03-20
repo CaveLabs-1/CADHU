@@ -79,6 +79,27 @@ class EmpresaTest(TestCase):
     #     self.assertEqual(resp.status_code, 200)
     #     self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
+    #ACCEPTANCE CRITERIA 14.1, 14.2
+    def test_editar_empresa(self):
+        Empresa.objects.create(
+            id= '2',
+            Nombre='ITESM',
+            Contacto1='Lynda',
+            Telefono1='4423367895',
+            Puesto1='Recursos Humanos',
+            Email1='correo@itesm.com',
+            Direccion=Lugar.objects.get(Calle='Paraiso'),
+            Razon_Social='Escuela'
+        )
+        resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}),{
+            'Nombre': 'ITESO', 'Contacto1': 'Lynda Brenda',
+            'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion':Lugar.objects.get(Calle='Paraiso'),
+            'Email1':'lyndab@itesm.com',
+            'Razon_Social': 'Escuela'
+        },follow=True)
+        actualizado = Empresa.objects.get(id=2)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotEqual(actualizado, 'ITESM')
 
 class ProspectoListViewTest(TestCase):
     def setUp(self):

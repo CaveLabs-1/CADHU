@@ -37,6 +37,9 @@ urlpatterns = [
     # Crear Empresa
     path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
 
+    # Editar Prospecto
+    path('editar_empresa/<int:id>/', views.editar_empresa, name='editar_empresa'),
+
     #Lista de pagos
     path('<int:id>/lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),
 
