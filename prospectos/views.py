@@ -224,7 +224,6 @@ def editar_prospecto(request, id):
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
-
 #US26
 def registrar_cursos(request, id):
     prospecto = Prospecto.objects.get(id=id)
@@ -331,6 +330,7 @@ def info_prospecto(request, id):
     }
     return render(request, 'prospectos/info_prospecto.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_empresa(request):
@@ -340,6 +340,7 @@ def lista_empresa(request):
         'titulo': 'Empresas',
         }
     return render(request, 'empresas/empresas.html', context)
+
 
 @login_required
 @group_required('vendedora','administrador')
