@@ -387,3 +387,69 @@ def crear_actividad(request, id):
         'id': id
     }
     return render(request, 'actividades/crear_actividad.html', context)
+
+
+@login_required
+@group_required('administrador')
+def nuevo_pago(request):
+    # recibir forma
+    # Forma_nuevo_curso = FormaCurso()
+    # si se recibe una forma con post
+    if request.method == 'POST':
+        Forma_nuevo_curso = FormaCurso(request.POST)
+        # si la forma es válida
+        if Forma_nuevo_curso.is_valid():
+            # se guarda la forma
+            actividad = Forma_nuevo_curso.save()
+            # se redirige a la próxima vista
+            messages.success(request, '¡Curso agregado exitosamente!')
+
+            # return redirect('cursos:lista_cursos')
+            return redirect('/cursos/lista_cursos')
+        # se renderea la forma nuevamente con los errores marcados
+        context = {
+            'form': Forma_nuevo_curso,
+            'titulo': 'Agregar Curso',
+            'error_message': Forma_nuevo_curso.errors
+        }
+        return render(request, 'cursos/nuevo_curso.html', context)
+    # se renderea la página
+    context = {
+        # 'form': Forma_nuevo_curso,
+        'titulo': 'Agregar Pago'
+        # 'eventos': Evento.objects.all().order_by('Nombre')
+    }
+    return render(request, 'pagos/nuevo_pago.html', context)
+
+
+@login_required
+@group_required('administrador')
+def lista_pagos(request):
+    # recibir forma
+    # Forma_nuevo_curso = FormaCurso()
+    # si se recibe una forma con post
+    if request.method == 'POST':
+        Forma_nuevo_curso = FormaCurso(request.POST)
+        # si la forma es válida
+        if Forma_nuevo_curso.is_valid():
+            # se guarda la forma
+            actividad = Forma_nuevo_curso.save()
+            # se redirige a la próxima vista
+            messages.success(request, '¡Curso agregado exitosamente!')
+
+            # return redirect('cursos:lista_cursos')
+            return redirect('/cursos/lista_cursos')
+        # se renderea la forma nuevamente con los errores marcados
+        context = {
+            'form': Forma_nuevo_curso,
+            'titulo': 'Agregar Curso',
+            'error_message': Forma_nuevo_curso.errors
+        }
+        return render(request, 'cursos/nuevo_curso.html', context)
+    # se renderea la página
+    context = {
+        # 'form': Forma_nuevo_curso,
+        'titulo': 'Lista de Pagos'
+        # 'eventos': Evento.objects.all().order_by('Nombre')
+    }
+    return render(request, 'pagos/lista_pagos.html', context)
