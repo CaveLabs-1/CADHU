@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento
-from cursos.models import Curso
+from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento, Curso, Pago
+# from cursos.models import Curso
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, PagoForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -15,6 +15,7 @@ from django.http import *
 from django.utils.timezone import now
 import os
 from django.conf import settings
+
 
 # US43
 def carga_masiva(request):
@@ -90,6 +91,7 @@ def carga_masiva(request):
         messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
+
 # US31
 @login_required
 @group_required('vendedora','administrador')
@@ -101,8 +103,8 @@ def crear_cliente(request, id):
         #Crear y llenar la forma
         NewClienteForm = ClienteForm(request.POST)
         pago = Pago.objects.get(id=id)
-        fecha = pago.Fecha
-        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospectoEvento)
+        fecha = pago.fecha
+        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
         #Si la forma es válida guardar la información en la base de datos:
         if NewClienteForm.is_valid():
             cliente = NewClienteForm.save(commit=False)
@@ -112,10 +114,18 @@ def crear_cliente(request, id):
             prospectoevento.save()
             cliente.save()
             clientes = Cliente.objects.all()
-            context = {
 
-                }
-            return render(request, '', context)
+            prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
+            print(prospectoevento.Prospecto_id)
+            print(prospectoevento.id)
+
+            # context = {
+            #     'id': NewClienteForm,
+            #     'titulo': 'Registrar un Cliente',
+            # }
+            # prospecto_evento = ProspectoEvento.objects.filter(prospecto_evento_id = idPE).count()
+            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+            # return redirect('prospectos:lista_pagos', )
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -252,6 +262,7 @@ def registrar_cursos(request, id):
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
 
+
 #US7
 @login_required
 @group_required('vendedora','administrador')
@@ -266,6 +277,7 @@ def lista_prospectos(request):
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos_inactivo(request):
@@ -278,6 +290,7 @@ def lista_prospectos_inactivo(request):
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
+
 
 @login_required
 @group_required('vendedora','administrador')
@@ -292,6 +305,32 @@ def baja_prospecto(request, id):
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivo'))
 
+
+@login_required
+@group_required('vendedora', 'administrador')
+def info_prospecto(request, id):
+    prospecto = Prospecto.objects.get(id=id)
+    # cursos = prospecto.Cursos.all()
+    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha').order_by('hora')
+    titulo = 'Información de prospecto'
+    agenda = []
+    bitacora = []
+    for actividad in actividades:
+        if actividad.agenda():
+            agenda.append(actividad)
+        elif actividad.bitacora():
+            bitacora.append(actividad)
+    context = {
+        'prospecto': prospecto,
+        'titulo': titulo,
+        'actividades': actividades,
+        'agenda': agenda,
+        'bitacora': bitacora,
+        'cursos': cursos,
+    }
+    return render(request, 'prospectos/info_prospecto.html', context)
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_empresa(request):
@@ -302,6 +341,43 @@ def lista_empresa(request):
         }
     return render(request, 'empresas/empresas.html', context)
 
+@login_required
+@group_required('vendedora','administrador')
+#US14
+def editar_empresa(request, id):
+    idempresa = Empresa.objects.get(id=id)
+    NewEmpresaForm = EmpresaForm(instance=idempresa)
+    NewLugarForm = LugarForm(instance=idempresa.Direccion)
+
+    if request.method == 'POST':
+        NewEmpresaForm = EmpresaForm(request.POST or None, instance=idempresa)
+        NewLugarForm = LugarForm(request.POST or None, instance=idempresa.Direccion)
+        if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
+
+            empresa = NewEmpresaForm.save(commit=False)
+            lugar = NewLugarForm.save()
+            empresa.Direccion = lugar
+            empresa.save()
+            messages.success(request, 'La empresa ha sido actualizada.')
+            return redirect('prospectos:lista_empresas')
+
+        else:
+            messages.success(request, 'Existe una falla en los campos.')
+            context = {
+                'NewEmpresaForm': NewEmpresaForm,
+                'NewLugarForm': NewLugarForm,
+                'empresa': idempresa,
+                'titulo': 'Editar Empresa',
+            }
+            return render(request, 'empresas/empresas_form.html', context)
+
+    context = {
+        'NewEmpresaForm': NewEmpresaForm,
+        'NewLugarForm': NewLugarForm,
+        'empresa': idempresa,
+        'titulo': 'Editar Empresa',
+    }
+    return render(request, 'empresas/empresas_form.html', context)
 
 # US13
 @login_required
@@ -377,7 +453,7 @@ def crear_actividad(request, id):
             context = {
                 'form': NewActividadForm,
                 'titulo': 'Agregar actividad',
-                'id':id
+                'id': id
             }
             return render(request, 'actividades/crear_actividad.html', context)
     # CARGAR LA VISTA
@@ -387,3 +463,92 @@ def crear_actividad(request, id):
         'id': id
     }
     return render(request, 'actividades/crear_actividad.html', context)
+
+
+@login_required
+@group_required('administrador')
+def nuevo_pago(request, idPE):
+
+    print(idPE)
+
+    # recibir forma
+    forma_pago = PagoForm()
+    # si se recibe una forma con post
+    if request.method == 'POST':
+        print("entró")
+        Forma_nuevo_pago = PagoForm(request.POST)
+        # si la forma es válida
+        if Forma_nuevo_pago.is_valid():
+            print(Forma_nuevo_pago)
+            # se guarda la forma
+            pago = Forma_nuevo_pago.save(commit=False)
+            pago.prospecto_evento_id = idPE
+            pago = Forma_nuevo_pago.save()
+            # se redirige a la próxima vista
+            messages.success(request, 'Pago agregado exitosamente!')
+
+            # return redirect('cursos:lista_cursos')
+            # return redirect(reverse('prospectos:crear_cliente pago.id'))
+            return redirect('prospectos:crear_cliente', id=pago.id)
+        # se renderea la forma nuevamente con los errores marcados
+        print("error")
+        context = {
+            'form': Forma_nuevo_pago,
+            'titulo': 'Agregar Pago',
+            'error_message': Forma_nuevo_pago.errors
+        }
+        return render(request, 'pagos/nuevo_pago.html', context)
+    # se renderea la página
+    context = {
+        'form': forma_pago,
+        'titulo': 'Agregar Pago',
+    # 'eventos': Evento.objects.all().order_by('Nombre')
+    }
+    return render(request, 'pagos/nuevo_pago.html', context)
+
+
+@login_required
+@group_required('administrador')
+def lista_pagos(request, id, idPE):
+
+    # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
+
+    pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
+
+    print(pagos)
+
+    if(pagos > 0):
+        context = {
+            # 'form': Forma_nuevo_curso,
+            'titulo': 'Lista de Pagos'
+            # 'eventos': Evento.objects.all().order_by('Nombre')
+        }
+        return render(request, 'pagos/lista_pagos.html', context)
+    else:
+
+        return redirect('prospectos:nuevo_pago', idPE = idPE)
+
+    # # prospecto = Prospecto.objects.get(id = id)
+    #
+    # # recibir forma
+    # # Forma_nuevo_curso = FormaCurso()
+    # # si se recibe una forma con post
+    # if request.method == 'POST':
+    #     Forma_nuevo_curso = FormaCurso(request.POST)
+    #     # si la forma es válida
+    #     if Forma_nuevo_curso.is_valid():
+    #         # se guarda la forma
+    #         actividad = Forma_nuevo_curso.save()
+    #         # se redirige a la próxima vista
+    #         messages.success(request, '¡Curso agregado exitosamente!')
+    #
+    #         # return redirect('cursos:lista_cursos')
+    #         return redirect('/cursos/lista_cursos')
+    #     # se renderea la forma nuevamente con los errores marcados
+    #     context = {
+    #         'form': Forma_nuevo_curso,
+    #         'titulo': 'Agregar Curso',
+    #         'error_message': Forma_nuevo_curso.errors
+    #     }
+    #     return render(request, 'cursos/nuevo_curso.html', context)
+    # # se renderea la página

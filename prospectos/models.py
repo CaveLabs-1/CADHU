@@ -31,7 +31,7 @@ TIPOS_INTERES = (
     ('MEDIO', 'MEDIO'),
     ('ALTO', 'ALTO'),
     ('MUY ALTO', 'MUY ALTO'),
-    ('PAGADO', 'PAGADO'),
+    # ('PAGADO', 'PAGADO'),
 )
 
 ESTADO_CIVIL = (
@@ -47,10 +47,10 @@ ACTIVO = (
 )
 
 class Empresa(models.Model):
-    Nombre = models.CharField(max_length=50, blank=False, null=False)
+    Nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     Contacto1 = models.CharField(max_length=50, blank=True, null=False)
     Contacto2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: '+999999999'. Se permiten 15 digitos.")
+    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: '999999999'. Se permiten 10 digitos.")
     Telefono1 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
     Telefono2 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
     Email1 = models.EmailField(max_length=50, blank=True, null=False)
@@ -120,14 +120,36 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    # activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.titulo
 
-    def agenda_futuro(self):
-        ahora = timezone.now()
-        return ahora - datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+    def agenda(self):
+        ahora = datetime.datetime.now()
+        fechatot = datetime.datetime.combine(self.fecha, self.hora)
+        # return self.objects.filter(datetime.timedelta(days=1) <= fechatot <= ahora)
+        return fechatot > ahora
 
-    def agenta_pasado(self):
-        ahora = timezone.now()
-        return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+    def bitacora(self):
+        ahora = datetime.datetime.now()
+        fechatot = datetime.datetime.combine(self.fecha, self.hora)
+        # return ahora + datetime.timedelta(days=1) <= fechatot <= ahora
+        return fechatot < ahora
+
+
+class Pago(models.Model):
+    # cliente
+    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    fecha = models.DateField(blank=True, null=True)
+    monto = models.IntegerField(blank=True, null=True)
+    referencia = models.CharField(max_length=25, blank=True, null=True)
+
+    # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
+    # Nombre = models.CharField(max_length=25, blank=True, null=True)
+    # Fecha = models.DateField(blank=True, null=True)
+    # Direccion = models.CharField(max_length=100, blank=True, null=True)
+    # Descripcion = models.CharField(max_length=150, blank=True, null=True)
+    # Costo = models.PositiveIntegerField(blank=True, null=True)
+    # Activo = models.BooleanField(default=True)
+    # Encargado = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

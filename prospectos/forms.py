@@ -1,4 +1,4 @@
-from .models import Empresa, Prospecto, Lugar, ProspectoEvento, Cliente
+from .models import Empresa, Prospecto, Lugar, ProspectoEvento, Cliente, Pago
 from django.forms import ModelForm, inlineformset_factory
 from django import forms
 from . import models
@@ -104,3 +104,15 @@ class ClienteForm(ModelForm):
             'ProspectoEvento',
             'Fecha',
         }
+
+class PagoForm(ModelForm):
+    class Meta:
+        model = Pago
+        fields = (
+            'fecha',
+            'monto',
+            'referencia',
+        )
+        excludes = (
+            'prospecto_evento',
+        )

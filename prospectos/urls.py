@@ -28,14 +28,26 @@ urlpatterns = [
     # Crear Prospecto
     path('crear_prospecto', views.crear_prospecto, name='crear_prospecto'),
 
+    # Info prospecto
+    path('informacion/<int:id>', views.info_prospecto, name='info_prospecto'),
+
     # Registrar Cursos a Prospecto
     path('<int:id>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),
 
     # Editar Prospecto
-    path('editar_prospecto/<int:id>/', views.editar_prospecto, name='editar_prospecto'),
+    path('<int:id>/editar_prospecto', views.editar_prospecto, name='editar_prospecto'),
 
     # Crear Empresa
     path('crear_empresa/', views.crear_empresa, name='crear_empresa'),
+
+    # Editar Prospecto
+    path('editar_empresa/<int:id>/', views.editar_empresa, name='editar_empresa'),
+
+    #Lista de pagos
+    path('<int:id>/lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),
+
+    #Nuevo pago
+    path('nuevo_pago/<int:idPE>', views.nuevo_pago, name='nuevo_pago'),
 
     # Crear Cliente
     path('crear_cliente/<int:id>/', views.crear_cliente, name='crear_cliente'),

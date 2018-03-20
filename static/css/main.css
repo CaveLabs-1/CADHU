@@ -171,6 +171,25 @@ table th {
     overflow: hidden;
 }
 
+
+/*Estilos para color de las tabs */
+
+.tabs .indicator {
+    background-color: #4b769e;
+}
+
+.tabs .tab a.active {
+  color: #003366;
+}
+
+.tabs .tab a:hover {
+  color: #447e9b;
+}
+
+.tabs .tab a {
+  color: #3875d7;
+}
+
 /*MEDIA QUERIES*/
 
 

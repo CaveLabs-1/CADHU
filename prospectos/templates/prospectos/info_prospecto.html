@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %} Prospecto: {{ prospecto.Nombre }} {{ prospecto.Apellidos }} {% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-image">
+                    <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
+                    <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                </div>
+                <div class="card-reveal">
+                    <div class="row">
+                        <span class="card-title grey-text text-darken-4">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}<i class="material-icons right">close</i></span>
+                    </div>
+                    {#----------------Info-------------#}
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label for="Nombre">Nombre(s)</label>
+                            {{ prospecto.Nombre }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label for="apellido_p">Apellidos</label>
+                            {{ prospecto.Apellidos }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label>Email</label>
+                            {{ prospecto.Email }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>Tel&eacute;fono Celular</label>
+                            {{ prospecto.Telefono_Celular }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label>Tel&eacute;fono Casa</label>
+                            {{ prospecto.Telefono_Casa }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label for="ocupacion">Ocupaci&oacute;n</label>
+                            {{ prospecto.Ocupacion }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>M&eacute;todo de captaci&oacute;n</label>
+                            {{ prospecto.Metodo_Captacion }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label for="otro">Radio/Recomendacion </label>
+                            {{ prospecto.Recomendacion }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label>Estado civil</label>
+                            {{ prospecto.Estado_Civil }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>Hijos</label>
+                            {{ prospecto.Hijos }}
+                        </div>
+                    </div>
+
+
+
+
+                    {#----------------Direccion-------------#}
+                    <div class="row">
+                        <span class=" grey-text text-darken-4" >Direcci&oacute;n</span>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>Pa&iacute;s</label>
+                            {{ prospecto.Direccion.Pais }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label>Estado</label>
+                            {{ prospecto.Direccion.Estado }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label>Ciudad</label>
+                            {{ prospecto.Direccion.Ciudad }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <label for="colonia">Colonia</label>
+                            {{ prospecto.Direccion.Colonia }}
+                        </div>
+                        <div class="col s12 m6">
+                            <label for="calle">Calle</label>
+                            {{ prospecto.Direccion.Calle }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6 m4">
+                            <label for="num_ext">N&uacute;mero exterior</label>
+                            {{ prospecto.Direccion.Numero_Exterior }}
+                        </div>
+                        <div class="col s6 m4">
+                            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+                            {{ prospecto.Direccion.Numero_Interior }}
+                        </div>
+                        <div class="col s12 m4">
+                            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+                            {{ prospecto.Direccion.Codigo_Postal }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <ul id="tabs" class="tabs">
+        <li class="tab col s4"><a href="#cursos">Cursos</a></li>
+        <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
+        <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
+    </ul>
+
+
+    <div id="cursos" class="col s12">
+        <div class="row">
+        </div>
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large orange" href="{% url 'prospectos:registrar_cursos' prospecto.id %}">
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+        <table class="dataTable">
+            <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Interes</th>
+                <th>Flag</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for curso in cursos %}
+                <tr>
+                    <td>{{ curso.Curso }}</td>
+                    <td>{{ curso.Interes }}</td>
+                    {% if curso.FlagCADHU == True %}
+                        <td><a><i class="material-icons">check</i></a></td>
+                    {% else %}
+                        <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {#------------------------OPCION 2 ----------------------------#}
+    <div id="agenda" class="col s12">
+        <div class="">
+            <div class="row">
+            </div>
+            <table class="dataTable">
+                <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Curso</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Notas</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for actividad in agenda %}
+                    <tr>
+                        <td>{{ actividad.titulo }}</td>
+                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.fecha }}</td>
+                        <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
+                        <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
+                                                         href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                        </td>
+                    </tr>
+                    <!-- Modal Structure -->
+                    <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>Notas</h4>
+                            <p>{{ actividad.notas }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        </div>
+                    </div>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {#------------------- Bitacora------------------#}
+    <div id="bitacora" class="col s12">
+        <div class="">
+            <div class="row">
+            </div>
+            <table class="dataTable">
+                <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Curso</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Notas</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for actividad in bitacora %}
+                    <tr>
+                        <td>{{ actividad.titulo }}</td>
+                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.fecha }}</td>
+                        <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
+                        <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
+                                                         href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                        </td>
+                    </tr>
+                    <!-- Modal Structure -->
+                    <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>Notas</h4>
+                            <p>{{ actividad.notas }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        </div>
+                    </div>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        {% for actividad in actividades %}
+            $("#notas{{ actividad.pk }}").on("click", function () {
+                $('#modal{{ actividad.pk }}').modal('open');
+            });
+        {% endfor %}
+    </script>
+{% endblock %}
