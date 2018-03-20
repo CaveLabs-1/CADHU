@@ -108,7 +108,7 @@ class ProspectoEvento(models.Model):
     #Pago = models.ForeignKey('Pago', on_delete=models.CASCADE)
 
 
-class Cliente(models.Model):
+class Cliente(models  .Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
     Matricula = models.CharField(max_length=10, blank=False, null=False)
     Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
@@ -120,14 +120,19 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    # activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.titulo
 
-    def agenda_futuro(self):
-        ahora = timezone.now()
-        return ahora - datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+    def agenda(self):
+        ahora = datetime.datetime.now()
+        fechatot = datetime.datetime.combine(self.fecha, self.hora)
+        # return self.objects.filter(datetime.timedelta(days=1) <= fechatot <= ahora)
+        return fechatot > ahora
 
-    def agenta_pasado(self):
-        ahora = timezone.now()
-        return ahora + datetime.timedelta(days=1) <= datetime.datetime.combine(self.fecha, self.hora) <= ahora
+    def bitacora(self):
+        ahora = datetime.datetime.now()
+        fechatot = datetime.datetime.combine(self.fecha, self.hora)
+        # return ahora + datetime.timedelta(days=1) <= fechatot <= ahora
+        return fechatot < ahora

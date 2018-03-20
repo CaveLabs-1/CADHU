@@ -16,6 +16,7 @@ from django.utils.timezone import now
 import os
 from django.conf import settings
 
+
 # US43
 def carga_masiva(request):
     if request.method == 'POST':
@@ -89,6 +90,7 @@ def carga_masiva(request):
             f.close()
         messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
+
 
 # US31
 @login_required
@@ -252,6 +254,7 @@ def registrar_cursos(request, id):
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
 
+
 #US7
 @login_required
 @group_required('vendedora','administrador')
@@ -266,6 +269,7 @@ def lista_prospectos(request):
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos_inactivo(request):
@@ -279,6 +283,7 @@ def lista_prospectos_inactivo(request):
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
+
 @login_required
 @group_required('vendedora','administrador')
 def baja_prospecto(request, id):
@@ -291,6 +296,32 @@ def baja_prospecto(request, id):
         prospecto.Activo = True
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivo'))
+
+
+@login_required
+@group_required('vendedora', 'administrador')
+def info_prospecto(request, id):
+    prospecto = Prospecto.objects.get(id=id)
+    # cursos = prospecto.Cursos.all()
+    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha').order_by('hora')
+    titulo = 'Información de prospecto'
+    agenda = []
+    bitacora = []
+    for actividad in actividades:
+        if actividad.agenda():
+            agenda.append(actividad)
+        elif actividad.bitacora():
+            bitacora.append(actividad)
+    context = {
+        'prospecto': prospecto,
+        'titulo': titulo,
+        'actividades': actividades,
+        'agenda': agenda,
+        'bitacora': bitacora,
+        'cursos': cursos,
+    }
+    return render(request, 'prospectos/info_prospecto.html', context)
 
 @login_required
 @group_required('vendedora','administrador')
@@ -377,7 +408,7 @@ def crear_actividad(request, id):
             context = {
                 'form': NewActividadForm,
                 'titulo': 'Agregar actividad',
-                'id':id
+                'id': id
             }
             return render(request, 'actividades/crear_actividad.html', context)
     # CARGAR LA VISTA

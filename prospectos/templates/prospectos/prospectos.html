@@ -26,8 +26,8 @@
                 <tbody>
                 {% for prospecto in prospectos   %}
                     <tr>
-                        <td>{{ prospecto.Nombre }}</td>
-                        <td>{{ prospecto.Apellidos }}</td>
+                        <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
                         <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
                         <td>
@@ -82,7 +82,7 @@
                           <li>Descargar el <a href="{% static 'files/TemplateCargaMasiva.xlsx' %}">template de carga masiva</a> y llenar con la información que se quiere cargar.</li>
                           <li><h6 class="text-rojo-cadhu">VERIFICAR QUE LA INFORMACIÓN SEA CORRECTA</h6></li>
                           <li>Guardar el template como archivo de CSV. (Guardar como -> Tipo de archivo -> .csv)</li>
-                          <li>Subir el archivo al sistema./li>
+                          <li>Subir el archivo al sistema.</li>
                       </ol>
                   </div>
               </div>
