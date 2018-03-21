@@ -112,6 +112,7 @@ class PagoForm(ModelForm):
             'fecha',
             'monto',
             'referencia',
+            # 'tipo_pago',
         )
         excludes = (
             'prospecto_evento',
