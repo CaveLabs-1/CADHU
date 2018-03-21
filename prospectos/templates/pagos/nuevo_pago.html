@@ -31,7 +31,7 @@
             </div> -->
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.monto.html_name}}" id="{{ form.monto.id_for_label }}" required step=".01" min="0">
+                <input type="number" name="{{form.monto.html_name}}" id="{{ form.monto.id_for_label }}" required validate step=".01" min="0" max="{{ monto_maximo }}" oninvalid="setCustomValidity('El monto super el total del curso inscrito.')">
                 <label for="{{form.monto.html_name}}">Monto de Pago</label>
               </div>
             </div>
