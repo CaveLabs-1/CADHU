@@ -3,13 +3,44 @@ from django.urls import reverse
 from eventos.models import Evento
 from cursos.models import Curso
 from django.db.models import QuerySet
-from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoEvento
+from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoEvento, Cliente, Pago
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 import string
 import random
 import datetime
 import os
+
+class ClienteTest(TestCase):
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
+        prospecto = Prospecto.objects.create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Direccion='Calle', Costo=1000)
+        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
+        pago = Pago.objects.create(monto=500, prospecto_evento=relacion)
+
+    #ACCEPTANCE CRITERIA: 31.1
+    def test_crear_cliente(self):
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+             'Matricula':'A01206199'})
+        self.assertEqual(resp.status_code, 302)
+        Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        self.assertEqual(Cliente_acum, 1)
+
+    #ACCEPTANCE CRITERIA: 31.2
+    def test_validar_campos(self):
+         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+             'rfc':'RODR621124FY9'})
+         self.assertEqual(resp.status_code, 200)
+         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
 
 class EmpresaTest(TestCase):
@@ -34,7 +65,7 @@ class EmpresaTest(TestCase):
         )
 
     #ACCEPTANCE CRITERIA: 13.2
-    def test_ac_13_2(self):
+    def test_crear_empresa(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
             'Telefono1':'4422232226',
@@ -44,7 +75,7 @@ class EmpresaTest(TestCase):
         self.assertQuerysetEqual(resp.context['empresas'],['<Empresa: ITESM>'])
 
     #ACCEPTANCE CRITERIA: 13.3
-    def test_ac_13_3(self):
+    def test_validar_campos(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Telefono1':'4422232226',
             'Email1':'correo@itesm.com',
@@ -53,7 +84,7 @@ class EmpresaTest(TestCase):
         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
     #ACCEPTANCE CRITERIA: 13.4
-    def test_ac_13_4(self):
+    def test_validar_tipo_de_dato(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
             'Nombre':'ITESM',
             'Telefono1':'ABC',
