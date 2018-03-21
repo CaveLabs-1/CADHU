@@ -120,7 +120,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = reverse_lazy('prospectos:lista_prospectos')
+LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
