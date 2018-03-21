@@ -318,7 +318,7 @@ def info_prospecto(request, id):
     agenda = []
     bitacora = []
     for actividad in actividades:
-        if actividad.activo:
+        if not actividad.terminado:
             agenda.append(actividad)
         else:
             bitacora.append(actividad)
