@@ -67,7 +67,7 @@ class FormaActividad(ModelForm):
             'fecha',
             'hora',
             'notas',
-            'activo',
+            'terminado',
         ]
         exclude = [
             'prospecto_evento'
@@ -80,7 +80,7 @@ class FormaActividad(ModelForm):
             'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
             'notas': forms.Textarea(),
-            'activo': forms.CheckboxInput(),
+            'terminado': forms.CheckboxInput(),
         }
 
 

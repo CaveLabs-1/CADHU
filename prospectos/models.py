@@ -127,7 +127,7 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    activo = models.BooleanField(default=True, verbose_name='Terminada')
+    terminado = models.BooleanField(default=False, verbose_name='Terminada')
 
     def __str__(self):
         return self.titulo
