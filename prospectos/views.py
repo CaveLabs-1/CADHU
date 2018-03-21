@@ -343,8 +343,11 @@ def lista_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
+
 #US14
 def editar_empresa(request, id):
+
+    #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
     idempresa = Empresa.objects.get(id=id)
     NewEmpresaForm = EmpresaForm(instance=idempresa)
     NewLugarForm = LugarForm(instance=idempresa.Direccion)
@@ -352,6 +355,8 @@ def editar_empresa(request, id):
     if request.method == 'POST':
         NewEmpresaForm = EmpresaForm(request.POST or None, instance=idempresa)
         NewLugarForm = LugarForm(request.POST or None, instance=idempresa.Direccion)
+
+        #Si es válida, instanciar nueva empresa Y guardarla
         if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
 
             empresa = NewEmpresaForm.save(commit=False)
@@ -362,6 +367,8 @@ def editar_empresa(request, id):
             return redirect('prospectos:lista_empresas')
 
         else:
+
+            #Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
                 'NewEmpresaForm': NewEmpresaForm,
