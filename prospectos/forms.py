@@ -4,6 +4,7 @@ from django import forms
 from . import models
 from CADHU.settings import common
 
+
 class EmpresaForm(ModelForm):
     class Meta:
         model = Empresa
@@ -66,6 +67,7 @@ class FormaActividad(ModelForm):
             'fecha',
             'hora',
             'notas',
+            'activo',
         ]
         exclude = [
             'prospecto_evento'
@@ -77,7 +79,8 @@ class FormaActividad(ModelForm):
         widgets = {
             'fecha': forms.DateInput(format=common.DATE_INPUT_FORMATS),
             'time': forms.TimeInput(),
-            'notas': forms.Textarea()
+            'notas': forms.Textarea(),
+            'activo': forms.CheckboxInput(),
         }
 
 
@@ -94,6 +97,7 @@ class ProspectoEventoForm(ModelForm):
             'FlagCADHU': forms.CheckboxInput,
         }
 
+
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
@@ -104,6 +108,7 @@ class ClienteForm(ModelForm):
             'ProspectoEvento',
             'Fecha',
         }
+
 
 class PagoForm(ModelForm):
     class Meta:

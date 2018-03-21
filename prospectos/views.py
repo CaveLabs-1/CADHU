@@ -317,9 +317,9 @@ def info_prospecto(request, id):
     agenda = []
     bitacora = []
     for actividad in actividades:
-        if actividad.agenda():
+        if actividad.activo:
             agenda.append(actividad)
-        elif actividad.bitacora():
+        else:
             bitacora.append(actividad)
     context = {
         'prospecto': prospecto,
