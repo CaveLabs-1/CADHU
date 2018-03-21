@@ -8,19 +8,14 @@
   <div class="card ">
     <div class="card-content">
       <div class="row">
-        <div class="col l6 s12 center">
-          <h5>
-            <b> Mauricio Hernández </b>
-          </h5>
+        <div class="col l6 s12">
+          <h6 style="text-transform: uppercase">
+            <b> {{ prospecto.Nombre }} {{ prospecto.Apellidos }}  </b>
+          </h6>
         </div>
-        <div class="col l6 s12 center">
-          <h5> CA113213-12 </h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12">
-          <h6>
-            Total: $30,000.00
+        <div class="col l6 s12 ">
+          <h6 style="text-align: right">
+            Matrícula: {{ cliente.Matricula }}
           </h6>
         </div>
       </div>
@@ -33,41 +28,45 @@
       </div>
       <div class="row no-margin">
         <ul class="collapsible expandable">
-          <li>
-            <div class="collapsible-header">$10,000.00</div>
-            <div class="collapsible-body">
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons left">event</i>
-                  <b>Fecha:</b> 12/08/2018
+          {% for pago in pagos %}
+            <li>
+              <div class="collapsible-header">$ {{ pago.monto }}</div>
+              <div class="collapsible-body">
+                <div class="row">
+                  <div class="col s12">
+                    <i class="material-icons left">event</i>
+                    <b>Fecha:</b> {{ pago.fecha }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <i class="material-icons left">label</i>
+                    <b>No. de referencia:</b> {{ pago.referencia }}
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons left">label</i>
-                  <b>No. de referencia:</b> 2155816512852
-                </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="collapsible-header">$10,000.00</div>
-            <div class="collapsible-body">
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons left">event</i>
-                  <b>Fecha:</b> 12/08/2018
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons left">label</i>
-                  <b>No. de referencia:</b> 2155816512852
-                </div>
-              </div>
-            </div>
-          </li>
+            </li>
+          {% endfor %}
         </ul>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <a href="{% url 'prospectos:nuevo_pago' idPE %}" class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</a>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col s12">
+          <h6>
+            Costo Total: $ {{ curso.Costo }}
+          </h6>
+          <h6>
+            Saldo Pagado: $ {{ subtotal }}
+          </h6>
+          <h6>
+            Saldo Restante: $ {{ restante }}
+          </h6>
+        </div>
       </div>
     </div>
   </div>

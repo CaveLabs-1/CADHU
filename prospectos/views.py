@@ -411,7 +411,9 @@ def nuevo_pago(request, idPE):
         Forma_nuevo_pago = PagoForm(request.POST)
         # si la forma es válida
         if Forma_nuevo_pago.is_valid():
-            print(Forma_nuevo_pago)
+
+            #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
+            # if(total_pagos + float(request.POST['monto']) <= curso.Costo):
             # se guarda la forma
             pago = Forma_nuevo_pago.save(commit=False)
             pago.prospecto_evento_id = idPE
@@ -419,24 +421,59 @@ def nuevo_pago(request, idPE):
             # se redirige a la próxima vista
             messages.success(request, 'Pago agregado exitosamente!')
 
-            # return redirect('cursos:lista_cursos')
-            # return redirect(reverse('prospectos:crear_cliente pago.id'))
-            return redirect('prospectos:crear_cliente', id=pago.id)
+            pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
+
+            if(pagos > 1):
+                print(idPE)
+                print(pago.id)
+                pe = ProspectoEvento.objects.get(id = idPE)
+                return redirect('prospectos:lista_pagos', id=pe.Prospecto_id, idPE=idPE)
+            else:
+                return redirect('prospectos:crear_cliente', id=pago.id)
+
+            # else:
+            #     context = {
+            #         'form': Forma_nuevo_pago,
+            #         'titulo': 'Agregar Pago',
+            #         'error_message':
+            #     }
+            #     return render(request, 'pagos/nuevo_pago.html', context)
+
+
+        else:
         # se renderea la forma nuevamente con los errores marcados
-        print("error")
+            context = {
+                'form': Forma_nuevo_pago,
+                'titulo': 'Agregar Pago',
+                'error_message': Forma_nuevo_pago.errors
+            }
+            return render(request, 'pagos/nuevo_pago.html', context)
+
+    else:
+
+        total_pagos = 0
+
+        query_pagos = Pago.objects.filter(prospecto_evento_id = idPE)
+
+        for pago in query_pagos:
+            total_pagos += pago.monto
+
+
+        pe = ProspectoEvento.objects.get(id = idPE)
+        curso = Curso.objects.get(id = pe.Curso_id)
+
+        #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
+        monto_maximo = curso.Costo - total_pagos
+
+
+        # se renderea la página
         context = {
-            'form': Forma_nuevo_pago,
+            'form': forma_pago,
             'titulo': 'Agregar Pago',
-            'error_message': Forma_nuevo_pago.errors
+            'monto_maximo': monto_maximo,
+        # 'eventos': Evento.objects.all().order_by('Nombre')
         }
         return render(request, 'pagos/nuevo_pago.html', context)
-    # se renderea la página
-    context = {
-        'form': forma_pago,
-        'titulo': 'Agregar Pago',
-    # 'eventos': Evento.objects.all().order_by('Nombre')
-    }
-    return render(request, 'pagos/nuevo_pago.html', context)
 
 
 @login_required
@@ -447,40 +484,31 @@ def lista_pagos(request, id, idPE):
 
     pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
 
-    print(pagos)
+    pe = ProspectoEvento.objects.get(id = idPE)
+
+    print(pe.Curso_id)
+
+    total_pagos = 0
+
+    pagos2 = Pago.objects.filter(prospecto_evento_id = idPE)
+
+    for pago in pagos2:
+        total_pagos += pago.monto
+
+    curso = Curso.objects.get(id = pe.Curso_id)
 
     if(pagos > 0):
         context = {
-            # 'form': Forma_nuevo_curso,
-            'titulo': 'Lista de Pagos'
-            # 'eventos': Evento.objects.all().order_by('Nombre')
+            'titulo': 'Lista de Pagos',
+            'prospecto': Prospecto.objects.get(id=id),
+            'pagos': Pago.objects.filter(prospecto_evento_id = idPE).order_by('fecha'),
+            'cliente': Cliente.objects.get(ProspectoEvento_id = idPE),
+            'idPE': idPE,
+            'curso': curso,
+            'subtotal': total_pagos,
+            'restante': curso.Costo - total_pagos,
         }
         return render(request, 'pagos/lista_pagos.html', context)
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
-
-    # # prospecto = Prospecto.objects.get(id = id)
-    #
-    # # recibir forma
-    # # Forma_nuevo_curso = FormaCurso()
-    # # si se recibe una forma con post
-    # if request.method == 'POST':
-    #     Forma_nuevo_curso = FormaCurso(request.POST)
-    #     # si la forma es válida
-    #     if Forma_nuevo_curso.is_valid():
-    #         # se guarda la forma
-    #         actividad = Forma_nuevo_curso.save()
-    #         # se redirige a la próxima vista
-    #         messages.success(request, '¡Curso agregado exitosamente!')
-    #
-    #         # return redirect('cursos:lista_cursos')
-    #         return redirect('/cursos/lista_cursos')
-    #     # se renderea la forma nuevamente con los errores marcados
-    #     context = {
-    #         'form': Forma_nuevo_curso,
-    #         'titulo': 'Agregar Curso',
-    #         'error_message': Forma_nuevo_curso.errors
-    #     }
-    #     return render(request, 'cursos/nuevo_curso.html', context)
-    # # se renderea la página

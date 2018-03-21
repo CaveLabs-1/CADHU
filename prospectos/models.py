@@ -41,6 +41,13 @@ ESTADO_CIVIL = (
     ('UNION LIBRE', 'UNION LIBRE'),
 )
 
+TIPO_PAGO = (
+    ('EFECTIVO', 'EFECTIVO'),
+    ('TARJETA DE CRÉDITO', 'TARJETA DE CRÉDITO'),
+    ('TARJETA DE DÉBITO', 'TARJETA DE DÉBITO'),
+    ('TRASFERENCIA ELECTRÓNICA', 'TRANSFERENCIA ELECTRÓNICA'),
+)
+
 ACTIVO = (
     (True, 'Activo'),
     (False, 'Inactivo'),
@@ -139,6 +146,7 @@ class Pago(models.Model):
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     referencia = models.CharField(max_length=25, blank=True, null=True)
+    # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)
 
     # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
     # Nombre = models.CharField(max_length=25, blank=True, null=True)
