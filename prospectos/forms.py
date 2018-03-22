@@ -79,9 +79,15 @@ class ProspectoEventoForm(ModelForm):
             'FlagCADHU',
         )
 
-        widgets = {
-            'FlagCADHU': forms.CheckboxInput,
-        }
+
+class ProspectoEventoEdit(ModelForm):
+    class Meta:
+        model = ProspectoEvento
+        fields = (
+            'Interes',
+            'FlagCADHU',
+        )
+
 
 class ClienteForm(ModelForm):
     class Meta:

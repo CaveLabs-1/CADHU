@@ -31,6 +31,7 @@
                         <tr>
                             <th>Curso</th>
                             <th>Interes</th>
+                            <th>Fecha de Registro</th>
                             <th>Flag</th>
                             <th>Acciones</th>
                         </tr>
@@ -40,19 +41,21 @@
                         <tr>
                             <td>{{ curso.Curso }}</td>
                             <td>{{ curso.Interes }}</td>
+                            <td>{{ curso.Fecha }}</td>
                             {% if curso.FlagCADHU == True %}
                                 <td><a><i class="material-icons">check</i></a></td>
                             {% else %}
                                 <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                             {% endif %}
                             <td>
-                                <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                                <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                                <a href="{% url 'prospectos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                                <a href="{% url 'prospectos:eliminar_curso' curso.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+
             <br><br>
             <div class="center">
                 <button onclick="location.href='{% url 'prospectos:lista_prospectos' %}'" class="btn waves-effect waves-light form_button">Regresar a Lista</button>
