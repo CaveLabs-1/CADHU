@@ -427,11 +427,11 @@ def crear_empresa(request):
 #US
 @login_required
 @group_required('vendedora','administrador')
-def lista_actividades(request,id):
+def lista_actividades(request, id):
     actividades = Actividad.objects.filter(prospecto_evento=id)
     context = {
-        'actividades':actividades,
-        'id':id
+        'actividades': actividades,
+        'id': id
         }
     return render(request, 'actividades/actividades.html', context)
 
@@ -470,6 +470,19 @@ def crear_actividad(request, id):
         'id': id
     }
     return render(request, 'actividades/crear_actividad.html', context)
+
+
+@login_required
+@group_required('vendedora','administrador')
+def estado_actividad(request, id, url):
+    act = Actividad.objects.get(id=id)
+    if act.terminado:
+        act.terminado = False
+        act.save()
+    else:
+        act.terminado = True
+        act.save()
+    return redirect(url)
 
 
 @login_required
