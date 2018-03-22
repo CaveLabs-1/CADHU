@@ -4,4 +4,51 @@
 {% block title %}Actividades{% endblock %}
 {% block content %}
 
+<ul id="tabs" class="tabs pendientes">
+    <li class="tab col s6"><a href="#pendientes" class="active">Pendientes</a></li>
+    <li class="tab col s6"><a href="#terminadas">Terminadas</a></li>
+</ul>
+
+  <div id="pendientes" class="col s12">
+    <table class="dataTable">
+        <thead>
+          <tr>
+              <th>Pendiente</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for prospecto in prospectos   %}
+            <tr>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
+                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+  <div id="terminadas" class="col s12">
+    <table class="dataTable">
+        <thead>
+          <tr>
+              <th>Actividad</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for prospecto in prospectos   %}
+            <tr>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
+                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
 {% endblock %}
