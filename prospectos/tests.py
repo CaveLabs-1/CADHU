@@ -101,6 +101,22 @@ class EmpresaTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'ITESM')
 
+    def test_baja_empresas(self):
+        Empresa.objects.create(
+            id= '2',
+            Nombre='ITESM',
+            Contacto1='Lynda',
+            Telefono1='4423367895',
+            Puesto1='Recursos Humanos',
+            Email1='correo@itesm.com',
+            Direccion=Lugar.objects.get(Calle='Paraiso'),
+            Razon_Social='Escuela'
+        )
+        resp = self.client.post(reverse('prospectos:baja_empresas', kwargs={'id': 2}),follow=True)
+        actualizado = Empresa.objects.get(id=2)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(actualizado.Activo, False)
+
 class ProspectoListViewTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")

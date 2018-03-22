@@ -334,12 +334,24 @@ def info_prospecto(request, id):
 
 @login_required
 @group_required('vendedora','administrador')
-def lista_empresa(request):
-    empresas = Empresa.objects.all()
+def lista_empresas(request):
+    empresas = Empresa.objects.filter(Activo=True)
     context = {
         'empresas':empresas,
         'titulo': 'Empresas',
         }
+    return render(request, 'empresas/empresas.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_empresas_inactivo(request):
+    # Tomar los  los empresas de la base inactivos
+    empresa_inactivo = Empresa.objects.filter(Activo=False)
+    context = {
+        'empresas':empresa_inactivo,
+        'titulo': 'Empresas inactivas',
+        }
+    # Desplegar la página de empresas con enlistados con la información de la base de datos
     return render(request, 'empresas/empresas.html', context)
 
 @login_required
@@ -406,7 +418,7 @@ def crear_empresa(request):
             Empresa = NewEmpresaForm.save(commit=False)
             Empresa.Direccion = Lugar
             Empresa.save()
-            return lista_empresa(request)
+            return lista_empresas(request)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -423,6 +435,19 @@ def crear_empresa(request):
         'titulo': 'Registrar una Empresa',
     }
     return render(request, 'empresas/empresas_form.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
+def baja_empresas(request, id):
+    empresa = Empresa.objects.get(id=id)
+    if Empresa.Activo:
+        empresa.Activo = False
+        empresa.save()
+        return redirect(reverse('prospectos:lista_empresas'))
+    else:
+        empresa.Activo = True
+        empresa.save()
+        return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
 
 #US
