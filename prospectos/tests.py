@@ -378,6 +378,28 @@ class ActividadTest(TestCase):
             'notas':'Llamada con el prosecto'})
         self.assertEqual(resp.context['titulo'],'Agregar actividad')
 
+    def test_ac_12_3(self):
+        act = Actividad.objects.get_or_create(
+            titulo= 'Llamada con el prospecto',
+            fecha= datetime.datetime.now().date(),
+            notas= 'Llamada con el prosecto',
+            prospecto_evento= 1,
+            terminado=False,
+        )
+        resp = self.client.post(reverse('prospectos:estado_actividad',kwargs={'id':1}))
+        self.assertEqual(act.terminado, True)
+
+    def test_ac_12_4(self):
+        act = Actividad.objects.get_or_create(
+            titulo= 'Llamada con el prospecto',
+            fecha= datetime.datetime.now().date(),
+            notas= 'Llamada con el prosecto',
+            prospecto_evento= 1,
+            terminado=True,
+        )
+        resp = self.client.post(reverse('prospectos:estado_actividad',kwargs={'id':1}))
+        self.assertEqual(act.terminado, False)
+
 
 class CargaMasivaTest(TestCase):
     def setUp(self):
