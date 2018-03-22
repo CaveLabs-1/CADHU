@@ -15,7 +15,7 @@ urlpatterns = [
     path('', views.lista_prospectos, name='lista_prospectos'),
 
     # Lista prospectos inactivos
-    path('inactivo', views.lista_prospectos_inactivo, name='lista_prospectos_inactivo'),
+    path('prospectos/inactivo', views.lista_prospectos_inactivo, name='lista_prospectos_inactivo'),
 
     path('<int:id>/baja_prospecto', views.baja_prospecto, name='baja_prospecto'),
 
@@ -23,7 +23,12 @@ urlpatterns = [
     path('carga', views.carga_masiva, name='carga'),
 
     # Lista empresas
-    path('empresas/', views.lista_empresa, name='lista_empresas'),
+    path('empresas/', views.lista_empresas, name='lista_empresas'),
+
+    # Lista empresas inactivas
+    path('empresas/inactivas', views.lista_empresas_inactivo, name='lista_empresas_inactivo'),
+
+    path('<int:id>/baja_empresas', views.baja_empresas, name='baja_empresas'),
 
     # Crear Prospecto
     path('crear_prospecto', views.crear_prospecto, name='crear_prospecto'),
