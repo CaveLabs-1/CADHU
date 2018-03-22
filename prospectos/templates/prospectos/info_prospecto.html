@@ -164,7 +164,7 @@
         </table>
     </div>
 
-    {#------------------------OPCION 2 ----------------------------#}
+    {#------------------------Agenda ----------------------------#}
     <div id="agenda" class="col s12">
         <div class="">
             <div class="row">
@@ -177,6 +177,7 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
+                    <th>Terminado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -186,8 +187,11 @@
                         <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
-                        <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
-                                                         href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                        <td class="'truncate elipsis">
+                            <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -220,6 +224,7 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
+                    <th>Terminado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -231,6 +236,9 @@
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
                                                          href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons">check</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
