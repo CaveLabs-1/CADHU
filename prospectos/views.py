@@ -100,8 +100,8 @@ def crear_cliente(request, id):
     NewClienteForm = ClienteForm()
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
-        #Definir el error para forma invalida:
         #Crear y llenar la forma
+        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         NewClienteForm = ClienteForm(request.POST)
         pago = Pago.objects.get(id=id)
         fecha = pago.fecha
@@ -115,21 +115,12 @@ def crear_cliente(request, id):
             prospectoevento.save()
             cliente.save()
             clientes = Cliente.objects.all()
-
             prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            print(prospectoevento.Prospecto_id)
-            print(prospectoevento.id)
-
-            # context = {
-            #     'id': NewClienteForm,
-            #     'titulo': 'Registrar un Cliente',
-            # }
-            # prospecto_evento = ProspectoEvento.objects.filter(prospecto_evento_id = idPE).count()
             return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
-            # return redirect('prospectos:lista_pagos', )
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
+            'Error': Error,
             'NewClienteForm': NewClienteForm,
             'titulo': 'Registrar un Cliente',
         }
@@ -167,8 +158,7 @@ def crear_prospecto(request):
             Prospecto.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
             return redirect('prospectos:registrar_cursos', id=Prospecto.id)
-
-            #Si la forma no es válida, volverla a mandar
+        #Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'NewProspectoForm': NewProspectoForm,

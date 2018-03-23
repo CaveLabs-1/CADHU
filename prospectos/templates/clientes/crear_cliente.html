@@ -30,8 +30,15 @@
                         <label for="Matricula">Matricula</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        {{ NewClienteForm.rfc | add_class:'form-control' }}
+                        <label for="rfc">RFC</label>
+                    </div>
+                </div>
                 <div class="row center">
-                    <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+                  <a href="{% url 'prospectos:lista_prospectos'%}" class="btn waves-effect waves-light form_button red">Cancelar</a>
+                  <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
                 </div>
             </form>
           </div>
