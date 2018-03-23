@@ -221,13 +221,10 @@ def registrar_cursos(request, id):
     prospecto = Prospecto.objects.get(id=id)
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
     NewProspectoEventoForm = ProspectoEventoForm()
-
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
-
         # Crear la instancia de la forma y llenarla con los datos
         NewProspectoEventoForm = ProspectoEventoForm(request.POST)
-
         # Validar la forma y guardar en BD
         if NewProspectoEventoForm.is_valid():
             PE = NewProspectoEventoForm.save(commit=False)
@@ -243,7 +240,6 @@ def registrar_cursos(request, id):
                 'cursos': cursos,
             }
             return render(request, 'cursos/prospectoevento_form.html', context)
-
     messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
@@ -252,6 +248,25 @@ def registrar_cursos(request, id):
         'cursos': cursos,
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
+
+
+#US23
+@login_required
+@group_required('vendedora', 'administrador')
+def info_prospecto_curso(request, rel):
+    relacion = ProspectoEvento.objects.get(id=rel)
+    agenda = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=False).order_by('fecha', 'hora')
+    bitacora = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=True).order_by('fecha', 'hora')
+    prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
+    titulo = 'Nivel de interés:  ' +relacion.Interes
+    context = {
+        'relacion': relacion,
+        'agenda': agenda,
+        'bitacora': bitacora,
+        'prospecto': prospecto,
+        'titulo': titulo,
+    }
+    return render(request, 'cursos/info_prospectocurso.html', context)
 
 
 #US7
@@ -303,7 +318,7 @@ def info_prospecto(request, id):
     prospecto = Prospecto.objects.get(id=id)
     # cursos = prospecto.Cursos.all()
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
-    actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha').order_by('hora')
+    actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
     agenda = []
     bitacora = []

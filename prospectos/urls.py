@@ -39,6 +39,9 @@ urlpatterns = [
     # Info prospecto
     path('informacion/<int:id>', views.info_prospecto, name='info_prospecto'),
 
+    # Info curso-prospecto
+    path('interes/<int:rel>', views.info_prospecto_curso, name='info_prospecto_curso'),
+
     # Registrar Cursos a Prospecto
     path('<int:id>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),
 

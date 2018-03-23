@@ -2,116 +2,147 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Prospecto: {{ prospecto.Nombre }} {{ prospecto.Apellidos }} {% endblock %}
+{% block title %} Interés: {{ relacion.Interes }} {% endblock %}
 {% block content %}
-
     <div class="row">
-        <div class="col s12">
+        {#-------------------------PROSPECTO---------------#}
+        <div class="col s12 m6">
             <div class="card">
                 <div class="card-image">
                     <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
                     <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
                 </div>
                 <div class="card-content">
-                    <span class="card-title activator">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                    <span class="card-title activator">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}</span>
                 </div>
                 <div class="card-reveal">
                     <div class="row">
-                        <span class="card-title grey-text text-darken-4">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}<i class="material-icons right">close</i></span>
+                        <span class="card-title grey-text text-darken-4">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}<i class="material-icons right">close</i></span>
                     </div>
                     {#----------------Info-------------#}
                     <div class="row">
                         <div class="col s12 m4 l4">
-                            <label for="Nombre">Nombre(s)</label>
-                            {{ prospecto.Nombre }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label for="apellido_p">Apellidos</label>
-                            {{ prospecto.Apellidos }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Email</label>
-                            {{ prospecto.Email }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Celular</label>
-                            {{ prospecto.Telefono_Celular }}
+                            {{ relacion.Prospecto.Telefono_Celular }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Casa</label>
-                            {{ prospecto.Telefono_Casa }}
+                            {{ relacion.Prospecto.Telefono_Casa }}
                         </div>
                         <div class="col s12 m4 l4">
-                            <label for="ocupacion">Ocupaci&oacute;n</label>
-                            {{ prospecto.Ocupacion }}
+                            <label>Email</label>
+                            {{ relacion.Prospecto.Email }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
-                            <label>M&eacute;todo de captaci&oacute;n</label>
-                            {{ prospecto.Metodo_Captacion }}
+                            <label>Hijos</label><br>
+                            {{ relacion.Prospecto.Hijos }}
                         </div>
                         <div class="col s12 m4 l4">
-                            <label for="otro">Radio/Recomendacion </label>
-                            {{ prospecto.Recomendacion }}
+                            <label>Estado civil</label><br>
+                            {{ relacion.Prospecto.Estado_Civil }}
                         </div>
                         <div class="col s12 m4 l4">
-                            <label>Estado civil</label>
-                            {{ prospecto.Estado_Civil }}
+                            <label for="ocupacion">Ocupaci&oacute;n</label><br>
+                            {{ relacion.Prospecto.Ocupacion }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
-                            <label>Hijos</label>
-                            {{ prospecto.Hijos }}
+                            <label>M&eacute;todo de captaci&oacute;n</label><br>
+                            {{ relacion.Prospecto.Metodo_Captacion }}
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label for="otro">Radio/Recomendacion </label><br>
+                            {{ relacion.Prospecto.Recomendacion }}
                         </div>
                     </div>
-
-
-
 
                     {#----------------Direccion-------------#}
+
                     <div class="row">
                         <span class=" grey-text text-darken-4" >Direcci&oacute;n</span>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
-                            <label>Pa&iacute;s</label>
-                            {{ prospecto.Direccion.Pais }}
+                            <label>Pa&iacute;s</label><br>
+                            {{ relacion.Prospecto.Direccion.Pais }}
                         </div>
                         <div class="col s12 m4 l4">
-                            <label>Estado</label>
-                            {{ prospecto.Direccion.Estado }}
+                            <label>Estado</label><br>
+                            {{ relacion.Prospecto.Direccion.Estado }}
                         </div>
                         <div class="col s12 m4 l4">
-                            <label>Ciudad</label>
-                            {{ prospecto.Direccion.Ciudad }}
+                            <label>Ciudad</label><br>
+                            {{ relacion.Prospecto.Direccion.Ciudad }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m6">
-                            <label for="colonia">Colonia</label>
-                            {{ prospecto.Direccion.Colonia }}
+                            <label for="colonia">Colonia</label><br>
+                            {{ relacion.Prospecto.Direccion.Colonia }}
                         </div>
                         <div class="col s12 m6">
-                            <label for="calle">Calle</label>
-                            {{ prospecto.Direccion.Calle }}
+                            <label for="calle">Calle</label><br>
+                            {{ relacion.Prospecto.Direccion.Calle }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s6 m4">
-                            <label for="num_ext">N&uacute;mero exterior</label>
-                            {{ prospecto.Direccion.Numero_Exterior }}
+                            <label for="num_ext">N&uacute;mero exterior</label><br>
+                            {{ relacion.Prospecto.Direccion.Numero_Exterior }}
                         </div>
                         <div class="col s6 m4">
-                            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
-                            {{ prospecto.Direccion.Numero_Interior }}
+                            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label><br>
+                            {{ relacion.Prospecto.Direccion.Numero_Interior }}
                         </div>
                         <div class="col s12 m4">
-                            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
-                            {{ prospecto.Direccion.Codigo_Postal }}
+                            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label><br>
+                            {{ relacion.Prospecto.Direccion.Codigo_Postal }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#-----------------------CURSO-------------------------------------------------#}
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-image">
+                    <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator">{{ relacion.Curso.Nombre }} - {{ relacion.Curso.Evento.Nombre }}</span>
+                </div>
+                <div class="card-reveal">
+                    <div class="row">
+                        <span class="card-title grey-text text-darken-4">{{ relacion.Curso.Nombre }} - {{ relacion.Curso.Evento.Nombre }}<i class="material-icons right">close</i></span>
+                    </div>
+                    {#                    ----------------Info-------------#}
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <label for="Nombre">Fecha de inicio:</label><br>
+                            {{ relacion.Curso.Fecha_Inicio }}
+                        </div>
+                        <div class="col s12 m6">
+                            <label for="apellido_p">Fecha de término:</label><br>
+                            {{ relacion.Curso.Fecha_Fin }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>Costo:</label><br>
+                            ${{ relacion.Curso.Costo }}.°°
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <label for="ocupacion">Encargado:</label><br>
+                            {{ relacion.Curso.Encargado }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <label>Dirección</label><br>
+                            {{ relacion.Curso.Direccion }}
                         </div>
                     </div>
                 </div>
@@ -121,49 +152,9 @@
 
 
     <ul id="tabs" class="tabs">
-        <li class="tab col s4"><a href="#cursos">Cursos</a></li>
-        <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
-        <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
+        <li class="tab col s4 offset-s1"><a href="#agenda" class="active">Agenda</a></li>
+        <li class="tab col s5 offset-s1"><a href="#bitacora">Bitácora</a></li>
     </ul>
-
-
-    <div id="cursos" class="col s12">
-        <div class="row">
-        </div>
-        <div class="fixed-action-btn">
-            <a class="btn-floating btn-large orange" href="{% url 'prospectos:registrar_cursos' prospecto.id %}">
-                <i class="large material-icons">add</i>
-            </a>
-        </div>
-        <table class="dataTable">
-            <thead>
-            <tr>
-                <th>Curso</th>
-                <th>Interes</th>
-                <th>Flag</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for curso in cursos %}
-                <tr>
-                    <td>{{ curso.Curso }}</td>
-                    <td>{{ curso.Interes }}</td>
-                    {% if curso.FlagCADHU == True %}
-                        <td><a><i class="material-icons">check</i></a></td>
-                    {% else %}
-                        <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
-                    {% endif %}
-                    <td>
-                        <a href="!#"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a><i class="material-icons text-rojo-cadhu">delete</i></a>
-                        <a href="{% url 'prospectos:info_prospecto_curso' curso.id %}"><i class="material-icons">info</i></a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
     {#------------------------Agenda ----------------------------#}
     <div id="agenda" class="col s12">
@@ -257,6 +248,11 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large orange" href="{% url 'prospectos:crear_actividad' relacion.id %}">
+            <i class="large material-icons">add</i>
+        </a>
     </div>
 {% endblock %}
 

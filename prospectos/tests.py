@@ -442,10 +442,10 @@ class ActividadTest(TestCase):
             fecha= datetime.datetime.now().date(),
             notas= 'Llamada con el prosecto',
             prospecto_evento= 1,
-            terminado=True,
+            terminado=False,
         )
         resp = self.client.post(reverse('prospectos:estado_actividad',kwargs={'id':1}))
-        self.assertEqual(act.terminado, False)
+        self.assertEqual(act.terminado, True)
 
 
 class CargaMasivaTest(TestCase):
