@@ -13,7 +13,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
                 </div>
                 <div class="card-content">
-                    <span class="card-title activator">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}</span>
+                        <span class="card-title activator">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}</span>
                 </div>
                 <div class="card-reveal">
                     <div class="row">
@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Celular</label>
-                            {{ relacion.Prospecto.Telefono_Celular }}
+                            <a class="whatsapp" onclick="whatsapp({{ relacion.Prospecto.Telefono_Celular }});" href="#">{{ relacion.Prospecto.Telefono_Celular }}</a>
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Casa</label>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Email</label>
-                            {{ relacion.Prospecto.Email }}
+                            <a href="mailto:{{ relacion.Prospecto.Email }}" target="_blank">{{ relacion.Prospecto.Email }}</a>
                         </div>
                     </div>
                     <div class="row">
@@ -251,8 +251,12 @@
     </div>
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large orange" href="{% url 'prospectos:crear_actividad' relacion.id %}">
-            <i class="large material-icons">add</i>
+            <i class="large material-icons">note_add</i>
         </a>
+        <ul>
+            <li><a class="btn-floating blue" href="mailto:{{ relacion.Prospecto.Email }}" target="_blank"><i class="material-icons">email</i></a></li>
+            <li><a class="btn-floating green modal-trigger whatsapp" onclick="whatsapp({{ relacion.Prospecto.Telefono_Celular }});" href="#"><i class="material-icons">sms</i></a></li>
+        </ul>
     </div>
 {% endblock %}
 

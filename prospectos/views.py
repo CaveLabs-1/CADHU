@@ -328,7 +328,6 @@ def info_prospecto(request, id):
         else:
             bitacora.append(actividad)
     context = {
-        'prospecto': prospecto,
         'titulo': titulo,
         'actividades': actividades,
         'agenda': agenda,
