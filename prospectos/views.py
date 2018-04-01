@@ -128,9 +128,54 @@ def crear_cliente(request, id):
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': NewClienteForm,
-        'titulo': 'Registrar un Cliente',
+        'titulo': 'Registrar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
+
+
+
+# US37
+@login_required
+@group_required('vendedora','administrador')
+def editar_cliente(request, id):
+
+    idcliente = Cliente.objects.get(ProspectoEvento_id=id)
+    NewClienteForm = ClienteForm(instance=idcliente)
+    #Si el método HTTP es post procesar la información de la forma:
+    if request.method == "POST":
+        #Crear y llenar la forma
+        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        NewClienteForm = ClienteForm(request.POST or None, instance=idcliente)
+        pago = Pago.objects.get(id=id)
+        fecha = pago.fecha
+        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
+        #Si la forma es válida guardar la información en la base de datos:
+        if NewClienteForm.is_valid():
+            cliente = NewClienteForm.save(commit=False)
+            cliente.ProspectoEvento = prospectoevento
+            cliente.Fecha = fecha
+            prospectoevento.status = 'CURSANDO'
+            prospectoevento.save()
+            cliente.save()
+            clientes = Cliente.objects.all()
+            prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
+            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+        #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        context = {
+            'Error': Error,
+            'NewClienteForm': NewClienteForm,
+            'titulo': 'Editar Cliente',
+        }
+        return render(request, 'clientes/crear_cliente.html', context)
+    #Si el método HTTP no es post, volver a enviar la forma:
+    context = {
+        'NewClienteForm': NewClienteForm,
+        'titulo': 'Editar Cliente',
+    }
+    return render(request, 'clientes/crear_cliente.html', context)
+
+
 
 
 #US3
