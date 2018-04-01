@@ -35,12 +35,26 @@ class ClienteTest(TestCase):
         Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
         self.assertEqual(Cliente_acum, 1)
 
+    #ACCEPTANCE CRITERIA: 31.1
+    def test_editar_cliente(self):
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+             'Matricula':'A01206199'})
+        self.assertEqual(resp.status_code, 302)
+        Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        self.assertEqual(Cliente_acum, 1)
+        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id':1}),{
+             'Matricula':'A01206198'})
+        self.assertEqual(respm.status_code, 302)
+        Cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
+        self.assertEqual(Cliente_mod, 1)
+
     #ACCEPTANCE CRITERIA: 31.2
     def test_validar_campos(self):
          resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
              'rfc':'RODR621124FY9'})
          self.assertEqual(resp.status_code, 200)
          self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
+
 
 
 class EmpresaTest(TestCase):
