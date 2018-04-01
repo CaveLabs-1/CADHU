@@ -13,6 +13,18 @@ class EventoModelTest(TestCase):
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
 
+
+    #Prueba que la url para lista evento exista.
+    def test_view_url_exists_lista_evento(self):
+        resp = self.client.get('/eventos/')
+        self.assertEqual(resp.status_code, 200)
+
+    #Prueba que se utilice el template sea el correcto.
+    def test_view_uses_correct_template_lista_evento(self):
+        resp = self.client.get(reverse('eventos:lista_evento'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'eventos/eventos.html')
+
     #Prueba que la url para crear evento exista.
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/eventos/crear_evento')
@@ -31,12 +43,3 @@ class EventoModelTest(TestCase):
         self.assertEqual(resp.status_code, 302)
         cant= Evento.objects.count()
         self.assertEqual(cant,1)
-
-    # def test_ac_13_2(self):
-    #     resp = self.client.post(reverse('prospectos:empresa_crear'), {
-    #         'Nombre': 'ITESM',
-    #         'Telefono': '+524422232226',
-    #         'Email': 'correo@itesm.com',
-    #         'Razon_Social': 'Escuela'})
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertQuerysetEqual(resp.context['empresas'], ['<Empresa: ITESM>'])
