@@ -63,6 +63,8 @@ urlpatterns = [
     # Crear Cliente
     path('crear_cliente/<int:id>/', views.crear_cliente, name='crear_cliente'),
 
+    # Editar Cliente
+    path('editar_cliente/<int:id>/', views.editar_cliente, name='editar_cliente'),
 
 
 ]
