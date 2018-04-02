@@ -4,7 +4,7 @@
       {% block title %}Empresas{% endblock %}
         {% block content %}
             <div class="fixed-action-btn">
-              <a href="{% url 'prospectos:crear_empresa' %}" class="btn-floating btn-large orange">
+              <a href="{% url 'prospectos:crear_empresa' request.path %}" class="btn-floating btn-large orange">
                 <i class="large material-icons">add</i>
               </a>
             </div>
@@ -23,7 +23,7 @@
                           <td>{{ empresa.Nombre }}</td>
                           <td>{{ empresa.Razon_Social }}</td>
                           <td>
-                              <a href="{% url 'prospectos:editar_empresa' empresa.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a href="{% url 'prospectos:editar_empresa' empresa.id request.path %}"><i class="material-icons text-blue-ligero">edit</i></a>
                               <a href="{% url 'prospectos:baja_empresas' empresa.id %}" onclick="cambiar_estatusEmpresa(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
 
                           </td>
@@ -88,4 +88,3 @@
 
       </script>
       {% endblock %}
-

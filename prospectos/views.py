@@ -488,40 +488,35 @@ def lista_empresas_inactivo(request):
 @group_required('vendedora','administrador')
 
 #US14
-def editar_empresa(request, id):
-
+def editar_empresa(request, id, url):
     #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
     idempresa = Empresa.objects.get(id=id)
     NewEmpresaForm = EmpresaForm(instance=idempresa)
     NewLugarForm = LugarForm(instance=idempresa.Direccion)
-
     if request.method == 'POST':
         NewEmpresaForm = EmpresaForm(request.POST or None, instance=idempresa)
         NewLugarForm = LugarForm(request.POST or None, instance=idempresa.Direccion)
-
         #Si es válida, instanciar nueva empresa Y guardarla
         if NewEmpresaForm.is_valid() and NewLugarForm.is_valid():
-
             empresa = NewEmpresaForm.save(commit=False)
             lugar = NewLugarForm.save()
             empresa.Direccion = lugar
             empresa.save()
             messages.success(request, 'La empresa ha sido actualizada.')
             return redirect('prospectos:lista_empresas')
-
         else:
-
             #Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
+                'url':url,
                 'NewEmpresaForm': NewEmpresaForm,
                 'NewLugarForm': NewLugarForm,
                 'empresa': idempresa,
                 'titulo': 'Editar Empresa',
             }
             return render(request, 'empresas/empresas_form.html', context)
-
     context = {
+        'url':url,
         'NewEmpresaForm': NewEmpresaForm,
         'NewLugarForm': NewLugarForm,
         'empresa': idempresa,
@@ -532,7 +527,7 @@ def editar_empresa(request, id):
 # US13
 @login_required
 @group_required('vendedora','administrador')
-def crear_empresa(request):
+def crear_empresa(request, url):
     NewEmpresaForm = EmpresaForm()
     NewLugarForm = LugarForm()
     #Si el método HTTP es post procesar la información de la forma:
@@ -552,6 +547,7 @@ def crear_empresa(request):
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
+            'url':url,
             'Error': Error,
             'NewEmpresaForm': NewEmpresaForm,
             'NewLugarForm': NewLugarForm,
@@ -560,6 +556,7 @@ def crear_empresa(request):
         return render(request, 'empresas/empresas_form.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
+        'url':url,
         'NewEmpresaForm': NewEmpresaForm,
         'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar una Empresa',
@@ -756,4 +753,3 @@ def lista_pagos(request, id, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
-
