@@ -570,14 +570,11 @@ def crear_empresa(request):
 def baja_empresas(request, id):
     empresa = Empresa.objects.get(id=id)
     if Empresa.Activo:
-        print(empresa.Activo)
         empresa.Activo = False
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas'))
     else:
-        print(empresa.Activo)
         empresa.Activo = True
-        print(empresa.Activo)
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
