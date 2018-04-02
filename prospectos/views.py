@@ -283,6 +283,7 @@ def registrar_cursos(request, id):
             try:
                 ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
+                print("aaa")
                 context = {
                     'prospecto': prospecto,
                     'NewProspectoEventoForm': NewProspectoEventoForm,
