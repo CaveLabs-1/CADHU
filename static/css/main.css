@@ -22,6 +22,15 @@
   background-color: rgba(12,93,149,1);
 }
 
+.back_button{
+  border-radius: 50px;
+  background-color: rgba(12,93,149,1);
+}
+
+.back_button:hover{
+  background-color: #1D874A;
+}
+
 .under-shadow{
   -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
   -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
