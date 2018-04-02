@@ -100,19 +100,23 @@ def carga_masiva(request):
 @group_required('vendedora','administrador')
 def crear_cliente(request, id):
     NewClienteForm = ClienteForm()
+    NewLugarForm = LugarForm()
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         NewClienteForm = ClienteForm(request.POST)
+        NewLugarForm = LugarForm(request.POST)
         pago = Pago.objects.get(id=id)
         fecha = pago.fecha
         prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
         #Si la forma es válida guardar la información en la base de datos:
         if NewClienteForm.is_valid():
+            lugar = NewLugarForm.save()
             cliente = NewClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
             cliente.Fecha = fecha
+            cliente.direccion = lugar
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
@@ -124,13 +128,15 @@ def crear_cliente(request, id):
         context = {
             'Error': Error,
             'NewClienteForm': NewClienteForm,
+            'NewLugarForm': NewLugarForm,  
             'titulo': 'Registrar un Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': NewClienteForm,
-        'titulo': 'Registrar Cliente',
+        'NewLugarForm': NewLugarForm,
+        'titulo': 'Registrar un Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
