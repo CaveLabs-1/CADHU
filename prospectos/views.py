@@ -17,7 +17,6 @@ import os
 from django.conf import settings
 
 
-
 # US43
 @login_required
 @group_required('vendedora','administrador')
@@ -605,7 +604,7 @@ def lista_actividades(request, id):
     return render(request, 'actividades/actividades.html', context)
 
 
-#US12
+# US12
 @login_required
 @group_required('vendedora', 'administrador')
 def crear_actividad(request, id):
@@ -769,3 +768,4 @@ def lista_pagos(request, id, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
+
