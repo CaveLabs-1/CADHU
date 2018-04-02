@@ -49,6 +49,18 @@
   font-weight: 700;
 }
 
+.done-icon{
+  -moz-transition: text-shadow 0.5s, color 0.5s;
+  -o-transition: text-shadow 0.5s, color 0.5s;
+  -webkit-transition: text-shadow 0.5s, color 0.5s;
+  transition: text-shadow 0.5s, color 0.5s;
+}
+
+.done-icon:hover{
+  color: #483683;
+  text-shadow: 0px 0px 14px rgba(150, 150, 150, 1);
+}
+
 /*BASE*/
 body {
   /* padding-top: 60px; */
@@ -91,6 +103,7 @@ main {
 #logout {
   right: 350px;
 }
+
 
 
 
