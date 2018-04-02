@@ -183,22 +183,22 @@ def editar_cliente(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def crear_prospecto(request):
-    NewProspectoForm = ProspectoForm(prefix='NewProspectoForm')
-    NewLugarForm = LugarForm(prefix='NewLugarForm')
+    newProspectoForm = ProspectoForm(prefix='NewProspectoForm')
+    newLugarForm = LugarForm(prefix='NewLugarForm')
 
     #Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
 
         #Crear la instancia de la forma y llenarla con los datos
-        NewProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
-        NewLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
+        newProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
+        newLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
 
         # Validar la forma y guardar en BD
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+        if newProspectoForm.is_valid() and newLugarForm.is_valid():
 
-            Lugar = NewLugarForm.save()
-            Prospecto = NewProspectoForm.save(commit=False)
-            Prospecto.Direccion = Lugar
+            lugar = newLugarForm.save()
+            Prospecto = newProspectoForm.save(commit=False)
+            Prospecto.Direccion = lugar
             Prospecto.Usuario = request.user
             Prospecto.Fecha_Creacion = now()
             Prospecto.save()
@@ -207,16 +207,16 @@ def crear_prospecto(request):
         #Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'NewProspectoForm': NewProspectoForm,
-            'NewLugarForm': NewLugarForm,
+            'NewProspectoForm': newProspectoForm,
+            'NewLugarForm': newLugarForm,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
 
     #Si no es POST, volverla a mandar
     context = {
-        'NewProspectoForm': NewProspectoForm,
-        'NewLugarForm': NewLugarForm,
+        'NewProspectoForm': newProspectoForm,
+        'NewLugarForm': newLugarForm,
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
@@ -265,7 +265,7 @@ def editar_prospecto(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def registrar_cursos(request, id):
-    NewProspectoEventoForm = ProspectoEventoForm()
+    newProspectoEventoForm = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=id)
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
 
@@ -273,18 +273,18 @@ def registrar_cursos(request, id):
     if request.method == 'POST':
 
         # Crear la instancia de la forma y llenarla con los datos
-        NewProspectoEventoForm = ProspectoEventoForm(request.POST)
+        newProspectoEventoForm = ProspectoEventoForm(request.POST)
 
         # Validar la forma
-        if NewProspectoEventoForm.is_valid():
-            PE = NewProspectoEventoForm.save(commit=False)
+        if newProspectoEventoForm.is_valid():
+            PE = newProspectoEventoForm.save(commit=False)
             # Validar que no se este agregando un curso repetido
             try:
                 ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'NewProspectoEventoForm': NewProspectoEventoForm,
+                    'NewProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
@@ -299,7 +299,7 @@ def registrar_cursos(request, id):
                 messages.success(request, 'Curso asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'NewProspectoEventoForm': NewProspectoEventoForm,
+                    'NewProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
@@ -308,7 +308,7 @@ def registrar_cursos(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': NewProspectoEventoForm,
+        'NewProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
     }
@@ -319,9 +319,9 @@ def registrar_cursos(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def editar_curso(request, id):
-    OldProspectoEventoForm = ProspectoEventoForm()
+    oldProspectoEventoForm = ProspectoEventoForm()
     cursoEditar = ProspectoEvento.objects.get(id=id)
-    NewProspectoEventoForm = ProspectoEventoEdit(instance=cursoEditar)
+    newProspectoEventoForm = ProspectoEventoEdit(instance=cursoEditar)
     prospecto = cursoEditar.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
 
@@ -329,18 +329,18 @@ def editar_curso(request, id):
     if request.method == 'POST':
 
         # Crear la instancia de la forma y llenarla con los datos
-        NewProspectoEventoForm = ProspectoEventoEdit(request.POST or None, instance=cursoEditar)
+        newProspectoEventoForm = ProspectoEventoEdit(request.POST or None, instance=cursoEditar)
 
         # Validar la forma y guardarla en la BD
-        if NewProspectoEventoForm.is_valid():
-            PE = NewProspectoEventoForm.save(commit=False)
+        if newProspectoEventoForm.is_valid():
+            PE = newProspectoEventoForm.save(commit=False)
             PE.Prospecto = prospecto
             PE.Curso = cursoEditar.Curso
             PE.save()
             messages.success(request, 'Curso Modificado a prospecto')
             context = {
                 'prospecto': prospecto,
-                'NewProspectoEventoForm': OldProspectoEventoForm,
+                'NewProspectoEventoForm': oldProspectoEventoForm,
                 'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                 'cursos': cursos,
             }
@@ -349,7 +349,7 @@ def editar_curso(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': NewProspectoEventoForm,
+        'NewProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Editar Curso - ' + cursoEditar.Curso.Nombre,
         'cursos': cursos,
     }
@@ -361,14 +361,14 @@ def editar_curso(request, id):
 @group_required('vendedora','administrador')
 def eliminar_curso(request, id):
     curso = ProspectoEvento.objects.get(id=id)
-    NewProspectoEventoForm = ProspectoEventoForm()
+    newProspectoEventoForm = ProspectoEventoForm()
     prospecto = curso.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
     curso.delete()
     messages.success(request, 'Curso eliminado de manera exitosa')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': NewProspectoEventoForm,
+        'NewProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
         }
