@@ -758,3 +758,4 @@ def lista_pagos(request, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
+
