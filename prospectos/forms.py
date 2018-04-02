@@ -100,6 +100,8 @@ class ClienteForm(ModelForm):
         fields = (
             'Matricula',
             'rfc',
+            'direccion',
+            'razonSocial',
         )
         excludes = {
             'ProspectoEvento',
