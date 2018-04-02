@@ -119,7 +119,11 @@ class Cliente(models.Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
     Matricula = models.CharField(max_length=10, blank=False, null=False)
     Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
+    rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$', message="El RFC debe de contar con el formato oficial")
+    rfc = models.CharField(validators=[rfc_regex],max_length=13, blank=True, null=True)
 
+    def __str__(self):
+        return self.Matricula
 
 class Actividad(models.Model):
     titulo = models.CharField(verbose_name='Actividad', max_length=500)
@@ -127,22 +131,10 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    # activo = models.BooleanField(default=True)
+    terminado = models.BooleanField(default=False, verbose_name='Terminada')
 
     def __str__(self):
         return self.titulo
-
-    def agenda(self):
-        ahora = datetime.datetime.now()
-        fechatot = datetime.datetime.combine(self.fecha, self.hora)
-        # return self.objects.filter(datetime.timedelta(days=1) <= fechatot <= ahora)
-        return fechatot > ahora
-
-    def bitacora(self):
-        ahora = datetime.datetime.now()
-        fechatot = datetime.datetime.combine(self.fecha, self.hora)
-        # return ahora + datetime.timedelta(days=1) <= fechatot <= ahora
-        return fechatot < ahora
 
 
 class Pago(models.Model):

@@ -190,6 +190,11 @@ table th {
   color: #3875d7;
 }
 
+.pendientes{
+  background-color: #eeeeee;
+  margin-bottom: 50px;
+}
+
 /*MEDIA QUERIES*/
 
 
