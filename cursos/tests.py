@@ -18,7 +18,7 @@ class CursoModelTest(TestCase):
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        Curso.objects.create(Nombre='Curso', Evento= evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-20', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
 
     def test_Nombre_label(self):
         curso=Curso.objects.get(id=1)
@@ -30,10 +30,15 @@ class CursoModelTest(TestCase):
         field_label = curso._meta.get_field('Evento').verbose_name
         self.assertEquals(field_label,'Evento')
 
-    def test_Fecha_label(self):
+    def test_Fecha_Inicio_label(self):
         curso=Curso.objects.get(id=1)
-        field_label = curso._meta.get_field('Fecha').verbose_name
-        self.assertEquals(field_label,'Fecha')
+        field_label = curso._meta.get_field('Fecha_Inicio').verbose_name
+        self.assertEquals(field_label,'Fecha Inicio')
+
+    def test_Fecha_Fin_label(self):
+        curso=Curso.objects.get(id=1)
+        field_label = curso._meta.get_field('Fecha_Fin').verbose_name
+        self.assertEquals(field_label,'Fecha Fin')
 
     def test_Direccion_label(self):
         curso=Curso.objects.get(id=1)
@@ -62,13 +67,14 @@ class CursoModelTest(TestCase):
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get(reverse('cursos:cursos'))
         self.assertEqual(resp.status_code, 200)
-        
+
     def test_view_crear_curso(self):
         evento = Evento.objects.create(Nombre='Mi Evento 2', Descripcion='Este es el evento de pruebas automoatizadas.')
         resp = self.client.post('/cursos/nuevo_curso',  {
             'Nombre': 'Curso',
             'Evento': evento,
-            'Fecha': '2018-03-16',
+            'Fecha_Inicio': '2018-03-16',
+            'Fecha_Fin': '2018-03-16',
             'Direccion': 'Calle',
             'Descripcion': 'Evento de marzo',
             'Costo': 1000},
@@ -88,14 +94,14 @@ class CursoViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        Curso.objects.create(Nombre='Curso', Evento= evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
 
     #Acceptance criteria: 29.1
     def test_view_uses_correct_template(self):
         resp = self.client.get(reverse('cursos:cursos'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'cursos/cursos.html')
-        
+
     #Acceptance criteria: 29.2
     def test_view_curso_existe(self):
         resp = self.client.get(reverse('cursos:cursos'))

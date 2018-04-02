@@ -649,7 +649,7 @@ def lista_pagos(request, id, idPE):
 
     pe = ProspectoEvento.objects.get(id = idPE)
 
-    print(pe.Curso_id)
+    # print(pe.Curso_id)
 
     total_pagos = 0
 
