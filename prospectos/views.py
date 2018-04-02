@@ -378,6 +378,7 @@ def info_prospecto(request, id):
         'agenda': agenda,
         'bitacora': bitacora,
         'cursos': cursos,
+        'prospecto': prospecto,
     }
     return render(request, 'prospectos/info_prospecto.html', context)
 
