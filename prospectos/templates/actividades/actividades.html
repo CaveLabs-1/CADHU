@@ -19,6 +19,7 @@
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Notas</th>
+                <th>Terminado</th>
             </tr>
             </thead>
             <tbody>
@@ -31,6 +32,11 @@
                     <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
                            href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                     </td>
+                    {% if actividad.terminado %}
+                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons">check</i></a></td>
+                    {% else %}
+                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                    {% endif %}
                 </tr>
                 <!-- Modal Structure -->
                 <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">

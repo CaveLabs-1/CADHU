@@ -41,6 +41,13 @@ ESTADO_CIVIL = (
     ('UNION LIBRE', 'UNION LIBRE'),
 )
 
+TIPO_PAGO = (
+    ('EFECTIVO', 'EFECTIVO'),
+    ('TARJETA DE CRÉDITO', 'TARJETA DE CRÉDITO'),
+    ('TARJETA DE DÉBITO', 'TARJETA DE DÉBITO'),
+    ('TRASFERENCIA ELECTRÓNICA', 'TRANSFERENCIA ELECTRÓNICA'),
+)
+
 ACTIVO = (
     (True, 'Activo'),
     (False, 'Inactivo'),
@@ -126,22 +133,10 @@ class Actividad(models.Model):
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    # activo = models.BooleanField(default=True)
+    terminado = models.BooleanField(default=False, verbose_name='Terminada')
 
     def __str__(self):
         return self.titulo
-
-    def agenda(self):
-        ahora = datetime.datetime.now()
-        fechatot = datetime.datetime.combine(self.fecha, self.hora)
-        # return self.objects.filter(datetime.timedelta(days=1) <= fechatot <= ahora)
-        return fechatot > ahora
-
-    def bitacora(self):
-        ahora = datetime.datetime.now()
-        fechatot = datetime.datetime.combine(self.fecha, self.hora)
-        # return ahora + datetime.timedelta(days=1) <= fechatot <= ahora
-        return fechatot < ahora
 
 
 class Pago(models.Model):
@@ -150,6 +145,7 @@ class Pago(models.Model):
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     referencia = models.CharField(max_length=25, blank=True, null=True)
+    # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)
 
     # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
     # Nombre = models.CharField(max_length=25, blank=True, null=True)

@@ -5,7 +5,7 @@
     {% block title %}Prospecto{% endblock %}
     {% block content %}
 
-        <!--
+        {% block js %}
             <script type="text/javascript">
             {% if NewProspectoForm.errors %}
                 {% for field in NewProspectoForm %}
@@ -38,7 +38,8 @@
                 {% endfor %}
             {% endif %}
             </script>
-        -->
+        {% endblock js %}
+
 
         <div class="card ">
             <div class="card-content">
@@ -79,7 +80,7 @@
                         </div>
                         <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Recomendacion | add_class:'form-control' }}
-                            <label for="otro">Radio/Recomendacion </label>
+                            <label for="otro">Como te enteraste? </label>
                         </div>
                         <div class="input-field col s12 m4 l4">
                             {{ NewProspectoForm.Estado_Civil | add_class:'form-control' }}
