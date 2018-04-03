@@ -21,7 +21,7 @@ class ClienteTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        prospecto = Prospecto.objects.create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+        prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Direccion='Calle', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
@@ -30,19 +30,21 @@ class ClienteTest(TestCase):
     #ACCEPTANCE CRITERIA: 31.1
     def test_crear_cliente(self):
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
-             'Matricula':'A01206199'})
+             'Matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
         Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
         self.assertEqual(Cliente_acum, 1)
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_editar_cliente(self):
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+        prospecto,created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':prospecto.id}),{
              'Matricula':'A01206199'})
         self.assertEqual(resp.status_code, 302)
         Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
         self.assertEqual(Cliente_acum, 1)
-        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id':1}),{
+        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id':prospecto.id}),{
              'Matricula':'A01206198'})
         self.assertEqual(respm.status_code, 302)
         Cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
