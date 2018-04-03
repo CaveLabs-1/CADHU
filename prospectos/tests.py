@@ -136,9 +136,9 @@ class EmpresaTest(TestCase):
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Razon_Social='Escuela'
         )
-        resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}),{
+        resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}), {
             'Nombre': 'ITESO', 'Contacto1': 'Lynda Brenda',
-            'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion':Lugar.objects.get(Calle='Paraiso'),
+            'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion': Lugar.objects.get(Calle='Paraiso'),
             'Email1':'lyndab@itesm.com',
             'Razon_Social': 'Escuela'
         },follow=True)
@@ -638,7 +638,7 @@ class PagoTest(TestCase):
 
     def test_ac_42_1(self):
 
-        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'id': 4, 'idPE': 1}))
+        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 1}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
         self.assertEqual(resp.status_code, 200)
