@@ -55,10 +55,10 @@ urlpatterns = [
     path('<int:id>/editar_prospecto', views.editar_prospecto, name='editar_prospecto'),
 
     # Crear Empresa
-    path('crear_empresa/<path:url>', views.crear_empresa, name='crear_empresa'),
+    path('crear_empresa', views.crear_empresa, name='crear_empresa'),
 
     # Editar Empresa
-    path('editar_empresa/<int:id>/<path:url>', views.editar_empresa, name='editar_empresa'),
+    path('editar_empresa/<int:id>', views.editar_empresa, name='editar_empresa'),
 
     #Lista de pagos
     path('lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),

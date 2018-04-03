@@ -136,9 +136,9 @@ class EmpresaTest(TestCase):
             Direccion=Lugar.objects.get(Calle='Paraiso'),
             Razon_Social='Escuela'
         )
-        resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}),{
+        resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}), {
             'Nombre': 'ITESO', 'Contacto1': 'Lynda Brenda',
-            'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion':Lugar.objects.get(Calle='Paraiso'),
+            'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion': Lugar.objects.get(Calle='Paraiso'),
             'Email1':'lyndab@itesm.com',
             'Razon_Social': 'Escuela'
         },follow=True)
@@ -633,16 +633,12 @@ class PagoTest(TestCase):
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         prospecto_evento = ProspectoEvento.objects.create(Fecha='2018-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
-        # print("IDPE:")
-        # print(prospecto_evento.id)
-        # print("ID:")
-        # print(prospecto.id)
         pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id = prospecto_evento.id)
         cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id = prospecto_evento.id)
 
     def test_ac_42_1(self):
 
-        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'id': 5, 'idPE': 2}))
+        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 2}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
         self.assertEqual(resp.status_code, 200)
