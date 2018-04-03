@@ -121,7 +121,7 @@ def crear_cliente(request, id):
             cliente.save()
             clientes = Cliente.objects.all()
             prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -165,7 +165,7 @@ def editar_cliente(request, id):
             cliente.save()
             clientes = Cliente.objects.all()
             prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -670,7 +670,7 @@ def nuevo_pago(request, idPE):
                 # print(idPE)
                 # print(pago.id)
                 pe = ProspectoEvento.objects.get(id = idPE)
-                return redirect('prospectos:lista_pagos', id=pe.Prospecto_id, idPE=idPE)
+                return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
                 return redirect('prospectos:crear_cliente', id=pago.id)
 
@@ -722,30 +722,21 @@ def nuevo_pago(request, idPE):
 @login_required
 @group_required('administrador')
 def lista_pagos(request, idPE):
-
     # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
-
     pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
-
     pe = ProspectoEvento.objects.get(id = idPE)
-
     # print(pe.Curso_id)
-
     total_pagos = 0
-
     pagos2 = Pago.objects.filter(prospecto_evento_id = idPE)
-
     for pago in pagos2:
         total_pagos += pago.monto
-
     curso = Curso.objects.get(id = pe.Curso_id)
-
     if(pagos > 0):
         context = {
             'titulo': 'Lista de Pagos',
-            'prospecto': Prospecto.objects.get(id=id),
-            'pagos': Pago.objects.filter(prospecto_evento_id = idPE).order_by('fecha'),
-            'cliente': Cliente.objects.get(ProspectoEvento_id = idPE),
+            'prospecto': Prospecto.objects.get(id=pe.Prospecto.id),
+            'pagos': Pago.objects.filter(prospecto_evento=pe).order_by('fecha'),
+            #'cliente': Cliente.objects.get(ProspectoEvento=pe),
             'idPE': idPE,
             'curso': curso,
             'subtotal': total_pagos,

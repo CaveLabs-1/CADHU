@@ -637,7 +637,6 @@ class PagoTest(TestCase):
         cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id = prospecto_evento.id)
 
     def test_ac_42_1(self):
-
         resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 2}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
@@ -645,7 +644,7 @@ class PagoTest(TestCase):
         # self.assertTemplateUsed(resp, 'pagos/lista_pagos.html')
 
     def test_ac_41_2(self):
-        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': 2}),{
+        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': 2}), {
             "fecha": '2018-03-15',
             "monto": 200,
             "referencia": "1651",

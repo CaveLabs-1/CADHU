@@ -48,11 +48,11 @@
                         <div class="row center">
                           <div class="col s12">
                             <div class="input-field col l8 offset-l2 s12">
-                                {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                                {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
                                 <label for="Curso">Curso</label>
                             </div>
                             <div class="input-field col l8 offset-l2 s12">
-                                {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                                {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
                                 <label for="Interes">Interes</label>
                             </div>
                           </div>
@@ -91,7 +91,7 @@
                               <td class="center"><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                           {% endif %}
                           <td class="center">
-                            <a href="{% url 'prospectos:lista_pagos' prospecto.id prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</button>
+                            <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                           </td>
                         </tr>
                     {% endfor %}
