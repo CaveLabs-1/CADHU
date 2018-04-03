@@ -11,11 +11,11 @@
                     {% csrf_token %}
                     <div class="row center">
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
                             <label for="Curso">Curso</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
                             <label for="Interes">Interes</label>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                           <td>{{ prospecto_evento.Curso }}</td>
                           <td>{{ prospecto_evento.Interes }}</td>
                           <!-- <td>{{ curso.id }}</td> -->
-                         <td>{{ prospecto_evento.Fecha }}</td>
+                         <td>{{ curso.Fecha }}</td>
                           {% if prospecto_evento.FlagCADHU == True %}
                               <td class="center"><a><i class="material-icons">check</i></a></td>
                           {% else %}

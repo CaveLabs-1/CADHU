@@ -285,7 +285,6 @@ def registrar_cursos(request, id):
             try:
                 ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
-                print("aaa")
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
@@ -490,10 +489,10 @@ def lista_empresas_inactivo(request):
     # Desplegar la página de empresas con enlistados con la información de la base de datos
     return render(request, 'empresas/empresas.html', context)
 
-@login_required
-@group_required('vendedora','administrador')
 
 #US14
+@login_required
+@group_required('vendedora','administrador')
 def editar_empresa(request, id):
     #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
     idempresa = Empresa.objects.get(id=id)
