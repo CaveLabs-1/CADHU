@@ -48,3 +48,4 @@ def crear_evento(request):
         'titulo': 'Registrar un Evento',
     }
     return render(request, 'eventos/crear_evento.html', context)
+# prueba
