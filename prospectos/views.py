@@ -135,7 +135,7 @@ def crear_cliente(request, id):
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': NewClienteForm,
-        'NewLugarForm': NewLugarForm,   
+        'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
@@ -653,13 +653,13 @@ def estado_actividad(request, id, url):
 @group_required('administrador')
 def nuevo_pago(request, idPE):
 
-    print(idPE)
+    # print(idPE)
 
     # recibir forma
     forma_pago = PagoForm()
     # si se recibe una forma con post
     if request.method == 'POST':
-        print("entró")
+        # print("entró")
         Forma_nuevo_pago = PagoForm(request.POST)
         # si la forma es válida
         if Forma_nuevo_pago.is_valid():
@@ -676,8 +676,8 @@ def nuevo_pago(request, idPE):
             pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
 
             if(pagos > 1):
-                print(idPE)
-                print(pago.id)
+                # print(idPE)
+                # print(pago.id)
                 pe = ProspectoEvento.objects.get(id = idPE)
                 return redirect('prospectos:lista_pagos', id=pe.Prospecto_id, idPE=idPE)
             else:
