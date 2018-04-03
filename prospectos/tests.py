@@ -127,7 +127,7 @@ class EmpresaTest(TestCase):
     #ACCEPTANCE CRITERIA 14.1, 14.2
     def test_editar_empresa(self):
         Empresa.objects.create(
-            id= '2',
+            id=2,
             Nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
@@ -148,7 +148,7 @@ class EmpresaTest(TestCase):
 
     def test_baja_empresas(self):
         Empresa.objects.create(
-            id= '2',
+            id=2,
             Nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
