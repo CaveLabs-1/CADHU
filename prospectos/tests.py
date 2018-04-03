@@ -53,7 +53,7 @@ class ClienteTest(TestCase):
          resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
              'rfc':'RODR621124FY9'})
          self.assertEqual(resp.status_code, 200)
-         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
+         self.assertEqual(resp.context['Error'], 'Forma invalida, favor de revisar sus respuestas de nuevo')
 
 
 
@@ -86,26 +86,26 @@ class EmpresaTest(TestCase):
             'Email1':'escuela@itesm.com',
             'Razon_Social':'Escuela'})
         self.assertEqual(resp.status_code, 200)
-        self.assertQuerysetEqual(resp.context['empresas'],['<Empresa: ITESM>'])
+        self.assertQuerysetEqual(resp.context['empresas'], ['<Empresa: ITESM>'])
 
     #ACCEPTANCE CRITERIA: 13.3
     def test_validar_campos(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Telefono1':'4422232226',
-            'Email1':'correo@itesm.com',
-            'Razon_Social':'Escuela'})
+            'Telefono1': '4422232226',
+            'Email1': 'correo@itesm.com',
+            'Razon_Social': 'Escuela'})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
 
     #ACCEPTANCE CRITERIA: 13.4
     def test_validar_tipo_de_dato(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Nombre':'ITESM',
-            'Telefono1':'ABC',
-            'Email1':'correo@itesm.com',
-            'Razon_Social':'Escuela'})
+            'Nombre': 'ITESM',
+            'Telefono1': 'ABC',
+            'Email1': 'correo@itesm.com',
+            'Razon_Social': 'Escuela'})
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.context['Error'],'Forma invalida, favor de revisar sus respuestas de nuevo')
+        self.assertEqual(resp.context['Error'], 'Forma invalida, favor de revisar sus respuestas de nuevo')
 
     #ACCEPTANCE CRITERIA: 13.6
     # def test_ac_13_6(self):
@@ -418,7 +418,7 @@ class ActividadTest(TestCase):
             Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
 
     #ACCEPTANCE CRITERIA: 12.1
@@ -509,7 +509,7 @@ class CargaMasivaTest(TestCase):
             Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
 
     # ACCEPTANCE CRITERIA: 43.1
@@ -633,8 +633,8 @@ class PagoTest(TestCase):
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         prospecto_evento = ProspectoEvento.objects.create(Fecha='2018-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
-        pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id = prospecto_evento.id)
-        cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id = prospecto_evento.id)
+        pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id)
+        cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
 
     def test_ac_42_1(self):
         resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 2}))
