@@ -303,7 +303,7 @@ def registrar_cursos(request, id):
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
-                    'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+                    'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
                 return render(request, 'cursos/prospectoevento_form.html', context)
@@ -368,11 +368,11 @@ def eliminar_curso(request, id):
     prospecto = curso.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
     curso.delete()
-    messages.success(request, 'Curso eliminado de manera exitosa')
+    messages.success(request, 'Grupo eliminado de manera exitosa')
     context = {
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+        'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
         }
     return render(request, 'cursos/prospectoevento_form.html', context)

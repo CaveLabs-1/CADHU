@@ -12,7 +12,7 @@ from CADHU.decorators import group_required
 @group_required('administrador')
 def cursos(request):
     context = {
-        'titulo': 'Cursos',
+        'titulo': 'Grupo',
         # 'eventos': Evento.objects.all().order_by('Nombre'),
         'cursos': Curso.objects.all(),
     }
@@ -32,21 +32,21 @@ def nuevo_curso(request):
             # se guarda la forma
             actividad = Forma_nuevo_curso.save()
             # se redirige a la próxima vista
-            messages.success(request, '¡Curso agregado exitosamente!')
+            messages.success(request, '¡Grupo agregado exitosamente!')
 
             # return redirect('cursos:lista_cursos')
             return redirect('/cursos/lista_cursos')
         # se renderea la forma nuevamente con los errores marcados
         context = {
             'form': Forma_nuevo_curso,
-            'titulo': 'Agregar Curso',
+            'titulo': 'Agregar Grupo',
             'error_message': Forma_nuevo_curso.errors
         }
         return render(request, 'cursos/nuevo_curso.html', context)
     # se renderea la página
     context = {
         'form': Forma_nuevo_curso,
-        'titulo': 'Agregar Curso',
+        'titulo': 'Agregar Grupo',
         'eventos': Evento.objects.all().order_by('Nombre')
     }
     return render(request, 'cursos/nuevo_curso.html', context)
