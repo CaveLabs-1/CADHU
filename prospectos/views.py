@@ -477,6 +477,7 @@ def lista_empresas(request):
     context = {
         'empresas':empresas,
         'titulo': 'Empresas',
+        'estatus': 'activo',
         }
     return render(request, 'empresas/empresas.html', context)
 
@@ -488,6 +489,7 @@ def lista_empresas_inactivo(request):
     context = {
         'empresas':empresa_inactivo,
         'titulo': 'Empresas inactivas',
+        'estatus': 'inactivo',
         }
     # Desplegar la página de empresas con enlistados con la información de la base de datos
     return render(request, 'empresas/empresas.html', context)
@@ -579,11 +581,14 @@ def crear_empresa(request):
 def baja_empresas(request, id):
     empresa = Empresa.objects.get(id=id)
     if Empresa.Activo:
+        print(empresa.Activo)
         empresa.Activo = False
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas'))
     else:
+        print(empresa.Activo)
         empresa.Activo = True
+        print(empresa.Activo)
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
