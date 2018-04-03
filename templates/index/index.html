@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
+{% load grupos %}
+{% load static %}
 
 
 {% block content %}
 
+{% if request.user|has_group:"administrador"%}
+
+  <div>
+    <img id="logo-admin" src="{% static 'img/logo_cadhu.png'%}"/>
+  </div>
+
+{% endif %}
+
+{% if request.user|has_group:"vendedora"%}
 
 <ul id="tabs" class="tabs pendientes">
     <li class="tab col s6"><a href="#pendientes" class="active">Pendientes</a></li>
@@ -93,5 +104,6 @@
     </table>
   </div>
 
+{% endif %}
 
 {% endblock %}
