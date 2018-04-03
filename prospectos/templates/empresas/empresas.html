@@ -23,7 +23,7 @@
                           <td>{{ empresa.Nombre }}</td>
                           <td>{{ empresa.Razon_Social }}</td>
                           <td>
-                              <a href="{% url 'prospectos:editar_empresa' empresa.id request.path %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a href="{% url 'prospectos:editar_empresa' empresa.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                               <a href="{% url 'prospectos:baja_empresas' empresa.id %}" onclick="cambiar_estatusEmpresa(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
 
                           </td>

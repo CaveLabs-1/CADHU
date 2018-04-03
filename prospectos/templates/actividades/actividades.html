@@ -33,9 +33,9 @@
                            href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                     </td>
                     {% if actividad.terminado %}
-                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons">check</i></a></td>
+                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a></td>
                     {% else %}
-                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                        <td><a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                     {% endif %}
                 </tr>
                 <!-- Modal Structure -->
