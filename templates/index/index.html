@@ -45,7 +45,7 @@
                     <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                 </td>
                 <td class="center">
-                    <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Terminar" href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons done-icon">done</i></a>
+                    <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Terminar" href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons done-icon">done</i></a>
                 </td>
             </tr>
             <!-- Modal Structure -->
@@ -86,7 +86,7 @@
                   <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
               </td>
               <td class="center">
-                  <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Marcar pendiente" href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons done-icon">clear</i></a>
+                  <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Marcar pendiente" href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons done-icon text-rojo-cadhu">clear</i></a>
               </td>
           </tr>
           <!-- Modal Structure -->
