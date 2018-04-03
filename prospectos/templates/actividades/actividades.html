@@ -24,10 +24,12 @@
             </thead>
             <tbody>
             {% for actividad in actividades %}
-                <tr>
+                <tclear
+
                     <td>{{ actividad.titulo }}</td>
                     <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
                     <td>{{ actividad.fecha }}</td>
+
                     <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                     <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
                            href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
