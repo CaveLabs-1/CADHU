@@ -9,12 +9,23 @@
               </a>
             </div>
 
+            {% if titulo == 'Empresas' %}
+                <div class="row right">
+                    <a href="{% url 'prospectos:lista_empresas_inactivo' %}" class="btn waves-effect waves-light green darken-1" style="border-radius: 50px">Activos</a>
+                </div>
+            {% endif %}
+            {% if titulo == 'Empresas inactivas' %}
+                <div class="row right">
+                    <a href="{% url 'prospectos:lista_empresas' %}" class="btn waves-effect waves-light amber darken-1" style="border-radius: 50px">Inactivos</a>
+                </div>
+            {% endif %}
+
               <table class="dataTable">
                   <thead>
                     <tr>
-                        <th class="border_radius_left">Nombre</th>
-                        <th class="border_radius_right">Raz&oacute;n Social</th>
-                        <th>Acciones</th>
+                        <th class="border_radius_left center">Nombre</th>
+                        <th class="border_radius_right center">Raz&oacute;n Social</th>
+                        <th class="center">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -22,26 +33,19 @@
                       <tr>
                           <td>{{ empresa.Nombre }}</td>
                           <td>{{ empresa.Razon_Social }}</td>
-                          <td>
+                          <td class="center">
                               <a href="{% url 'prospectos:editar_empresa' empresa.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              {% if estatus == "activo" %}
                               <a href="{% url 'prospectos:baja_empresas' empresa.id %}" onclick="cambiar_estatusEmpresa(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
-
+                              {% else %}
+                              <a href="{% url 'prospectos:baja_empresas' empresa.id %}" onclick="cambiar_estatusEmpresa(this, event)"><i class="material-icons text-verde-cadhu">add_circle</i></a>
+                              {% endif %}
                           </td>
 
                       </tr>
                   {% endfor %}
                   </tbody>
               </table>
-            {% if titulo == 'Empresas' %}
-                <div class="row center">
-                    <a href="{% url 'prospectos:lista_empresas_inactivo' %}" class="btn waves-effect waves-light green darken-1">Activos</a>
-                </div>
-            {% endif %}
-            {% if titulo == 'Empresas inactivas' %}
-                <div class="row center">
-                    <a href="{% url 'prospectos:lista_empresas' %}" class="btn waves-effect waves-light amber darken-1">Inactivos</a>
-                </div>
-            {% endif %}
 
 
     {% endblock %}
@@ -88,4 +92,3 @@
 
       </script>
       {% endblock %}
-
