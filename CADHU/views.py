@@ -19,4 +19,4 @@ def index(request):
 @login_required
 @group_required('vendedora','admininistrador')
 def regresar(request, url):
-    return redirect(url)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
