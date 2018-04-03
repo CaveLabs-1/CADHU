@@ -632,23 +632,25 @@ class PagoTest(TestCase):
         prospecto = Prospecto.objects.create( Nombre='Pablo', Apellidos='Martinez Villareal', Telefono_Casa='4422232226', Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion= lugar, Ocupacion='Estudiante', Activo=True)
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        prospecto_evento = ProspectoEvento.objects.create(Fecha='2018-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
+        prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
         pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id)
         cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
 
     def test_ac_42_1(self):
-        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 2}))
+        idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id
+        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': idPE}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
         self.assertEqual(resp.status_code, 200)
         # self.assertTemplateUsed(resp, 'pagos/lista_pagos.html')
 
     def test_ac_41_2(self):
-        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': 2}), {
-            "fecha": '2018-03-15',
+        idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id
+        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': idPE}), {
+            "fecha": '2025-03-15',
             "monto": 200,
             "referencia": "1651",
-            "prospecto_evento_id": 2
+            "prospecto_evento_id": idPE
         }, follow=True)
         self.assertEqual(resp.status_code, 200)
 
