@@ -22,6 +22,15 @@
   background-color: rgba(12,93,149,1);
 }
 
+.back_button{
+  border-radius: 50px;
+  background-color: rgba(12,93,149,1);
+}
+
+.back_button:hover{
+  background-color: #1D874A;
+}
+
 .under-shadow{
   -webkit-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
   -moz-box-shadow: 0 8px 10px -1px rgba(0,0,0,0.1);
@@ -38,6 +47,18 @@
 
 .bold-text {
   font-weight: 700;
+}
+
+.done-icon{
+  -moz-transition: text-shadow 0.5s, color 0.5s;
+  -o-transition: text-shadow 0.5s, color 0.5s;
+  -webkit-transition: text-shadow 0.5s, color 0.5s;
+  transition: text-shadow 0.5s, color 0.5s;
+}
+
+.done-icon:hover{
+  color: #483683;
+  text-shadow: 0px 0px 14px rgba(150, 150, 150, 1);
 }
 
 /*BASE*/
@@ -82,6 +103,7 @@ main {
 #logout {
   right: 350px;
 }
+
 
 
 

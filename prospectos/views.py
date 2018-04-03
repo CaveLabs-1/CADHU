@@ -99,36 +99,42 @@ def carga_masiva(request):
 @group_required('vendedora','administrador')
 def crear_cliente(request, id):
     NewClienteForm = ClienteForm()
+    NewLugarForm = LugarForm()
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         NewClienteForm = ClienteForm(request.POST)
+        NewLugarForm = LugarForm(request.POST)
         pago = Pago.objects.get(id=id)
         fecha = pago.fecha
         prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
         #Si la forma es válida guardar la información en la base de datos:
         if NewClienteForm.is_valid():
+            lugar = NewLugarForm.save()
             cliente = NewClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
             cliente.Fecha = fecha
+            cliente.direccion = lugar
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
             clientes = Cliente.objects.all()
             prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': Error,
             'NewClienteForm': NewClienteForm,
+            'NewLugarForm': NewLugarForm,
             'titulo': 'Registrar un Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': NewClienteForm,
+        'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
@@ -159,7 +165,7 @@ def editar_cliente(request, id):
             cliente.save()
             clientes = Cliente.objects.all()
             prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', id = prospectoevento.Prospecto_id, idPE = prospectoevento.id)
+            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -481,10 +487,10 @@ def lista_empresas_inactivo(request):
     # Desplegar la página de empresas con enlistados con la información de la base de datos
     return render(request, 'empresas/empresas.html', context)
 
-@login_required
-@group_required('vendedora','administrador')
 
 #US14
+@login_required
+@group_required('vendedora','administrador')
 def editar_empresa(request, id):
     #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
     idempresa = Empresa.objects.get(id=id)
@@ -635,13 +641,13 @@ def estado_actividad(request, id):
 @group_required('administrador')
 def nuevo_pago(request, idPE):
 
-    print(idPE)
+    # print(idPE)
 
     # recibir forma
     forma_pago = PagoForm()
     # si se recibe una forma con post
     if request.method == 'POST':
-        print("entró")
+        # print("entró")
         Forma_nuevo_pago = PagoForm(request.POST)
         # si la forma es válida
         if Forma_nuevo_pago.is_valid():
@@ -658,10 +664,10 @@ def nuevo_pago(request, idPE):
             pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
 
             if(pagos > 1):
-                print(idPE)
-                print(pago.id)
+                # print(idPE)
+                # print(pago.id)
                 pe = ProspectoEvento.objects.get(id = idPE)
-                return redirect('prospectos:lista_pagos', id=pe.Prospecto_id, idPE=idPE)
+                return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
                 return redirect('prospectos:crear_cliente', id=pago.id)
 
@@ -713,30 +719,21 @@ def nuevo_pago(request, idPE):
 @login_required
 @group_required('administrador')
 def lista_pagos(request, idPE):
-
     # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
-
     pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
-
     pe = ProspectoEvento.objects.get(id = idPE)
-
     # print(pe.Curso_id)
-
     total_pagos = 0
-
     pagos2 = Pago.objects.filter(prospecto_evento_id = idPE)
-
     for pago in pagos2:
         total_pagos += pago.monto
-
     curso = Curso.objects.get(id = pe.Curso_id)
-
     if(pagos > 0):
         context = {
             'titulo': 'Lista de Pagos',
-            'prospecto': Prospecto.objects.get(id=id),
-            'pagos': Pago.objects.filter(prospecto_evento_id = idPE).order_by('fecha'),
-            'cliente': Cliente.objects.get(ProspectoEvento_id = idPE),
+            'prospecto': Prospecto.objects.get(id=pe.Prospecto.id),
+            'pagos': Pago.objects.filter(prospecto_evento=pe).order_by('fecha'),
+            #'cliente': Cliente.objects.get(ProspectoEvento=pe),
             'idPE': idPE,
             'curso': curso,
             'subtotal': total_pagos,

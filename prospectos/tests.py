@@ -127,7 +127,7 @@ class EmpresaTest(TestCase):
     #ACCEPTANCE CRITERIA 14.1, 14.2
     def test_editar_empresa(self):
         Empresa.objects.create(
-            id= '2',
+            id=2,
             Nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
@@ -148,7 +148,7 @@ class EmpresaTest(TestCase):
 
     def test_baja_empresas(self):
         Empresa.objects.create(
-            id= '2',
+            id=2,
             Nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
@@ -637,19 +637,18 @@ class PagoTest(TestCase):
         cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id = prospecto_evento.id)
 
     def test_ac_42_1(self):
-
-        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 1}))
+        resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': 2}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
         self.assertEqual(resp.status_code, 200)
         # self.assertTemplateUsed(resp, 'pagos/lista_pagos.html')
 
     def test_ac_41_2(self):
-        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': 1}),{
+        resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': 2}), {
             "fecha": '2018-03-15',
             "monto": 200,
             "referencia": "1651",
-            "prospecto_evento_id": 1
+            "prospecto_evento_id": 2
         }, follow=True)
         self.assertEqual(resp.status_code, 200)
 
