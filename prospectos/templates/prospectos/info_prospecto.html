@@ -142,6 +142,7 @@
                 <th>Interes</th>
                 <th>Flag</th>
                 <th>Acciones</th>
+                <th>Pagos</th>
             </tr>
             </thead>
             <tbody>
@@ -158,6 +159,9 @@
                         <a href="!#"><i class="material-icons text-blue-ligero">edit</i></a>
                         <a><i class="material-icons text-rojo-cadhu">delete</i></a>
                         <a href="{% url 'prospectos:info_prospecto_curso' curso.id %}"><i class="material-icons">info</i></a>
+                    </td>
+                    <td>
+                        <a href="{% url 'prospectos:lista_pagos' curso.id  %}"> <i></i> </a>
                     </td>
                 </tr>
             {% endfor %}
@@ -192,7 +196,7 @@
                             <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -239,7 +243,7 @@
                                                          href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons">check</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-rojo-cadhu">cancel</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->

@@ -12,7 +12,7 @@ urlpatterns = [
     path('actividades/crear/<int:id>/', views.crear_actividad, name='crear_actividad'),
 
     # Modificar el estado de terminacion de una Actividad
-    path('actividades/terminado/<int:id>/<path:url>', views.estado_actividad, name='estado_actividad'),
+    path('actividades/terminado/<int:id>', views.estado_actividad, name='estado_actividad'),
 
     # Lista prospectos activos
     path('', views.lista_prospectos, name='lista_prospectos'),
@@ -55,13 +55,13 @@ urlpatterns = [
     path('<int:id>/editar_prospecto', views.editar_prospecto, name='editar_prospecto'),
 
     # Crear Empresa
-    path('crear_empresa/<path:url>', views.crear_empresa, name='crear_empresa'),
+    # path('crear_empresa/<path:url>', views.crear_empresa, name='crear_empresa'),
 
     # Editar Empresa
     path('editar_empresa/<int:id>/<path:url>', views.editar_empresa, name='editar_empresa'),
 
     #Lista de pagos
-    path('<int:id>/lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),
+    path('lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),
 
     #Nuevo pago
     path('nuevo_pago/<int:idPE>', views.nuevo_pago, name='nuevo_pago'),
