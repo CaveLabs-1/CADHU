@@ -492,7 +492,7 @@ def lista_empresas_inactivo(request):
 @group_required('vendedora','administrador')
 
 #US14
-def editar_empresa(request, id, url):
+def editar_empresa(request, id):
     #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
     idempresa = Empresa.objects.get(id=id)
     NewEmpresaForm = EmpresaForm(instance=idempresa)
@@ -512,7 +512,6 @@ def editar_empresa(request, id, url):
             #Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'url':url,
                 'NewEmpresaForm': NewEmpresaForm,
                 'NewLugarForm': NewLugarForm,
                 'empresa': idempresa,
@@ -520,7 +519,6 @@ def editar_empresa(request, id, url):
             }
             return render(request, 'empresas/empresas_form.html', context)
     context = {
-        'url':url,
         'NewEmpresaForm': NewEmpresaForm,
         'NewLugarForm': NewLugarForm,
         'empresa': idempresa,
