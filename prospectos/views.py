@@ -569,7 +569,7 @@ def crear_empresa(request):
 @group_required('vendedora','administrador')
 def baja_empresas(request, id):
     empresa = Empresa.objects.get(id=id)
-    if Empresa.Activo:
+    if empresa.Activo:
         empresa.Activo = False
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas'))
