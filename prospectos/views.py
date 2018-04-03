@@ -534,7 +534,7 @@ def editar_empresa(request, id, url):
 # US13
 @login_required
 @group_required('vendedora','administrador')
-def crear_empresa(request, url):
+def crear_empresa(request):
     NewEmpresaForm = EmpresaForm()
     NewLugarForm = LugarForm()
     #Si el método HTTP es post procesar la información de la forma:
@@ -554,7 +554,6 @@ def crear_empresa(request, url):
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'url':url,
             'Error': Error,
             'NewEmpresaForm': NewEmpresaForm,
             'NewLugarForm': NewLugarForm,
@@ -563,7 +562,6 @@ def crear_empresa(request, url):
         return render(request, 'empresas/empresas_form.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'url':url,
         'NewEmpresaForm': NewEmpresaForm,
         'NewLugarForm': NewLugarForm,
         'titulo': 'Registrar una Empresa',
@@ -634,7 +632,7 @@ def crear_actividad(request, id):
 
 @login_required
 @group_required('vendedora','administrador')
-def estado_actividad(request, id, url):
+def estado_actividad(request, id):
     act = Actividad.objects.get(id=id)
     if act.terminado:
         act.terminado = False
@@ -642,7 +640,7 @@ def estado_actividad(request, id, url):
     else:
         act.terminado = True
         act.save()
-    return redirect(url)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -726,7 +724,7 @@ def nuevo_pago(request, idPE):
 
 @login_required
 @group_required('administrador')
-def lista_pagos(request, id, idPE):
+def lista_pagos(request, idPE):
 
     # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
 
