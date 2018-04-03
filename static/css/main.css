@@ -105,11 +105,11 @@ main {
 }
 
 #logo-admin {
+  margin: auto;
+  display: block;
   opacity: 0.5;
   width: 57%;
   padding-top: 30%;
-  margin: auto;
-  display: block;
 }
 
 
