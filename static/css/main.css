@@ -104,6 +104,14 @@ main {
   right: 350px;
 }
 
+#logo-admin {
+  padding-top: 30%;
+  margin: auto;
+  display: block;
+  opacity: 0.5;
+  width: 57%;
+}
+
 
 
 
