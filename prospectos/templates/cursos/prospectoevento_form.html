@@ -11,11 +11,11 @@
                     {% csrf_token %}
                     <div class="row center">
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
                             <label for="Curso">Curso</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
                             <label for="Interes">Interes</label>
                         </div>
                     </div>
@@ -23,8 +23,49 @@
                         <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Curso</button>
                     </div>
                 </form>
+                <br><br>
+                <h5 class="center">Cursos Interesados</h5>
+                <br>
+                <table class="dataTable">
+                    <thead>
+                        <tr>
+                          <th class="center"></th>
+                          <th class="center">Curso</th>
+                          <th class="center">Interes</th>
+                          <th>Fecha de Registro</th>
+                            <th class="center">Flag</th>
+                          <th class="center">Pagos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for prospecto_evento in cursos %}
+                        <tr>
+                          <td class="center">
+                              <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                          </td>
+                          <td>{{ prospecto_evento.Curso }}</td>
+                          <td>{{ prospecto_evento.Interes }}</td>
+                          <!-- <td>{{ curso.id }}</td> -->
+                         <td>{{ curso.Fecha }}</td>
+                          {% if prospecto_evento.FlagCADHU == True %}
+                              <td class="center"><a><i class="material-icons">check</i></a></td>
+                          {% else %}
+                              <td class="center"><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                          {% endif %}
+                          <td class="center">
+                            <a href="{% url 'prospectos:lista_pagos' prospecto.id prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</button>
+                          </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            <br><br>
+            <div class="center">
+                <button onclick="location.href='{% url 'prospectos:lista_prospectos' %}'" class="btn waves-effect waves-light form_button">Regresar a Lista</button>
+            </div>
             </div>
         </div>
-
 
     {% endblock content %}

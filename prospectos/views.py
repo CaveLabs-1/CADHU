@@ -134,7 +134,6 @@ def crear_cliente(request, id):
     return render(request, 'clientes/crear_cliente.html', context)
 
 
-
 # US37
 @login_required
 @group_required('vendedora','administrador')
@@ -177,8 +176,6 @@ def editar_cliente(request, id):
     return render(request, 'clientes/crear_cliente.html', context)
 
 
-
-
 #US3
 @login_required
 @group_required('vendedora','administrador')
@@ -207,16 +204,16 @@ def crear_prospecto(request):
         #Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'NewProspectoForm': newProspectoForm,
-            'NewLugarForm': newLugarForm,
+            'newProspectoForm': newProspectoForm,
+            'newLugarForm': newLugarForm,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
 
     #Si no es POST, volverla a mandar
     context = {
-        'NewProspectoForm': newProspectoForm,
-        'NewLugarForm': newLugarForm,
+        'newProspectoForm': newProspectoForm,
+        'newLugarForm': newLugarForm,
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
@@ -227,16 +224,16 @@ def crear_prospecto(request):
 #US4
 def editar_prospecto(request, id):
     idprospecto = Prospecto.objects.get(id=id)
-    NewProspectoForm = ProspectoForm(instance=idprospecto)
-    NewLugarForm = LugarForm(instance=idprospecto.Direccion)
+    newProspectoForm = ProspectoForm(instance=idprospecto)
+    newLugarForm = LugarForm(instance=idprospecto.Direccion)
 
     if request.method == 'POST':
-        NewProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
-        NewLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
-        if NewProspectoForm.is_valid() and NewLugarForm.is_valid():
+        newProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
+        newLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
+        if newProspectoForm.is_valid() and newLugarForm.is_valid():
 
-            prospecto = NewProspectoForm.save(commit=False)
-            lugar = NewLugarForm.save()
+            prospecto = newProspectoForm.save(commit=False)
+            lugar = newLugarForm.save()
             prospecto.Direccion =lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
@@ -245,16 +242,16 @@ def editar_prospecto(request, id):
         else:
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'NewProspectoForm': NewProspectoForm,
-                'NewLugarForm': NewLugarForm,
+                'newProspectoForm': newProspectoForm,
+                'newLugarForm': newLugarForm,
                 'prospecto': idprospecto,
                 'titulo': 'Editar Prospecto',
             }
             return render(request, 'prospectos/prospectos_form.html', context)
 
     context = {
-        'NewProspectoForm': NewProspectoForm,
-        'NewLugarForm': NewLugarForm,
+        'newProspectoForm': newProspectoForm,
+        'newLugarForm': newLugarForm,
         'prospecto': idprospecto,
         'titulo': 'Editar Prospecto',
     }
@@ -284,7 +281,7 @@ def registrar_cursos(request, id):
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'NewProspectoEventoForm': newProspectoEventoForm,
+                    'newProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
@@ -299,7 +296,7 @@ def registrar_cursos(request, id):
                 messages.success(request, 'Curso asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'NewProspectoEventoForm': newProspectoEventoForm,
+                    'newProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
@@ -308,7 +305,7 @@ def registrar_cursos(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': newProspectoEventoForm,
+        'newProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
     }
@@ -340,7 +337,7 @@ def editar_curso(request, id):
             messages.success(request, 'Curso Modificado a prospecto')
             context = {
                 'prospecto': prospecto,
-                'NewProspectoEventoForm': oldProspectoEventoForm,
+                'newProspectoEventoForm': oldProspectoEventoForm,
                 'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                 'cursos': cursos,
             }
@@ -349,7 +346,7 @@ def editar_curso(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': newProspectoEventoForm,
+        'newProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Editar Curso - ' + cursoEditar.Curso.Nombre,
         'cursos': cursos,
     }
@@ -368,7 +365,7 @@ def eliminar_curso(request, id):
     messages.success(request, 'Curso eliminado de manera exitosa')
     context = {
         'prospecto': prospecto,
-        'NewProspectoEventoForm': newProspectoEventoForm,
+        'newProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
         }
