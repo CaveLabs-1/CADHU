@@ -146,20 +146,24 @@ def crear_cliente(request, id):
 def editar_cliente(request, id):
 
     idcliente = Cliente.objects.get(ProspectoEvento_id=id)
-    NewClienteForm = ClienteForm(instance=idcliente)
+    newClienteForm = ClienteForm(instance=idcliente)
+    newLugarForm = LugarForm(instance=idcliente.direccion)
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        NewClienteForm = ClienteForm(request.POST or None, instance=idcliente)
+        newClienteForm = ClienteForm(request.POST or None, instance=idcliente)
+        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccion)
         pago = Pago.objects.get(id=id)
         fecha = pago.fecha
         prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
         #Si la forma es válida guardar la información en la base de datos:
-        if NewClienteForm.is_valid():
-            cliente = NewClienteForm.save(commit=False)
+        if newClienteForm.is_valid():
+            lugar = newLugarForm.save()
+            cliente = newClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
             cliente.Fecha = fecha
+            cliente.direccion = lugar
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
@@ -170,13 +174,15 @@ def editar_cliente(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': Error,
-            'NewClienteForm': NewClienteForm,
+            'NewClienteForm': newClienteForm,
+            'NewLugarForm': newLugarForm,
             'titulo': 'Editar Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewClienteForm': NewClienteForm,
+        'NewClienteForm': newClienteForm,
+        'NewLugarForm': newLugarForm,
         'titulo': 'Editar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
