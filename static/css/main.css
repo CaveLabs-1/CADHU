@@ -114,11 +114,6 @@ main {
 
 
 
-
-/*SIDENAV*/
-header, main, footer{padding-left: 300px;}
-
-
 .white-bar {
   height: 64px;
   background-color: white;
@@ -226,15 +221,36 @@ table th {
   margin-bottom: 50px;
 }
 
+/*SIDENAV*/
+header, main, footer{padding-left: 20%;}
+
+.sidenav{
+  width: 20%;
+}
+
+.fixed-header{
+  position: fixed;
+  width: 80%;
+  z-index: 100;
+}
+
+.content-block{
+  position: absolute;
+  top: 80px;
+  width: 80%;
+}
+
 /*MEDIA QUERIES*/
 
 
 @media only screen and (max-width: 993px) {
   header, main, footer{padding-left: 0;}
-  #logout {
-    right: 30px;
-  }
+  #logout { right: 30px; }
+  .fixed-header{width: 100%}
+  .content-block{width: 100%}
+  .sidenav{width: 40%}
 }
 
 @media only screen and (max-width: 600px) {
+  .sidenav{width: 70%}
 }

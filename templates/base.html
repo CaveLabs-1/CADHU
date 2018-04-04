@@ -20,26 +20,28 @@
   </head>
   <body>
     <main>
-      <div>
-      <nav class="white black-text">
-        <div class="row">
-          <div class="col l2 m3 s4">
-            <!-- <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
-            <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger">
-              <i class="material-icons black-text left">menu</i>
-            </a>
+      <div class="fixed-header">
+        <nav class="white black-text">
+          <div class="row">
+            <div class="col l2 m3 s4">
+              <!-- <p>
+                Hola
+              </p> -->
+              <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger">
+                <i class="material-icons black-text left">menu</i>
+              </a>
+            </div>
+            <div class="col l8 m6 s4 center">
+              <h4 class="headerTitle truncate">{{ titulo }}</h4>
+            </div>
+            <div class="col l2 m3 s4">
+              <a href="{% url 'logout' %}">
+                <i class="material-icons black-text right" style="padding-right: 10px">exit_to_app</i>
+              </a>
+            </div>
           </div>
-          <div class="col l8 m6 s4 center">
-            <h4 class="headerTitle truncate">{{ titulo }}</h4>
-          </div>
-          <div class="col l2 m3 s4">
-            <a href="{% url 'logout' %}">
-              <i class="material-icons black-text right" style="padding-right: 10px">exit_to_app</i>
-            </a>
-          </div>
-        </div>
-      </nav>
-      </div>
+        </nav>
+    </div>
 
       <div id="sideNavView">
         <ul id="slide-out" class="sidenav sideNavView sidenav-fixed">
@@ -81,7 +83,7 @@
           </div>
         </div>
     </div> -->
-    <div class="padding-top-20">
+    <div class="content-block">
       <div class="row">
         <div class="col l10 offset-l1 s12">
           {% block content %}
