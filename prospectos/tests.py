@@ -396,7 +396,7 @@ class ActividadTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        lugar = Lugar.objects.create(
+        cls.lugar = Lugar.objects.create(
             Calle='Paraiso',
             Numero_Interior='',
             Numero_Exterior='38',
@@ -406,62 +406,62 @@ class ActividadTest(TestCase):
             Pais='Mexico',
             Codigo_Postal='76125'
         )
-        prospecto = Prospecto.objects.create(
+        cls.prospecto = Prospecto.objects.create(
             Nombre='Pablo',
             Apellidos='Martinez Villareal',
             Telefono_Casa='4422232226',
             Telefono_Celular='4422580662',
             Email='pmartinez@gmail.com',
-            Direccion=lugar,
+            Direccion=cls.lugar,
             Metodo_Captacion='Facebook',
             Estado_Civil='Soltero',
             Ocupacion='Estudiante',
             Hijos=1,
             Activo=True,
         )
-        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
+        cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(Nombre='Curso', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
 
     #ACCEPTANCE CRITERIA: 12.1
     def test_ac_12_1(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':1}),{
-            'titulo':'Llamada con el prospecto',
-            'fecha':datetime.datetime.now().date(),
-            'notas':'Llamada con el prosecto',
-            'prospecto_evento':1})
+        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':self.relacion.id}), {
+            'titulo': 'Llamada con el prospecto',
+            'fecha': datetime.datetime.now().date(),
+            'notas': 'Llamada con el prosecto',
+            'prospecto_evento': self.relacion})
         self.assertQuerysetEqual(resp.context['actividades'],['<Actividad: Llamada con el prospecto>'])
 
     #ACCEPTANCE CRITERIA: 12.2
     def test_ac_12_2(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':1}),{
-            'titulo':'Llamada con el prospecto',
-            'fecha':'2018-03-07',
-            'hora':'Hora',
-            'notas':'Llamada con el prosecto'})
+        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':self.relacion.id}), {
+            'titulo': 'Llamada con el prospecto',
+            'fecha': '2018-03-07',
+            'hora': 'Hora',
+            'notas': 'Llamada con el prosecto'})
         self.assertEqual(resp.context['titulo'],'Agregar actividad')
 
     def test_ac_12_3(self):
-        act = Actividad.objects.get_or_create(
+        act, created = Actividad.objects.get_or_create(
             titulo= 'Llamada con el prospecto',
             fecha= datetime.datetime.now().date(),
             notas= 'Llamada con el prosecto',
-            prospecto_evento= 1,
+            prospecto_evento=self.relacion,
             terminado=False,
         )
-        resp = self.client.post(reverse('prospectos:estado_actividad',kwargs={'id':1}))
+        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': act.pk}))
         self.assertEqual(act.terminado, True)
 
     def test_ac_12_4(self):
-        act = Actividad.objects.get_or_create(
+        act, created = Actividad.objects.get_or_create(
             titulo= 'Llamada con el prospecto',
             fecha= datetime.datetime.now().date(),
             notas= 'Llamada con el prosecto',
-            prospecto_evento= 1,
-            terminado=False,
+            prospecto_evento=self.relacion,
+            terminado=True,
         )
-        resp = self.client.post(reverse('prospectos:estado_actividad',kwargs={'id':1}))
-        self.assertEqual(act.terminado, True)
+        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': act.pk}))
+        self.assertEqual(act.terminado, False)
 
 
 class CargaMasivaTest(TestCase):

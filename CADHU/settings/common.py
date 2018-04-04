@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'widget_tweaks',
     'prospectos',
-    'clientes',
     'eventos',
     'usuarios',
     'cursos',
