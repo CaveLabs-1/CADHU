@@ -99,17 +99,14 @@
                 </table>
 
             <br><br>
-            <div class="center">
-                <button onclick="location.href='{% url 'prospectos:lista_prospectos' %}'" class="btn waves-effect waves-light form_button">Regresar a Lista</button>
-            </div>
             </div>
         </div>
 
         <br>
         <div class="center">
-            <button onclick="location.href='{% url 'prospectos:lista_prospectos' %}'" class="btn waves-effect waves-light back_button">
+            <button onclick="location.href='{% url 'prospectos:info_prospecto' prospecto.id %}'" class="btn waves-effect waves-light back_button">
               <i class="material-icons left">arrow_back</i>
-              Regresar
+              Regresar a la informacion del prospecto
             </button>
         </div>
 

@@ -292,7 +292,7 @@ def registrar_cursos(request, id):
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
-                    'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+                    'titulo': 'Registrar Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
                 return render(request, 'cursos/prospectoevento_form.html', context)
@@ -316,7 +316,7 @@ def registrar_cursos(request, id):
     context = {
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+        'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
@@ -348,7 +348,7 @@ def editar_curso(request, id):
             context = {
                 'prospecto': prospecto,
                 'newProspectoEventoForm': oldProspectoEventoForm,
-                'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+                'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                 'cursos': cursos,
             }
             return render(request, 'cursos/prospectoevento_form.html', context)
@@ -357,7 +357,7 @@ def editar_curso(request, id):
     context = {
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Editar Curso - ' + cursoEditar.Curso.Nombre,
+        'titulo': 'Editar Grupo - ' + cursoEditar.Curso.Nombre,
         'cursos': cursos,
     }
     return render(request, 'cursos/prospectoevento_edit.html', context)
