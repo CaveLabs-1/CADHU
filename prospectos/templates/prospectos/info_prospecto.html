@@ -167,8 +167,8 @@
                         <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                     {% endif %}
                     <td>
-                        <a href="!#"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'prospectos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'prospectos:eliminar_curso' curso.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                         <a href="{% url 'prospectos:info_prospecto_curso' curso.id %}"><i class="material-icons">info</i></a>
                     </td>
                     <td>

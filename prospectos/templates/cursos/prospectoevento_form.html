@@ -66,7 +66,7 @@
                 <table class="dataTable">
                     <thead>
                         <tr>
-                          <th class="center"></th>
+                          <th class="center">Acciones</th>
                           <th class="center">Grupo</th>
                           <th class="center">Interes</th>
                           <th>Fecha de Registro</th>
@@ -78,8 +78,8 @@
                     {% for prospecto_evento in cursos %}
                         <tr>
                           <td class="center">
-                              <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                              <a><i class="material-icons text-rojo-cadhu">delete</i></a>
+                              <a href="{% url 'prospectos:editar_curso' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a href="{% url 'prospectos:eliminar_curso' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                           </td>
                           <td>{{ prospecto_evento.Curso }}</td>
                           <td>{{ prospecto_evento.Interes }}</td>

@@ -371,15 +371,25 @@ def eliminar_curso(request, id):
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = curso.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
-    curso.delete()
-    messages.success(request, 'Grupo eliminado de manera exitosa')
-    context = {
-        'prospecto': prospecto,
-        'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-        'cursos': cursos,
+    if(Pago.objects.filter(prospecto_evento=curso).count()>0):
+        messages.success(request, 'El prospecto ya ha realizado un pago, por ende, el curso no puede ser eliminado')
+        context = {
+            'prospecto': prospecto,
+            'newProspectoEventoForm': newProspectoEventoForm,
+            'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+            'cursos': cursos,
         }
-    return render(request, 'cursos/prospectoevento_form.html', context)
+        return render(request, 'cursos/prospectoevento_form.html', context)
+    else:
+        curso.delete()
+        messages.success(request, 'Grupo eliminado de manera exitosa')
+        context = {
+            'prospecto': prospecto,
+            'newProspectoEventoForm': newProspectoEventoForm,
+            'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+            'cursos': cursos,
+        }
+        return render(request, 'cursos/prospectoevento_form.html', context)
 
 
 #US23
