@@ -6,6 +6,7 @@ from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoEvento, Cliente, Pago
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+from django.contrib.messages import get_messages
 import string
 import random
 import datetime
@@ -21,34 +22,33 @@ class ClienteTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
-        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Direccion='Calle', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
-        pago = Pago.objects.create(monto=500, prospecto_evento=relacion)
+        cls.prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+        cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
+        cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
+        cls.pago = Pago.objects.create(monto=500, prospecto_evento=cls.relacion)
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_crear_cliente(self):
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
              'Matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
-        self.assertEqual(Cliente_acum, 1)
+        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        self.assertEqual(cliente_acum, 1)
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_editar_cliente(self):
-        prospecto,created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
-
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':prospecto.id}),{
-             'Matricula':'A01206199'})
+        prospecto, created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
+             'Matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        Cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
-        self.assertEqual(Cliente_acum, 1)
-        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id':prospecto.id}),{
-             'Matricula':'A01206198'})
+        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        self.assertEqual(cliente_acum, 1)
+        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id': self.relacion.id}), {
+             'Matricula': 'A01206198'})
         self.assertEqual(respm.status_code, 302)
-        Cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
-        self.assertEqual(Cliente_mod, 1)
+        cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
+        self.assertEqual(cliente_mod, 1)
 
     #ACCEPTANCE CRITERIA: 31.2
     def test_validar_campos(self):
@@ -422,46 +422,38 @@ class ActividadTest(TestCase):
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         cls.curso = Curso.objects.create(Nombre='Curso', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
+        cls.actFalse = Actividad.objects.create(titulo='Actividad False', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=False)
+        cls.actTrue = Actividad.objects.create(titulo='Actividad True', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=True)
+
 
     #ACCEPTANCE CRITERIA: 12.1
     def test_ac_12_1(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':self.relacion.id}), {
+        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id': self.relacion.id}), {
             'titulo': 'Llamada con el prospecto',
             'fecha': datetime.datetime.now().date(),
             'notas': 'Llamada con el prosecto',
             'prospecto_evento': self.relacion})
-        self.assertQuerysetEqual(resp.context['actividades'],['<Actividad: Llamada con el prospecto>'])
+        act_count = Actividad.objects.all().count()
+        self.assertEqual(act_count, 3)
 
     #ACCEPTANCE CRITERIA: 12.2
     def test_ac_12_2(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':self.relacion.id}), {
+        resp = self.client.post(reverse('prospectos:crear_actividad', kwargs={'id': self.relacion.id}), {
             'titulo': 'Llamada con el prospecto',
-            'fecha': '2018-03-07',
+            'fecha': False,
             'hora': 'Hora',
-            'notas': 'Llamada con el prosecto'})
-        self.assertEqual(resp.context['titulo'],'Agregar actividad')
+            'notas': 'Llamada con el prosecto'
+        })
+        mensaje = get_messages(resp)
+        self.assertEqual(resp.context['Error'], 'Forma inválida')
 
     def test_ac_12_3(self):
-        act, created = Actividad.objects.get_or_create(
-            titulo= 'Llamada con el prospecto',
-            fecha= datetime.datetime.now().date(),
-            notas= 'Llamada con el prosecto',
-            prospecto_evento=self.relacion,
-            terminado=False,
-        )
-        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': act.pk}))
-        self.assertEqual(act.terminado, True)
+        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actFalse.id}))
+        self.assertEqual(self.actFalse.terminado, True)
 
     def test_ac_12_4(self):
-        act, created = Actividad.objects.get_or_create(
-            titulo= 'Llamada con el prospecto',
-            fecha= datetime.datetime.now().date(),
-            notas= 'Llamada con el prosecto',
-            prospecto_evento=self.relacion,
-            terminado=True,
-        )
-        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': act.pk}))
-        self.assertEqual(act.terminado, False)
+        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actTrue.pk}))
+        self.assertEqual(self.actTrue.terminado, False)
 
 
 class CargaMasivaTest(TestCase):

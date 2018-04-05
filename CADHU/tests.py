@@ -17,7 +17,7 @@ class NoAuthenticationViewTests(TestCase):
     # Acceptance Criteria: 1.1
     def test_1_2(self):
         response = self.client.get(reverse('index'))
-        self.assertRedirects(response, reverse('index'))
+        self.assertRedirects(response, "/login/?next=/")
 
 
 class AuthenticationViewTests(TestCase):
@@ -39,7 +39,7 @@ class AuthenticationViewTests(TestCase):
         self.assertEqual(str(response.context['user']), 'testuser1')
         self.client.logout()
         response = self.client.get(reverse('index'))
-        self.assertRedirects(response, reverse('index'))
+        self.assertRedirects(response, "/login/?next=/")
 
 
 class PendientesViewTests(TestCase):

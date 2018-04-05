@@ -144,8 +144,8 @@ def crear_cliente(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def editar_cliente(request, id):
-
-    idcliente = Cliente.objects.get(ProspectoEvento_id=id)
+    prospectoEvento = ProspectoEvento.objects.get(id=id)
+    idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
     newClienteForm = ClienteForm(instance=idcliente)
     newLugarForm = LugarForm(instance=idcliente.direccion)
     #Si el método HTTP es post procesar la información de la forma:
@@ -154,22 +154,20 @@ def editar_cliente(request, id):
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         newClienteForm = ClienteForm(request.POST or None, instance=idcliente)
         newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccion)
-        pago = Pago.objects.get(id=id)
-        fecha = pago.fecha
-        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
+        pago = Pago.objects.filter(prospecto_evento=prospectoEvento).order_by('fecha')
+        fecha = pago[0].fecha
         #Si la forma es válida guardar la información en la base de datos:
         if newClienteForm.is_valid():
             lugar = newLugarForm.save()
             cliente = newClienteForm.save(commit=False)
-            cliente.ProspectoEvento = prospectoevento
+            cliente.ProspectoEvento = prospectoEvento
             cliente.Fecha = fecha
             cliente.direccion = lugar
-            prospectoevento.status = 'CURSANDO'
-            prospectoevento.save()
+            prospectoEvento.status = 'CURSANDO'
+            prospectoEvento.save()
             cliente.save()
             clientes = Cliente.objects.all()
-            prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
+            return redirect('prospectos:lista_pagos', idPE=prospectoEvento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -613,11 +611,13 @@ def crear_actividad(request, id):
             actividad.save()
             #Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')
-            return lista_actividades(request,id)
+            return lista_actividades(request, id)
         else:
             #Mensaje error
+            Error = 'Forma inválida'
             messages.success(request, 'Forma inválida')
             context = {
+                'Error': Error,
                 'form': NewActividadForm,
                 'titulo': 'Agregar actividad',
                 'id': id
