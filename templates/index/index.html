@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
+{% load grupos %}
+{% load static %}
 
 
-{% block title %}Actividades{% endblock %}
 {% block content %}
+
+{% if request.user|has_group:"administrador"%}
+
+  <div>
+    <img id="logo-admin" src="{% static 'img/logo_cadhu.png'%}"/>
+  </div>
+
+{% endif %}
+
+{% if request.user|has_group:"vendedora"%}
 
 <ul id="tabs" class="tabs pendientes">
     <li class="tab col s6"><a href="#pendientes" class="active">Pendientes</a></li>
@@ -14,17 +25,39 @@
         <thead>
           <tr>
               <th>Pendiente</th>
-              <th>Descripción</th>
+              <th>Curso</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Notas</th>
               <th>Acciones</th>
+
+
           </tr>
         </thead>
         <tbody>
-        {% for prospecto in prospectos   %}
+        {% for actividad in agenda %}
             <tr>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
-                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
+                <td>{{ actividad.titulo }}</td>
+                <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                <td>{{ actividad.fecha }}</td>
+                <td>{{ actividad.hora }}</td>
+                <td class="'truncate elipsis">
+                    <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                </td>
+                <td class="center">
+                    <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Terminar" href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons done-icon">done</i></a>
+                </td>
             </tr>
+            <!-- Modal Structure -->
+            <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Notas</h4>
+                    <p>{{ actividad.notas }}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                </div>
+            </div>
         {% endfor %}
         </tbody>
     </table>
@@ -34,21 +67,43 @@
     <table class="dataTable">
         <thead>
           <tr>
-              <th>Actividad</th>
-              <th>Descripción</th>
-              <th>Acciones</th>
+            <th>Pendiente</th>
+            <th>Curso</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Notas</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-        {% for prospecto in prospectos   %}
-            <tr>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
-                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
-            </tr>
+        {% for actividad in bitacora %}
+          <tr>
+              <td>{{ actividad.titulo }}</td>
+              <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+              <td>{{ actividad.fecha }}</td>
+              <td>{{ actividad.hora }}</td>
+              <td class="'truncate elipsis">
+                  <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+              </td>
+              <td class="center">
+                  <a  class="tooltipped" data-position="right" data-delay="50" data-tooltip="Marcar pendiente" href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons done-icon">clear</i></a>
+              </td>
+          </tr>
+          <!-- Modal Structure -->
+          <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+              <div class="modal-content">
+                  <h4>Notas</h4>
+                  <p>{{ actividad.notas }}</p>
+              </div>
+              <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+              </div>
+          </div>
         {% endfor %}
         </tbody>
     </table>
   </div>
+
+{% endif %}
 
 {% endblock %}

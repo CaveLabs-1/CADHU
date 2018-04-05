@@ -24,14 +24,62 @@
         <div class="card-content">
             <form method="post">
                 {% csrf_token %}
-                <div class="row">
+                <div class="row center">
+                    <h5>Datos del cliente</h5>
                     <div class="input-field col s12">
                         {{ NewClienteForm.Matricula | add_class:'form-control' }}
                         <label for="Matricula">Matricula</label>
                     </div>
                 </div>
                 <div class="row center">
-                    <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+                    <h5>Datos de facturación (Opcional)</h5>
+                    <div class="input-field col s6">
+                        {{ NewClienteForm.rfc | add_class:'form-control' }}
+                        <label for="rfc">RFC</label>
+                    </div>
+                    <div class="input-field col s6">
+                        {{ NewClienteForm.razonSocial | add_class:'form-control' }}
+                        <label for="razonSocial">Raz&oacute;n social</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m4 l4">
+                        {{ NewLugarForm.Pais | add_class:'form-control' }}
+                        <label>Pa&iacute;s</label>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                        {{ NewLugarForm.Estado | add_class:'form-control' }}
+                        <label>Estado</label>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                        {{ NewLugarForm.Ciudad | add_class:'form-control' }}
+                        <label>Ciudad</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m6 l3">
+                        {{ NewLugarForm.Colonia | add_class:'form-control' }}
+                        <label for="colonia">Colonia</label>
+                    </div>
+                    <div class="input-field col s12 m6 l3">
+                        {{ NewLugarForm.Calle | add_class:'form-control' }}
+                        <label for="calle">Calle</label>
+                    </div>
+                    <div class="input-field col s6 m4 l2">
+                        {{ NewLugarForm.Numero_Exterior | add_class:'form-control' }}
+                        <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
+                    </div>
+                    <div class="input-field col s6 m4 l2">
+                         {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
+                        <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+                    </div>
+                    <div class="input-field col s12 m4 l2">
+                        {{ NewLugarForm.Codigo_Postal | add_class:'form-control' }}
+                        <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+                    </div>
+                <div class="row center">
+                  <a href="{% url 'prospectos:lista_prospectos'%}" class="btn waves-effect waves-light form_button red">Cancelar</a>
+                  <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
                 </div>
             </form>
           </div>

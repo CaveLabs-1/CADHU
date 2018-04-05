@@ -73,4 +73,3 @@ $(document).ready(function() {
 $('#sidenavBtn').on('click', function(){
   console.log("asd");
 });
-
