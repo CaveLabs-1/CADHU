@@ -642,8 +642,7 @@ def estado_actividad(request, id):
     else:
         act.terminado = True
         act.save()
-    # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return redirect('prospectos:lista_actividades')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required

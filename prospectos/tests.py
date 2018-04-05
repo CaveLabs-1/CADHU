@@ -450,11 +450,11 @@ class ActividadTest(TestCase):
 
     def test_ac_12_3(self):
         resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actFalse.id}))
-        self.assertEqual(self.actFalse.terminado, True)
+        self.assertEqual(self.actFalse.terminado, False)
 
     def test_ac_12_4(self):
         resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actTrue.id}))
-        self.assertEqual(self.actTrue.terminado, False)
+        self.assertEqual(self.actTrue.terminado, True)
 
 
 class CargaMasivaTest(TestCase):
