@@ -386,6 +386,7 @@ class ProspectoTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(actualizado.Activo, False)
 
+
 class ActividadTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
@@ -426,7 +427,7 @@ class ActividadTest(TestCase):
         cls.actTrue = Actividad.objects.create(titulo='Actividad True', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=True)
 
 
-    #ACCEPTANCE CRITERIA: 12.1
+    # ACCEPTANCE CRITERIA: 12.1
     def test_ac_12_1(self):
         resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id': self.relacion.id}), {
             'titulo': 'Llamada con el prospecto',
@@ -452,7 +453,7 @@ class ActividadTest(TestCase):
         self.assertEqual(self.actFalse.terminado, True)
 
     def test_ac_12_4(self):
-        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actTrue.pk}))
+        resp = self.client.post(reverse('prospectos:estado_actividad', kwargs={'id': self.actTrue.id}))
         self.assertEqual(self.actTrue.terminado, False)
 
 
