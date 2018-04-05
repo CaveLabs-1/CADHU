@@ -292,7 +292,7 @@ def registrar_cursos(request, id):
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
-                    'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+                    'titulo': 'Registrar Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'cursos': cursos,
                 }
                 return render(request, 'cursos/prospectoevento_form.html', context)
@@ -316,7 +316,7 @@ def registrar_cursos(request, id):
     context = {
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+        'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'cursos': cursos,
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
@@ -348,7 +348,7 @@ def editar_curso(request, id):
             context = {
                 'prospecto': prospecto,
                 'newProspectoEventoForm': oldProspectoEventoForm,
-                'titulo': 'Registrar Cursos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+                'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                 'cursos': cursos,
             }
             return render(request, 'cursos/prospectoevento_form.html', context)
@@ -357,7 +357,7 @@ def editar_curso(request, id):
     context = {
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Editar Curso - ' + cursoEditar.Curso.Nombre,
+        'titulo': 'Editar Grupo - ' + cursoEditar.Curso.Nombre,
         'cursos': cursos,
     }
     return render(request, 'cursos/prospectoevento_edit.html', context)
@@ -371,15 +371,25 @@ def eliminar_curso(request, id):
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = curso.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
-    curso.delete()
-    messages.success(request, 'Grupo eliminado de manera exitosa')
-    context = {
-        'prospecto': prospecto,
-        'newProspectoEventoForm': newProspectoEventoForm,
-        'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-        'cursos': cursos,
+    if(Pago.objects.filter(prospecto_evento=curso).count()>0):
+        messages.success(request, 'El prospecto ya ha realizado un pago, por ende, el curso no puede ser eliminado')
+        context = {
+            'prospecto': prospecto,
+            'newProspectoEventoForm': newProspectoEventoForm,
+            'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+            'cursos': cursos,
         }
-    return render(request, 'cursos/prospectoevento_form.html', context)
+        return render(request, 'cursos/prospectoevento_form.html', context)
+    else:
+        curso.delete()
+        messages.success(request, 'Grupo eliminado de manera exitosa')
+        context = {
+            'prospecto': prospecto,
+            'newProspectoEventoForm': newProspectoEventoForm,
+            'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
+            'cursos': cursos,
+        }
+        return render(request, 'cursos/prospectoevento_form.html', context)
 
 
 #US23
@@ -447,6 +457,7 @@ def baja_prospecto(request, id):
 @login_required
 @group_required('vendedora', 'administrador')
 def info_prospecto(request, id):
+    newProspectoEventoForm = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=id)
     # cursos = prospecto.Cursos.all()
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
@@ -459,8 +470,47 @@ def info_prospecto(request, id):
             agenda.append(actividad)
         else:
             bitacora.append(actividad)
+    if request.method == 'POST':
+        # Crear la instancia de la forma y llenarla con los datos
+        newProspectoEventoForm = ProspectoEventoForm(request.POST)
+        # Validar la forma
+        if newProspectoEventoForm.is_valid():
+            PE = newProspectoEventoForm.save(commit=False)
+            # Validar que no se este agregando un curso repetido
+            try:
+                ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
+                messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
+                context = {
+                    'prospecto': prospecto,
+                    'newProspectoEventoForm': newProspectoEventoForm,
+                    'titulo': titulo,
+                    'actividades': actividades,
+                    'agenda': agenda,
+                    'bitacora': bitacora,
+                    'cursos': cursos,
+                }
+                return render(request, 'prospectos/info_prospecto.html', context)
+            # Guardar la forma en la BD
+            except ProspectoEvento.DoesNotExist:
+                PE.Prospecto = prospecto
+                PE.FlagCADHU = False
+                PE.Fecha = now()
+                PE.save()
+                messages.success(request, 'Curso asignado a prospecto')
+                context = {
+                    'prospecto': prospecto,
+                    'newProspectoEventoForm': newProspectoEventoForm,
+                    'actividades': actividades,
+                    'agenda': agenda,
+                    'bitacora': bitacora,
+                    'titulo': titulo,
+                    'cursos': cursos,
+                }
+                return render(request, 'prospectos/info_prospecto.html', context)
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'titulo': titulo,
+        'newProspectoEventoForm': newProspectoEventoForm,
         'actividades': actividades,
         'agenda': agenda,
         'bitacora': bitacora,
@@ -468,6 +518,7 @@ def info_prospecto(request, id):
         'prospecto': prospecto,
     }
     return render(request, 'prospectos/info_prospecto.html', context)
+
 
 @login_required
 @group_required('vendedora','administrador')

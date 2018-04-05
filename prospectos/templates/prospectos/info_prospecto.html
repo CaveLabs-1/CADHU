@@ -114,6 +114,17 @@
                             {{ prospecto.Direccion.Codigo_Postal }}
                         </div>
                     </div>
+
+
+                    {#----------------Comentarios-------------#}
+                    <div class="row">
+                        <span class=" grey-text text-darken-4" >Comentarios</span>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            {{ prospecto.comentarios }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,7 +142,7 @@
         <div class="row">
         </div>
         <div class="fixed-action-btn">
-            <a class="btn-floating btn-large orange" href="{% url 'prospectos:registrar_cursos' prospecto.id %}">
+            <a class="btn-floating btn-large waves-effect waves-light form_button modal-trigger tooltipped" href="#modalCursos" data-position="left" data-delay="50" data-tooltip="Agregar Grupo">
                 <i class="large material-icons">add</i>
             </a>
         </div>
@@ -140,6 +151,7 @@
             <tr>
                 <th>Grupo</th>
                 <th>Interes</th>
+                <th>Fecha de Registro</th>
                 <th>Flag</th>
                 <th>Acciones</th>
                 <th>Pagos</th>
@@ -150,18 +162,19 @@
                 <tr>
                     <td>{{ curso.Curso }}</td>
                     <td>{{ curso.Interes }}</td>
+                    <td>{{ curso.Fecha }}</td>
                     {% if curso.FlagCADHU == True %}
                         <td><a><i class="material-icons">check</i></a></td>
                     {% else %}
                         <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                     {% endif %}
                     <td>
-                        <a href="!#"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a><i class="material-icons text-rojo-cadhu">delete</i></a>
                         <a href="{% url 'prospectos:info_prospecto_curso' curso.id %}"><i class="material-icons">info</i></a>
+                        <a href="{% url 'prospectos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'prospectos:eliminar_curso' curso.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     </td>
-                    <td>
-                        <a href="{% url 'prospectos:lista_pagos' curso.id  %}"> <i></i> </a>
+                    <td class="center">
+                        <a href="{% url 'prospectos:lista_pagos' curso.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -169,6 +182,31 @@
         </table>
     </div>
 
+    {#    --------------------------Modal Agregar Curso ------------------#}
+    <div id="modalCursos" class="modal">
+        <div class="modal-content" style="padding: 40px">
+            <h5 class="center">Registrar Grupo</h5>
+            <br/><br />
+            <form method="post">
+                {% csrf_token %}
+                <div class="row center">
+                    <div class="col s12">
+                        <div class="input-field col l8 offset-l2 s12">
+                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
+                            <label for="Curso">Curso</label>
+                        </div>
+                        <div class="input-field col l8 offset-l2 s12">
+                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
+                            <label for="Interes">Interes</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row center">
+                    <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Grupo</button>
+                </div>
+            </form>
+        </div>
+    </div>
     {#------------------------Agenda ----------------------------#}
     <div id="agenda" class="col s12">
         <div class="">
