@@ -4,7 +4,7 @@ from CADHU.decorators import group_required
 from prospectos.models import Actividad
 
 @login_required
-@group_required('vendedora','administrador')
+@group_required('vendedora', 'administrador')
 def index(request):
     agenda = Actividad.objects.filter(terminado=False).order_by('fecha', 'hora')
     bitacora = Actividad.objects.filter(terminado=True).order_by('fecha', 'hora')

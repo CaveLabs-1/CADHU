@@ -89,6 +89,7 @@ class Prospecto(models.Model):
     Fecha_Creacion = models.DateField(null=True)
     Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
+    comentarios = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.Nombre + ' ' + self.Apellidos
@@ -129,7 +130,7 @@ class Cliente(models.Model):
 
 class Actividad(models.Model):
     titulo = models.CharField(verbose_name='Actividad', max_length=500)
-    fecha = models.DateField(verbose_name='Fecha de la actividad')
+    fecha = models.DateField(verbose_name='Fecha de la actividad', blank=False, null=False)
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
