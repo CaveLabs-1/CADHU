@@ -26,9 +26,9 @@ urlpatterns = [
     #ID: US1
     path('', include('django.contrib.auth.urls')),
     path('prospectos/', include('prospectos.urls', namespace='prospectos')),
-    path('clientes/', include('clientes.urls', namespace='clientes')),
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
     path('eventos/', include('eventos.urls', namespace='eventos')),
     path('cursos/', include('cursos.urls', namespace='cursos')),
+    path('regresar/<path:url>', views.regresar, name='regresar'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

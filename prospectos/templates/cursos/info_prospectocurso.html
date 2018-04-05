@@ -183,7 +183,7 @@
                             <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -230,7 +230,7 @@
                                                          href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id request.path %}"><i class="material-icons">check</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-rojo-cadhu">clear</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -255,7 +255,7 @@
         </a>
         <ul>
             <li><a class="btn-floating blue" href="mailto:{{ relacion.Prospecto.Email }}" target="_blank"><i class="material-icons">email</i></a></li>
-            <li><a class="btn-floating green modal-trigger whatsapp" onclick="whatsapp({{ relacion.Prospecto.Telefono_Celular }});" href="#"><i class="material-icons">sms</i></a></li>
+            <li><a class="btn-floating green" onclick="whatsapp({{  relacion.Prospecto.Telefono_Celular }});" href="#"><i class="material-icons">sms</i></a></li>
         </ul>
     </div>
 {% endblock %}

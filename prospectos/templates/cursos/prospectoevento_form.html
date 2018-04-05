@@ -11,11 +11,11 @@
                     {% csrf_token %}
                     <div class="row center">
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
                             <label for="Curso">Curso</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
                             <label for="Interes">Interes</label>
                         </div>
                     </div>
@@ -30,10 +30,10 @@
                 <br><br> -->
                 <div class="row">
                   <div class="col l4 offset-l4 s12 center">
-                    <h5 class="center">Cursos Interesados</h5>
+                    <h5 class="center">Grupos Interesados</h5>
                   </div>
                   <div class="col l4 s12" style="text-align: right">
-                    <a class="btn-floating btn-large waves-effect waves-light form_button modal-trigger tooltipped" href="#modalCursos" data-position="left" data-delay="50" data-tooltip="Agregar Curso">
+                    <a class="btn-floating btn-large waves-effect waves-light form_button modal-trigger tooltipped" href="#modalCursos" data-position="left" data-delay="50" data-tooltip="Agregar Grupo">
                       <i class="material-icons">add</i>
                     </a>
                   </div>
@@ -41,24 +41,24 @@
 
                 <div id="modalCursos" class="modal">
                   <div class="modal-content" style="padding: 40px">
-                    <h5 class="center">Registrar Curso</h5>
+                    <h5 class="center">Registrar Grupo</h5>
                     <br/><br />
                     <form method="post">
                         {% csrf_token %}
                         <div class="row center">
                           <div class="col s12">
                             <div class="input-field col l8 offset-l2 s12">
-                                {{ NewProspectoEventoForm.Curso | add_class:'form-control' }}
+                                {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
                                 <label for="Curso">Curso</label>
                             </div>
                             <div class="input-field col l8 offset-l2 s12">
-                                {{ NewProspectoEventoForm.Interes | add_class:'form-control' }}
+                                {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
                                 <label for="Interes">Interes</label>
                             </div>
                           </div>
                         </div>
                         <div class="row center">
-                            <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Curso</button>
+                            <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Grupo</button>
                         </div>
                     </form>
                   </div>
@@ -67,7 +67,7 @@
                     <thead>
                         <tr>
                           <th class="center"></th>
-                          <th class="center">Curso</th>
+                          <th class="center">Grupo</th>
                           <th class="center">Interes</th>
                           <th>Fecha de Registro</th>
                             <th class="center">Flag</th>
@@ -84,14 +84,14 @@
                           <td>{{ prospecto_evento.Curso }}</td>
                           <td>{{ prospecto_evento.Interes }}</td>
                           <!-- <td>{{ curso.id }}</td> -->
-                         <td>{{ prospecto_evento.Fecha }}</td>
+                         <td>{{ curso.Fecha }}</td>
                           {% if prospecto_evento.FlagCADHU == True %}
                               <td class="center"><a><i class="material-icons">check</i></a></td>
                           {% else %}
                               <td class="center"><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
                           {% endif %}
                           <td class="center">
-                            <a href="{% url 'prospectos:lista_pagos' prospecto.id prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</button>
+                            <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                           </td>
                         </tr>
                     {% endfor %}

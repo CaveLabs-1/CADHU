@@ -13,7 +13,7 @@ def lista_evento(request):
     eventos = Evento.objects.all()
     context = {
     'eventos':eventos,
-    'titulo': 'Eventos',
+    'titulo': 'Cursos',
     }
     return render(request, 'eventos/eventos.html', context)
 
@@ -40,11 +40,12 @@ def crear_evento(request):
         #Envia la informacion necesaria.
             context = {
                 'NewEventoForm': NewEventoForm,
-                'titulo': 'Registrar un Evento',
+                'titulo': 'Registrar un Curso',
             }
             return render(request, 'eventos/crear_evento.html', context)
     context = {
         'NewEventoForm': NewEventoForm,
-        'titulo': 'Registrar un Evento',
+        'titulo': 'Registrar un Curso',
     }
     return render(request, 'eventos/crear_evento.html', context)
+# prueba

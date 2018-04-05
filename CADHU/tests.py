@@ -1,42 +1,46 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User, Group, Lugar, Actividad
+from django.contrib.auth.models import User, Group
+from prospectos.models import Lugar, Actividad, Prospecto, ProspectoEvento
+from eventos.models import Evento
+from cursos.models import Curso
+import datetime
+
 
 class NoAuthenticationViewTests(TestCase):
-
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
 
-    #Acceptance Criteria: 1.1
+    # Acceptance Criteria: 1.1
     def test_1_2(self):
-        response = self.client.get(reverse('index:index'))
-        self.assertRedirects(response, reverse('index:index'))
+        response = self.client.get(reverse('index'))
+        self.assertRedirects(response, "/login/?next=/")
 
 
 class AuthenticationViewTests(TestCase):
-
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
-        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
 
-    #Acceptance Criteria: 1.1
+     #Acceptance Criteria: 1.1
     def test_1_1(self):
-        response = self.client.get(reverse('index:index'))
+        response = self.client.get(reverse('index'))
         self.assertEqual(str(response.context['user']), 'testuser1')
 
-    #Acceptance Criteria: 2.1
+    # Acceptance Criteria: 2.1
     def test_2_1(self):
         response = self.client.get(reverse('prospectos:lista_prospectos'))
         self.assertEqual(str(response.context['user']), 'testuser1')
         self.client.logout()
-        response = self.client.get(reverse('index:index'))
-        self.assertRedirects(response, reverse('index:index'))
+        response = self.client.get(reverse('index'))
+        self.assertRedirects(response, "/login/?next=/")
+
 
 class PendientesViewTests(TestCase):
     def setUp(self):
@@ -72,7 +76,7 @@ class PendientesViewTests(TestCase):
             Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
 
     def test_crear_actividad(self):
@@ -85,5 +89,5 @@ class PendientesViewTests(TestCase):
 
     # Accepatnce criteria 20.1 - 20.2
     def test_mostrar_pendientes(self):
-        resp = self.client.get(reverse('index: index'))
+        resp = self.client.get(reverse('index'))
         self.assertEqual(resp.status_code, 200)
