@@ -459,7 +459,6 @@ def baja_prospecto(request, id):
 def info_prospecto(request, id):
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=id)
-    # cursos = prospecto.Cursos.all()
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
