@@ -792,11 +792,11 @@ def nuevo_pago(request, idPE):
 @group_required('administrador')
 def lista_pagos(request, idPE):
     # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
-    pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
-    pe = ProspectoEvento.objects.get(id = idPE)
+    pagos = Pago.objects.filter(prospecto_evento_id=idPE).count()
+    pe = ProspectoEvento.objects.get(id=idPE)
     # print(pe.Curso_id)
     total_pagos = 0
-    pagos2 = Pago.objects.filter(prospecto_evento_id = idPE)
+    pagos2 = Pago.objects.filter(prospecto_evento_id=idPE)
     for pago in pagos2:
         total_pagos += pago.monto
     curso = Curso.objects.get(id = pe.Curso_id)
