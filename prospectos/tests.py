@@ -31,23 +31,23 @@ class ClienteTest(TestCase):
     #ACCEPTANCE CRITERIA: 31.1
     def test_crear_cliente(self):
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'Matricula': 'A01206199'})
+             'matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        cliente_acum = Cliente.objects.filter(matricula='A01206199').count()
         self.assertEqual(cliente_acum, 1)
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_editar_cliente(self):
         prospecto, created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'Matricula': 'A01206199'})
+             'matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        cliente_acum = Cliente.objects.filter(matricula='A01206199').count()
         self.assertEqual(cliente_acum, 1)
         respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id': self.relacion.id}), {
-             'Matricula': 'A01206198'})
+             'matricula': 'A01206198'})
         self.assertEqual(respm.status_code, 302)
-        cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
+        cliente_mod = Cliente.objects.filter(matricula='A01206198').count()
         self.assertEqual(cliente_mod, 1)
 
     #ACCEPTANCE CRITERIA: 31.2
@@ -629,7 +629,7 @@ class PagoTest(TestCase):
         curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
         pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id)
-        cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
+        cliente = Cliente.objects.create(matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
 
     def test_ac_42_1(self):
         idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id

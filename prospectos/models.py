@@ -118,7 +118,7 @@ class ProspectoEvento(models.Model):
 
 class Cliente(models.Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    Matricula = models.CharField(max_length=10, blank=False, null=False)
+    matricula = models.CharField(max_length=12, blank=False, null=False)
     Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
     rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$', message="El RFC debe de contar con el formato oficial")
     rfc = models.CharField(validators=[rfc_regex], max_length=13, blank=True, null=True)

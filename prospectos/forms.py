@@ -109,7 +109,7 @@ class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
         fields = (
-            'Matricula',
+            'matricula',
             'rfc',
             'direccion',
             'razonSocial',
