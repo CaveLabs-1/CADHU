@@ -31,8 +31,9 @@
             </div> -->
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.monto.html_name}}" id="{{ form.monto.id_for_label }}" required validate step=".01" min="0" max="{{ monto_maximo }}" oninvalid="setCustomValidity('El monto super el total del curso inscrito.')">
+                <input type="number" name="monto" id="monto" required>
                 <label for="{{form.monto.html_name}}">Monto de Pago</label>
+                <input style="display:none;" id="monto_maximo" value="{{ monto_maximo }}">
               </div>
             </div>
             <div class="row no-margin">
@@ -43,7 +44,7 @@
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('No. de referencia solo debe contener letras o números.')" required>
+                <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" required>
                 <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia</label>
               </div>
             </div>
