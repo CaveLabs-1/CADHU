@@ -9,7 +9,7 @@ class EmpresaForm(ModelForm):
     class Meta:
         model = Empresa
         fields = (
-            'Nombre',
+            'nombre',
             'Contacto1',
             'Contacto2',
             'Telefono1',
