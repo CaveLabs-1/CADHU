@@ -620,6 +620,18 @@ def crear_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
+def empresa_info(request, id):
+    empresa = Empresa.objects.get(id=id)
+    lugar = Lugar.objects.get(id=empresa.Direccion.id)
+    context = {
+        'empresa': empresa,
+        'lugar': lugar,
+        'titulo': empresa.nombre,
+    }
+    return render(request, 'empresas/empresas_info.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
 def baja_empresas(request, id):
     empresa = Empresa.objects.get(id=id)
     if empresa.Activo:
