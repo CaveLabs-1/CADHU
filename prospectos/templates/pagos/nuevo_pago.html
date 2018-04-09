@@ -47,6 +47,12 @@
                 <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia</label>
               </div>
             </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <input type="text" name="{{form.comentarios.html_name}}" id="{{form.comentarios.html_name}}">
+                <label for="{{form.comentarios.html_name}}">Comentarios</label>
+              </div>
+            </div>
             <!-- <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>

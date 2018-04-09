@@ -44,6 +44,16 @@
                     <b>No. de referencia:</b> {{ pago.referencia }}
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col s12">
+                    <i class="material-icons left">textsms</i>
+                    {% if comentarios %}
+                    <b>Comentarios:</b> {{ pago.comentarios }}
+                    {% else %}
+                    <b>Comentarios:</b> -
+                    {% endif %}
+                  </div>
+                </div>
               </div>
             </li>
           {% endfor %}
