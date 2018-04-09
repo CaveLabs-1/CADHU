@@ -61,6 +61,21 @@
   text-shadow: 0px 0px 14px rgba(150, 150, 150, 1);
 }
 
+.p-left{
+  width: 33%;
+  text-align: left;
+}
+
+.p-center{
+  width: 33%;
+  text-align: center;
+}
+
+.p-right{
+  width: 33%;
+  text-align: right;
+}
+
 /*BASE*/
 body {
   /* padding-top: 60px; */
