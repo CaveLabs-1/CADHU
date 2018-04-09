@@ -710,6 +710,8 @@ def nuevo_pago(request, idPE):
         # si la forma es válida
         if Forma_nuevo_pago.is_valid():
 
+            # print(Forma_nuevo_pago)
+
             #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
             # if(total_pagos + float(request.POST['monto']) <= curso.Costo):
             # se guarda la forma
@@ -801,4 +803,3 @@ def lista_pagos(request, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
-

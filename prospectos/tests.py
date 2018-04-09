@@ -628,8 +628,8 @@ class PagoTest(TestCase):
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
-        pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id)
-        cliente = Cliente.objects.create(matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
+        pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id, comentarios="comentario de prueba")
+        cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
 
     def test_ac_42_1(self):
         idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id
@@ -645,20 +645,7 @@ class PagoTest(TestCase):
             "fecha": '2025-03-15',
             "monto": 200,
             "referencia": "1651",
-            "prospecto_evento_id": idPE
+            "prospecto_evento_id": idPE,
+            "comentarios": "comentario de prueba"
         }, follow=True)
         self.assertEqual(resp.status_code, 200)
-
-    # def test_view_crear_curso(self):
-    #     evento = Evento.objects.create(Nombre='Mi Evento 2', Descripcion='Este es el evento de pruebas automoatizadas.')
-    #     resp = self.client.post('/cursos/nuevo_curso',  {
-    #         'Nombre': 'Curso',
-    #         'Evento': evento,
-    #         'Fecha_Inicio': '2018-03-16',
-    #         'Fecha_Fin': '2018-03-16',
-    #         'Direccion': 'Calle',
-    #         'Descripcion': 'Evento de marzo',
-    #         'Costo': 1000},
-    #         follow=True
-    #     )
-    #     self.assertEqual(resp.status_code, 200)

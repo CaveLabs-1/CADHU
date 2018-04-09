@@ -127,6 +127,7 @@ class PagoForm(ModelForm):
             'fecha',
             'monto',
             'referencia',
+            'comentarios',
             # 'tipo_pago',
         )
         excludes = (

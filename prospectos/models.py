@@ -146,6 +146,7 @@ class Pago(models.Model):
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     referencia = models.CharField(max_length=25, blank=True, null=True)
+    comentarios = models.CharField(max_length=300, blank=True, null=True)
     # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)
 
     # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
