@@ -111,7 +111,7 @@ class ClienteForm(ModelForm):
         fields = (
             'matricula',
             'rfc',
-            'direccion',
+            'direccionFacturacion',
             'razonSocial',
         )
         excludes = {
