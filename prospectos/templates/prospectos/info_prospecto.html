@@ -164,9 +164,9 @@
                     <td>{{ curso.Interes }}</td>
                     <td>{{ curso.Fecha }}</td>
                     {% if curso.FlagCADHU == True %}
-                        <td><a><i class="material-icons">check</i></a></td>
+                        <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                     {% else %}
-                        <td><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                        <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                     {% endif %}
                     <td>
                         <a href="{% url 'prospectos:info_prospecto_curso' curso.id %}"><i class="material-icons">info</i></a>

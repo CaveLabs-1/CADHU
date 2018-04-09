@@ -31,23 +31,23 @@ class ClienteTest(TestCase):
     #ACCEPTANCE CRITERIA: 31.1
     def test_crear_cliente(self):
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'Matricula': 'A01206199'})
+             'matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        cliente_acum = Cliente.objects.filter(matricula='A01206199').count()
         self.assertEqual(cliente_acum, 1)
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_editar_cliente(self):
         prospecto, created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'Matricula': 'A01206199'})
+             'matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(Matricula='A01206199').count()
+        cliente_acum = Cliente.objects.filter(matricula='A01206199').count()
         self.assertEqual(cliente_acum, 1)
         respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id': self.relacion.id}), {
-             'Matricula': 'A01206198'})
+             'matricula': 'A01206198'})
         self.assertEqual(respm.status_code, 302)
-        cliente_mod = Cliente.objects.filter(Matricula='A01206198').count()
+        cliente_mod = Cliente.objects.filter(matricula='A01206198').count()
         self.assertEqual(cliente_mod, 1)
 
     #ACCEPTANCE CRITERIA: 31.2
@@ -83,7 +83,7 @@ class EmpresaTest(TestCase):
     #ACCEPTANCE CRITERIA: 13.2
     def test_crear_empresa(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Nombre':'ITESM',
+            'nombre':'ITESM',
             'Telefono1':'4422232226',
             'Email1':'escuela@itesm.com',
             'Razon_Social':'Escuela'})
@@ -102,7 +102,7 @@ class EmpresaTest(TestCase):
     #ACCEPTANCE CRITERIA: 13.4
     def test_validar_tipo_de_dato(self):
         resp = self.client.post(reverse('prospectos:crear_empresa'),{
-            'Nombre': 'ITESM',
+            'nombre': 'ITESM',
             'Telefono1': 'ABC',
             'Email1': 'correo@itesm.com',
             'Razon_Social': 'Escuela'})
@@ -130,7 +130,7 @@ class EmpresaTest(TestCase):
     def test_editar_empresa(self):
         Empresa.objects.create(
             id=2,
-            Nombre='ITESM',
+            nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
             Puesto1='Recursos Humanos',
@@ -139,7 +139,7 @@ class EmpresaTest(TestCase):
             Razon_Social='Escuela'
         )
         resp = self.client.post(reverse('prospectos:editar_empresa', kwargs={'id': 2}), {
-            'Nombre': 'ITESO', 'Contacto1': 'Lynda Brenda',
+            'nombre': 'ITESO', 'Contacto1': 'Lynda Brenda',
             'Telefono1': '4423367898', 'Puesto1': 'RH','Direccion': Lugar.objects.get(Calle='Paraiso'),
             'Email1':'lyndab@itesm.com',
             'Razon_Social': 'Escuela'
@@ -151,7 +151,7 @@ class EmpresaTest(TestCase):
     def test_baja_empresas(self):
         Empresa.objects.create(
             id=2,
-            Nombre='ITESM',
+            nombre='ITESM',
             Contacto1='Lynda',
             Telefono1='4423367895',
             Puesto1='Recursos Humanos',

@@ -54,7 +54,7 @@ ACTIVO = (
 )
 
 class Empresa(models.Model):
-    Nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     Contacto1 = models.CharField(max_length=50, blank=True, null=False)
     Contacto2 = models.CharField(max_length=50, blank=True, null=False)
     phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: '999999999'. Se permiten 10 digitos.")
@@ -69,7 +69,7 @@ class Empresa(models.Model):
     Activo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.Nombre
+        return self.nombre
 
 
 class Prospecto(models.Model):
@@ -118,7 +118,7 @@ class ProspectoEvento(models.Model):
 
 class Cliente(models.Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
-    Matricula = models.CharField(max_length=10, blank=False, null=False)
+    matricula = models.CharField(max_length=12, unique=True, blank=False, null=False)
     Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
     rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$', message="El RFC debe de contar con el formato oficial")
     rfc = models.CharField(validators=[rfc_regex], max_length=13, blank=True, null=True)
