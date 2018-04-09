@@ -115,7 +115,7 @@ def crear_cliente(request, id):
             cliente = NewClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
             cliente.Fecha = fecha
-            cliente.direccion = lugar
+            cliente.direccionFacturacion = lugar
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
@@ -147,13 +147,13 @@ def editar_cliente(request, id):
     prospectoEvento = ProspectoEvento.objects.get(id=id)
     idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
     newClienteForm = ClienteForm(instance=idcliente)
-    newLugarForm = LugarForm(instance=idcliente.direccion)
+    newLugarForm = LugarForm(instance=idcliente.direccionFacturacion)
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         newClienteForm = ClienteForm(request.POST or None, instance=idcliente)
-        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccion)
+        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccionFacturacion)
         pago = Pago.objects.filter(prospecto_evento=prospectoEvento).order_by('fecha')
         fecha = pago[0].fecha
         #Si la forma es válida guardar la información en la base de datos:
@@ -162,7 +162,7 @@ def editar_cliente(request, id):
             cliente = newClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoEvento
             cliente.Fecha = fecha
-            cliente.direccion = lugar
+            cliente.direccionFacturacion = lugar
             prospectoEvento.status = 'CURSANDO'
             prospectoEvento.save()
             cliente.save()
