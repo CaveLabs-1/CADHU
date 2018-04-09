@@ -805,7 +805,7 @@ def lista_pagos(request, idPE):
             'titulo': 'Lista de Pagos',
             'prospecto': Prospecto.objects.get(id=pe.Prospecto.id),
             'pagos': Pago.objects.filter(prospecto_evento=pe).order_by('fecha'),
-            #'cliente': Cliente.objects.get(ProspectoEvento=pe),
+            'cliente': Cliente.objects.get(ProspectoEvento=pe),
             'idPE': idPE,
             'curso': curso,
             'subtotal': total_pagos,

@@ -30,7 +30,11 @@
         <ul class="collapsible expandable">
           {% for pago in pagos %}
             <li>
-              <div class="collapsible-header">$ {{ pago.monto }}</div>
+              <div class="collapsible-header">
+                <div class="p-left">$ {{ pago.monto }}</div>
+                <div class="p-center">{{ pago.fecha }}</div>
+                <div class="p-right"></div>
+              </div>
               <div class="collapsible-body">
                 <div class="row">
                   <div class="col s12">
@@ -47,7 +51,7 @@
                 <div class="row">
                   <div class="col s12">
                     <i class="material-icons left">textsms</i>
-                    {% if comentarios %}
+                    {% if comentarios != "none" %}
                     <b>Comentarios:</b> {{ pago.comentarios }}
                     {% else %}
                     <b>Comentarios:</b> -

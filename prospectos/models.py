@@ -122,7 +122,7 @@ class Cliente(models.Model):
     Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
     rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$', message="El RFC debe de contar con el formato oficial")
     rfc = models.CharField(validators=[rfc_regex], max_length=13, blank=True, null=True)
-    direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, blank=True, null=True)
+    direccionFacturacion = models.ForeignKey('Lugar', on_delete=models.CASCADE, blank=True, null=True)
     razonSocial = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -148,12 +148,3 @@ class Pago(models.Model):
     referencia = models.CharField(max_length=25, blank=True, null=True)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)
-
-    # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
-    # Nombre = models.CharField(max_length=25, blank=True, null=True)
-    # Fecha = models.DateField(blank=True, null=True)
-    # Direccion = models.CharField(max_length=100, blank=True, null=True)
-    # Descripcion = models.CharField(max_length=150, blank=True, null=True)
-    # Costo = models.PositiveIntegerField(blank=True, null=True)
-    # Activo = models.BooleanField(default=True)
-    # Encargado = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
