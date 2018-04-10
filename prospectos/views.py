@@ -761,9 +761,8 @@ def nuevo_pago(request, idPE):
 
             # print(Forma_nuevo_pago)
 
-            #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
-            # if(total_pagos + float(request.POST['monto']) <= curso.Costo):
-            # se guarda la forma
+            print(Forma_nuevo_pago)
+
             pago = Forma_nuevo_pago.save(commit=False)
             pago.prospecto_evento_id = idPE
             pago = Forma_nuevo_pago.save()
@@ -779,14 +778,6 @@ def nuevo_pago(request, idPE):
                 return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
                 return redirect('prospectos:crear_cliente', id=pago.id)
-
-            # else:
-            #     context = {
-            #         'form': Forma_nuevo_pago,
-            #         'titulo': 'Agregar Pago',
-            #         'error_message':
-            #     }
-            #     return render(request, 'pagos/nuevo_pago.html', context)
 
 
         else:
