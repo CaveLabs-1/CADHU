@@ -83,4 +83,7 @@ urlpatterns = [
 
     # Lista clientes inactivas
     path('clientes/inactivos', views.lista_clientes_inactivos, name='lista_clientes_inactivos'),
+
+    #Autorizar Pago
+    path('autorizar_pago/<int:id>', views.autorizar_pago, name='autorizar_pago'),
 ]
