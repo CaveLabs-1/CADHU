@@ -50,6 +50,18 @@
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
+                <select required name="{{form.tipo_pago.html_name}}">
+                  <option value="" disabled selected>Elige una opción</option>
+                  <option value="Transferencia">Transferencia</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                  <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+                </select>
+                <label>Tipo de Pago</label>
+              </div>
+            </div>
+            <div class="row no-margin">
+              <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.comentarios.html_name}}" id="{{form.comentarios.html_name}}">
                 <label for="{{form.comentarios.html_name}}">Comentarios</label>
               </div>

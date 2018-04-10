@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-    {% block title %}Nuevo Pago{% endblock %}
+    {% block title %}Lista de Pagos{% endblock %}
 {% block content %}
 
 <div class="row no-margin padding-top-20">
@@ -33,29 +33,25 @@
               <div class="collapsible-header">
                 <div class="p-left">$ {{ pago.monto }}</div>
                 <div class="p-center">{{ pago.fecha }}</div>
-                <div class="p-right"></div>
-              </div>
-              <div class="collapsible-header">
-                  <div class="row">
-                      <div class="col s6">
-                          ${{ pago.monto }}
-                      </div>
-                  </div>
-                  <div class="col s2">
-                      {% if pago.validado == False %}
-                          <a href="{% url 'prospectos:autorizar_pago' pago.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
-                      {% else %}
-                          <a><i class="material-icons text-green">check</i></a>
-                      {% endif %}
-                  </div>
+                <div class="p-right">{% if pago.validado == False %}
+                    <a href="{% url 'prospectos:autorizar_pago' pago.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                    {% else %}
+                        <a><i class="material-icons text-green">check</i></a>
+                    {% endif %}</div>
               </div>
               <div class="collapsible-body">
                 <div class="row">
                   <div class="col s12">
+                    <i class="material-icons left">local_atm</i>
+                    <b>Tipo de pago:</b> {{ pago.tipo_pago }}
+                  </div>
+                </div>
+                <!-- <div class="row">
+                  <div class="col s12">
                     <i class="material-icons left">event</i>
                     <b>Fecha:</b> {{ pago.fecha }}
                   </div>
-                </div>
+                </div> -->
                 <div class="row">
                   <div class="col s12">
                     <i class="material-icons left">label</i>
