@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import lista_evento, crear_evento, eliminar_curso
+from .views import lista_evento, crear_evento, eliminar_curso, editar_evento
 
 app_name = 'eventos'
 urlpatterns = [
