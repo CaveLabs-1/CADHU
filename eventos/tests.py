@@ -29,6 +29,7 @@ class EventoModelTest(TestCase):
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/eventos/crear_evento')
         self.assertEqual(resp.status_code, 200)
+
     #Prueba que se utilice el template sea el correcto.
     def test_view_uses_correct_template(self):
         resp = self.client.get(reverse('eventos:crear_evento'))
@@ -43,3 +44,18 @@ class EventoModelTest(TestCase):
         self.assertEqual(resp.status_code, 302)
         cant= Evento.objects.count()
         self.assertEqual(cant,1)
+
+    #ACCEPTANCE CRITERIA 33.1 33.2
+    def test_view_editar(self):
+        Evento.objects.create(
+            id=1,
+            Nombre='Descodificación',
+            Descripcion='DBI'
+        )
+        resp = self.client.post(reverse('eventos:editar_evento', kwargs={'id': 1}), {
+            'Nombre': 'Taller', 'Descripcion': 'Este es el evento de pruebas automoatizadas.'
+            },follow=True)
+            
+        actualizado = Evento.objects.get(id=1)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotEqual(actualizado, 'Descodificación')
