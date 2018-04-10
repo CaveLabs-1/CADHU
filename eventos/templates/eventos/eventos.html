@@ -11,8 +11,9 @@
             <table class="dataTable">
                 <thead>
                   <tr>
-                      <th>Nombre</th>
-                      <th>Descripción</th>
+                      <th class="center">Nombre</th>
+                      <th class="center">Descripción</th>
+                      <th class="center">Acciones</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -20,7 +21,7 @@
                     <tr>
                         <td>{{ evento.Nombre }}</td>
                         <td>{{ evento.Descripcion }}</td>
-
+                        <td class="center"><a href="{% url 'eventos:editar_evento' evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
