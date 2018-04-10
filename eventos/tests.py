@@ -1,5 +1,5 @@
 from django.test import TestCase
-from eventos.models import Evento
+from .models import Evento, Curso
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 # Create your tests here.
@@ -43,3 +43,31 @@ class EventoModelTest(TestCase):
         self.assertEqual(resp.status_code, 302)
         cant= Evento.objects.count()
         self.assertEqual(cant,1)
+
+class BorrarEventoTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
+        evento = Evento.objects.create(Nombre='Evento 1', Descripcion='Evento para desactivar')
+        evento2 = Evento.objects.create(Nombre='Evento 2', Descripcion='Evento para borrar')
+        curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+
+    def test_ac_35_1(self):
+        evento = Evento.objects.get(Nombre="Evento 2")
+        resp = self.client.get(reverse('eventos:eliminar_curso', kwargs={'id': evento.id}))
+        deleted_event = Evento.objects.filter(Nombre="Evento 2").count()
+        self.assertEqual(deleted_event, 0)
+
+    def test_ac_35_2(self):
+        evento = Evento.objects.get(Nombre="Evento 1")
+        resp = self.client.get(reverse('eventos:eliminar_curso', kwargs={'id': evento.id}))
+        evento_actualizado = Evento.objects.get(id=1)
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(evento_actualizado.Activo, False)
