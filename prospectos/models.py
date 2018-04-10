@@ -85,10 +85,10 @@ class Prospecto(models.Model):
     Hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
     Recomendacion = models.CharField(max_length=150, blank=True, null=True)
     Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
-    Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Usuario = models.ForeignKey(User, null=True)
     Fecha_Creacion = models.DateField(null=True)
     Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
-    Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
+    Empresa = models.ForeignKey(Empresa, null=True, blank=True)
     comentarios = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -107,8 +107,8 @@ class Lugar(models.Model):
 
 
 class ProspectoEvento(models.Model):
-    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    Prospecto = models.ForeignKey(Prospecto, null=True)
+    Curso = models.ForeignKey(Curso, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
     FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
@@ -134,7 +134,7 @@ class Actividad(models.Model):
     fecha = models.DateField(verbose_name='Fecha de la actividad', blank=False, null=False)
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
-    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    prospecto_evento = models.ForeignKey('ProspectoEvento')
     terminado = models.BooleanField(default=False, verbose_name='Terminada')
 
     def __str__(self):
@@ -143,7 +143,7 @@ class Actividad(models.Model):
 
 class Pago(models.Model):
     # cliente
-    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    prospecto_evento = models.ForeignKey('ProspectoEvento')
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
