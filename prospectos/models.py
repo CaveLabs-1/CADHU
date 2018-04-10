@@ -127,7 +127,7 @@ class Cliente(models.Model):
     Activo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.Matricula
+        return self.matricula
 
 class Actividad(models.Model):
     titulo = models.CharField(verbose_name='Actividad', max_length=500)

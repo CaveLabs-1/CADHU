@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+    {% block content %}
+          <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-image">
+                        <div class="row center">
+                            <br>
+                            <h5>Información de cliente</h5>
+                            <div class="col s12 m4 l4">
+                                <label for="rfc">RFC</label>
+                                {{ cliente.rfc }}
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <label for="matricula">Matrícula</label>
+                                {{ cliente.matricula }}
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <label for="razonSocial">Razón Social</label>
+                                {{ cliente.razonSocial }}
+                            </div>
+                        </div>
+
+                        <div class="row center">
+                            <h5>Direccion de facturación</h5>
+                        </div>
+                        <div class="row center">
+                            <div class="col s12 m3 l3">
+                                <label for="Pais">Pais</label>
+                                {{ lugar.Pais }}
+                            </div>
+                            <div class="col s12 m3 l3">
+                                <label for="Estado">Estado</label>
+                                {{ lugar.Estado }}
+                            </div>
+                            <div class="col s12 m3 l3">
+                                <label for="Ciudad">Ciudad</label>
+                                {{ lugar.Ciudad }}
+                            </div>
+                            <div class="col s12 m2 l2">
+                                <label for="Colonia">Colonia</label>
+                                {{ lugar.Colonia }}
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col s12 m3 l3">
+                                <label for="Calle">Calle</label>
+                                {{ lugar.Calle }}
+                            </div>
+                            <div class="col s12 m3 l3">
+                                <label for="NumExteror">Exterior</label>
+                                {{ lugar.Numero_Exterior }}
+                            </div>
+                            <div class="col s12 m3 l3">
+                                <label for="NumInterior">Interior</label>
+                                {{ lugar.Numero_Interior }}
+                            </div>
+                            <div class="col s12 m2 l2">
+                                <label for="CodigoPostal">Codigo Postal</label>
+                                {{ lugar.Codigo_Postal }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row center">
+                  <a href="{% url 'prospectos:lista_prospectos'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
+                </div>
+            </div>
+          </div>
+  {% endblock %}

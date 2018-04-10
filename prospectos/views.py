@@ -186,6 +186,24 @@ def editar_cliente(request, id):
     return render(request, 'clientes/crear_cliente.html', context)
 
 
+#US38
+@login_required
+@group_required('vendedora','administrador')
+def info_cliente(request, id):
+    cliente = Cliente.objects.get(id=id)
+    lugar = Lugar.objects.get(id=cliente.direccionFacturacion.id)
+    relacion = ProspectoEvento.objects.get(id=cliente.ProspectoEvento.id)
+    prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
+    context = {
+        'cliente': cliente,
+        'lugar': lugar,
+        'relacion': relacion,
+        'prospecto': prospecto,
+        'titulo': prospecto.Nombre,
+    }
+    return render(request, 'clientes/info_cliente.html', context)
+
+
 #US3
 @login_required
 @group_required('vendedora','administrador')

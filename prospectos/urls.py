@@ -75,6 +75,9 @@ urlpatterns = [
     # Editar Cliente
     path('editar_cliente/<int:id>/', views.editar_cliente, name='editar_cliente'),
 
+    # Informacion de cliente
+    path('clientes/info_cliente/<int:id>', views.info_cliente, name='info_cliente'),
+
     # Borrar Cliente
     path('baja_cliente/<int:id>', views.baja_cliente, name='baja_cliente'),
 
