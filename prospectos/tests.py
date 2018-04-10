@@ -57,7 +57,17 @@ class ClienteTest(TestCase):
          self.assertEqual(resp.status_code, 200)
          self.assertEqual(resp.context['Error'], 'Forma invalida, favor de revisar sus respuestas de nuevo')
 
-
+    #ACCEPTANCE CRITERIA: 18.1
+    def test_baja_cliente(self):
+        prospecto, created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal',
+                                                             Email='pmartinez@gmail.com')
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
+            'matricula': 'A01206199'})
+        self.assertEqual(resp.status_code, 302)
+        resp2 = self.client.post(reverse('prospectos:baja_cliente', kwargs={'id': 1}),follow=True)
+        actualizado = Cliente.objects.get(id=1)
+        self.assertEqual(resp2.status_code, 200)
+        self.assertEqual(actualizado.Activo, False)
 
 class EmpresaTest(TestCase):
     def setUp(self):

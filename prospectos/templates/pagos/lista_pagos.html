@@ -35,6 +35,20 @@
                 <div class="p-center">{{ pago.fecha }}</div>
                 <div class="p-right"></div>
               </div>
+              <div class="collapsible-header">
+                  <div class="row">
+                      <div class="col s6">
+                          ${{ pago.monto }}
+                      </div>
+                  </div>
+                  <div class="col s2">
+                      {% if pago.validado == False %}
+                          <a href="{% url 'prospectos:autorizar_pago' pago.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                      {% else %}
+                          <a><i class="material-icons text-green">check</i></a>
+                      {% endif %}
+                  </div>
+              </div>
               <div class="collapsible-body">
                 <div class="row">
                   <div class="col s12">

@@ -285,6 +285,43 @@ def editar_prospecto(request, id):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+#US39
+@login_required
+@group_required('administrador')
+def baja_cliente(request, id):
+    cliente = Cliente.objects.get(id=id)
+    if cliente.Activo:
+        cliente.Activo = False
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos'))
+    else:
+        cliente.Activo = True
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos_inactivos'))
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_clientes(request):
+    # Tomar los  los clientes activos de la base
+    cliente_activo = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    context = {
+        'cliente':cliente_activo,
+        'titulo': 'Clientes',
+        }
+    # Desplegar la página de cliente con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_clientes_inactivos(request):
+    # Tomar los  los clientes inactivos de la base
+    cliente_inactivo = Cliente.objects.filter(Activo=False).order_by('Fecha')
+    context = {
+        'cliente':cliente_inactivo,
+        'titulo': 'Clientes',
+        }
+    # Desplegar la página de cliente con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
 
 #US26
 @login_required
@@ -833,3 +870,13 @@ def lista_pagos(request, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
+
+
+@login_required
+@group_required('administrador')
+def autorizar_pago(request, id):
+    pago = Pago.objects.get(id=id)
+    if pago.validado == False:
+        pago.validado = True
+        pago.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
