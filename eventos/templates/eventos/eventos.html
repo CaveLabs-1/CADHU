@@ -13,7 +13,7 @@
                   <tr>
                       <th class="center">Nombre</th>
                       <th class="center">Descripción</th>
-                      <th class="center">Acciones</td>
+                      <th class="center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -21,10 +21,54 @@
                     <tr>
                         <td>{{ evento.Nombre }}</td>
                         <td>{{ evento.Descripcion }}</td>
-                        <td class="center"><a href="{% url 'eventos:editar_evento' evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a></td>
+                        <td class="center">
+                          <a href="{% url 'eventos:eliminar_curso' evento.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
+                          <a href="{% url 'eventos:editar_evento' evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
 
+  {% endblock %}
+
+  {% block js %}
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
+  <script>
+
+        function eliminar_curso(element, event){
+          event.preventDefault();
+          $.confirm({
+            title: '¿Deseas eliminar el curso?',
+            content: 'No podrá ser utilizado en un futuro.',
+            type: 'red',
+            closeIcon: true,
+            columnClass: 'col l6 offset-l3 s12',
+            typeAnimated: true,
+            buttons: {
+              continuar: {
+                  text: 'Eliminar',
+                  btnClass: 'btn-red',
+
+                action: function(){
+                  window.location.href = $(element).attr("href");
+                }
+              }
+            }
+          });
+        }
+
+
+        {% if messages %}
+          {%for message in messages %}
+              {% if message.level == 40 %}
+                  var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
+                  M.toast({html: mensaje, displayLength: 60000})
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+
+  </script>
   {% endblock %}
