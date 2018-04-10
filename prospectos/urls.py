@@ -35,6 +35,7 @@ urlpatterns = [
 
     # Informacion de empresa
     path('empresas/empresa_info/<int:id>', views.empresa_info, name='empresa_info'),
+
     # Crear Prospecto
     path('crear_prospecto', views.crear_prospecto, name='crear_prospecto'),
 
@@ -74,5 +75,12 @@ urlpatterns = [
     # Editar Cliente
     path('editar_cliente/<int:id>/', views.editar_cliente, name='editar_cliente'),
 
+    # Borrar Cliente
+    path('baja_cliente/<int:id>', views.baja_cliente, name='baja_cliente'),
 
+    # Lista clientes
+    path('clientes/', views.lista_clientes, name='lista_clientes'),
+
+    # Lista clientes inactivas
+    path('clientes/inactivos', views.lista_clientes_inactivos, name='lista_clientes_inactivos'),
 ]
