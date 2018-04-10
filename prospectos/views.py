@@ -802,3 +802,12 @@ def lista_pagos(request, idPE):
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
 
+
+@login_required
+@group_required('administrador')
+def autorizar_pago(request, id):
+    pago = Pago.objects.get(id=id)
+    if pago.validado == False:
+        pago.validado = True
+        pago.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

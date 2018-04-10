@@ -72,5 +72,6 @@ urlpatterns = [
     # Editar Cliente
     path('editar_cliente/<int:id>/', views.editar_cliente, name='editar_cliente'),
 
-
+    #Autorizar Pago
+    path('autorizar_pago/<int:id>', views.autorizar_pago, name='autorizar_pago'),
 ]

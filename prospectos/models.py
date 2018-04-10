@@ -145,7 +145,8 @@ class Pago(models.Model):
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
-    referencia = models.CharField(max_length=25, blank=True, null=True)
+    referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
+    validado = models.BooleanField(blank=False, default=False)
     # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)
 
     # Evento = models.ForeignKey('eventos.Evento', on_delete=models.CASCADE)
