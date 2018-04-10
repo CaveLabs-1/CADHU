@@ -9,17 +9,6 @@
               </a>
             </div>
 
-            {% if titulo == 'Empresas' %}
-                <div class="row right">
-                    <a href="{% url 'prospectos:lista_empresas_inactivo' %}" class="btn waves-effect waves-light green darken-1" style="border-radius: 50px">Activos</a>
-                </div>
-            {% endif %}
-            {% if titulo == 'Empresas inactivas' %}
-                <div class="row right">
-                    <a href="{% url 'prospectos:lista_empresas' %}" class="btn waves-effect waves-light amber darken-1" style="border-radius: 50px">Inactivos</a>
-                </div>
-            {% endif %}
-
               <table class="dataTable">
                   <thead>
                     <tr>
@@ -31,7 +20,7 @@
                   <tbody>
                   {% for empresa in empresas   %}
                       <tr>
-                          <td>{{ empresa.nombre }}</td>
+                          <td><a href="{% url 'prospectos:empresa_info' empresa.id %}">{{ empresa.nombre }}</a></td>
                           <td>{{ empresa.Razon_Social }}</td>
                           <td class="center">
                               <a href="{% url 'prospectos:editar_empresa' empresa.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
@@ -46,7 +35,16 @@
                   {% endfor %}
                   </tbody>
               </table>
-
+            {% if titulo == 'Empresas' %}
+                <div class="row center">
+                    <a href="{% url 'prospectos:lista_empresas_inactivo' %}" class="btn waves-effect waves-light amber darken-1" style="border-radius: 50px">Ver Inactivos</a>
+                </div>
+            {% endif %}
+            {% if titulo == 'Empresas inactivas' %}
+                <div class="row center">
+                    <a href="{% url 'prospectos:lista_empresas' %}" class="btn waves-effect waves-light green darken-1" style="border-radius: 50px">Ver Activos</a>
+                </div>
+            {% endif %}
 
     {% endblock %}
 

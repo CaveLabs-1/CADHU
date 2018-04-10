@@ -124,6 +124,7 @@ class Cliente(models.Model):
     rfc = models.CharField(validators=[rfc_regex], max_length=13, blank=True, null=True)
     direccionFacturacion = models.ForeignKey('Lugar', on_delete=models.CASCADE, blank=True, null=True)
     razonSocial = models.CharField(max_length=50, blank=True, null=True)
+    Activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.Matricula
@@ -145,6 +146,7 @@ class Pago(models.Model):
     prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
-    referencia = models.CharField(max_length=25, blank=True, null=True)
+    referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
+    validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     # tipo_pago = models.CharField(max_length=50, blank=True, null=True, choices=TIPO_PAGO)

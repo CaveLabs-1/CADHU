@@ -32,8 +32,12 @@
                         <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
                         <td>
                           <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                          <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                           <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
+                            {% if titulo == 'Prospectos' %}
+                              <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                              {% else %}
+                              <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-verde-cadhu">add_circle</i></a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -41,12 +45,12 @@
             </table>
             {% if titulo == 'Prospectos' %}
                 <div class="row center">
-                    <a href="{% url 'prospectos:lista_prospectos_inactivo' %}" class="btn waves-effect waves-light green darken-1">Activos</a>
+                    <a href="{% url 'prospectos:lista_prospectos_inactivo' %}" class="btn waves-effect waves-light amber darken-1" style="border-radius: 50px">Ver Inactivos</a>
                 </div>
             {% endif %}
             {% if titulo == 'Prospectos inactivos' %}
                 <div class="row center">
-                    <a href="{% url 'prospectos:lista_prospectos' %}" class="btn waves-effect waves-light amber darken-1">Inactivos</a>
+                    <a href="{% url 'prospectos:lista_prospectos' %}" class="btn waves-effect waves-light green darken-1" style="border-radius: 50px">Activos</a>
                 </div>
             {% endif %}
           <!-- Modal Structure -->

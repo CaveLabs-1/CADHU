@@ -115,7 +115,7 @@ def crear_cliente(request, id):
             cliente = NewClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoevento
             cliente.Fecha = fecha
-            cliente.direccion = lugar
+            cliente.direccionFacturacion = lugar
             prospectoevento.status = 'CURSANDO'
             prospectoevento.save()
             cliente.save()
@@ -147,13 +147,13 @@ def editar_cliente(request, id):
     prospectoEvento = ProspectoEvento.objects.get(id=id)
     idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
     newClienteForm = ClienteForm(instance=idcliente)
-    newLugarForm = LugarForm(instance=idcliente.direccion)
+    newLugarForm = LugarForm(instance=idcliente.direccionFacturacion)
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
         Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         newClienteForm = ClienteForm(request.POST or None, instance=idcliente)
-        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccion)
+        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccionFacturacion)
         pago = Pago.objects.filter(prospecto_evento=prospectoEvento).order_by('fecha')
         fecha = pago[0].fecha
         #Si la forma es válida guardar la información en la base de datos:
@@ -162,7 +162,7 @@ def editar_cliente(request, id):
             cliente = newClienteForm.save(commit=False)
             cliente.ProspectoEvento = prospectoEvento
             cliente.Fecha = fecha
-            cliente.direccion = lugar
+            cliente.direccionFacturacion = lugar
             prospectoEvento.status = 'CURSANDO'
             prospectoEvento.save()
             cliente.save()
@@ -267,6 +267,43 @@ def editar_prospecto(request, id):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+#US39
+@login_required
+@group_required('administrador')
+def baja_cliente(request, id):
+    cliente = Cliente.objects.get(id=id)
+    if cliente.Activo:
+        cliente.Activo = False
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos'))
+    else:
+        cliente.Activo = True
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos_inactivos'))
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_clientes(request):
+    # Tomar los  los clientes activos de la base
+    cliente_activo = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    context = {
+        'cliente':cliente_activo,
+        'titulo': 'Clientes',
+        }
+    # Desplegar la página de cliente con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
+def lista_clientes_inactivos(request):
+    # Tomar los  los clientes inactivos de la base
+    cliente_inactivo = Cliente.objects.filter(Activo=False).order_by('Fecha')
+    context = {
+        'cliente':cliente_inactivo,
+        'titulo': 'Clientes',
+        }
+    # Desplegar la página de cliente con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
 
 #US26
 @login_required
@@ -620,6 +657,18 @@ def crear_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
+def empresa_info(request, id):
+    empresa = Empresa.objects.get(id=id)
+    lugar = Lugar.objects.get(id=empresa.Direccion.id)
+    context = {
+        'empresa': empresa,
+        'lugar': lugar,
+        'titulo': empresa.nombre,
+    }
+    return render(request, 'empresas/empresas_info.html', context)
+
+@login_required
+@group_required('vendedora','administrador')
 def baja_empresas(request, id):
     empresa = Empresa.objects.get(id=id)
     if empresa.Activo:
@@ -780,11 +829,11 @@ def nuevo_pago(request, idPE):
 @group_required('administrador')
 def lista_pagos(request, idPE):
     # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
-    pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
-    pe = ProspectoEvento.objects.get(id = idPE)
+    pagos = Pago.objects.filter(prospecto_evento_id=idPE).count()
+    pe = ProspectoEvento.objects.get(id=idPE)
     # print(pe.Curso_id)
     total_pagos = 0
-    pagos2 = Pago.objects.filter(prospecto_evento_id = idPE)
+    pagos2 = Pago.objects.filter(prospecto_evento_id=idPE)
     for pago in pagos2:
         total_pagos += pago.monto
     curso = Curso.objects.get(id = pe.Curso_id)
@@ -803,3 +852,13 @@ def lista_pagos(request, idPE):
     else:
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
+
+
+@login_required
+@group_required('administrador')
+def autorizar_pago(request, id):
+    pago = Pago.objects.get(id=id)
+    if pago.validado == False:
+        pago.validado = True
+        pago.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

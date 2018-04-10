@@ -1,5 +1,5 @@
 from .models import Empresa, Prospecto, Lugar, ProspectoEvento, Cliente, Pago
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm
 from django import forms
 from . import models
 from CADHU.settings import common

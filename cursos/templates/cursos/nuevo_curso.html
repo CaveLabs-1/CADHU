@@ -12,7 +12,7 @@
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
-                <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
+                <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre*</label>
               </div>
             </div>
             <div class="row no-margin">
@@ -23,7 +23,7 @@
                     <option value="{{ evento.id }}">{{ evento.Nombre }}</option>
                   {% endfor %}
                 </select>
-                <label>Eventos</label>
+                <label>Curso</label>
               </div>
             </div>
             <div class="row no-margin">
