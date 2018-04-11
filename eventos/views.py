@@ -30,6 +30,7 @@ def crear_evento(request):
         #Valida la forma, la guarda y redirecciona
         if NewEventoForm.is_valid():
             Evento = NewEventoForm.save(commit=False)
+            Evento.Activo = True
             Evento.save()
             #Mensaje de exito
             messages.success(request, 'El evento ha sido creado.')
