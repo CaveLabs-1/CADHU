@@ -1,14 +1,85 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% load widget_tweaks %}
 
-  {% block title %}Cliente{% endblock %}
-  {% block content %}
-
-    <div class="card ">
-        <div class="card-content">
-
+    {% block title %}Clientes{% endblock %}
+      {% block content %}
+          <div class="fixed-action-btn">
+            <ul>
+                <li><a class="btn-floating blue" href="{% static 'files/TemplateCargaMasiva.xlsx'%}"><i class="material-icons">get_app</i></a></li>
+                <li><a class="btn-floating green modal-trigger" href="#modalCarga"><i class="material-icons">publish</i></a></li>
+            </ul>
           </div>
-      </div>
 
-  {% endblock %}
+            <table class="dataTable">
+                <thead>
+                  <tr>
+                      <th>Matricula</th>
+                      <th>RFC</th>
+                      <th>Razón Social</th>
+                      <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.matricula }}</a></td>
+                        <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.rfc }}</a></td>
+                        <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.razonSocial }}</a></td>
+                        <td>
+                          <a href="#"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a href="#"><i class="material-icons text-blue-ligero">person</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+          <!-- Modal Structure -->
+          <div id="modalCarga" class="modal modal-fixed-footer">
+              <div class="modal-content">
+                  <h4>Carga masiva</h4>
+                  <div class=" row valign-wrapper">
+                      <div class="col s12">
+                          <form method="post" class="s12" action="{% url 'prospectos:carga' %}"
+                                enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="file-field input-field">
+                                  <div class="btn">
+                                      <span>Seleccionar</span>
+                                      <input type="file" name="archivo" id="archivo" accept="text/csv" required>
+                                  </div>
+                                  <div class="file-path-wrapper valign-wrapper">
+                                      <input class="file-path validate" type="text" accept="text/csv" required>
+                                  </div>
+                              </div>
+                              <div class="row valign-wrapper">
+                                  <div class="col s12 center">
+                                      <button type="submit" class="btn waves-effect waves-light form_button" href="#!">
+                                          Subir
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+                  <div class="row valign-wrapper">
+                      <ol>
+                          <li>Descargar el <a href="{% static 'files/TemplateCargaMasiva.xlsx' %}">template de carga masiva</a> y llenar con la información que se quiere cargar.</li>
+                          <li><h6 class="text-rojo-cadhu">VERIFICAR QUE LA INFORMACIÓN SEA CORRECTA</h6></li>
+                          <li>Guardar el template como archivo de CSV. (Guardar como -> Tipo de archivo -> .csv)</li>
+                          <li>Subir el archivo al sistema.</li>
+                      </ol>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+              </div>
+          </div>
+
+      {% endblock %}
+
+      {% block js %}
+
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
+      {% endblock %}

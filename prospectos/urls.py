@@ -81,6 +81,9 @@ urlpatterns = [
     # Borrar Cliente
     path('baja_cliente/<int:id>', views.baja_cliente, name='baja_cliente'),
 
+    # Borrar Cliente
+    path('eliminar_cliente/<int:id>', views.eliminar_cliente, name='eliminar_cliente'),
+
     # Lista clientes
     path('clientes/', views.lista_clientes, name='lista_clientes'),
 
