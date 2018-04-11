@@ -22,8 +22,8 @@
                         <td>{{ evento.Nombre }}</td>
                         <td>{{ evento.Descripcion }}</td>
                         <td class="center">
-                          <a href="{% url 'eventos:eliminar_curso' evento.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
                           <a href="{% url 'eventos:editar_evento' evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a href="{% url 'eventos:eliminar_curso' evento.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
                         </td>
                     </tr>
                 {% endfor %}
