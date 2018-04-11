@@ -89,4 +89,7 @@ urlpatterns = [
 
     #Autorizar Pago
     path('autorizar_pago/<int:id>', views.autorizar_pago, name='autorizar_pago'),
+
+    #Inscribir prospectos a empresa
+    path('empresa/inscribir/<int:id>',views.inscribir_empresa, name='inscribir_empresa'),
 ]

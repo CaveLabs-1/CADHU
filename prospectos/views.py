@@ -677,9 +677,11 @@ def crear_empresa(request):
 @group_required('vendedora','administrador')
 def empresa_info(request, id):
     empresa = Empresa.objects.get(id=id)
+    prospectos = Prospecto.objects.filter(Empresa=empresa)
     lugar = Lugar.objects.get(id=empresa.Direccion.id)
     context = {
         'empresa': empresa,
+        'prospectos': prospectos,
         'lugar': lugar,
         'titulo': empresa.nombre,
     }
@@ -701,38 +703,24 @@ def baja_empresas(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def inscribir_empresa(request, id):
-    prospectos=Prospecto.objects.exclude(Empresa__isnull=False)
     empresa=Empresa.objects.get(id=id)
-    inscribir_empresaform = Inscribir_EmpresaForm()
+    prospectos=Prospecto.objects.exclude(Empresa__isnull=False) | Prospecto.objects.filter(Empresa=empresa)
     if request.method == "POST":
-        # Definir el error para forma invalida:
-        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        # Crear y llenar la forma
-        inscribir_empresaform = Inscribir_EmpresaForm()
-        # Si la forma es válida guardar la información en la base de datos:
-        if inscribir_empresaform.is_valid():
-            Empresa = inscribir_empresaform.save(commit=False)
-            Empresa.save()
-            return lista_empresas(request)
-        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
-        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
-        context = {
-            'Error': Error,
-            'inscribir_empresaform': inscribir_empresaform,
-            'prospectos':prospectos,
-            'empresa':empresa,
-            'titulo': 'Asignar prospectos',
-        }
-        return render(request, 'empresas/empresa_prospectos_form.html', context)
-    # Si el método HTTP no es post, volver a enviar la forma:
+        vaciar = Prospecto.objects.filter(Empresa=empresa)
+        for va in vaciar:
+            va.Empresa= None
+            va.save()
+        for algo in request.POST.getlist('prospectos[]'):
+            prospect = Prospecto.objects.get(id=algo)
+            prospect.Empresa= empresa
+            prospect.save()
+        return empresa_info(request,id)
     context = {
-            'Error': Error,
-            'inscribir_empresaform': inscribir_empresaform,
             'prospectos':prospectos,
             'empresa':empresa,
-            'titulo': 'Asignar prospectos',
+            'titulo': 'Asignar prospectos a: '+empresa.nombre,
         }
-    return render(request, 'empresas/empresas_form.html', context)
+    return render(request, 'empresas/empresa_prospectos_form.html', context)
 
 
 #US

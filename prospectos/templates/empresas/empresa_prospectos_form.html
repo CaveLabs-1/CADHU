@@ -4,15 +4,31 @@
         {% block content %}
                 <div class="card ">
                     <div class="card-content">
-                      <form method="POST" action="#">
-                        {% for prospecto in prospectos %}
-                            <p>
-                                <label>
-                                    <input type="checkbox" value="{% prospecto. %}"/>
-                                    <span>{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
-                                </label>
-                            </p>
-                        {% endfor %}
+                      <form method="POST" action="">
+                          {% csrf_token %}
+                        <table class="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Prospectos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prospecto in prospectos %}
+                                    <tr>
+                                        <td>
+                                            <label>
+                                                {%  if prospecto.Empresa %}
+                                                <input name="prospectos[]" type="checkbox" value="{{ prospecto.id }}" checked="checked"/>
+                                                {%  else %}
+                                                <input name="prospectos[]" type="checkbox" value="{{ prospecto.id }}"/>
+                                                {%  endif %}
+                                                <span>{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                         <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
                       </form>
                     </div>

@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load staticfiles %}
     {% block content %}
+        <div class="fixed-action-btn">
+            <a href="{% url 'prospectos:inscribir_empresa' empresa.id %}" class="btn-floating btn-large orange">
+              <i class="large material-icons">add</i>
+            </a>
+        </div>
           <div class="row">
             <div class="col s12">
                 <div class="card">
@@ -98,35 +103,36 @@
                                 <label for="CodigoPostal">Codigo Postal</label>
                                 {{ lugar.Codigo_Postal }}
                             </div>
+                        <br><br>
                         </div>
-{#                        <table class="dataTable">#}
-{#                            <thead>#}
-{#                              <tr>#}
-{#                                  <th>Nombre</th>#}
-{#                                  <th>Apellidos</th>#}
-{#                                  <th>WhatsApp</th>#}
-{#                                  <th>Email</th>#}
-{#                                  <th>Acciones</th>#}
-{#                              </tr>#}
-{#                            </thead>#}
-{#                            <tbody>#}
-{#                            {% for prospecto in prospectos   %}#}
-{#                                <tr>#}
-{#                                    <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>#}
-{#                                    <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>#}
-{#                                    <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>#}
-{#                                    <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>#}
-{#                                    <td>#}
-{#                                      <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>#}
-{#                                      <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>#}
-{#                                      <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>#}
-{#                                    </td>#}
-{#                                </tr>#}
-{#                            {% endfor %}#}
-{#                            </tbody>#}
-{#                        </table>#}
                     </div>
                 </div>
+                <table class="dataTable">
+                    <thead>
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Apellidos</th>
+                          <th>WhatsApp</th>
+                          <th>Email</th>
+                          <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for prospecto in prospectos   %}
+                        <tr>
+                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
+                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
+                            <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
+                            <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
+                            <td>
+                              <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                              <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
           </div>
   {% endblock %}
