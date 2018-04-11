@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+  {% load staticfiles %}
+    {% block title %}Asignar Prospectos a Empresa{% endblock %}
+        {% block content %}
+          <form action="#">
+            {% for prospecto in prospectos %}
+                {% if prospecto.Empresa %}
+                    <p>
+                        <label>
+                            <input type="checkbox" checked="checked" />
+                            <span>{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                        </label>
+                    </p>
+                {% else %}
+                    <p>
+                        <label>
+                            <input type="checkbox" />
+                            <span>{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                        </label>
+                    </p>
+                {% endif %}
+
+            {% endfor %}
+            <button type="submit" class="btn waves-effect waves-light form_button">Guardar</button>
+          </form>
+        {% endblock %}
