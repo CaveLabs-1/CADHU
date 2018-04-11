@@ -89,7 +89,7 @@ class Prospecto(models.Model):
     Fecha_Creacion = models.DateField(null=True)
     Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
-    comentarios = models.TextField(null=True, blank=True)
+    comentarios = models.CharField(max_length=300, blank=True, null=True)
 
     def __str__(self):
         return self.Nombre + ' ' + self.Apellidos

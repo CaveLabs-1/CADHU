@@ -5,7 +5,7 @@ from cursos.models import Curso
 
 class Evento(models.Model):
     Nombre = models.CharField(max_length=100, unique=True)
-    Descripcion = models.TextField()
+    Descripcion = models.CharField(max_length=300, blank=True)
     Activo = models.BooleanField(default=True, blank=True)
 
     def __str__(self):

@@ -9,5 +9,4 @@ class EventoForm(forms.ModelForm):
             'Nombre',
             'Descripcion',
             'Activo'
-
         )
