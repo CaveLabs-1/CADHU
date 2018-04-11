@@ -5,7 +5,7 @@ from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm, Inscribir_EmpresaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -697,6 +697,42 @@ def baja_empresas(request, id):
         empresa.Activo = True
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
+
+@login_required
+@group_required('vendedora','administrador')
+def inscribir_empresa(request, id):
+    prospectos=Prospecto.objects.exclude(Empresa__isnull=False)
+    empresa=Empresa.objects.get(id=id)
+    inscribir_empresaform = Inscribir_EmpresaForm()
+    if request.method == "POST":
+        # Definir el error para forma invalida:
+        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        # Crear y llenar la forma
+        inscribir_empresaform = Inscribir_EmpresaForm()
+        # Si la forma es válida guardar la información en la base de datos:
+        if inscribir_empresaform.is_valid():
+            Empresa = inscribir_empresaform.save(commit=False)
+            Empresa.save()
+            return lista_empresas(request)
+        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        context = {
+            'Error': Error,
+            'inscribir_empresaform': inscribir_empresaform,
+            'prospectos':prospectos,
+            'empresa':empresa,
+            'titulo': 'Asignar prospectos',
+        }
+        return render(request, 'empresas/empresa_prospectos_form.html', context)
+    # Si el método HTTP no es post, volver a enviar la forma:
+    context = {
+            'Error': Error,
+            'inscribir_empresaform': inscribir_empresaform,
+            'prospectos':prospectos,
+            'empresa':empresa,
+            'titulo': 'Asignar prospectos',
+        }
+    return render(request, 'empresas/empresas_form.html', context)
 
 
 #US

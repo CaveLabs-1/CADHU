@@ -21,6 +21,12 @@ class EmpresaForm(ModelForm):
             'Razon_Social',
         )
 
+class Inscribir_EmpresaForm(ModelForm):
+    class Meta:
+        model = Prospecto
+        fields = (
+            'Empresa',
+        )
 
 class ProspectoForm(ModelForm):
     class Meta:
