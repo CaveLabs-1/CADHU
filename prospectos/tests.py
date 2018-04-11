@@ -69,6 +69,16 @@ class ClienteTest(TestCase):
         self.assertEqual(resp2.status_code, 200)
         self.assertEqual(actualizado.Activo, False)
 
+    #Acceptance citeria: 38.1
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/clientes/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get(reverse('prospectos:lista_clientes'))
+        self.assertEqual(resp.status_code, 200)
+
+
 class EmpresaTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
