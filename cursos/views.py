@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Curso
+from prospectos.models import ProspectoEvento
 from eventos.models import Evento
 from django.views import generic
 from .forms import FormaCurso
@@ -14,7 +15,7 @@ def cursos(request):
     context = {
         'titulo': 'Grupo',
         # 'eventos': Evento.objects.all().order_by('Nombre'),
-        'cursos': Curso.objects.all(),
+        'cursos': Curso.objects.filter(Activo = True),
     }
     return render(request, 'cursos/cursos.html', context)
 
@@ -47,6 +48,25 @@ def nuevo_curso(request):
     context = {
         'form': Forma_nuevo_curso,
         'titulo': 'Agregar Grupo',
-        'eventos': Evento.objects.all().order_by('Nombre')
+        'eventos': Evento.objects.filter(Activo = True).order_by('Nombre')
     }
     return render(request, 'cursos/nuevo_curso.html', context)
+
+#US 28
+@login_required
+@group_required('vendedora','administrador')
+def eliminar_grupo(request, id):
+    # evento = Evento.objects.get(id=id)
+    curso = Curso.objects.get(id=id)
+    gruposUtilizados = ProspectoEvento.objects.filter(Curso_id = curso.id).count()
+    # print(id)
+    # print(curso)
+
+    if(gruposUtilizados > 0):
+        curso.Activo = False
+        curso.save()
+        # print(evento.Activo)
+        return redirect('cursos:cursos')
+    else:
+        curso.delete()
+        return redirect('cursos:cursos')

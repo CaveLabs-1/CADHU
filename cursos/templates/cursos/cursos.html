@@ -37,7 +37,7 @@
                       <td>{{ curso.Evento }}</td>
                       <td>
                         <a href="#"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="#"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'cursos:eliminar_grupo' curso.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                       </td>
                   </tr>
               {% endfor %}
@@ -48,11 +48,31 @@
   {% endblock %}
 
   {% block js %}
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
     <script>
-      // function format_date(date){
-      //   return moment(date).format('l');
-      // }
-      // console.log("hola");
+    function eliminar_grupo(element, event){
+      event.preventDefault();
+      $.confirm({
+        title: '¿Deseas eliminar el grupo?',
+        content: 'No podrá ser utilizado en un futuro.',
+        type: 'red',
+        closeIcon: true,
+        columnClass: 'col l6 offset-l3 s12',
+        typeAnimated: true,
+        buttons: {
+          continuar: {
+              text: 'Eliminar',
+              btnClass: 'btn-red',
+
+            action: function(){
+              window.location.href = $(element).attr("href");
+            }
+          }
+        }
+      });
+    }
 
     </script>
   {% endblock js %}
