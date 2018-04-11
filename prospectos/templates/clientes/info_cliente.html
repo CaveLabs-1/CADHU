@@ -4,7 +4,7 @@
           <div class="row">
             <div class="col s12">
                 <div class="card">
-                    <div class="card-image">
+                    <div class="card-content">
                         <div class="row center">
                             <br>
                             <h5>Información de cliente</h5>
@@ -59,13 +59,13 @@
                                 <label for="CodigoPostal">Codigo Postal</label>
                                 {{ lugar.Codigo_Postal }}
                             </div>
-                        </div>
+                        </div><div class="row center">
+                            <a href="{% url 'prospectos:lista_clientes'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
+                            <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" class="btn waves-effect waves-light form_button red" onclick="eliminar_cliente(this, event)">Eliminar</a>
+                          </div>
                     </div>
                 </div>
-                <div class="row center">
-                  <a href="{% url 'prospectos:lista_clientes'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
-                  <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" onclick="eliminar_cliente(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
-                </div>
+
             </div>
           </div>
   {% endblock %}
@@ -77,7 +77,7 @@
 
     <script>
 
-          function eliminar_curso(element, event){
+          function eliminar_cliente(element, event){
             event.preventDefault();
             $.confirm({
               title: '¿Deseas eliminar el curso?',
