@@ -94,6 +94,39 @@ def carga_masiva(request):
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
+@login_required
+@group_required('vendedora','administrador')
+def lista_clientes(request):
+    # Tomar los  los clientes de la base de datos
+    clientes = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    context = {
+        'clientes':clientes,
+        'titulo': 'Clientes',
+        'estatus': 'activo',
+        }
+    # Desplegar la página de clientes con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
+
+
+# US30
+@login_required
+@group_required('vendedora','administrador')
+def eliminar_cliente(request, id):
+    cliente = Cliente.objects.get(id=id)
+    pagos=Pago.objects.filter(prospecto_evento=cliente.ProspectoEvento)
+    cliente.delete()
+    for pago in pagos:
+         pago.delete()
+    clientes = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    context = {
+        'clientes':clientes,
+        'titulo': 'Clientes',
+        'estatus': 'activo',
+        }
+    # return render(request, 'prospectos:lista_prospectos')
+    return render(request, 'clientes/clientes.html', context)
+
+
 # US31
 @login_required
 @group_required('vendedora','administrador')
@@ -299,17 +332,6 @@ def baja_cliente(request, id):
         cliente.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivos'))
 
-@login_required
-@group_required('vendedora','administrador')
-def lista_clientes(request):
-    # Tomar los  los clientes activos de la base
-    cliente_activo = Cliente.objects.filter(Activo=True).order_by('Fecha')
-    context = {
-        'cliente':cliente_activo,
-        'titulo': 'Clientes',
-        }
-    # Desplegar la página de cliente con enlistados con la información de la base de datos
-    return render(request, 'clientes/clientes.html', context)
 
 @login_required
 @group_required('vendedora','administrador')

@@ -21,7 +21,6 @@
                                 {{ cliente.razonSocial }}
                             </div>
                         </div>
-
                         <div class="row center">
                             <h5>Direccion de facturación</h5>
                         </div>
@@ -64,8 +63,51 @@
                     </div>
                 </div>
                 <div class="row center">
-                  <a href="{% url 'prospectos:lista_prospectos'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
+                  <a href="{% url 'prospectos:lista_clientes'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
+                  <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" onclick="eliminar_cliente(this, event)"><i class="material-icons text-rojo-cadhu">Eliminar</i></a>
                 </div>
             </div>
           </div>
   {% endblock %}
+
+
+    {% block js %}
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
+    <script>
+
+          function eliminar_curso(element, event){
+            event.preventDefault();
+            $.confirm({
+              title: '¿Deseas eliminar el curso?',
+              content: 'No podrá ser utilizado en un futuro.',
+              type: 'red',
+              closeIcon: true,
+              columnClass: 'col l6 offset-l3 s12',
+              typeAnimated: true,
+              buttons: {
+                continuar: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-red',
+
+                  action: function(){
+                    window.location.href = $(element).attr("href");
+                  }
+                }
+              }
+            });
+          }
+
+
+          {% if messages %}
+            {%for message in messages %}
+                {% if message.level == 40 %}
+                    var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
+                    M.toast({html: mensaje, displayLength: 60000})
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+
+    </script>
+    {% endblock %}
