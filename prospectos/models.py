@@ -53,6 +53,7 @@ ACTIVO = (
     (False, 'Inactivo'),
 )
 
+
 class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     Contacto1 = models.CharField(max_length=50, blank=True, null=False)

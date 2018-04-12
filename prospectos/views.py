@@ -5,7 +5,7 @@ from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm, Inscribir_EmpresaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -699,9 +699,11 @@ def crear_empresa(request):
 @group_required('vendedora','administrador')
 def empresa_info(request, id):
     empresa = Empresa.objects.get(id=id)
+    prospectos = Prospecto.objects.filter(Empresa=empresa)
     lugar = Lugar.objects.get(id=empresa.Direccion.id)
     context = {
         'empresa': empresa,
+        'prospectos': prospectos,
         'lugar': lugar,
         'titulo': empresa.nombre,
     }
@@ -719,6 +721,28 @@ def baja_empresas(request, id):
         empresa.Activo = True
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
+
+@login_required
+@group_required('vendedora','administrador')
+def inscribir_empresa(request, id):
+    empresa=Empresa.objects.get(id=id)
+    prospectos=Prospecto.objects.exclude(Empresa__isnull=False) | Prospecto.objects.filter(Empresa=empresa)
+    if request.method == "POST":
+        vaciar = Prospecto.objects.filter(Empresa=empresa)
+        for va in vaciar:
+            va.Empresa= None
+            va.save()
+        for algo in request.POST.getlist('prospectos[]'):
+            prospect = Prospecto.objects.get(id=algo)
+            prospect.Empresa= empresa
+            prospect.save()
+        return empresa_info(request,id)
+    context = {
+            'prospectos':prospectos,
+            'empresa':empresa,
+            'titulo': 'Asignar prospectos a: '+empresa.nombre,
+        }
+    return render(request, 'empresas/empresa_prospectos_form.html', context)
 
 
 #US
