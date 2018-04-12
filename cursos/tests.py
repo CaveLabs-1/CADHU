@@ -1,6 +1,7 @@
 from django.test import TestCase
 from cursos.models import Curso
 from eventos.models import Evento
+from prospectos.models import Lugar, Prospecto, ProspectoEvento
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 # Create your tests here.
@@ -109,4 +110,33 @@ class CursoViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertQuerysetEqual(resp.context['cursos'],['<Curso: Curso>'])
 
-# Create your tests here.
+class BorrarGrupoTest(TestCase):
+
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
+        lugar = Lugar.objects.create( Calle='Paraiso', Numero_Interior='', Numero_Exterior='38', Colonia='Satelite', Estado='Queretaro', Ciudad='Queretaro', Pais='Mexico', Codigo_Postal='76125' )
+        curso = Evento.objects.create(Nombre='Evento 1', Descripcion='Evento para desactivar')
+        grupo1 = Curso.objects.create(Nombre='Grupo 1', Evento= curso, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        grupo2 = Curso.objects.create(Nombre='Grupo 2', Evento= curso, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        prospecto = Prospecto.objects.create( Nombre='Pablo', Apellidos='Martinez Villareal', Telefono_Casa='4422232226', Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion= lugar, Ocupacion='Estudiante', Activo=True)
+        prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= grupo1.id, Prospecto_id = prospecto.id)
+
+    def test_ac_28_1(self):
+        grupo = Curso.objects.get(Nombre="Grupo 2")
+        resp = self.client.get(reverse('cursos:eliminar_grupo', kwargs={'id': grupo.id}))
+        deleted_group = Curso.objects.filter(Nombre="Grupo 2").count()
+        self.assertEqual(deleted_group, 0)
+
+    def test_ac_28_2(self):
+        grupo = Curso.objects.get(Nombre="Grupo 1")
+        resp = self.client.get(reverse('cursos:eliminar_grupo', kwargs={'id': grupo.id}))
+        grupo_actualizado = Curso.objects.get(id=grupo.id)
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(grupo_actualizado.Activo, False)

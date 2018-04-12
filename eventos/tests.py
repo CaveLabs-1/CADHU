@@ -55,11 +55,11 @@ class EventoModelTest(TestCase):
         resp = self.client.post(reverse('eventos:editar_evento', kwargs={'id': 1}), {
             'Nombre': 'Taller', 'Descripcion': 'Este es el evento de pruebas automoatizadas.'
             },follow=True)
-            
+
         actualizado = Evento.objects.get(id=1)
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Descodificación')
-        
+
 class BorrarEventoTest(TestCase):
 
     def setUp(self):
@@ -84,6 +84,6 @@ class BorrarEventoTest(TestCase):
     def test_ac_35_2(self):
         evento = Evento.objects.get(Nombre="Evento 1")
         resp = self.client.get(reverse('eventos:eliminar_curso', kwargs={'id': evento.id}))
-        evento_actualizado = Evento.objects.get(id=1)
+        evento_actualizado = Evento.objects.get(id=evento.id)
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(evento_actualizado.Activo, False)
