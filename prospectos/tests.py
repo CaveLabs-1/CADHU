@@ -27,17 +27,18 @@ class ClienteTest(TestCase):
         cls.curso = Curso.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.pago = Pago.objects.create(monto=500, prospecto_evento=cls.relacion)
+        cls.cliente = Cliente.objects.create(ProspectoEvento=cls.relacion, matricula='a01206199')
 
     #ACCEPTANCE CRITERIA: 30.1
     def test_eliminar_cliente(self):
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'matricula': 'A01206197'})
-        self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(matricula='A01206197').count()
-        self.assertEqual(cliente_acum, 1)
-        respm = self.client.post(reverse('prospectos:eliminar_cliente', kwargs={'id': self.relacion.id}), {
-             'matricula': 'A01206197'})
-        cliente_eliminado = Cliente.objects.filter(matricula='A01206197').count()
+        # resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
+        #      'matricula': 'A016197'})
+        # self.assertEqual(resp.status_code, 302)
+        # cliente_acum = Cliente.objects.filter(matricula='A016197').count()
+        # self.assertEqual(cliente_acum, 1)
+        respm = self.client.post(reverse('prospectos:eliminar_cliente', kwargs={'id': self.cliente.id}), {
+             'matricula': 'a01206199'})
+        cliente_eliminado = Cliente.objects.filter(matricula='a01206199').count()
         self.assertEqual(cliente_eliminado, 0)
 
     #ACCEPTANCE CRITERIA: 31.1
@@ -50,13 +51,7 @@ class ClienteTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 31.1
     def test_editar_cliente(self):
-        prospecto, created = Prospecto.objects.get_or_create(Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
-             'matricula': 'A01206199'})
-        self.assertEqual(resp.status_code, 302)
-        cliente_acum = Cliente.objects.filter(matricula='A01206199').count()
-        self.assertEqual(cliente_acum, 1)
-        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id': self.relacion.id}), {
+        respm = self.client.post(reverse('prospectos:editar_cliente', kwargs={'id': self.cliente.id}), {
              'matricula': 'A01206198'})
         self.assertEqual(respm.status_code, 302)
         cliente_mod = Cliente.objects.filter(matricula='A01206198').count()
@@ -64,7 +59,7 @@ class ClienteTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 31.2
     def test_validar_campos(self):
-         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':1}),{
+         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id':self.cliente.id}),{
              'rfc':'RODR621124FY9'})
          self.assertEqual(resp.status_code, 200)
          self.assertEqual(resp.context['Error'], 'Forma invalida, favor de revisar sus respuestas de nuevo')
