@@ -81,6 +81,7 @@ def editar_evento(request, id):
         #Si es válida, instanciar nueva empresa Y guardarla
         if NewEventoForm.is_valid():
             evento = NewEventoForm.save(commit=False)
+            evento.Activo = True
             evento.save()
             messages.success(request, 'El curso ha sido actualizado.')
             return redirect('eventos:lista_evento')
