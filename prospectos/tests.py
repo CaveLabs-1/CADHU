@@ -28,6 +28,18 @@ class ClienteTest(TestCase):
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.pago = Pago.objects.create(monto=500, prospecto_evento=cls.relacion)
 
+    #ACCEPTANCE CRITERIA: 30.1
+    def test_eliminar_cliente(self):
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
+             'matricula': 'A01206197'})
+        self.assertEqual(resp.status_code, 302)
+        cliente_acum = Cliente.objects.filter(matricula='A01206197').count()
+        self.assertEqual(cliente_acum, 1)
+        respm = self.client.post(reverse('prospectos:eliminar_cliente', kwargs={'id': self.relacion.id}), {
+             'matricula': 'A01206197'})
+        cliente_eliminado = Cliente.objects.filter(matricula='A01206197').count()
+        self.assertEqual(cliente_eliminado, 0)
+
     #ACCEPTANCE CRITERIA: 31.1
     def test_crear_cliente(self):
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'id': self.pago.id}), {
