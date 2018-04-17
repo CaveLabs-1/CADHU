@@ -255,6 +255,75 @@ header, main, footer{padding-left: 20%;}
   width: 80%;
 }
 
+
+/* datepicker */
+
+.datepicker-modal{
+  padding: 0px;
+}
+
+.datepicker-date-display{
+  background-color: #1D874A;
+}
+
+.datepicker-table th{
+  background-color: #1D874A;
+}
+
+.datepicker-table abbr{
+  color: white;
+}
+
+.datepicker-table td.is-selected{
+  background-color: #1D874A;
+}
+
+.datepicker-table td.is-today{
+  color: blue;
+  font-weight: 900;
+}
+/* timepicker */
+
+.timepicker-modal{
+  padding: 0px !important;
+  width: 70%;
+}
+
+.modal-brewery{
+  padding: 20px 10px !important;
+  background-color: #eee;
+  width: 90%;
+}
+
+.timepicker{
+  border: 2px solid #ccc !important;
+  border-radius: 15px !important;
+  width: 70px !important;
+  height: 2.5rem !important;
+  text-align: center !important;
+  background-color: transparent;
+}
+
+.timepicker-digital-display{
+  background-color: #1D874A;
+}
+
+.timepicker-canvas-bg{
+  fill: #1D874A;
+}
+
+.timepicker-canvas line{
+  stroke: #1D874A;
+}
+
+.timepicker-canvas-bearing{
+  fill: #1D874A;
+}
+
+.timepicker-tick:hover{
+  background-color: rgba(242, 173, 0, .3);
+}
+
 /*MEDIA QUERIES*/
 
 
