@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
-
+# US29
 @login_required
 @group_required('administrador')
 def cursos(request):
