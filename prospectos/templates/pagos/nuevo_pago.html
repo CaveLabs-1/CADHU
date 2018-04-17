@@ -9,30 +9,10 @@
         <div class="card-content">
           <form method="post" id="nuevo_pago">
             {% csrf_token %}
-            <!-- <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="cliente" id="cliente" oninvalid="setCustomValidity('Selecciona un cliente de la lista')" required>
-                  <option value="" disabled selected>Selecciona el cliente</option>
-                  <option value="1">Mauricio Hernández</option>
-                  <option value="1">Santiago Valencia</option>
-                </select>
-                <label>Cliente</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="curso" id="curso" oninvalid="setCustomValidity('Selecciona un curso de la lista')" required>
-                  <option value="" disabled selected>Selecciona el curso</option>
-                  <option value="1">Diplomado 1</option>
-                  <option value="1">Diplomado 2</option>
-                </select>
-                <label>Curso</label>
-              </div>
-            </div> -->
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="number" name="monto" id="monto" required>
-                <label for="{{form.monto.html_name}}">Monto de Pago</label>
+                <label for="{{form.monto.html_name}}">Monto de Pago (Saldo restante: ${{ monto_maximo }})</label>
                 <input style="display:none;" id="monto_maximo" value="{{ monto_maximo }}">
               </div>
             </div>
