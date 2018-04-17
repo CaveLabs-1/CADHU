@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.dataTable').DataTable( {
-      dom: "<'row'<'col s4'l><'col s4 center'B><'col s4'f>>" +
+      dom: "<'row no-margin'<'col s4'l><'col s4 center'B><'col s4'f>>" +
             "<'row'<'col s12'tr>>" +
             "<'row'<'col s6'i><'col s6'p>>",
       "lengthMenu": [[25, 50, 100, 500, 1000], [25, 50, 100, 500, 1000]],

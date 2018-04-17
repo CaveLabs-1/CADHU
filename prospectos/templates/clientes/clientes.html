@@ -13,10 +13,10 @@
             <table class="dataTable">
                 <thead>
                   <tr>
-                      <th>Matricula</th>
-                      <th>RFC</th>
-                      <th>Razón Social</th>
-                      <th>Acciones</th>
+                      <th class="center">Matricula</th>
+                      <th class="center">RFC</th>
+                      <th class="center">Razón Social</th>
+                      <th class="center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -25,7 +25,7 @@
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.matricula }}</a></td>
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.rfc }}</a></td>
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.razonSocial }}</a></td>
-                        <td>
+                        <td class="center">
                           <a href="prospectos:info_cliente"><i class="material-icons text-blue-ligero">edit</i></a>
                         </td>
                     </tr>

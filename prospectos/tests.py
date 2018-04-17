@@ -36,7 +36,7 @@ class ClienteTest(TestCase):
         # self.assertEqual(resp.status_code, 302)
         # cliente_acum = Cliente.objects.filter(matricula='A016197').count()
         # self.assertEqual(cliente_acum, 1)
-        respm = self.client.post(reverse('prospectos:eliminar_cliente', kwargs={'id': self.cliente.id}), {
+        respm = self.client.post(reverse('prospectos:eliminar_cliente', kwargs={'id': self.relacion.id}), {
              'matricula': 'a01206199'})
         cliente_eliminado = Cliente.objects.filter(matricula='a01206199').count()
         self.assertEqual(cliente_eliminado, 0)
