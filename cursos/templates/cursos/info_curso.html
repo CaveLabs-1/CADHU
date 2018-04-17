@@ -148,9 +148,9 @@
                         <tr>
                             <td>
             {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
-                                {% with actividad= actividades.bitacora.all %}
-                                    {{ actividad.fecha }}
-                                {% endwith %}
+{#                                {% with activi = actividades.actividad | dictsort:'fecha' | last %}#}
+{#                                    {{ actividad.fecha }}#}
+{#                                {% endwith %}#}
                             </td>
                             <td>{{ prospectoEvento.Interes }}</td>
                             {% if prospectoEvento.Curso.FlagCADHU == True %}

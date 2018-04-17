@@ -123,9 +123,8 @@ def info_grupo(request, id):
             cliente = Cliente.objects.get(ProspectoEvento=prospecto.id)
             clientes.append(cliente)
         else:
-            actividades = {}
-            actividades['bitacora'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=True).order_by('fecha','hora')
-            actividades['agenda'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=False).order_by('fecha', 'hora')
+            actividades = Actividad.objects.filter(prospecto_evento=prospecto, terminado=True).order_by('fecha','hora')
+            # actividades['agenda'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=False).order_by('fecha', 'hora')
             prospectos[prospecto] = actividades
     context = {
         'titulo': 'Información: ' + curso.Nombre,
