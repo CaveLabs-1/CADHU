@@ -7,7 +7,7 @@ from django.contrib import messages
 
 # US36 y US34
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def lista_evento(request):
     #Se hacer render de la lista de prospectos
     eventos = Evento.objects.filter(Activo = True)

@@ -28,6 +28,36 @@ $(document).ready(function() {
       } ]
   } );
 
+  $('.dataTableX').DataTable( {
+      dom: "<'row'<'col s4'l><'col s4 center'B><'col s4'f>>" +
+            "<'row'<'col s12'tr>>" +
+            "<'row'<'col s6'i><'col s6'p>>",
+      "scrollX": true,
+      "lengthMenu": [[25, 50, 100, 500, 1000], [25, 50, 100, 500, 1000]],
+      columnDefs: [ {
+            targets: [ 0 ],
+            orderData: [ 0, 1 ]
+        }, {
+            targets: [ 1 ],
+            orderData: [ 1, 0 ]
+        }, {
+            targets: [ 4 ],
+            orderData: [ 4, 0 ]
+        } ],
+      buttons: [
+          {
+              extend: 'excel',
+              exportOptions: {
+                  columns: ':visible'
+              }
+          },
+          'colvis'
+      ],
+      columnDefs: [ {
+          visible: false
+      } ]
+  } );
+
     $('.fixed-action-btn').floatingActionButton();
 
 

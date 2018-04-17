@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import nuevo_curso, cursos, eliminar_grupo, editar_grupo
+from .views import nuevo_curso, cursos, eliminar_grupo, info_grupo, editar_grupo
 
 app_name = 'cursos'
 urlpatterns = [
@@ -18,4 +18,7 @@ urlpatterns = [
 
     #Editar un grupo
     path('editar_grupo/<int:id>', editar_grupo, name='editar_grupo'),
+
+    # Informacion de un curso
+    path('<int:id>/info', info_grupo, name='info_grupo'),
 ]

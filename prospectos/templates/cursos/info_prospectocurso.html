@@ -2,11 +2,11 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Interés: {{ relacion.Interes }} {% endblock %}
+{% block title %} {{ relacion.Curso }} {% endblock %}
 {% block content %}
     <div class="row">
         {#-------------------------PROSPECTO---------------#}
-        <div class="col s12 m6">
+        <div class="col s12">
             <div class="card">
                 <div class="card-image">
                     <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
@@ -115,49 +115,6 @@
                 </div>
             </div>
         </div>
-        {#-----------------------CURSO-------------------------------------------------#}
-        <div class="col s12 m6">
-            <div class="card">
-                <div class="card-image">
-                    <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator">{{ relacion.Curso.Nombre }} - {{ relacion.Curso.Evento.Nombre }}</span>
-                </div>
-                <div class="card-reveal">
-                    <div class="row">
-                        <span class="card-title grey-text text-darken-4">{{ relacion.Curso.Nombre }} - {{ relacion.Curso.Evento.Nombre }}<i class="material-icons right">close</i></span>
-                    </div>
-                    {#                    ----------------Info-------------#}
-                    <div class="row">
-                        <div class="col s12 m6">
-                            <label for="Nombre">Fecha de inicio:</label><br>
-                            {{ relacion.Curso.Fecha_Inicio }}
-                        </div>
-                        <div class="col s12 m6">
-                            <label for="apellido_p">Fecha de término:</label><br>
-                            {{ relacion.Curso.Fecha_Fin }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>Costo:</label><br>
-                            ${{ relacion.Curso.Costo }}.°°
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label for="ocupacion">Encargado:</label><br>
-                            {{ relacion.Curso.Encargado }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>Dirección</label><br>
-                            {{ relacion.Curso.Direccion }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 
@@ -193,7 +150,7 @@
                             <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons text-blue-cadhu">radio_button_unchecked</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -240,7 +197,7 @@
                                                          href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-rojo-cadhu">clear</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-blue-cadhu">radio_button_checked</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->

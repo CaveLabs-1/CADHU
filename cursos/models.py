@@ -9,7 +9,7 @@ class Curso(models.Model):
     Fecha_Inicio = models.DateField(blank=True, null=True)
     Fecha_Fin = models.DateField(blank=True, null=True)
     Direccion = models.CharField(max_length=100, blank=True, null=True)
-    Descripcion = models.CharField(max_length=150, blank=True, null=True)
+    Descripcion = models.CharField(max_length=600, blank=True, null=True)
     Costo = models.PositiveIntegerField(blank=True, null=True)
     Activo = models.BooleanField(default=True)
     Encargado = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

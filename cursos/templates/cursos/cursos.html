@@ -28,7 +28,7 @@
               <tbody>
               {% for curso in cursos %}
                   <tr>
-                      <td>{{ curso.Nombre }}</td>
+                      <td><a href="{% url 'cursos:info_grupo' curso.id %}">{{ curso.Nombre }}</a></td>
                       <td>{{ curso.Fecha_Inicio  }}</td>
                       <td>{{ curso.Fecha_Fin  }}</td> <!--| date:'d/m/y' -->
                       <td>{{ curso.Direccion }}</td>
