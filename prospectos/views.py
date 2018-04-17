@@ -93,7 +93,7 @@ def carga_masiva(request):
         messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
-
+# US38
 @login_required
 @group_required('vendedora','administrador')
 def lista_clientes(request):
@@ -279,10 +279,9 @@ def crear_prospecto(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
-
+# US4
 @login_required
 @group_required('vendedora','administrador')
-#US4
 def editar_prospecto(request, id):
     idprospecto = Prospecto.objects.get(id=id)
     newProspectoForm = ProspectoForm(instance=idprospecto)
@@ -318,7 +317,7 @@ def editar_prospecto(request, id):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
-#US39
+# US39
 @login_required
 @group_required('administrador')
 def baja_cliente(request, id):
@@ -332,7 +331,7 @@ def baja_cliente(request, id):
         cliente.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivos'))
 
-
+# US39
 @login_required
 @group_required('vendedora','administrador')
 def lista_clientes_inactivos(request):
@@ -345,7 +344,7 @@ def lista_clientes_inactivos(request):
     # Desplegar la página de cliente con enlistados con la información de la base de datos
     return render(request, 'clientes/clientes.html', context)
 
-#US26
+# US26
 @login_required
 @group_required('vendedora','administrador')
 def registrar_cursos(request, id):
@@ -399,7 +398,7 @@ def registrar_cursos(request, id):
     return render(request, 'cursos/prospectoevento_form.html', context)
 
 
-#US11
+# US11
 @login_required
 @group_required('vendedora','administrador')
 def editar_curso(request, id):
@@ -440,7 +439,7 @@ def editar_curso(request, id):
     return render(request, 'cursos/prospectoevento_edit.html', context)
 
 
-#US10
+# US10
 @login_required
 @group_required('vendedora','administrador')
 def eliminar_curso(request, id):
@@ -469,7 +468,7 @@ def eliminar_curso(request, id):
         return render(request, 'cursos/prospectoevento_form.html', context)
 
 
-#US23
+# US23
 @login_required
 @group_required('vendedora', 'administrador')
 def info_prospecto_curso(request, rel):
@@ -488,7 +487,7 @@ def info_prospecto_curso(request, rel):
     return render(request, 'cursos/info_prospectocurso.html', context)
 
 
-#US7
+# US7
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos(request):
@@ -502,7 +501,7 @@ def lista_prospectos(request):
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
-
+# US6
 @login_required
 @group_required('vendedora','administrador')
 def lista_prospectos_inactivo(request):
@@ -516,21 +515,24 @@ def lista_prospectos_inactivo(request):
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
-
+# US6
 @login_required
 @group_required('vendedora','administrador')
 def baja_prospecto(request, id):
+    # Obtener el prospecto
     prospecto = Prospecto.objects.get(id=id)
+    # Si el prospecto es activo, cambiarlo a inactivo
     if prospecto.Activo:
         prospecto.Activo = False
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos'))
+    # Si el prospecto es activo, guardarlo
     else:
         prospecto.Activo = True
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivo'))
 
-
+# US5
 @login_required
 @group_required('vendedora', 'administrador')
 def info_prospecto(request, id):
@@ -595,10 +597,11 @@ def info_prospecto(request, id):
     }
     return render(request, 'prospectos/info_prospecto.html', context)
 
-
+# US17
 @login_required
 @group_required('vendedora','administrador')
 def lista_empresas(request):
+    # Si las empresas son activas, desplegarlas
     empresas = Empresa.objects.filter(Activo=True)
     context = {
         'empresas':empresas,
@@ -709,19 +712,24 @@ def empresa_info(request, id):
     }
     return render(request, 'empresas/empresas_info.html', context)
 
+# US16 y US18
 @login_required
 @group_required('vendedora','administrador')
 def baja_empresas(request, id):
+    # Obtener empresa
     empresa = Empresa.objects.get(id=id)
+    # Si la empresa es activa, inactivarla
     if empresa.Activo:
         empresa.Activo = False
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas'))
+    # Si la empresa es activa, guardarla
     else:
         empresa.Activo = True
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
+# US19
 @login_required
 @group_required('vendedora','administrador')
 def inscribir_empresa(request, id):
@@ -745,10 +753,11 @@ def inscribir_empresa(request, id):
     return render(request, 'empresas/empresa_prospectos_form.html', context)
 
 
-#US
+# US15
 @login_required
 @group_required('vendedora','administrador')
 def lista_actividades(request, id):
+    # Mostrar todas las empresas
     actividades = Actividad.objects.filter(prospecto_evento=id)
     context = {
         'actividades': actividades,
@@ -794,7 +803,7 @@ def crear_actividad(request, id):
     }
     return render(request, 'actividades/crear_actividad.html', context)
 
-
+# US12
 @login_required
 @group_required('vendedora','administrador')
 def estado_actividad(request, id):
@@ -807,13 +816,10 @@ def estado_actividad(request, id):
         act.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+# US41
 @login_required
 @group_required('administrador')
 def nuevo_pago(request, idPE):
-
-    # print(idPE)
-
     # recibir forma
     forma_pago = PagoForm()
     # si se recibe una forma con post
@@ -879,7 +885,7 @@ def nuevo_pago(request, idPE):
         }
         return render(request, 'pagos/nuevo_pago.html', context)
 
-
+# US42
 @login_required
 @group_required('administrador')
 def lista_pagos(request, idPE):
@@ -908,7 +914,7 @@ def lista_pagos(request, idPE):
 
         return redirect('prospectos:nuevo_pago', idPE = idPE)
 
-
+# US42
 @login_required
 @group_required('administrador')
 def autorizar_pago(request, id):

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 from django.contrib import messages
 
-#US29
+# US36 y US34
 @login_required
 @group_required('administrador')
 def lista_evento(request):
@@ -18,7 +18,7 @@ def lista_evento(request):
     }
     return render(request, 'eventos/eventos.html', context)
 
-#ID 32
+# US32
 @login_required
 @group_required('administrador')
 def crear_evento(request):
