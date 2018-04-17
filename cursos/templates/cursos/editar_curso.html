@@ -2,13 +2,13 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-    {% block title %}Nuevo Pago{% endblock %}
+    {% block title %}Editar Grupo{% endblock %}
 {% block content %}
 
   <div class="row no-margin padding-top-20">
       <div class="card ">
         <div class="card-content">
-          <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
+          <form method="post">
             {% csrf_token %}
                 <div class="row no-margin">
                   <div class="input-field col l8 offset-l2 s10 offset-s1">
@@ -24,14 +24,14 @@
                 </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" value="{{ form.Fecha_Inicio.value }}" name="{{form.Fecha_Inicio.html_name}}"
+                <input type="text" value="{{ form.Fecha_Inicio.value | date:'Y-m-d'}}" name="{{form.Fecha_Inicio.html_name}}"
                        id="{{ form.Fecha_Inicio.id_for_label }}" class="datepicker" required>
                 <label for="{{form.Fecha_Inicio.id_for_label}}" >Fecha de Inicio</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" value="{{ form.Fecha_Fin.value }}" name="{{form.Fecha_Fin.html_name}}"
+                <input type="text" value="{{ form.Fecha_Fin.value | date:'Y-m-d' }}" name="{{form.Fecha_Fin.html_name}}"
                        id="{{ form.Fecha_Fin.id_for_label }}" class="datepicker" required>
                 <label for="{{form.Fecha_Fin.id_for_label}}" >Fecha de Fin</label>
               </div>
@@ -63,7 +63,7 @@
             <br>
             <div class="row">
               <center>
-                <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Curso</button>
+                <button class="btn waves-effect waves-light form_button" type="submit" name="action">Guardar Cambio</button>
               </center>
             </div>
           </form>
