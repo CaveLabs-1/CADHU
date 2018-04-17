@@ -70,3 +70,37 @@ def eliminar_grupo(request, id):
     else:
         curso.delete()
         return redirect('cursos:cursos')
+
+
+@login_required
+@group_required('vendedora','administrador')
+def editar_grupo(request, id):
+    #Hacer asignaciones desde la BD
+    grupo = Curso.objects.get(id=id)
+    forma_curso = FormaCurso(instance=grupo)
+
+    #Checar que el metodo sea POST
+    if request.method == 'POST':
+        forma_curso = FormaCurso(request.POST or None, instance=grupo)
+
+        #Checar que la forma sea valida y guardarla
+        if forma_curso.is_valid():
+            forma_curso.save()
+            messages.success(request, '¡Grupo editado exitosamente!')
+            return redirect('/cursos/lista_cursos')
+
+        #Si la forma no es valida, hacer render y mandar errores
+        context = {
+            'form': forma_curso,
+            'titulo': 'Editar Grupo',
+            'error_message': forma_curso.errors
+        }
+        return redirect('cursos:editar_grupo', id=id)
+
+    #Render a la pagina
+    context = {
+        'form': forma_curso,
+        'titulo': 'Editar Grupo',
+        'eventos': Evento.objects.filter(Activo = True).order_by('Nombre')
+    }
+    return render(request, 'cursos/editar_curso.html', context)

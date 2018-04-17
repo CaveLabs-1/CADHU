@@ -36,7 +36,7 @@
                       <td>{{ curso.Costo }}</td>
                       <td>{{ curso.Evento }}</td>
                       <td>
-                        <a href="#"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'cursos:editar_grupo' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                         <a href="{% url 'cursos:eliminar_grupo' curso.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                       </td>
                   </tr>
