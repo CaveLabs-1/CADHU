@@ -25,7 +25,7 @@
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.matricula }}</a></td>
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.rfc }}</a></td>
                         <td><a href="{% url 'prospectos:info_cliente' cliente.id %}">{{ cliente.razonSocial }}</a></td>
-                        <td>
+                        <td class="center">
                           <a href="{% url 'prospectos:editar_cliente' cliente.ProspectoEvento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                           <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" onclick="eliminar_cliente(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                         </td>
