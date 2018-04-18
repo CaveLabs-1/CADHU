@@ -237,7 +237,19 @@ table th {
 }
 
 /*SIDENAV*/
-header, main, footer{padding-left: 20%;}
+/* .main-content{margin-left: 80px;} */
+
+.sidenav li > a{
+  padding: 0 0 0 32px;
+}
+
+.sidenav li > a > i, .sidenav li > a > i.material-icons{
+  margin: 0 20px 0 0;
+}
+
+nav a.sidenav-trigger{
+  display: block;
+}
 
 .sidenav{
   width: 20%;
@@ -245,15 +257,22 @@ header, main, footer{padding-left: 20%;}
 
 .fixed-header{
   position: fixed;
-  width: 80%;
+  width: 100%;
   z-index: 100;
 }
 
 .content-block{
   position: absolute;
-  top: 80px;
-  width: 80%;
+  top: 60px;
+  width: 100%;
 }
+
+/* .icon-sidenav{
+  height: 100vh;
+  background-color: #206082;
+  width: 60%;
+  /* position: fixed; */
+} */
 
 
 /* datepicker */
