@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-    {% block title %}Eventos{% endblock %}
+    {% block title %}Cursos{% endblock %}
       {% block content %}
       <div class="fixed-action-btn">
         <a href="{% url 'eventos:crear_curso' %}" class="btn-floating btn-large orange">
@@ -19,8 +19,8 @@
                 <tbody>
                 {% for curso in cursos %}
                     <tr>
-                        <td>{{ curso.Nombre }}</td>
-                        <td>{{ curso.Descripcion }}</td>
+                        <td>{{ curso.nombre }}</td>
+                        <td>{{ curso.descripcion }}</td>
                         <td class="center">
                           <a href="{% url 'eventos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                           <a href="{% url 'eventos:eliminar_curso' curso.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
