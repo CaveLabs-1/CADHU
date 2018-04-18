@@ -61,7 +61,6 @@
                             </div>
                         </div><div class="row center">
                             <a href="{% url 'prospectos:lista_clientes'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
-                            <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" class="btn waves-effect waves-light form_button red" onclick="eliminar_cliente(this, event)">Eliminar</a>
                           </div>
                     </div>
                 </div>
@@ -71,7 +70,7 @@
   {% endblock %}
 
 
-    {% block js %}
+    <!-- {% block js %}
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
 
@@ -110,4 +109,4 @@
           {% endif %}
 
     </script>
-    {% endblock %}
+    {% endblock %} -->

@@ -158,23 +158,28 @@
             </tr>
             </thead>
             <tbody>
-            {% for curso in cursos %}
+            {% for prospecto_evento in cursos %}
                 <tr>
-                    <td><a href="{% url 'prospectos:info_prospecto_curso' curso.pk %}">{{ curso.Curso }}</a></td>
-                    <td>{{ curso.Interes }}</td>
-                    <td>{{ curso.Fecha }}</td>
-                    {% if curso.FlagCADHU == True %}
+                    <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.pk %}">{{ prospecto_evento.Curso }}</a></td>
+                    <td>{{ prospecto_evento.Interes }}</td>
+                    <td>{{ prospecto_evento.Fecha }}</td>
+                    {% if prospecto_evento.FlagCADHU == True %}
                         <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                     {% else %}
                         <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                     {% endif %}
                     <td>
-                        <a href="{% url 'prospectos:crear_actividad' curso.id %}"><i class="material-icons">note_add</i></a>
-                        <a href="{% url 'prospectos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="{% url 'prospectos:eliminar_curso' curso.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.id %}"><i class="material-icons">info</i></a>
+                        <a href="{% url 'prospectos:editar_curso' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'prospectos:eliminar_curso' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     </td>
                     <td class="center">
-                        <a href="{% url 'prospectos:lista_pagos' curso.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+
+                      {% if prospecto_evento.Curso.Activo %}
+                        <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+                      {% else %}
+                        <p>-</p>
+                      {% endif %}
                     </td>
                 </tr>
             {% endfor %}

@@ -113,9 +113,12 @@ def lista_clientes(request):
 @login_required
 @group_required('vendedora','administrador')
 def eliminar_cliente(request, id):
+    # Seleccionar el cliente y sus pagos de la base de datos
     cliente = Cliente.objects.get(id=id)
     pagos=Pago.objects.filter(prospecto_evento=cliente.ProspectoEvento)
+    # Eliminar el cliente selecciondo
     cliente.delete()
+    # Eliminar los pagos del cliente
     for pago in pagos:
          pago.delete()
     clientes = Cliente.objects.filter(Activo=True).order_by('Fecha')
@@ -124,7 +127,7 @@ def eliminar_cliente(request, id):
         'titulo': 'Clientes',
         'estatus': 'activo',
         }
-    # return render(request, 'prospectos:lista_prospectos')
+    # Desplegar la lista de clientes actualizada
     return render(request, 'clientes/clientes.html', context)
 
 
