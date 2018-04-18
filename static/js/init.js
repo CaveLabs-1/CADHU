@@ -60,8 +60,6 @@ $(document).ready(function() {
 
     $('.fixed-action-btn').floatingActionButton();
 
-
-
     //inicializa tabs
     $('.tabs').tabs();
 

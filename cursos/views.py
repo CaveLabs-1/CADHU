@@ -114,23 +114,17 @@ def editar_grupo(request, id):
 def info_grupo(request, id):
     curso = Curso.objects.get(id=id)
     prospectos_lista = ProspectoEvento.objects.filter(Curso=curso)
-    prospectos_cliente = []
-    prospectos = {}
+    prospectos = []
     clientes = []
     for prospecto in prospectos_lista:
         if prospecto.cliente_set.exists():
-            prospectos_cliente.append(prospecto)
             cliente = Cliente.objects.get(ProspectoEvento=prospecto.id)
             clientes.append(cliente)
         else:
-            actividades = {}
-            actividades['bitacora'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=True).order_by('fecha','hora')
-            actividades['agenda'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=False).order_by('fecha', 'hora')
-            prospectos[prospecto] = actividades
+            prospectos.append(prospecto)
     context = {
         'titulo': 'Información: ' + curso.Nombre,
         'curso': curso,
-        'prospectos_cliente': prospectos_cliente,
         'clientes': clientes,
         'prospectos': prospectos,
     }

@@ -119,6 +119,12 @@ class ProspectoEvento(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def bitacora(self):
+        return Actividad.objects.filter(prospecto_evento=self.id, terminado=True).order_by('fecha').reverse()
+
+    def agenda(self):
+        return Actividad.objects.filter(prospecto_evento=self.id, terminado=False).order_by('fecha')
+
 
 class Cliente(models.Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)

@@ -24,9 +24,6 @@
         <nav class="white black-text">
             <div class="row">
                 <div class="col l2 m3 s4">
-                    <!-- <p>
-                      Hola
-                    </p> -->
                     <a id="sidenavBtn" href="#" data-target="slide-out" class="sidenav-trigger">
                         <i class="material-icons black-text left">menu</i>
                     </a>
@@ -44,7 +41,7 @@
     </div>
 
     <div id="sideNavView">
-        <ul id="slide-out" class="sidenav sideNavView sidenav-fixed">
+        <ul id="slide-out" class="sidenav sideNavView ">
             <li class="white-bar under-shadow">
                 <div class="row">
                     <div class="col s12 center">
@@ -63,14 +60,13 @@
                 </div>
             </li>
             <br>
-            <li><a class="waves-effect" href="{% url 'prospectos:lista_prospectos' %}"><i class="material-icons">person_outline</i>Prospectos</a></li>
-            <li><a class="waves-effect" href="{% url 'prospectos:lista_clientes' %}"><i class="material-icons">person</i>Clientes</a></li>
-            <li><a class="waves-effect" href="{% url 'prospectos:lista_empresas' %}"><i class="material-icons">business</i>Empresas</a></li>
+            <li><a class="waves-effect" href="{% url 'prospectos:lista_prospectos' %}"><i class="material-icons right">person_outline</i>Prospectos</a></li>
+            <li><a class="waves-effect" href="{% url 'prospectos:lista_clientes' %}"><i class="material-icons right">person</i>Clientes</a></li>
+            <li><a class="waves-effect" href="{% url 'prospectos:lista_empresas' %}"><i class="material-icons right">business</i>Empresas</a></li>
 {#            {% if request.user|has_group:"administrador"%}#}
                 <!-- <li><a class="waves-effect" href="#"><i class="material-icons">person</i>Clientes</a></li> -->
                 <li><a class="waves-effect" href="{% url 'eventos:lista_cursos' %}"><i class="material-icons">playlist_add_check</i>Cursos</a></li>
-
-                <li><a class="waves-effect" href="{% url 'cursos:cursos' %}"><i class="material-icons">insert_invitation</i>Grupos</a></li>
+                <li><a class="waves-effect" href="{% url 'cursos:cursos' %}"><i class="material-icons right">insert_invitation</i>Grupos</a></li>
 
                 <!-- <li><a class="waves-effect" href="#"><i class="material-icons">perm_contact_calendar</i>Administradores</a></li> -->
 {#            {% endif %}#}
@@ -86,10 +82,12 @@
     </div> -->
     <div class="content-block">
         <div class="row">
-            <div class="col l10 offset-l1 s12">
-                {% block content %}
-                {% endblock content %}
+          <div class="col l10 offset-l1 s12">
+            <div class="main-content">
+              {% block content %}
+              {% endblock content %}
             </div>
+          </div>
         </div>
     </div>
 </main>
