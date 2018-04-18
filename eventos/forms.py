@@ -1,12 +1,12 @@
-from .models import Evento
+from .models import Curso
 from django import forms
 
 #ID US32 Forma
-class EventoForm(forms.ModelForm):
+class CursoForm(forms.ModelForm):
     class Meta:
-        model = Evento
+        model = Curso
         fields = (
-            'Nombre',
-            'Descripcion',
-            'Activo'
+            'nombre',
+            'descripcion',
+            'activo'
         )

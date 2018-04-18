@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-    {% block title %}Evento{% endblock %}
+    {% block title %}Curso{% endblock %}
 {% block content %}
               <div class="card ">
                 <div class="card-content">
@@ -11,16 +11,16 @@
                         <div class="row">
                           <div class="col s3 m3"></div>
                           <div class="input-field col s12">
-                            {{ NewEventoForm.Nombre | add_class:'form-control' }}
-                            <label for="{{NewEventoForm.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre*</label>
+                            {{ NewCursoForm.nombre | add_class:'form-control' }}
+                            <label for="{{NewCursoForm.nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre*</label>
                           </div>
                           <div class="col s3 m3"></div>
                         </div>
                         <div class="row">
                           <div class="col s3 m3"></div>
                           <div class="input-field col s12">
-                            {{ NewEventoForm.Descripcion | add_class:'form-control' }}
-                            <label for="{{NewEventoForm.Descripcion.id_for_label}}" data-error="Descripción inválida" data-success="Descripción válida">Descripcion*</label>
+                            {{ NewCursoForm.descripcion | add_class:'form-control' }}
+                            <label for="{{NewCursoForm.descripcion.id_for_label}}" data-error="Descripción inválida" data-success="Descripción válida">Descripcion*</label>
                           </div>
                           <div class="col s3 m3"></div>
                         </div>
@@ -30,7 +30,7 @@
                     <div class="text-center">
                         <div class="row center">
                           <div class="col s2 m2"></div>
-                          <a href="{% url 'eventos:lista_evento' %}" class="btn waves-effect waves-light col s3 m3 form_button red">Cancelar</a>
+                          <a href="{% url 'eventos:lista_cursos' %}" class="btn waves-effect waves-light col s3 m3 form_button red">Cancelar</a>
                           <div class="col s2 m2"></div>
                           <button type="submit" class="btn waves-effect waves-light col s3 m3 form_button">Guardar</button>
                           <div class="col s2 m2"></div>
