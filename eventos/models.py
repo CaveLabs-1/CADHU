@@ -1,12 +1,11 @@
 from django.db import models
-from cursos.models import Curso
 
 # Create your models here.
 
-class Evento(models.Model):
-    Nombre = models.CharField(max_length=100, unique=True)
-    Descripcion = models.CharField(max_length=300, blank=True)
-    Activo = models.BooleanField(default=True, blank=True)
+class Curso(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+    descripcion = models.CharField(max_length=300, blank=True)
+    activo = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
-        return self.Nombre
+        return self.nombre

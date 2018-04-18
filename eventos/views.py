@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Evento, Curso
-from .forms import EventoForm
+from .models import Curso
+from .forms import CursoForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 from django.contrib import messages
@@ -8,95 +8,95 @@ from django.contrib import messages
 # US36 y US34
 @login_required
 @group_required('vendedora', 'administrador')
-def lista_evento(request):
+def lista_cursos(request):
     #Se hacer render de la lista de prospectos
-    eventos = Evento.objects.filter(Activo = True)
+    cursos = Evento.objects.filter(Activo = True)
     # eventos = Evento.objects.all()
     context = {
-    'eventos':eventos,
+    'cursos': cursos,
     'titulo': 'Cursos',
     }
-    return render(request, 'eventos/eventos.html', context)
+    return render(request, 'eventos/cursos.html', context)
 
 # US32
 @login_required
 @group_required('administrador')
-def crear_evento(request):
+def crear_curso(request):
     #Crea la forma en la vista
-    NewEventoForm = EventoForm()
+    NewCursoForm = CursoForm()
     #Pide el metodo post
     if request.method == 'POST':
-        NewEventoForm = EventoForm(request.POST or None)
+        NewCursoForm = CursoForm(request.POST or None)
         #Valida la forma, la guarda y redirecciona
-        if NewEventoForm.is_valid():
-            Evento = NewEventoForm.save(commit=False)
-            Evento.Activo = True
-            Evento.save()
+        if NewCursoForm.is_valid():
+            curso = NewCursoForm.save(commit=False)
+            curso.Activo = True
+            curso.save()
             #Mensaje de exito
-            messages.success(request, 'El evento ha sido creado.')
-            return redirect('eventos:lista_evento')
+            messages.success(request, 'El curso ha sido creado.')
+            return redirect('eventos:lista_cursos')
 
         else:
             #Mensaje de error
             messages.success(request, 'Existe una falla en los campos.')
         #Envia la informacion necesaria.
             context = {
-                'NewEventoForm': NewEventoForm,
+                'NewCursoForm': NewCursoForm,
                 'titulo': 'Registrar un Curso',
             }
-            return render(request, 'eventos/crear_evento.html', context)
+            return render(request, 'eventos/crear_curso.html', context)
     context = {
-        'NewEventoForm': NewEventoForm,
+        'NewCursoForm': NewCursoForm,
         'titulo': 'Registrar un Curso',
     }
-    return render(request, 'eventos/crear_evento.html', context)
+    return render(request, 'eventos/crear_curso.html', context)
 
 #US 35
 @login_required
 @group_required('vendedora','administrador')
 def eliminar_curso(request, id):
-    evento = Evento.objects.get(id=id)
-    cursos = Curso.objects.filter(Evento_id=id).count()
+    curso = Evento.objects.get(id=id)
+    grupos = Curso.objects.filter(Evento_id=id).count()
     # print(id)
     # print(curso)
 
-    if(cursos > 0):
-        evento.Activo = False
-        evento.save()
+    if(grupos > 0):
+        curso.Activo = False
+        evecursonto.save()
         # print(evento.Activo)
-        return redirect('eventos:lista_evento')
+        return redirect('eventos:lista_cursos')
     else:
-        evento.delete()
-        return redirect('eventos:lista_evento')
+        curso.delete()
+        return redirect('eventos:lista_cursos')
 
 #US 33
 @login_required
 @group_required('vendedora','administrador')
-def editar_evento(request, id):
+def editar_curso(request, id):
     #Obtener el id del evento, hacer nueva forma del evento
-    idevento = Evento.objects.get(id=id)
-    NewEventoForm = EventoForm(instance=idevento)
+    id_curso = Evento.objects.get(id=id)
+    NewCursoForm = CursoForm(instance=id_curso)
     if request.method == 'POST':
-        NewEventoForm = EventoForm(request.POST or None, instance=idevento)
+        NewCursoForm = CursoForm(request.POST or None, instance=id_curso)
         #Si es válida, instanciar nueva empresa Y guardarla
-        if NewEventoForm.is_valid():
-            evento = NewEventoForm.save(commit=False)
-            evento.Activo = True
-            evento.save()
+        if NewCursoForm.is_valid():
+            curso = NewCursoForm.save(commit=False)
+            curso.Activo = True
+            curso.save()
             messages.success(request, 'El curso ha sido actualizado.')
             return redirect('eventos:lista_evento')
         else:
             #Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'NewEventoForm': NewEventoForm,
-                'evento': idevento,
+                'NewCursoForm': NewCursoForm,
+                'curso': id_curso,
                 'titulo': 'Editar Curso',
             }
-            return render(request, 'eventos/crear_evento.html', context)
+            return render(request, 'eventos/crear_curso.html', context)
     context = {
-        'NewEventoForm': NewEventoForm,
-        'evento': idevento,
+        'NewCursoForm': NewCursoForm,
+        'curso': id_curso,
         'titulo': 'Editar Curso',
     }
-    return render(request, 'eventos/crear_evento.html', context)
+    return render(request, 'eventos/crear_curso.html', context)

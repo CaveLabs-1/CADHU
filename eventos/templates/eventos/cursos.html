@@ -4,7 +4,7 @@
     {% block title %}Eventos{% endblock %}
       {% block content %}
       <div class="fixed-action-btn">
-        <a href="{% url 'eventos:crear_evento' %}" class="btn-floating btn-large orange">
+        <a href="{% url 'eventos:crear_curso' %}" class="btn-floating btn-large orange">
           <i class="large material-icons">add</i>
         </a>
       </div>
@@ -17,13 +17,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                {% for evento in eventos %}
+                {% for curso in cursos %}
                     <tr>
-                        <td>{{ evento.Nombre }}</td>
-                        <td>{{ evento.Descripcion }}</td>
+                        <td>{{ curso.Nombre }}</td>
+                        <td>{{ curso.Descripcion }}</td>
                         <td class="center">
-                          <a href="{% url 'eventos:editar_evento' evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                          <a href="{% url 'eventos:eliminar_curso' evento.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
+                          <a href="{% url 'eventos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a href="{% url 'eventos:eliminar_curso' curso.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a></td>
                         </td>
                     </tr>
                 {% endfor %}
