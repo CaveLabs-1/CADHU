@@ -93,6 +93,7 @@ def carga_masiva(request):
         messages.error(request, 'La carga masiva ha sido exitosa')
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
+
 # US38
 @login_required
 @group_required('vendedora','administrador')
@@ -279,6 +280,7 @@ def crear_prospecto(request):
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+
 # US4
 @login_required
 @group_required('vendedora','administrador')
@@ -407,13 +409,10 @@ def editar_curso(request, id):
     newProspectoEventoForm = ProspectoEventoEdit(instance=cursoEditar)
     prospecto = cursoEditar.Prospecto
     cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
-
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
-
         # Crear la instancia de la forma y llenarla con los datos
         newProspectoEventoForm = ProspectoEventoEdit(request.POST or None, instance=cursoEditar)
-
         # Validar la forma y guardarla en la BD
         if newProspectoEventoForm.is_valid():
             PE = newProspectoEventoForm.save(commit=False)
@@ -428,7 +427,6 @@ def editar_curso(request, id):
                 'cursos': cursos,
             }
             return render(request, 'cursos/prospectoevento_form.html', context)
-
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
@@ -476,7 +474,7 @@ def info_prospecto_curso(request, rel):
     agenda = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=False).order_by('fecha', 'hora')
     bitacora = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=True).order_by('fecha', 'hora')
     prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
-    titulo = 'Nivel de interés:  ' +relacion.Interes
+    titulo = relacion.Curso
     context = {
         'relacion': relacion,
         'agenda': agenda,
@@ -729,6 +727,7 @@ def baja_empresas(request, id):
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
+
 # US19
 @login_required
 @group_required('vendedora','administrador')
@@ -803,6 +802,7 @@ def crear_actividad(request, id):
     }
     return render(request, 'actividades/crear_actividad.html', context)
 
+
 # US12
 @login_required
 @group_required('vendedora','administrador')
@@ -816,6 +816,7 @@ def estado_actividad(request, id):
         act.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 # US41
 @login_required
 @group_required('administrador')
@@ -828,19 +829,16 @@ def nuevo_pago(request, idPE):
         Forma_nuevo_pago = PagoForm(request.POST)
         # si la forma es válida
         if Forma_nuevo_pago.is_valid():
-
             # print(Forma_nuevo_pago)
-
-            print(Forma_nuevo_pago)
-
+            #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
+            # if(total_pagos + float(request.POST['monto']) <= curso.Costo):
+            # se guarda la forma
             pago = Forma_nuevo_pago.save(commit=False)
             pago.prospecto_evento_id = idPE
             pago = Forma_nuevo_pago.save()
             # se redirige a la próxima vista
             messages.success(request, 'Pago agregado exitosamente!')
-
             pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
-
             if(pagos > 1):
                 # print(idPE)
                 # print(pago.id)
@@ -848,8 +846,6 @@ def nuevo_pago(request, idPE):
                 return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
                 return redirect('prospectos:crear_cliente', id=pago.id)
-
-
         else:
         # se renderea la forma nuevamente con los errores marcados
             context = {
@@ -858,24 +854,15 @@ def nuevo_pago(request, idPE):
                 'error_message': Forma_nuevo_pago.errors
             }
             return render(request, 'pagos/nuevo_pago.html', context)
-
     else:
-
         total_pagos = 0
-
         query_pagos = Pago.objects.filter(prospecto_evento_id = idPE)
-
         for pago in query_pagos:
             total_pagos += pago.monto
-
-
         pe = ProspectoEvento.objects.get(id = idPE)
         curso = Curso.objects.get(id = pe.Curso_id)
-
         #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
         monto_maximo = curso.Costo - total_pagos
-
-
         # se renderea la página
         context = {
             'form': forma_pago,
@@ -911,7 +898,6 @@ def lista_pagos(request, idPE):
         }
         return render(request, 'pagos/lista_pagos.html', context)
     else:
-
         return redirect('prospectos:nuevo_pago', idPE = idPE)
 
 # US42

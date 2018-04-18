@@ -116,6 +116,9 @@ class ProspectoEvento(models.Model):
     status = models.CharField(max_length=50, choices=ESTATUS, default='INTERESADO')
     #Pago = models.ForeignKey('Pago', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class Cliente(models.Model):
     ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
@@ -129,6 +132,7 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.matricula
+
 
 class Actividad(models.Model):
     titulo = models.CharField(verbose_name='Actividad', max_length=500)

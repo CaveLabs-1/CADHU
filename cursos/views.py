@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from .models import Curso
 from prospectos.models import ProspectoEvento
 from eventos.models import Evento
+from prospectos.models import Prospecto, ProspectoEvento, Cliente, Actividad
 from django.views import generic
 from .forms import FormaCurso
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 
+
 # US29
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def cursos(request):
     context = {
         'titulo': 'Grupo',
@@ -104,3 +106,32 @@ def editar_grupo(request, id):
         'eventos': Evento.objects.filter(Activo = True).order_by('Nombre')
     }
     return render(request, 'cursos/editar_curso.html', context)
+
+
+# US25
+@login_required
+@group_required('administrador', 'vendedora')
+def info_grupo(request, id):
+    curso = Curso.objects.get(id=id)
+    prospectos_lista = ProspectoEvento.objects.filter(Curso=curso)
+    prospectos_cliente = []
+    prospectos = {}
+    clientes = []
+    for prospecto in prospectos_lista:
+        if prospecto.cliente_set.exists():
+            prospectos_cliente.append(prospecto)
+            cliente = Cliente.objects.get(ProspectoEvento=prospecto.id)
+            clientes.append(cliente)
+        else:
+            actividades = {}
+            actividades['bitacora'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=True).order_by('fecha','hora')
+            actividades['agenda'] = Actividad.objects.filter(prospecto_evento=prospecto, terminado=False).order_by('fecha', 'hora')
+            prospectos[prospecto] = actividades
+    context = {
+        'titulo': 'Información: ' + curso.Nombre,
+        'curso': curso,
+        'prospectos_cliente': prospectos_cliente,
+        'clientes': clientes,
+        'prospectos': prospectos,
+    }
+    return render(request, 'cursos/info_curso.html', context)

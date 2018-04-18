@@ -160,7 +160,7 @@
             <tbody>
             {% for prospecto_evento in cursos %}
                 <tr>
-                    <td>{{ prospecto_evento.Curso }}</td>
+                    <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.pk %}">{{ prospecto_evento.Curso }}</a></td>
                     <td>{{ prospecto_evento.Interes }}</td>
                     <td>{{ prospecto_evento.Fecha }}</td>
                     {% if prospecto_evento.FlagCADHU == True %}
@@ -239,7 +239,7 @@
                             <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons text-blue-cadhu">radio_button_unchecked</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->
@@ -286,7 +286,7 @@
                                                          href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-rojo-cadhu">clear</i></a>
+                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-blue-cadhu">radio_button_checked</i></a>
                         </td>
                     </tr>
                     <!-- Modal Structure -->

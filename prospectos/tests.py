@@ -397,6 +397,7 @@ class ProspectoTest(TestCase):
         actualizado = Prospecto.objects.get(id=1)
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
+
     #Acceptance Criteria 8.1
     def test_baja_prospecto(self):
         Lugar.objects.create(
@@ -654,8 +655,46 @@ class CargaMasivaTest(TestCase):
         self.assertEqual(prospecto_rel, 0)
 
 
-class PagoTest(TestCase):
+class VistaCursosTest(TestCase):
+    def SetUP(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.lugar = Lugar.objects.create(Calle='Paraiso', Numero_Interior='', Numero_Exterior='38', Colonia='Satelite',
+                                     Estado='Queretaro', Ciudad='Queretaro', Pais='Mexico', Codigo_Postal='76125')
+        cls.prospecto = Prospecto.objects.create(Nombre='Pablo', Apellidos='Martinez Villareal', Telefono_Casa='4422232226',
+                                             Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion=cls.lugar,
+                                             Ocupacion='Estudiante', Activo=True)
+        cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(Nombre='Curso', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16',
+                                     Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        cls.prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False,
+                                                          status='INTERESADO', Curso_id=cls.curso.id,
+                                                          Prospecto_id=cls.prospecto.id)
+        cls.pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651",
+                                   prospecto_evento_id=cls.prospecto_evento.id, comentarios="comentario de prueba")
+        cls.cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=cls.prospecto_evento.id)
+
+    def testListaClientes(self):
+        resp = self.client.post(reverse('prospectos:info_curso', kwargs={'id': self.curso.id}),)
+        prospectos_lista = Prospecto.objects.filter(prospectoevento__Curso=self.curso)
+        clientes = []
+        prospectos = []
+        for prospecto in prospectos_lista:
+            if prospecto.prospectoevento.pago_set:
+                clientes.append(prospecto)
+            else:
+                prospectos.append(prospecto)
+        self.assertEqual(resp.context['prospectos'], prospectos)
+        self.assertEqual(resp.context['clientes'], clientes)
+
+
+class PagoTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
