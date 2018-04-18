@@ -14,6 +14,9 @@ urlpatterns = [
     # Modificar el estado de terminacion de una Actividad
     path('actividades/terminado/<int:id>', views.estado_actividad, name='estado_actividad'),
 
+    # Modificar el estado de terminacion de una Actividad
+    path('flag/<int:id>', views.estado_flag, name='estado_flag'),
+
     # Lista prospectos activos
     path('', views.lista_prospectos, name='lista_prospectos'),
 

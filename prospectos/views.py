@@ -471,14 +471,10 @@ def eliminar_curso(request, id):
 @group_required('vendedora', 'administrador')
 def info_prospecto_curso(request, rel):
     relacion = ProspectoEvento.objects.get(id=rel)
-    agenda = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=False).order_by('fecha', 'hora')
-    bitacora = Actividad.objects.filter(prospecto_evento=relacion.id).filter(terminado=True).order_by('fecha', 'hora')
     prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
     titulo = relacion.Curso
     context = {
         'relacion': relacion,
-        'agenda': agenda,
-        'bitacora': bitacora,
         'prospecto': prospecto,
         'titulo': titulo,
     }
@@ -782,7 +778,7 @@ def crear_actividad(request, id):
             actividad.save()
             #Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')
-            return lista_actividades(request, id)
+            return info_prospecto_curso(request, id)
         else:
             #Mensaje error
             Error = 'Forma inválida'
@@ -814,6 +810,20 @@ def estado_actividad(request, id):
     else:
         act.terminado = True
         act.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# US12
+@login_required
+@group_required('vendedora','administrador')
+def estado_flag(request, id):
+    rel = ProspectoEvento.objects.get(id=id)
+    if rel.FlagCADHU:
+        rel.FlagCADHU = False
+        rel.save()
+    else:
+        rel.FlagCADHU = True
+        rel.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
