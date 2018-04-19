@@ -6,10 +6,10 @@ from django.conf.urls.static import static
 app_name = 'prospectos'
 urlpatterns = [
     # Lista de actividades para una relación Prospecto - Evento
-    path('actividades/<int:id>/', views.lista_actividades, name='lista_actividades'),
+    path('actividades/<int:pk>/', views.lista_actividades, name='lista_actividades'),
 
     # Crear actividad para una relación Prospecto - Evento
-    path('actividades/crear/<int:id>/', views.crear_actividad, name='crear_actividad'),
+    path('actividades/crear/<int:pk>/', views.crear_actividad, name='crear_actividad'),
 
     # Modificar el estado de terminacion de una Actividad
     path('actividades/terminado/<int:id>', views.estado_actividad, name='estado_actividad'),
@@ -46,7 +46,7 @@ urlpatterns = [
     path('informacion/<int:id>', views.info_prospecto, name='info_prospecto'),
 
     # Info curso-prospecto
-    path('interes/<int:rel>', views.info_prospecto_curso, name='info_prospecto_curso'),
+    path('interes/<int:rel>', views.info_prospecto_grupo, name='info_prospecto_grupo'),
 
     # Registrar Cursos a Prospecto
     path('<int:id>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),

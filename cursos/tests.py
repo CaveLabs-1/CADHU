@@ -69,8 +69,8 @@ class BorrarCursoTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.curso = Curso.objects.create(nombre='Curso 1', descripcion='Grupo para desactivar')
-        cls.curso2 = Curso.objects.create(nombre='Curso 2', descripcion='Grupo para borrar')
+        cls.curso = Curso.objects.create(nombre='Curso 1', descripcion='Curso para desactivar')
+        cls.curso2 = Curso.objects.create(nombre='Curso 2', descripcion='Curso para borrar')
         cls.grupo = Grupo.objects.create(nombre='Grupo', curso=cls.curso, fecha_inicio='2018-03-16',
                                          fecha_fin='2018-03-16', direccion='Calle', descripcion='Grupo de marzo', costo=1000)
 

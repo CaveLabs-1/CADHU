@@ -3,7 +3,7 @@ from django.urls import reverse
 from cursos.models import Evento
 from grupos.models import Grupo
 from django.db.models import QuerySet
-from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoEvento, Cliente, Pago
+from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoGrupo, Cliente, Pago
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -25,7 +25,7 @@ class ClienteTest(TestCase):
         cls.prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         cls.curso = Grupo.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
-        cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
+        cls.relacion = ProspectoGrupo.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.pago = Pago.objects.create(monto=500, prospecto_evento=cls.relacion)
         cls.cliente = Cliente.objects.create(ProspectoEvento=cls.relacion, matricula='a01206199')
 
@@ -465,7 +465,7 @@ class ActividadTest(TestCase):
         )
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         cls.curso = Grupo.objects.create(Nombre='Grupo', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
+        cls.relacion = ProspectoGrupo.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.actFalse = Actividad.objects.create(titulo='Actividad False', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=False)
         cls.actTrue = Actividad.objects.create(titulo='Actividad True', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=True)
 
@@ -476,7 +476,7 @@ class ActividadTest(TestCase):
             'titulo': 'Llamada con el prospecto',
             'fecha': datetime.datetime.now().date(),
             'notas': 'Llamada con el prosecto',
-            'prospecto_evento': self.relacion})
+            'prospecto_grupo': self.relacion})
         act_count = Actividad.objects.all().count()
         self.assertEqual(act_count, 3)
 
@@ -548,7 +548,7 @@ class CargaMasivaTest(TestCase):
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Grupo.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
+        relacion = ProspectoGrupo.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
 
     # ACCEPTANCE CRITERIA: 43.1
     def test_ac_43_1(self):
@@ -567,8 +567,8 @@ class CargaMasivaTest(TestCase):
         prospecto = Prospecto.objects.get(Email='mancha@cadhu.com')
         prospecto2 = Prospecto.objects.get(Email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
-        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
-        prospecto2_rel = ProspectoEvento.objects.filter(Prospecto_id=prospecto2.id).count()
+        prospecto_rel = ProspectoGrupo.objects.filter(Prospecto=prospecto).count()
+        prospecto2_rel = ProspectoGrupo.objects.filter(Prospecto_id=prospecto2.id).count()
         self.assertEqual(prospecto_count, 1)
         self.assertEqual(prospecto_rel, 1)
         self.assertEqual(prospecto2_rel, 0)
@@ -589,7 +589,7 @@ class CargaMasivaTest(TestCase):
     #     os.remove('static/files/resultado.xls')
     #     prospecto = Prospecto.objects.get(Email='prospecto2@cadhu.com')
     #     prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
-    #     prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+    #     prospecto_rel = ProspectoGrupo.objects.filter(Prospecto=prospecto).count()
     #     self.assertEqual(prospecto_count, 1)
     #     self.assertEqual(prospecto_rel, 1)
 
@@ -600,7 +600,7 @@ class CargaMasivaTest(TestCase):
               '\n Alejandro,Salmon FD,asalmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
         prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
         prospecto_count_antes = Prospecto.objects.filter(id=prospecto.id).count()
-        prospecto_rel_antes = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        prospecto_rel_antes = ProspectoGrupo.objects.filter(Prospecto=prospecto).count()
         with open('test.csv', 'w') as f:
             f.write(csv)
             f.close()
@@ -612,7 +612,7 @@ class CargaMasivaTest(TestCase):
         os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
-        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        prospecto_rel = ProspectoGrupo.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, prospecto_count_antes)
         self.assertEqual(prospecto_rel, prospecto_rel_antes)
 
@@ -650,7 +650,7 @@ class CargaMasivaTest(TestCase):
         os.remove('static/files/resultado.xls')
         prospecto = Prospecto.objects.get(Email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
-        prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
+        prospecto_rel = ProspectoGrupo.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, 1)
         self.assertEqual(prospecto_rel, 0)
 
@@ -673,9 +673,9 @@ class VistaCursosTest(TestCase):
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         cls.curso = Grupo.objects.create(Nombre='Grupo', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16',
                                          Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        cls.prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False,
-                                                          status='INTERESADO', Curso_id=cls.curso.id,
-                                                          Prospecto_id=cls.prospecto.id)
+        cls.prospecto_evento = ProspectoGrupo.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False,
+                                                             status='INTERESADO', Curso_id=cls.curso.id,
+                                                             Prospecto_id=cls.prospecto.id)
         cls.pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651",
                                    prospecto_evento_id=cls.prospecto_evento.id, comentarios="comentario de prueba")
         cls.cliente = Cliente.objects.create(Matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=cls.prospecto_evento.id)
@@ -708,12 +708,12 @@ class PagoTest(TestCase):
         prospecto = Prospecto.objects.create( Nombre='Pablo', Apellidos='Martinez Villareal', Telefono_Casa='4422232226', Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion= lugar, Ocupacion='Estudiante', Activo=True)
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Grupo.objects.create(Nombre='Grupo', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
+        prospecto_evento = ProspectoGrupo.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
         pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id, comentarios="comentario de prueba", tipo_pago="Efectivo")
         cliente = Cliente.objects.create(matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)
 
     def test_ac_42_1(self):
-        idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id
+        idPE = ProspectoGrupo.objects.get(Fecha='2025-03-15').id
         resp = self.client.get(reverse('prospectos:lista_pagos', kwargs={'idPE': idPE}))
         # return redirect(reverse('basic_app:classroom_list', kwargs={'pk': user.id}))
         # resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1})
@@ -721,7 +721,7 @@ class PagoTest(TestCase):
         # self.assertTemplateUsed(resp, 'pagos/lista_pagos.html')
 
     def test_ac_41_2(self):
-        idPE = ProspectoEvento.objects.get(Fecha='2025-03-15').id
+        idPE = ProspectoGrupo.objects.get(Fecha='2025-03-15').id
         resp = self.client.post(reverse('prospectos:nuevo_pago', kwargs={'idPE': idPE}), {
             "fecha": '2025-03-15',
             "monto": 200,

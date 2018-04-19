@@ -41,12 +41,12 @@ def crear_curso(request):
             # Envia la información necesaria.
             context = {
                 'new_curso_form': new_curso_form,
-                'titulo': 'Registrar un Grupo',
+                'titulo': 'Registrar un Curso',
             }
             return render(request, 'cursos/form_curso.html', context)
     context = {
         'new_curso_form': new_curso_form,
-        'titulo': 'Registrar un Grupo',
+        'titulo': 'Registrar un Curso',
     }
     return render(request, 'cursos/form_curso.html', context)
 
@@ -87,12 +87,12 @@ def editar_curso(request, pk):
             context = {
                 'new_curso_form': new_curso_form,
                 'curso': id_curso,
-                'titulo': 'Editar Grupo',
+                'titulo': 'Editar Curso',
             }
             return render(request, 'cursos/form_curso.html', context)
     context = {
         'new_curso_form': new_curso_form,
         'curso': id_curso,
-        'titulo': 'Editar Grupo',
+        'titulo': 'Editar Curso',
     }
     return render(request, 'cursos/form_curso.html', context)

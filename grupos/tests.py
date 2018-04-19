@@ -1,7 +1,7 @@
 from django.test import TestCase
 from grupos.models import Grupo
 from cursos.models import Curso
-from prospectos.models import Lugar, Prospecto, ProspectoEvento
+from prospectos.models import Lugar, Prospecto, ProspectoGrupo
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 # Create your tests here.
@@ -97,8 +97,8 @@ class BorrarGrupoTest(TestCase):
         cls.prospecto = Prospecto.objects.create(nombre='Pablo', apellidos='Martinez Villareal',
                                                  telefono_casa='4422232226', telefono_celular='4422580662', email='asdas@gmail.com',
                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
-        cls.prospecto_evento = ProspectoEvento.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
-                                                              status='INTERESADO', curso=cls.grupo1, prospecto=cls.prospecto)
+        cls.prospecto_grupo = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
+                                                            status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto)
 
     def test_ac_28_1(self):
         resp = self.client.get(reverse('grupos:eliminar_grupo', kwargs={'pk': self.grupo2.id}))

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Grupo
-from prospectos.models import ProspectoEvento, Cliente
+from prospectos.models import ProspectoGrupo, Cliente
 from .forms import FormaGrupo
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -101,7 +101,7 @@ def editar_grupo(request, pk):
 @group_required('vendedora', 'administrador')
 def eliminar_grupo(request, pk):
     grupo = Grupo.objects.get(id=pk)
-    grupos_utilizados = ProspectoEvento.objects.filter(Grupo_id=grupo.id).count()
+    grupos_utilizados = ProspectoGrupo.objects.filter(grupo=grupo).count()
     if grupo.activo:
         if grupos_utilizados > 0:
             grupo.activo = False
@@ -117,12 +117,12 @@ def eliminar_grupo(request, pk):
 @group_required('administrador', 'vendedora')
 def info_grupo(request, pk):
     grupo = Grupo.objects.get(id=pk)
-    prospectos_lista = ProspectoEvento.objects.filter(Grupo=grupo)
+    prospectos_lista = ProspectoGrupo.objects.filter(grupo=grupo)
     prospectos = []
     clientes = []
     for prospecto in prospectos_lista:
         if prospecto.cliente_set.exists():
-            cliente = Cliente.objects.get(ProspectoEvento=prospecto.id)
+            cliente = Cliente.objects.get(prospecto_grupo=prospecto.id)
             clientes.append(cliente)
         else:
             prospectos.append(prospecto)

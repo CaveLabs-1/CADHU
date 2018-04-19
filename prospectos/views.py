@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento, Grupo, Pago
+from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoGrupo, Grupo, Pago
 # from grupos.models import Grupo
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from django.views import generic
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm, Inscribir_EmpresaForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm, InscribirEmpresaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -57,7 +57,7 @@ def carga_masiva(request):
                         Hijos=int(imported_data['Hijos'][i]),
                         Recomendacion=imported_data['Recomendacion'][i],
                         Direccion=lugar,
-                        Activo=True,
+                        activo=True,
                     )
                     if prospecto[1]:
                         resultado[i] = 'El prospecto se creó con éxito '
@@ -68,7 +68,7 @@ def carga_masiva(request):
                         curso = Grupo.objects.get(id=imported_data['ID curso'][i])
                         if curso:
                             # crea la relacion
-                            prospectoEvento = ProspectoEvento.objects.get_or_create(
+                            prospectoEvento = ProspectoGrupo.objects.get_or_create(
                                 Prospecto=prospecto[0],
                                 Curso=curso,
                                 Fecha=datetime.datetime.now().date(),
@@ -99,7 +99,7 @@ def carga_masiva(request):
 @group_required('vendedora','administrador')
 def lista_clientes(request):
     # Tomar los  los clientes de la base de datos
-    clientes = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    clientes = Cliente.objects.filter(activo=True).order_by('Fecha')
     context = {
         'clientes':clientes,
         'titulo': 'Clientes',
@@ -121,7 +121,7 @@ def eliminar_cliente(request, id):
     # Eliminar los pagos del cliente
     for pago in pagos:
          pago.delete()
-    clientes = Cliente.objects.filter(Activo=True).order_by('Fecha')
+    clientes = Cliente.objects.filter(activo=True).order_by('Fecha')
     context = {
         'clientes':clientes,
         'titulo': 'Clientes',
@@ -145,7 +145,7 @@ def crear_cliente(request, id):
         NewLugarForm = LugarForm(request.POST)
         pago = Pago.objects.get(id=id)
         fecha = pago.fecha
-        prospectoevento = ProspectoEvento.objects.get(pk=pago.prospecto_evento_id)
+        prospectoevento = ProspectoGrupo.objects.get(pk=pago.prospecto_evento_id)
         #Si la forma es válida guardar la información en la base de datos:
         if NewClienteForm.is_valid():
             lugar = NewLugarForm.save()
@@ -157,7 +157,7 @@ def crear_cliente(request, id):
             prospectoevento.save()
             cliente.save()
             clientes = Cliente.objects.all()
-            prospectoevento = ProspectoEvento.objects.get(id = pago.prospecto_evento_id)
+            prospectoevento = ProspectoGrupo.objects.get(id = pago.prospecto_evento_id)
             return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
         #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
@@ -181,7 +181,7 @@ def crear_cliente(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def editar_cliente(request, id):
-    prospectoEvento = ProspectoEvento.objects.get(id=id)
+    prospectoEvento = ProspectoGrupo.objects.get(id=id)
     idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
     newClienteForm = ClienteForm(instance=idcliente)
     newLugarForm = LugarForm(instance=idcliente.direccionFacturacion)
@@ -229,7 +229,7 @@ def editar_cliente(request, id):
 def info_cliente(request, id):
     cliente = Cliente.objects.get(id=id)
     lugar = Lugar.objects.get(id=cliente.direccionFacturacion.id)
-    relacion = ProspectoEvento.objects.get(id=cliente.ProspectoEvento.id)
+    relacion = ProspectoGrupo.objects.get(id=cliente.ProspectoEvento.id)
     prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
     context = {
         'cliente': cliente,
@@ -327,12 +327,12 @@ def editar_prospecto(request, id):
 @group_required('administrador')
 def baja_cliente(request, id):
     cliente = Cliente.objects.get(id=id)
-    if cliente.Activo:
-        cliente.Activo = False
+    if cliente.activo:
+        cliente.activo = False
         cliente.save()
         return redirect(reverse('prospectos:lista_prospectos'))
     else:
-        cliente.Activo = True
+        cliente.activo = True
         cliente.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivos'))
 
@@ -341,7 +341,7 @@ def baja_cliente(request, id):
 @group_required('vendedora','administrador')
 def lista_clientes_inactivos(request):
     # Tomar los  los clientes inactivos de la base
-    cliente_inactivo = Cliente.objects.filter(Activo=False).order_by('Fecha')
+    cliente_inactivo = Cliente.objects.filter(activo=False).order_by('Fecha')
     context = {
         'cliente':cliente_inactivo,
         'titulo': 'Clientes',
@@ -355,7 +355,7 @@ def lista_clientes_inactivos(request):
 def registrar_cursos(request, id):
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=id)
-    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
 
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
@@ -368,7 +368,7 @@ def registrar_cursos(request, id):
             PE = newProspectoEventoForm.save(commit=False)
             # Validar que no se este agregando un curso repetido
             try:
-                ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
+                ProspectoGrupo.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
@@ -376,10 +376,10 @@ def registrar_cursos(request, id):
                     'titulo': 'Registrar Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'grupos': cursos,
                 }
-                return render(request, 'cursos/prospectoevento_form.html', context)
+                return render(request, 'grupos/prospectoevento_form.html', context)
 
             #Guardar la forma en la BD
-            except ProspectoEvento.DoesNotExist:
+            except ProspectoGrupo.DoesNotExist:
                 PE.Prospecto = prospecto
                 PE.FlagCADHU = False
                 PE.Fecha = now()
@@ -391,7 +391,7 @@ def registrar_cursos(request, id):
                     'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'grupos': cursos,
                 }
-                return render(request, 'cursos/prospectoevento_form.html', context)
+                return render(request, 'grupos/prospectoevento_form.html', context)
 
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
@@ -400,7 +400,7 @@ def registrar_cursos(request, id):
         'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'grupos': cursos,
     }
-    return render(request, 'cursos/prospectoevento_form.html', context)
+    return render(request, 'grupos/prospectoevento_form.html', context)
 
 
 # US11
@@ -408,10 +408,10 @@ def registrar_cursos(request, id):
 @group_required('vendedora','administrador')
 def editar_curso(request, id):
     oldProspectoEventoForm = ProspectoEventoForm()
-    cursoEditar = ProspectoEvento.objects.get(id=id)
+    cursoEditar = ProspectoGrupo.objects.get(id=id)
     newProspectoEventoForm = ProspectoEventoEdit(instance=cursoEditar)
     prospecto = cursoEditar.Prospecto
-    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
         # Crear la instancia de la forma y llenarla con los datos
@@ -429,7 +429,7 @@ def editar_curso(request, id):
                 'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                 'grupos': cursos,
             }
-            return render(request, 'cursos/prospectoevento_form.html', context)
+            return render(request, 'grupos/prospectoevento_form.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
@@ -437,17 +437,17 @@ def editar_curso(request, id):
         'titulo': 'Editar Grupo - ' + cursoEditar.Curso.Nombre,
         'grupos': cursos,
     }
-    return render(request, 'cursos/prospectoevento_edit.html', context)
+    return render(request, 'grupos/prospectoevento_edit.html', context)
 
 
 # US10
 @login_required
 @group_required('vendedora','administrador')
 def eliminar_curso(request, id):
-    curso = ProspectoEvento.objects.get(id=id)
+    curso = ProspectoGrupo.objects.get(id=id)
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = curso.Prospecto
-    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
     if(Pago.objects.filter(prospecto_evento=curso).count()>0):
         messages.success(request, 'El prospecto ya ha realizado un pago, por ende, el curso no puede ser eliminado')
         context = {
@@ -456,7 +456,7 @@ def eliminar_curso(request, id):
             'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
             'grupos': cursos,
         }
-        return render(request, 'cursos/prospectoevento_form.html', context)
+        return render(request, 'grupos/prospectoevento_form.html', context)
     else:
         curso.delete()
         messages.success(request, 'Grupo eliminado de manera exitosa')
@@ -466,31 +466,32 @@ def eliminar_curso(request, id):
             'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
             'grupos': cursos,
         }
-        return render(request, 'cursos/prospectoevento_form.html', context)
+        return render(request, 'grupos/prospectoevento_form.html', context)
 
 
 # US23
 @login_required
 @group_required('vendedora', 'administrador')
-def info_prospecto_curso(request, rel):
-    relacion = ProspectoEvento.objects.get(id=rel)
-    prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
-    titulo = relacion.Curso
+def info_prospecto_grupo(request, rel):
+    relacion = ProspectoGrupo.objects.get(id=rel)
+    prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
+    titulo = relacion.grupo
     context = {
         'relacion': relacion,
+        'actividades': relacion.actividad_set.all(),
         'prospecto': prospecto,
         'titulo': titulo,
     }
-    return render(request, 'cursos/info_prospectocurso.html', context)
+    return render(request, 'grupos/info_prospectocurso.html', context)
 
 
 # US7
 @login_required
-@group_required('vendedora','administrador')
+@group_required('vendedora', 'administrador')
 def lista_prospectos(request):
     # Tomar los  los prospectos de la base
     #prospectos = Prospecto.objects.all()
-    prostpecto_activo = Prospecto.objects.filter(Activo=True)
+    prostpecto_activo = Prospecto.objects.filter(activo=True)
     context = {
         'prospectos':prostpecto_activo,
         'titulo': 'Prospectos',
@@ -504,7 +505,7 @@ def lista_prospectos(request):
 def lista_prospectos_inactivo(request):
     # Tomar los  los prospectos de la base
     # prospectos = Prospecto.objects.all()
-    prostpecto_inactivo = Prospecto.objects.filter(Activo=False)
+    prostpecto_inactivo = Prospecto.objects.filter(activo=False)
     context = {
         'prospectos':prostpecto_inactivo,
         'titulo': 'Prospectos inactivos',
@@ -519,13 +520,13 @@ def baja_prospecto(request, id):
     # Obtener el prospecto
     prospecto = Prospecto.objects.get(id=id)
     # Si el prospecto es activo, cambiarlo a inactivo
-    if prospecto.Activo:
-        prospecto.Activo = False
+    if prospecto.activo:
+        prospecto.activo = False
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos'))
     # Si el prospecto es activo, guardarlo
     else:
-        prospecto.Activo = True
+        prospecto.activo = True
         prospecto.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivo'))
 
@@ -535,7 +536,7 @@ def baja_prospecto(request, id):
 def info_prospecto(request, id):
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=id)
-    cursos = ProspectoEvento.objects.filter(Prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
     agenda = []
@@ -553,7 +554,7 @@ def info_prospecto(request, id):
             PE = newProspectoEventoForm.save(commit=False)
             # Validar que no se este agregando un curso repetido
             try:
-                ProspectoEvento.objects.get(Prospecto=prospecto, Curso=PE.Curso)
+                ProspectoGrupo.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
@@ -566,7 +567,7 @@ def info_prospecto(request, id):
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
             # Guardar la forma en la BD
-            except ProspectoEvento.DoesNotExist:
+            except ProspectoGrupo.DoesNotExist:
                 PE.Prospecto = prospecto
                 PE.FlagCADHU = False
                 PE.Fecha = now()
@@ -599,7 +600,7 @@ def info_prospecto(request, id):
 @group_required('vendedora','administrador')
 def lista_empresas(request):
     # Si las empresas son activas, desplegarlas
-    empresas = Empresa.objects.filter(Activo=True)
+    empresas = Empresa.objects.filter(activo=True)
     context = {
         'empresas':empresas,
         'titulo': 'Empresas',
@@ -611,7 +612,7 @@ def lista_empresas(request):
 @group_required('vendedora','administrador')
 def lista_empresas_inactivo(request):
     # Tomar los  los empresas de la base inactivos
-    empresa_inactivo = Empresa.objects.filter(Activo=False)
+    empresa_inactivo = Empresa.objects.filter(activo=False)
     context = {
         'empresas':empresa_inactivo,
         'titulo': 'Empresas inactivas',
@@ -716,13 +717,13 @@ def baja_empresas(request, id):
     # Obtener empresa
     empresa = Empresa.objects.get(id=id)
     # Si la empresa es activa, inactivarla
-    if empresa.Activo:
-        empresa.Activo = False
+    if empresa.activo:
+        empresa.activo = False
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas'))
     # Si la empresa es activa, guardarla
     else:
-        empresa.Activo = True
+        empresa.activo = True
         empresa.save()
         return redirect(reverse('prospectos:lista_empresas_inactivo'))
 
@@ -731,8 +732,8 @@ def baja_empresas(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def inscribir_empresa(request, id):
-    empresa=Empresa.objects.get(id=id)
-    prospectos=Prospecto.objects.exclude(Empresa__isnull=False) | Prospecto.objects.filter(Empresa=empresa)
+    empresa = Empresa.objects.get(id=id)
+    prospectos = Prospecto.objects.exclude(Empresa__isnull=False) | Prospecto.objects.filter(Empresa=empresa)
     if request.method == "POST":
         vaciar = Prospecto.objects.filter(Empresa=empresa)
         for va in vaciar:
@@ -754,12 +755,12 @@ def inscribir_empresa(request, id):
 # US15
 @login_required
 @group_required('vendedora','administrador')
-def lista_actividades(request, id):
+def lista_actividades(request, pk):
     # Mostrar todas las empresas
-    actividades = Actividad.objects.filter(prospecto_evento=id)
+    actividades = Actividad.objects.filter(prospecto_grupo=pk)
     context = {
         'actividades': actividades,
-        'id': id
+        'id': pk
         }
     return render(request, 'actividades/actividades.html', context)
 
@@ -767,37 +768,37 @@ def lista_actividades(request, id):
 # US12
 @login_required
 @group_required('vendedora', 'administrador')
-def crear_actividad(request, id):
-    NewActividadForm = FormaActividad()
+def crear_actividad(request, pk):
+    new_actividad_form = FormaActividad()
     # SI HAY UNA FORMA ENVIADA EN POST
     if request.method == 'POST':
-        NewActividadForm = FormaActividad(request.POST)
-        prospectoEvento = ProspectoEvento.objects.get(id=id)
+        new_actividad_form = FormaActividad(request.POST)
+        prospecto_grupo = ProspectoGrupo.objects.get(id=pk)
         # SI LA FORMA ES VÁLIDA
-        if NewActividadForm.is_valid():
-            actividad = NewActividadForm.save(commit=False)
+        if new_actividad_form.is_valid():
+            actividad = new_actividad_form.save(commit=False)
             # SE GUARDA LA NOTA
-            actividad.prospecto_evento = prospectoEvento
+            actividad.prospecto_grupo = prospecto_grupo
             actividad.save()
-            #Mensaje éxito
+            # Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')
-            return info_prospecto_curso(request, id)
+            return info_prospecto_grupo(request, pk)
         else:
-            #Mensaje error
-            Error = 'Forma inválida'
+            # Mensaje error
+            error = 'Forma inválida'
             messages.success(request, 'Forma inválida')
             context = {
-                'Error': Error,
-                'form': NewActividadForm,
+                'Error': error,
+                'form': new_actividad_form,
                 'titulo': 'Agregar actividad',
                 'id': id
             }
             return render(request, 'actividades/crear_actividad.html', context)
     # CARGAR LA VISTA
     context = {
-        'form': NewActividadForm,
+        'form': new_actividad_form,
         'titulo': 'Agregar actividad',
-        'id': id
+        'id': pk
     }
     return render(request, 'actividades/crear_actividad.html', context)
 
@@ -820,7 +821,7 @@ def estado_actividad(request, id):
 @login_required
 @group_required('vendedora','administrador')
 def estado_flag(request, id):
-    rel = ProspectoEvento.objects.get(id=id)
+    rel = ProspectoGrupo.objects.get(id=id)
     if rel.FlagCADHU:
         rel.FlagCADHU = False
         rel.save()
@@ -855,7 +856,7 @@ def nuevo_pago(request, idPE):
             if(pagos > 1):
                 # print(idPE)
                 # print(pago.id)
-                pe = ProspectoEvento.objects.get(id = idPE)
+                pe = ProspectoGrupo.objects.get(id = idPE)
                 return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
                 return redirect('prospectos:crear_cliente', id=pago.id)
@@ -872,7 +873,7 @@ def nuevo_pago(request, idPE):
         query_pagos = Pago.objects.filter(prospecto_evento_id = idPE)
         for pago in query_pagos:
             total_pagos += pago.monto
-        pe = ProspectoEvento.objects.get(id = idPE)
+        pe = ProspectoGrupo.objects.get(id = idPE)
         curso = Grupo.objects.get(id = pe.Curso_id)
         #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
         monto_maximo = curso.Costo - total_pagos
@@ -881,7 +882,7 @@ def nuevo_pago(request, idPE):
             'form': forma_pago,
             'titulo': 'Agregar Pago',
             'monto_maximo': monto_maximo,
-        # 'cursos': Evento.objects.all().order_by('Nombre')
+        # 'grupos': Evento.objects.all().order_by('Nombre')
         }
         return render(request, 'pagos/nuevo_pago.html', context)
 
@@ -889,9 +890,9 @@ def nuevo_pago(request, idPE):
 @login_required
 @group_required('administrador')
 def lista_pagos(request, idPE):
-    # prospecto_evento = ProspectoEvento.objects.get(id = idPE)
+    # prospecto_grupo = ProspectoGrupo.objects.get(id = idPE)
     pagos = Pago.objects.filter(prospecto_evento_id=idPE).count()
-    pe = ProspectoEvento.objects.get(id=idPE)
+    pe = ProspectoGrupo.objects.get(id=idPE)
     # print(pe.Curso_id)
     total_pagos = 0
     pagos2 = Pago.objects.filter(prospecto_evento_id=idPE)
