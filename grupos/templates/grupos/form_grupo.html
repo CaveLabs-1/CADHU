@@ -2,69 +2,71 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-    {% block title %}Nuevo Pago{% endblock %}
+    {% block title %}Nuevo Grupo{% endblock %}
 {% block content %}
 
   <div class="row no-margin padding-top-20">
       <div class="card ">
         <div class="card-content">
-          <form method="post" id="nuevo_curso" class="" action="/cursos/nuevo_curso">
+          <form method="post" id="forma_grupo">
             {% csrf_token %}
                 <div class="row no-margin">
                   <div class="input-field col l8 offset-l2 s10 offset-s1">
-                      {{ form.Nombre }}
+                      {{ form.nombre }}
                       <label for="Nombre">Nombre(s)*</label>
                   </div>
                 </div>
                 <div class="row no-margin">
                     <div class="input-field col l8 offset-l2 s10 offset-s1">
-                        {{ form.Evento }}
+                        {{ form.curso }}
                         <label>Curso</label>
                     </div>
                 </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" value="{{ form.Fecha_Inicio.value }}" name="{{form.Fecha_Inicio.html_name}}"
-                       id="{{ form.Fecha_Inicio.id_for_label }}" class="datepicker" required>
-                <label for="{{form.Fecha_Inicio.id_for_label}}" >Fecha de Inicio</label>
+                <input type="text" value="{{ form.fecha_inicio.value|date:'Y-m-d' }}" name="{{form.fecha_inicio.html_name}}"
+                       id="{{ form.fecha_inicio.id_for_label }}" class="datepicker" required>
+                <label for="{{form.fecha_inicio.id_for_label}}" >Fecha de Inicio</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" value="{{ form.Fecha_Fin.value }}" name="{{form.Fecha_Fin.html_name}}"
-                       id="{{ form.Fecha_Fin.id_for_label }}" class="datepicker" required>
-                <label for="{{form.Fecha_Fin.id_for_label}}" >Fecha de Fin</label>
+                <input type="text" value="{{ form.fecha_fin.value|date:'Y-m-d' }}" name="{{form.fecha_fin.html_name}}"
+                       id="{{ form.fecha_fin.id_for_label }}" class="datepicker" required>
+                <label for="{{form.fecha_fin.id_for_label}}" >Fecha de Fin</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                  {{ form.Direccion }}
+                  {{ form.direccion }}
                   <label>Dirección</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                  {{ form.Descripcion }}
+                  {{ form.descripcion }}
                   <label>Descripción</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.Costo.html_name}}" id="{{ form.Costo.id_for_label }}" required step=".01" min="0" value="{{ form.Costo.value }}">
-                <label for="{{form.Costo.id_for_label}}">Costo</label>
+                <input type="number" name="{{form.costo.html_name}}" id="{{ form.costo.id_for_label }}" required step=".01" min="0"
+                       value="{{ form.costo.value }}">
+                <label for="{{form.costo.id_for_label}}">Costo</label>
               </div>
             </div>
               <div class="row no-margin">
                 <div class="input-field col l8 offset-l2 s10 offset-s1">
-                  {{ form.Encargado }}
+                  {{ form.encargado }}
                   <label>Encargado</label>
                 </div>
             </div>
             <br>
             <div class="row">
-              <center>
-                <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Curso</button>
-              </center>
+              <div class="center">
+                <a href="{% url 'grupos:grupos' %}" class="btn waves-effect waves-light form_button red" type="submit" name="action">Cancelar</a>
+                <button class="btn waves-effect waves-light form_button" type="submit" name="action">{{ boton }}</button>
+              </div>
             </div>
           </form>
 

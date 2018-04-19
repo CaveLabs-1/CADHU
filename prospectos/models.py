@@ -1,7 +1,5 @@
 from django.db import models
-from cursos.models import Curso
-from django import forms
-from django.utils import timezone
+from grupos.models import Grupo
 import datetime
 from cursos.models import Curso
 from django.core.validators import RegexValidator
@@ -85,7 +83,7 @@ class Prospecto(models.Model):
     Ocupacion = models.CharField(max_length=15, blank=True, null=True)
     Hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
     Recomendacion = models.CharField(max_length=150, blank=True, null=True)
-    Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
+    Cursos = models.ManyToManyField(Grupo, through='ProspectoEvento', through_fields=('Prospecto', 'Grupo'))
     Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Fecha_Creacion = models.DateField(null=True)
     Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
@@ -109,7 +107,7 @@ class Lugar(models.Model):
 
 class ProspectoEvento(models.Model):
     Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    Grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, null=True)
     Fecha = models.DateField(null=True, blank=True)
     Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
     FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')

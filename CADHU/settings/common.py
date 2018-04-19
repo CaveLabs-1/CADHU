@@ -29,10 +29,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'widget_tweaks',
-    'prospectos',
-    'eventos',
     'usuarios',
+    'grupos',
     'cursos',
+    'prospectos',
 ]
 
 SITE_ID = 1
@@ -108,6 +108,7 @@ USE_TZ = True
 # Formatos de fecha y timepo
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
 TIME_INPUT_FORMATS = ('%I:%M %p',)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

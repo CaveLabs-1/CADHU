@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Grupos{% endblock %}
+{% block content %}
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large orange" href="{% url 'grupos:nuevo_grupo' %}">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <table class="dataTable">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Término</th>
+            <th>Dirección</th>
+            <th>Descripción</th>
+            <th>Costo</th>
+            <th>Curso</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for grupo in grupos %}
+            <tr>
+                <td><a href="{% url 'grupos:info_grupo' grupo.id %}">{{ grupo.nombre }}</a></td>
+                <td>{{ grupo.fecha_inicio  }}</td>
+                <td>{{ grupo.fecha_fin  }}</td> <!--| date:'d/m/y' -->
+                <td>{{ grupo.direccion }}</td>
+                <td>{{ grupo.descripcion }}</td>
+                <td>{{ grupo.costo }}</td>
+                <td>{{ grupo.curso }}</td>
+                <td>
+                    <a href="{% url 'grupos:editar_grupo' grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                    {% if grupo.activo %}
+                        <a href="{% url 'grupos:eliminar_grupo' grupo.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                    {% else %}
+                        <a href="{% url 'grupos:eliminar_grupo' grupo.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if titulo == 'Grupos' %}
+        <div class="row center">
+            <a href="{% url 'grupos:grupos_inactivos' %}" class="btn waves-effect waves-light amber darken-1" style="border-radius: 50px">Ver Inactivos</a>
+        </div>
+    {% elif titulo == 'Grupos inactivos' %}
+        <div class="row center">
+            <a href="{% url 'grupos:grupos' %}" class="btn waves-effect waves-light green darken-1" style="border-radius: 50px">Ver Activos</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
+    <script>
+        function eliminar_grupo(element, event){
+            event.preventDefault();
+            $.confirm({
+                title: '¿Deseas eliminar el grupo?',
+                content: 'No podrá ser utilizado en un futuro.',
+                type: 'red',
+                closeIcon: true,
+                columnClass: 'col l6 offset-l3 s12',
+                typeAnimated: true,
+                buttons: {
+                    continuar: {
+                        text: 'Eliminar',
+                        btnClass: 'btn-red',
+
+                        action: function(){
+                            window.location.href = $(element).attr("href");
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+{% endblock js %}

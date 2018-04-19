@@ -1,7 +1,7 @@
 from django.test import TestCase, client
 from django.urls import reverse
-from eventos.models import Evento
-from cursos.models import Curso
+from cursos.models import Evento
+from grupos.models import Grupo
 from django.db.models import QuerySet
 from .models import Prospecto, Lugar, Actividad, Empresa, ProspectoEvento, Cliente, Pago
 from django.contrib.auth.models import User, Group
@@ -24,7 +24,7 @@ class ClienteTest(TestCase):
     def setUpTestData(cls):
         cls.prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        cls.curso = Curso.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
+        cls.curso = Grupo.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.pago = Pago.objects.create(monto=500, prospecto_evento=cls.relacion)
         cls.cliente = Cliente.objects.create(ProspectoEvento=cls.relacion, matricula='a01206199')
@@ -464,7 +464,7 @@ class ActividadTest(TestCase):
             Activo=True,
         )
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        cls.curso = Curso.objects.create(Nombre='Curso', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        cls.curso = Grupo.objects.create(Nombre='Grupo', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
         cls.actFalse = Actividad.objects.create(titulo='Actividad False', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=False)
         cls.actTrue = Actividad.objects.create(titulo='Actividad True', fecha=datetime.datetime.now().date(), notas='Llamada con el prosecto', prospecto_evento=cls.relacion, terminado=True)
@@ -547,12 +547,12 @@ class CargaMasivaTest(TestCase):
             Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Grupo.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto, Curso=curso, Interes='ALTO', FlagCADHU=False)
 
     # ACCEPTANCE CRITERIA: 43.1
     def test_ac_43_1(self):
-        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        curso = Grupo.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
               '\n Alejandro,Salmon FD,mancha@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
         with open('test.csv', 'w') as f:
@@ -575,7 +575,7 @@ class CargaMasivaTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 43.2
     # def test_ac_43_2(self):
-    #     curso = Curso.objects.get(Nombre='CursoPrueba').id
+    #     curso = Grupo.objects.get(Nombre='CursoPrueba').id
     #     csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
     #           '\n Alejandro,Salmon FD,prospecto2@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
     #     with open('test.csv', 'w') as f:
@@ -595,7 +595,7 @@ class CargaMasivaTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 43.3
     def test_ac_43_3(self):
-        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        curso = Grupo.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
               '\n Alejandro,Salmon FD,asalmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
         prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
@@ -618,7 +618,7 @@ class CargaMasivaTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 43.4
     def test_ac_43_4(self):
-        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        curso = Grupo.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
               '\n Pedro,Salmon FD,asalmon@cadhu.com,1234567890,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
         with open('test.csv', 'w') as f:
@@ -636,7 +636,7 @@ class CargaMasivaTest(TestCase):
 
     #ACCEPTANCE CRITERIA: 43.5
     def test_ac_43_5(self):
-        curso = Curso.objects.get(Nombre='CursoPrueba').id
+        curso = Grupo.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
               '\n Alejandro,Salmon FD,prospecto2@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,102'
         with open('test.csv', 'w') as f:
@@ -671,8 +671,8 @@ class VistaCursosTest(TestCase):
                                              Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion=cls.lugar,
                                              Ocupacion='Estudiante', Activo=True)
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        cls.curso = Curso.objects.create(Nombre='Curso', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16',
-                                     Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        cls.curso = Grupo.objects.create(Nombre='Grupo', Evento=cls.evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16',
+                                         Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         cls.prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False,
                                                           status='INTERESADO', Curso_id=cls.curso.id,
                                                           Prospecto_id=cls.prospecto.id)
@@ -707,7 +707,7 @@ class PagoTest(TestCase):
         lugar = Lugar.objects.create( Calle='Paraiso', Numero_Interior='', Numero_Exterior='38', Colonia='Satelite', Estado='Queretaro', Ciudad='Queretaro', Pais='Mexico', Codigo_Postal='76125' )
         prospecto = Prospecto.objects.create( Nombre='Pablo', Apellidos='Martinez Villareal', Telefono_Casa='4422232226', Telefono_Celular='4422580662', Email='asdas@gmail.com', Direccion= lugar, Ocupacion='Estudiante', Activo=True)
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='Curso', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Grupo.objects.create(Nombre='Grupo', Evento= evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         prospecto_evento = ProspectoEvento.objects.create(Fecha='2025-03-15', Interes='ALTO', FlagCADHU=False, status='INTERESADO', Curso_id= curso.id, Prospecto_id = prospecto.id)
         pago = Pago.objects.create(fecha='2018-03-15', monto=200, referencia="1651", prospecto_evento_id=prospecto_evento.id, comentarios="comentario de prueba", tipo_pago="Efectivo")
         cliente = Cliente.objects.create(matricula='asd123', Fecha='2018-03-15', ProspectoEvento_id=prospecto_evento.id)

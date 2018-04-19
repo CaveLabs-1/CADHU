@@ -32,7 +32,7 @@ class ProspectoForm(ModelForm):
     class Meta:
         model = Prospecto
         fields = (
-            'Nombre',
+            "Nombre",
             'Apellidos',
             'Telefono_Casa',
             'Telefono_Celular',
@@ -95,7 +95,7 @@ class ProspectoEventoForm(ModelForm):
     class Meta:
         model = ProspectoEvento
         fields = (
-            'Curso',
+            'Grupo',
             'Interes',
             'FlagCADHU',
         )

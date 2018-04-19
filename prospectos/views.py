@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento, Curso, Pago
-# from cursos.models import Curso
+from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoEvento, Grupo, Pago
+# from grupos.models import Grupo
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
@@ -65,7 +65,7 @@ def carga_masiva(request):
                         resultado[i] = 'El prospecto ya existía '
                     # obtiene el curso
                     try:
-                        curso = Curso.objects.get(id=imported_data['ID curso'][i])
+                        curso = Grupo.objects.get(id=imported_data['ID curso'][i])
                         if curso:
                             # crea la relacion
                             prospectoEvento = ProspectoEvento.objects.get_or_create(
@@ -79,7 +79,7 @@ def carga_masiva(request):
                                 resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
                             else:
                                 resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
-                    except Curso.DoesNotExist:
+                    except Grupo.DoesNotExist:
                         resultado[i] += ' y no existe este curso.'
                 except IntegrityError:
                     resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar repetidos en el sistema'
@@ -374,7 +374,7 @@ def registrar_cursos(request, id):
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-                    'cursos': cursos,
+                    'grupos': cursos,
                 }
                 return render(request, 'cursos/prospectoevento_form.html', context)
 
@@ -384,12 +384,12 @@ def registrar_cursos(request, id):
                 PE.FlagCADHU = False
                 PE.Fecha = now()
                 PE.save()
-                messages.success(request, 'Curso asignado a prospecto')
+                messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
                     'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-                    'cursos': cursos,
+                    'grupos': cursos,
                 }
                 return render(request, 'cursos/prospectoevento_form.html', context)
 
@@ -398,7 +398,7 @@ def registrar_cursos(request, id):
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-        'cursos': cursos,
+        'grupos': cursos,
     }
     return render(request, 'cursos/prospectoevento_form.html', context)
 
@@ -422,12 +422,12 @@ def editar_curso(request, id):
             PE.Prospecto = prospecto
             PE.Curso = cursoEditar.Curso
             PE.save()
-            messages.success(request, 'Curso Modificado a prospecto')
+            messages.success(request, 'Grupo Modificado a prospecto')
             context = {
                 'prospecto': prospecto,
                 'newProspectoEventoForm': oldProspectoEventoForm,
                 'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-                'cursos': cursos,
+                'grupos': cursos,
             }
             return render(request, 'cursos/prospectoevento_form.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
@@ -435,7 +435,7 @@ def editar_curso(request, id):
         'prospecto': prospecto,
         'newProspectoEventoForm': newProspectoEventoForm,
         'titulo': 'Editar Grupo - ' + cursoEditar.Curso.Nombre,
-        'cursos': cursos,
+        'grupos': cursos,
     }
     return render(request, 'cursos/prospectoevento_edit.html', context)
 
@@ -454,7 +454,7 @@ def eliminar_curso(request, id):
             'prospecto': prospecto,
             'newProspectoEventoForm': newProspectoEventoForm,
             'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-            'cursos': cursos,
+            'grupos': cursos,
         }
         return render(request, 'cursos/prospectoevento_form.html', context)
     else:
@@ -464,7 +464,7 @@ def eliminar_curso(request, id):
             'prospecto': prospecto,
             'newProspectoEventoForm': newProspectoEventoForm,
             'titulo': 'Registrar Grupo - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
-            'cursos': cursos,
+            'grupos': cursos,
         }
         return render(request, 'cursos/prospectoevento_form.html', context)
 
@@ -562,7 +562,7 @@ def info_prospecto(request, id):
                     'actividades': actividades,
                     'agenda': agenda,
                     'bitacora': bitacora,
-                    'cursos': cursos,
+                    'grupos': cursos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
             # Guardar la forma en la BD
@@ -571,7 +571,7 @@ def info_prospecto(request, id):
                 PE.FlagCADHU = False
                 PE.Fecha = now()
                 PE.save()
-                messages.success(request, 'Curso asignado a prospecto')
+                messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
                     'newProspectoEventoForm': newProspectoEventoForm,
@@ -579,7 +579,7 @@ def info_prospecto(request, id):
                     'agenda': agenda,
                     'bitacora': bitacora,
                     'titulo': titulo,
-                    'cursos': cursos,
+                    'grupos': cursos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
@@ -589,7 +589,7 @@ def info_prospecto(request, id):
         'actividades': actividades,
         'agenda': agenda,
         'bitacora': bitacora,
-        'cursos': cursos,
+        'grupos': cursos,
         'prospecto': prospecto,
     }
     return render(request, 'prospectos/info_prospecto.html', context)
@@ -873,7 +873,7 @@ def nuevo_pago(request, idPE):
         for pago in query_pagos:
             total_pagos += pago.monto
         pe = ProspectoEvento.objects.get(id = idPE)
-        curso = Curso.objects.get(id = pe.Curso_id)
+        curso = Grupo.objects.get(id = pe.Curso_id)
         #VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
         monto_maximo = curso.Costo - total_pagos
         # se renderea la página
@@ -881,7 +881,7 @@ def nuevo_pago(request, idPE):
             'form': forma_pago,
             'titulo': 'Agregar Pago',
             'monto_maximo': monto_maximo,
-        # 'eventos': Evento.objects.all().order_by('Nombre')
+        # 'cursos': Evento.objects.all().order_by('Nombre')
         }
         return render(request, 'pagos/nuevo_pago.html', context)
 
@@ -897,7 +897,7 @@ def lista_pagos(request, idPE):
     pagos2 = Pago.objects.filter(prospecto_evento_id=idPE)
     for pago in pagos2:
         total_pagos += pago.monto
-    curso = Curso.objects.get(id = pe.Curso_id)
+    curso = Grupo.objects.get(id = pe.Curso_id)
     if(pagos > 0):
         context = {
             'titulo': 'Lista de Pagos',

@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from prospectos.models import Lugar, Actividad, Prospecto, ProspectoEvento
-from eventos.models import Evento
-from cursos.models import Curso
+from cursos.models import Evento
+from grupos.models import Grupo
 import datetime
 
 
@@ -76,7 +76,7 @@ class PendientesViewTests(TestCase):
             Activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
+        curso = Grupo.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
         relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
 
     def test_crear_actividad(self):
