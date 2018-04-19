@@ -185,6 +185,7 @@ def editar_cliente(request, id):
     idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
     newClienteForm = ClienteForm(instance=idcliente)
     newLugarForm = LugarForm(instance=idcliente.direccionFacturacion)
+    prospecto = Prospecto.objects.get(id = prospectoEvento.Prospecto_id)
     #Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         #Crear y llenar la forma
@@ -211,14 +212,14 @@ def editar_cliente(request, id):
             'Error': Error,
             'NewClienteForm': newClienteForm,
             'NewLugarForm': newLugarForm,
-            'titulo': 'Editar Cliente',
+            'titulo': 'Editar Cliente: ' + prospecto.Nombre + " " + prospecto.Apellidos,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     #Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': newClienteForm,
         'NewLugarForm': newLugarForm,
-        'titulo': 'Editar Cliente',
+        'titulo': 'Editar Cliente: ' + prospecto.Nombre + " " + prospecto.Apellidos,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
@@ -236,7 +237,7 @@ def info_cliente(request, id):
         'lugar': lugar,
         'relacion': relacion,
         'prospecto': prospecto,
-        'titulo': prospecto.Nombre,
+        'titulo': 'Cliente:' + prospecto.Nombre + " " + prospecto.Apellido,
     }
     return render(request, 'clientes/info_cliente.html', context)
 
@@ -789,7 +790,7 @@ def crear_actividad(request, id):
             context = {
                 'Error': Error,
                 'form': NewActividadForm,
-                'titulo': 'Agregar actividad',
+                'titulo': 'Registrar actividad',
                 'id': id
             }
             return render(request, 'actividades/crear_actividad.html', context)
@@ -879,7 +880,7 @@ def nuevo_pago(request, idPE):
         # se renderea la página
         context = {
             'form': forma_pago,
-            'titulo': 'Agregar Pago',
+            'titulo': 'Registrar Pago',
             'monto_maximo': monto_maximo,
         # 'eventos': Evento.objects.all().order_by('Nombre')
         }
