@@ -62,26 +62,6 @@ class Lugar(models.Model):
     codigo_postal = models.CharField(max_length=5, blank=True, null=True)
 
 
-class Empresa(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
-    contacto_1 = models.CharField(max_length=50, blank=True, null=False)
-    contacto_2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: "
-                                                               "'999999999'. Se permiten 10 digitos.")
-    telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
-    telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
-    email_1 = models.EmailField(max_length=50, blank=True, null=False)
-    email_2 = models.EmailField(max_length=50, blank=True, null=False)
-    puesto_1 = models.CharField(max_length=50, blank=True, null=False)
-    puesto_2 = models.CharField(max_length=50, blank=True, null=False)
-    direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True)
-    razon_social = models.CharField(max_length=50, blank=True, null=True)
-    activo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nombre
-
-
 class Prospecto(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     apellidos = models.CharField(max_length=120, blank=False, null=False)
@@ -98,7 +78,7 @@ class Prospecto(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     fecha_creacion = models.DateField(null=True)
     activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
-    empresa = models.ForeignKey(Empresa, null=True, on_delete=models.PROTECT, blank=True)
+    empresa = models.ForeignKey('Empresa', null=True, on_delete=models.SET_NULL, blank=True)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
 
     def __str__(self):
@@ -159,3 +139,23 @@ class Pago(models.Model):
     validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     tipo_pago = models.CharField(max_length=50, blank=True, null=True)
+
+
+class Empresa(models.Model):
+    nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    contacto_1 = models.CharField(max_length=50, blank=True, null=False)
+    contacto_2 = models.CharField(max_length=50, blank=True, null=False)
+    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: "
+                                                               "'999999999'. Se permiten 10 digitos.")
+    telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    email_1 = models.EmailField(max_length=50, blank=True, null=False)
+    email_2 = models.EmailField(max_length=50, blank=True, null=False)
+    puesto_1 = models.CharField(max_length=50, blank=True, null=False)
+    puesto_2 = models.CharField(max_length=50, blank=True, null=False)
+    direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True)
+    razon_social = models.CharField(max_length=50, blank=True, null=True)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre

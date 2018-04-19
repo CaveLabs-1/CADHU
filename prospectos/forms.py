@@ -40,7 +40,7 @@ class ProspectoForm(ModelForm):
             'telefono_celular',
             'email',
             'metodo_captacion',
-            'estado_civil',
+            'estado_civil'
             'ocupacion',
             'hijos',
             'recomendacion',

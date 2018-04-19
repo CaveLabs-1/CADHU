@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoGrupo, Grupo, Pago
-# from grupos.models import Grupo
+from grupos.models import Grupo
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
-from django.views import generic
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, ProspectoEventoEdit, PagoForm, InscribirEmpresaForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, \
+    ProspectoEventoEdit, PagoForm, InscribirEmpresaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -13,13 +13,11 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import *
 from django.utils.timezone import now
-import os
-from django.conf import settings
 
 
 # US43
 @login_required
-@group_required('vendedora','administrador')
+@group_required('vendedora', 'administrador')
 def carga_masiva(request):
     if request.method == 'POST':
         # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
@@ -34,30 +32,32 @@ def carga_masiva(request):
             # Intenta crear un lugar A partir de csv o obtener un lugar ya existente (Para no guardar repetidos)
             try:
                 lugar, created = Lugar.objects.get_or_create(
-                    Calle=imported_data['Calle'][i],
-                    Numero_Interior=imported_data['Numero interior'][i],
-                    Numero_Exterior=imported_data['Numero exterior'][i],
-                    Colonia=imported_data['Colonia'][i],
-                    Ciudad=imported_data['Ciudad'][i],
-                    Estado=imported_data['Estado'][i],
-                    Pais=imported_data['Pais'][i],
-                    Codigo_Postal=imported_data['Codigo postal'][i],
+                    calle=imported_data['Calle'][i],
+                    numero_interior=imported_data['Numero interior'][i],
+                    numero_exterior=imported_data['Numero exterior'][i],
+                    colonia=imported_data['Colonia'][i],
+                    ciudad=imported_data['Ciudad'][i],
+                    estado=imported_data['Estado'][i],
+                    pais=imported_data['Pais'][i],
+                    codigo_postal=imported_data['Codigo postal'][i],
                 )
                 try:
                     # Busca en la base de datos por si existe este prospecto para solo crear la relacion
                     prospecto = Prospecto.objects.get_or_create(
-                        Nombre=imported_data['Nombre'][i],
-                        Apellidos=imported_data['Apellidos'][i],
-                        Email=imported_data['Email'][i],
-                        Telefono_Casa=imported_data['Telefono casa'][i],
-                        Telefono_Celular=imported_data['Telefono celular'][i],
-                        Metodo_Captacion=imported_data['Metodo captacion'][i],
-                        Estado_Civil=imported_data['Estado civil'][i],
-                        Ocupacion=imported_data['Ocupacion'][i],
-                        Hijos=int(imported_data['Hijos'][i]),
-                        Recomendacion=imported_data['Recomendacion'][i],
-                        Direccion=lugar,
+                        nombre=imported_data['Nombre'][i],
+                        apellidos=imported_data['Apellidos'][i],
+                        email=imported_data['Email'][i],
+                        telefono_casa=imported_data['Telefono casa'][i],
+                        telefono_celular=imported_data['Telefono celular'][i],
+                        metodo_captacion=imported_data['Metodo captacion'][i],
+                        estado_civil=imported_data['Estado civil'][i],
+                        ocupacion=imported_data['Ocupacion'][i],
+                        hijos=int(imported_data['Hijos'][i]),
+                        recomendacion=imported_data['Recomendacion'][i],
+                        direccion=lugar,
                         activo=True,
+                        empresa=None,
+                        comentarios='Este prospecto fué creado a traves de carga masiva'
                     )
                     if prospecto[1]:
                         resultado[i] = 'El prospecto se creó con éxito '
@@ -68,21 +68,22 @@ def carga_masiva(request):
                         curso = Grupo.objects.get(id=imported_data['ID curso'][i])
                         if curso:
                             # crea la relacion
-                            prospectoEvento = ProspectoGrupo.objects.get_or_create(
-                                Prospecto=prospecto[0],
-                                Curso=curso,
-                                Fecha=datetime.datetime.now().date(),
-                                Interes='BAJO',
-                                FlagCADHU=False,
+                            prospecto_grupo = ProspectoGrupo.objects.get_or_create(
+                                prospecto=prospecto[0],
+                                curso=curso,
+                                fecha=datetime.datetime.now().date(),
+                                interes='BAJO',
+                                flag_cadhu=False,
                             )
-                            if prospectoEvento[1]:
-                                resultado[i] += ' y se relacionó con el curso: ' + curso.Nombre
+                            if prospecto_grupo[1]:
+                                resultado[i] += ' y se relacionó con el curso: ' + curso.nombre
                             else:
-                                resultado[i] += ' ya existía la relación con el curso: ' + curso.Nombre
+                                resultado[i] += ' ya existía la relación con el curso: ' + curso.nombre
                     except Grupo.DoesNotExist:
                         resultado[i] += ' y no existe este curso.'
                 except IntegrityError:
-                    resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar repetidos en el sistema'
+                    resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar ' \
+                                   'repetidos en el sistema'
             except:
                 resultado[i] = ''
         # escribe el resultado en ultima columna del excel
@@ -96,12 +97,12 @@ def carga_masiva(request):
 
 # US38
 @login_required
-@group_required('vendedora','administrador')
+@group_required('vendedora', 'administrador')
 def lista_clientes(request):
     # Tomar los  los clientes de la base de datos
     clientes = Cliente.objects.filter(activo=True).order_by('Fecha')
     context = {
-        'clientes':clientes,
+        'clientes': clientes,
         'titulo': 'Clientes',
         'estatus': 'activo',
         }
@@ -111,19 +112,19 @@ def lista_clientes(request):
 
 # US30
 @login_required
-@group_required('vendedora','administrador')
-def eliminar_cliente(request, id):
+@group_required('vendedora', 'administrador')
+def eliminar_cliente(request, pk):
     # Seleccionar el cliente y sus pagos de la base de datos
-    cliente = Cliente.objects.get(id=id)
-    pagos=Pago.objects.filter(prospecto_evento=cliente.ProspectoEvento)
+    cliente = Cliente.objects.get(id=pk)
+    pagos = Pago.objects.filter(prospecto_evento=cliente.ProspectoEvento)
     # Eliminar el cliente selecciondo
     cliente.delete()
     # Eliminar los pagos del cliente
     for pago in pagos:
-         pago.delete()
+        pago.delete()
     clientes = Cliente.objects.filter(activo=True).order_by('Fecha')
     context = {
-        'clientes':clientes,
+        'clientes': clientes,
         'titulo': 'Clientes',
         'estatus': 'activo',
         }
@@ -133,45 +134,45 @@ def eliminar_cliente(request, id):
 
 # US31
 @login_required
-@group_required('vendedora','administrador')
-def crear_cliente(request, id):
-    NewClienteForm = ClienteForm()
-    NewLugarForm = LugarForm()
-    #Si el método HTTP es post procesar la información de la forma:
+@group_required('vendedora', 'administrador')
+def crear_cliente(request, pk):
+    new_cliente_form = ClienteForm()
+    new_lugar_form = LugarForm()
+    # Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
-        #Crear y llenar la forma
-        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        NewClienteForm = ClienteForm(request.POST)
-        NewLugarForm = LugarForm(request.POST)
-        pago = Pago.objects.get(id=id)
+        # Crear y llenar la forma
+        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        new_cliente_form = ClienteForm(request.POST)
+        new_lugar_form = LugarForm(request.POST)
+        pago = Pago.objects.get(id=pk)
         fecha = pago.fecha
-        prospectoevento = ProspectoGrupo.objects.get(pk=pago.prospecto_evento_id)
-        #Si la forma es válida guardar la información en la base de datos:
-        if NewClienteForm.is_valid():
-            lugar = NewLugarForm.save()
-            cliente = NewClienteForm.save(commit=False)
-            cliente.ProspectoEvento = prospectoevento
-            cliente.Fecha = fecha
-            cliente.direccionFacturacion = lugar
-            prospectoevento.status = 'CURSANDO'
-            prospectoevento.save()
+        prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_evento_id)
+        # Si la forma es válida guardar la información en la base de datos:
+        if new_cliente_form.is_valid():
+            lugar = new_lugar_form.save()
+            cliente = new_cliente_form.save(commit=False)
+            cliente.prospecto_grupo = prospecto_grupo
+            cliente.fecha = fecha
+            cliente.direccion_facturacion = lugar
+            prospecto_grupo.status = 'CURSANDO'
+            prospecto_grupo.save()
             cliente.save()
             clientes = Cliente.objects.all()
-            prospectoevento = ProspectoGrupo.objects.get(id = pago.prospecto_evento_id)
-            return redirect('prospectos:lista_pagos', idPE = prospectoevento.id)
-        #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+            prospecto_grupo = ProspectoGrupo.objects.get(id=pago.prospecto_evento_id)
+            return redirect('prospectos:lista_pagos', idPE=prospecto_grupo.id)
+        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'Error': Error,
-            'NewClienteForm': NewClienteForm,
-            'NewLugarForm': NewLugarForm,
+            'Error': error,
+            'NewClienteForm': new_cliente_form,
+            'NewLugarForm': new_lugar_form,
             'titulo': 'Registrar un Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
-    #Si el método HTTP no es post, volver a enviar la forma:
+    # Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewClienteForm': NewClienteForm,
-        'NewLugarForm': NewLugarForm,
+        'NewClienteForm': new_cliente_form,
+        'NewLugarForm': new_lugar_form,
         'titulo': 'Registrar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
@@ -179,106 +180,101 @@ def crear_cliente(request, id):
 
 # US37
 @login_required
-@group_required('vendedora','administrador')
-def editar_cliente(request, id):
-    prospectoEvento = ProspectoGrupo.objects.get(id=id)
-    idcliente = Cliente.objects.get(ProspectoEvento=prospectoEvento)
-    newClienteForm = ClienteForm(instance=idcliente)
-    newLugarForm = LugarForm(instance=idcliente.direccionFacturacion)
-    #Si el método HTTP es post procesar la información de la forma:
+@group_required('vendedora', 'administrador')
+def editar_cliente(request, pk):
+    prospecto_grupo = ProspectoGrupo.objects.get(id=pk)
+    id_cliente = Cliente.objects.get(ProspectoEvento=prospecto_grupo)
+    new_cliente_form = ClienteForm(instance=id_cliente)
+    new_lugar_form = LugarForm(instance=id_cliente.direccion_facturacion)
+    # Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
-        #Crear y llenar la forma
-        Error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        newClienteForm = ClienteForm(request.POST or None, instance=idcliente)
-        newLugarForm = LugarForm(request.POST or None, instance=idcliente.direccionFacturacion)
-        pago = Pago.objects.filter(prospecto_evento=prospectoEvento).order_by('fecha')
+        # Crear y llenar la forma
+        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        new_cliente_form = ClienteForm(request.POST or None, instance=id_cliente)
+        new_lugar_form = LugarForm(request.POST or None, instance=id_cliente.direccionFacturacion)
+        pago = Pago.objects.filter(prospecto_evento=prospecto_grupo).order_by('fecha')
         fecha = pago[0].fecha
-        #Si la forma es válida guardar la información en la base de datos:
-        if newClienteForm.is_valid():
-            lugar = newLugarForm.save()
-            cliente = newClienteForm.save(commit=False)
-            cliente.ProspectoEvento = prospectoEvento
-            cliente.Fecha = fecha
-            cliente.direccionFacturacion = lugar
-            prospectoEvento.status = 'CURSANDO'
-            prospectoEvento.save()
+        # Si la forma es válida guardar la información en la base de datos:
+        if new_cliente_form.is_valid():
+            lugar = new_lugar_form.save()
+            cliente = new_cliente_form.save(commit=False)
+            cliente.prospecto_grupo = prospecto_grupo
+            cliente.fecha = fecha
+            cliente.direccion_facturacion = lugar
+            prospecto_grupo.status = 'CURSANDO'
+            prospecto_grupo.save()
             cliente.save()
             clientes = Cliente.objects.all()
-            return redirect('prospectos:lista_pagos', idPE=prospectoEvento.id)
-        #Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+            return redirect('prospectos:lista_pagos', idPE=prospecto_grupo.id)
+        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'Error': Error,
-            'NewClienteForm': newClienteForm,
-            'NewLugarForm': newLugarForm,
+            'Error': error,
+            'NewClienteForm': new_cliente_form,
+            'NewLugarForm': new_lugar_form,
             'titulo': 'Editar Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
-    #Si el método HTTP no es post, volver a enviar la forma:
+    # Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewClienteForm': newClienteForm,
-        'NewLugarForm': newLugarForm,
+        'NewClienteForm': new_cliente_form,
+        'NewLugarForm': new_lugar_form,
         'titulo': 'Editar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
 
-#US38
+# US38
 @login_required
-@group_required('vendedora','administrador')
-def info_cliente(request, id):
-    cliente = Cliente.objects.get(id=id)
-    lugar = Lugar.objects.get(id=cliente.direccionFacturacion.id)
-    relacion = ProspectoGrupo.objects.get(id=cliente.ProspectoEvento.id)
-    prospecto = Prospecto.objects.get(id=relacion.Prospecto.id)
+@group_required('vendedora', 'administrador')
+def info_cliente(request, pk):
+    cliente = Cliente.objects.get(id=pk)
+    lugar = Lugar.objects.get(id=cliente.direccion_facturacion.id)
+    relacion = ProspectoGrupo.objects.get(id=cliente.prospecto_grupo.id)
+    prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
     context = {
         'cliente': cliente,
         'lugar': lugar,
         'relacion': relacion,
         'prospecto': prospecto,
-        'titulo': prospecto.Nombre,
+        'titulo': prospecto.nombre,
     }
     return render(request, 'clientes/info_cliente.html', context)
 
 
-#US3
+# US3
 @login_required
-@group_required('vendedora','administrador')
+@group_required('vendedora', 'administrador')
 def crear_prospecto(request):
-    newProspectoForm = ProspectoForm(prefix='NewProspectoForm')
-    newLugarForm = LugarForm(prefix='NewLugarForm')
-
-    #Si es petición POST, procesar la información de la forma
+    new_prospecto_form = ProspectoForm(prefix='NewProspectoForm')
+    new_lugar_form = LugarForm(prefix='NewLugarForm')
+    # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
-
-        #Crear la instancia de la forma y llenarla con los datos
-        newProspectoForm = ProspectoForm(request.POST, prefix='NewProspectoForm')
-        newLugarForm = LugarForm(request.POST, prefix='NewLugarForm')
-
+        # Crear la instancia de la forma y llenarla con los datos
+        new_prospecto_form = ProspectoForm(request.POST, prefix='NewProspectoForm')
+        new_lugar_form = LugarForm(request.POST, prefix='NewLugarForm')
         # Validar la forma y guardar en BD
-        if newProspectoForm.is_valid() and newLugarForm.is_valid():
-
-            lugar = newLugarForm.save()
-            Prospecto = newProspectoForm.save(commit=False)
-            Prospecto.Direccion = lugar
-            Prospecto.Usuario = request.user
-            Prospecto.Fecha_Creacion = now()
-            Prospecto.save()
+        if new_prospecto_form.is_valid() and new_lugar_form.is_valid():
+            lugar = new_lugar_form.save()
+            prospecto = new_prospecto_form.save(commit=False)
+            prospecto.direccion = lugar
+            prospecto.usuario = request.user
+            prospecto.fecha_creacion = now()
+            prospecto.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
-            return redirect('prospectos:registrar_cursos', id=Prospecto.id)
-        #Si la forma no es válida, volverla a mandar
+            return redirect('prospectos:registrar_cursos', id=prospecto.id)
+        # Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'newProspectoForm': newProspectoForm,
-            'newLugarForm': newLugarForm,
+            'newProspectoForm': new_prospecto_form,
+            'newLugarForm': new_lugar_form,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
-
-    #Si no es POST, volverla a mandar
+    # Si no es POST, volverla a mandar
     context = {
-        'newProspectoForm': newProspectoForm,
-        'newLugarForm': newLugarForm,
+        'newProspectoForm': new_prospecto_form,
+        'newLugarForm': new_lugar_form,
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
@@ -286,47 +282,44 @@ def crear_prospecto(request):
 
 # US4
 @login_required
-@group_required('vendedora','administrador')
-def editar_prospecto(request, id):
-    idprospecto = Prospecto.objects.get(id=id)
-    newProspectoForm = ProspectoForm(instance=idprospecto)
-    newLugarForm = LugarForm(instance=idprospecto.Direccion)
-
+@group_required('vendedora', 'administrador')
+def editar_prospecto(request, pk):
+    id_prospecto = Prospecto.objects.get(id=pk)
+    new_prospecto_form = ProspectoForm(instance=id_prospecto)
+    new_lugar_form = LugarForm(instance=id_prospecto.direccion)
     if request.method == 'POST':
-        newProspectoForm = ProspectoForm(request.POST or None, instance=idprospecto)
-        newLugarForm = LugarForm(request.POST or None, instance=idprospecto.Direccion)
-        if newProspectoForm.is_valid() and newLugarForm.is_valid():
-
-            prospecto = newProspectoForm.save(commit=False)
-            lugar = newLugarForm.save()
-            prospecto.Direccion =lugar
+        new_prospecto_form = ProspectoForm(request.POST or None, instance=id_prospecto)
+        new_lugar_form = LugarForm(request.POST or None, instance=id_prospecto.direccion)
+        if new_prospecto_form.is_valid() and new_lugar_form.is_valid():
+            prospecto = new_prospecto_form.save(commit=False)
+            lugar = new_lugar_form.save()
+            prospecto.direccion = lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
             return redirect('prospectos:registrar_cursos', id=prospecto.id)
-
         else:
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'newProspectoForm': newProspectoForm,
-                'newLugarForm': newLugarForm,
-                'prospecto': idprospecto,
+                'newProspectoForm': new_prospecto_form,
+                'newLugarForm': new_lugar_form,
+                'prospecto': id_prospecto,
                 'titulo': 'Editar Prospecto',
             }
             return render(request, 'prospectos/prospectos_form.html', context)
-
     context = {
-        'newProspectoForm': newProspectoForm,
-        'newLugarForm': newLugarForm,
-        'prospecto': idprospecto,
+        'newProspectoForm': new_prospecto_form,
+        'newLugarForm': new_lugar_form,
+        'prospecto': id_prospecto,
         'titulo': 'Editar Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
 
+
 # US39
 @login_required
 @group_required('administrador')
-def baja_cliente(request, id):
-    cliente = Cliente.objects.get(id=id)
+def baja_cliente(request, pk):
+    cliente = Cliente.objects.get(id=pk)
     if cliente.activo:
         cliente.activo = False
         cliente.save()
@@ -336,6 +329,7 @@ def baja_cliente(request, id):
         cliente.save()
         return redirect(reverse('prospectos:lista_prospectos_inactivos'))
 
+
 # US39
 @login_required
 @group_required('vendedora','administrador')
@@ -343,36 +337,34 @@ def lista_clientes_inactivos(request):
     # Tomar los  los clientes inactivos de la base
     cliente_inactivo = Cliente.objects.filter(activo=False).order_by('Fecha')
     context = {
-        'cliente':cliente_inactivo,
+        'cliente': cliente_inactivo,
         'titulo': 'Clientes',
         }
     # Desplegar la página de cliente con enlistados con la información de la base de datos
     return render(request, 'clientes/clientes.html', context)
 
+
 # US26
 @login_required
 @group_required('vendedora','administrador')
-def registrar_cursos(request, id):
-    newProspectoEventoForm = ProspectoEventoForm()
-    prospecto = Prospecto.objects.get(id=id)
-    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
-
+def registrar_cursos(request, pk):
+    new_prospecto_grupo_form = ProspectoEventoForm()
+    prospecto = Prospecto.objects.get(id=pk)
+    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
-
         # Crear la instancia de la forma y llenarla con los datos
-        newProspectoEventoForm = ProspectoEventoForm(request.POST)
-
+        new_prospecto_grupo_form = ProspectoEventoForm(request.POST)
         # Validar la forma
-        if newProspectoEventoForm.is_valid():
-            PE = newProspectoEventoForm.save(commit=False)
+        if new_prospecto_grupo_form.is_valid():
+            PE = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un curso repetido
             try:
                 ProspectoGrupo.objects.get(Prospecto=prospecto, Curso=PE.Curso)
                 messages.success(request, 'El curso que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': newProspectoEventoForm,
+                    'newProspectoEventoForm': new_prospecto_grupo_form,
                     'titulo': 'Registrar Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'grupos': cursos,
                 }
@@ -387,7 +379,7 @@ def registrar_cursos(request, id):
                 messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': newProspectoEventoForm,
+                    'newProspectoEventoForm': new_prospecto_grupo_form,
                     'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
                     'grupos': cursos,
                 }
@@ -396,7 +388,7 @@ def registrar_cursos(request, id):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'newProspectoEventoForm': newProspectoEventoForm,
+        'newProspectoEventoForm': new_prospecto_grupo_form,
         'titulo': 'Registrar Grupos - ' + prospecto.Nombre + ' ' + prospecto.Apellidos,
         'grupos': cursos,
     }
@@ -406,9 +398,9 @@ def registrar_cursos(request, id):
 # US11
 @login_required
 @group_required('vendedora','administrador')
-def editar_curso(request, id):
+def editar_curso(request, pk):
     oldProspectoEventoForm = ProspectoEventoForm()
-    cursoEditar = ProspectoGrupo.objects.get(id=id)
+    cursoEditar = ProspectoGrupo.objects.get(id=pk)
     newProspectoEventoForm = ProspectoEventoEdit(instance=cursoEditar)
     prospecto = cursoEditar.Prospecto
     cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
@@ -443,8 +435,8 @@ def editar_curso(request, id):
 # US10
 @login_required
 @group_required('vendedora','administrador')
-def eliminar_curso(request, id):
-    curso = ProspectoGrupo.objects.get(id=id)
+def eliminar_curso(request, pk):
+    curso = ProspectoGrupo.objects.get(id=pk)
     newProspectoEventoForm = ProspectoEventoForm()
     prospecto = curso.Prospecto
     cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
@@ -516,9 +508,9 @@ def lista_prospectos_inactivo(request):
 # US6
 @login_required
 @group_required('vendedora','administrador')
-def baja_prospecto(request, id):
+def baja_prospecto(request, pk):
     # Obtener el prospecto
-    prospecto = Prospecto.objects.get(id=id)
+    prospecto = Prospecto.objects.get(id=pk)
     # Si el prospecto es activo, cambiarlo a inactivo
     if prospecto.activo:
         prospecto.activo = False
@@ -533,9 +525,9 @@ def baja_prospecto(request, id):
 # US5
 @login_required
 @group_required('vendedora', 'administrador')
-def info_prospecto(request, id):
+def info_prospecto(request, pk):
     newProspectoEventoForm = ProspectoEventoForm()
-    prospecto = Prospecto.objects.get(id=id)
+    prospecto = Prospecto.objects.get(id=pk)
     cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_evento__Prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
@@ -625,9 +617,9 @@ def lista_empresas_inactivo(request):
 #US14
 @login_required
 @group_required('vendedora','administrador')
-def editar_empresa(request, id):
+def editar_empresa(request, pk):
     #Obtener el id de la empresa, hacer nueva forma de la empresa y de lugar
-    idempresa = Empresa.objects.get(id=id)
+    idempresa = Empresa.objects.get(id=pk)
     NewEmpresaForm = EmpresaForm(instance=idempresa)
     NewLugarForm = LugarForm(instance=idempresa.Direccion)
     if request.method == 'POST':
@@ -698,8 +690,8 @@ def crear_empresa(request):
 
 @login_required
 @group_required('vendedora','administrador')
-def empresa_info(request, id):
-    empresa = Empresa.objects.get(id=id)
+def empresa_info(request, pk):
+    empresa = Empresa.objects.get(id=pk)
     prospectos = Prospecto.objects.filter(Empresa=empresa)
     lugar = Lugar.objects.get(id=empresa.Direccion.id)
     context = {
@@ -713,9 +705,9 @@ def empresa_info(request, id):
 # US16 y US18
 @login_required
 @group_required('vendedora','administrador')
-def baja_empresas(request, id):
+def baja_empresas(request, pk):
     # Obtener empresa
-    empresa = Empresa.objects.get(id=id)
+    empresa = Empresa.objects.get(id=pk)
     # Si la empresa es activa, inactivarla
     if empresa.activo:
         empresa.activo = False
@@ -731,8 +723,8 @@ def baja_empresas(request, id):
 # US19
 @login_required
 @group_required('vendedora','administrador')
-def inscribir_empresa(request, id):
-    empresa = Empresa.objects.get(id=id)
+def inscribir_empresa(request, pk):
+    empresa = Empresa.objects.get(id=pk)
     prospectos = Prospecto.objects.exclude(Empresa__isnull=False) | Prospecto.objects.filter(Empresa=empresa)
     if request.method == "POST":
         vaciar = Prospecto.objects.filter(Empresa=empresa)
@@ -743,7 +735,7 @@ def inscribir_empresa(request, id):
             prospect = Prospecto.objects.get(id=algo)
             prospect.Empresa= empresa
             prospect.save()
-        return empresa_info(request,id)
+        return empresa_info(request,pk)
     context = {
             'prospectos':prospectos,
             'empresa':empresa,
@@ -793,21 +785,21 @@ def crear_actividad(request, pk):
                 'titulo': 'Agregar actividad',
                 'id': id
             }
-            return render(request, 'actividades/crear_actividad.html', context)
+            return render(request, 'actividades/form_actividad.html', context)
     # CARGAR LA VISTA
     context = {
         'form': new_actividad_form,
         'titulo': 'Agregar actividad',
         'id': pk
     }
-    return render(request, 'actividades/crear_actividad.html', context)
+    return render(request, 'actividades/form_actividad.html', context)
 
 
 # US12
 @login_required
 @group_required('vendedora','administrador')
-def estado_actividad(request, id):
-    act = Actividad.objects.get(id=id)
+def estado_actividad(request, pk):
+    act = Actividad.objects.get(id=pk)
     if act.terminado:
         act.terminado = False
         act.save()
@@ -820,8 +812,8 @@ def estado_actividad(request, id):
 # US12
 @login_required
 @group_required('vendedora','administrador')
-def estado_flag(request, id):
-    rel = ProspectoGrupo.objects.get(id=id)
+def estado_flag(request, pk):
+    rel = ProspectoGrupo.objects.get(id=pk)
     if rel.FlagCADHU:
         rel.FlagCADHU = False
         rel.save()
@@ -854,8 +846,6 @@ def nuevo_pago(request, idPE):
             messages.success(request, 'Pago agregado exitosamente!')
             pagos = Pago.objects.filter(prospecto_evento_id = idPE).count()
             if(pagos > 1):
-                # print(idPE)
-                # print(pago.id)
                 pe = ProspectoGrupo.objects.get(id = idPE)
                 return redirect('prospectos:lista_pagos', idPE=idPE)
             else:
@@ -893,7 +883,6 @@ def lista_pagos(request, idPE):
     # prospecto_grupo = ProspectoGrupo.objects.get(id = idPE)
     pagos = Pago.objects.filter(prospecto_evento_id=idPE).count()
     pe = ProspectoGrupo.objects.get(id=idPE)
-    # print(pe.Curso_id)
     total_pagos = 0
     pagos2 = Pago.objects.filter(prospecto_evento_id=idPE)
     for pago in pagos2:
@@ -917,8 +906,8 @@ def lista_pagos(request, idPE):
 # US42
 @login_required
 @group_required('administrador')
-def autorizar_pago(request, id):
-    pago = Pago.objects.get(id=id)
+def autorizar_pago(request, pk):
+    pago = Pago.objects.get(id=pk)
     if pago.validado == False:
         pago.validado = True
         pago.save()
