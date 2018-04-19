@@ -22,7 +22,7 @@ class ClienteTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.prospecto = Prospecto.objects.create(id=1,Nombre='Pablo', Apellidos='Martinez Villareal', Email='pmartinez@gmail.com')
+        cls.prospecto = Prospecto.objects.create(id=1,nombre='Pablo', apellidos='Martinez Villareal', email='pmartinez@gmail.com')
         cls.evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         cls.curso = Curso.objects.create(Nombre='CursoPrueba', Evento=cls.evento, Direccion='Calle', Costo=1000)
         cls.relacion = ProspectoEvento.objects.create(Prospecto=cls.prospecto, Curso=cls.curso, Interes='ALTO', FlagCADHU=False)
@@ -225,28 +225,28 @@ class ProspectoListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_prospectos = 20
-        N = 10
+        cls.number_of_prospectos = 20
+        cls.N = 10
         Lugar.objects.create(
-            Calle='Paraiso',
-            Numero_Interior='',
-            Numero_Exterior='38',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Paraiso',
+            numero_interior='',
+            numero_exterior='38',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
-        for prospecto in range(number_of_prospectos):
+        for prospecto in range(cls.number_of_prospectos):
             Prospecto.objects.create(
-                Nombre='Pablo',
-                Apellidos='Martinez Villareal',
-                Telefono_Casa='4422232226',
-                Telefono_Celular='4422580662',
-                Email=''.join([random.choice(string.ascii_letters + string.digits)for n in range(32)]) + '@gmail.com',
-                Direccion=Lugar.objects.get(Calle='Paraiso'),
-                Ocupacion='Estudiante',
-                Activo=True,
+                nombre='Pablo',
+                apellidos='Martinez Villareal',
+                telefono_casa='4422232226',
+                telefono_celular='4422580662',
+                email=''.join([random.choice(string.ascii_letters + string.digits)for n in range(32)]) + '@gmail.com',
+                direccion=Lugar.objects.get(calle='Paraiso'),
+                ocupacion='Estudiante',
+                activo=True,
             )
 
     #Acceptance citeria: 7.1
@@ -281,27 +281,27 @@ class ProspectoTest(TestCase):
     @classmethod
     def setUpTestData(self):
         Lugar.objects.create(
-            Calle='Paraiso',
-            Numero_Interior='',
-            Numero_Exterior='38',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Paraiso',
+            numero_interior='',
+            numero_exterior='38',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
         Prospecto.objects.create(
-            Nombre='Pablo',
-            Apellidos='Martinez Villareal',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='pmartinez@gmail.com',
-            Direccion=Lugar.objects.get(Calle='Paraiso'),
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre='Pablo',
+            apellidos='Martinez Villareal',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='pmartinez@gmail.com',
+            direccion=Lugar.objects.get(calle='Paraiso'),
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
 
     #ACCEPTANCE CRITERIA: 13.3
@@ -316,45 +316,45 @@ class ProspectoTest(TestCase):
     #Test Django
     def test_crear_prospecto(self):
         Lugar.objects.create(
-            Calle='Lourdes',
-            Numero_Interior='4',
-            Numero_Exterior='105',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Lourdes',
+            numero_interior='5',
+            numero_exterior='73',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
         Prospecto.objects.create(
-            Nombre='Marco Antonio',
-            Apellidos='Luna Calvillo',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='a01209537@itesm.mx',
-            Direccion=Lugar.objects.get(Calle='Lourdes'),
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre='Pablo',
+            apellidos='Martinez Villareal',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='pmartinez@gmail.com',
+            direccion=Lugar.objects.get(calle='Lourdes'),
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
-        Prospecto_acum = Prospecto.objects.filter(Email='a01209537@itesm.mx').count()
+        Prospecto_acum = Prospecto.objects.filter(email='a01209537@itesm.mx').count()
         self.assertEqual(Prospecto_acum, 1)
 
     def test_prospecto_mismo_mail(self):
         try:
-            Prospecto.objects.get_or_create(
-                Nombre='Marco Antonio',
-                Apellidos='Luna Calvillo',
-                Telefono_Casa='4422232226',
-                Telefono_Celular='4422580662',
-                Email='pmartinez@gmail.com',
-                Direccion=Lugar.objects.get(Calle='Paraiso'),
-                Metodo_Captacion='Facebook',
-                Estado_Civil='Soltero',
-                Ocupacion='Estudiante',
-                Hijos=1,
-                Activo=True,
+            Prospecto.objects.create(
+                nombre='Pablo',
+                apellidos='Martinez Villareal',
+                telefono_casa='4422232226',
+                telefono_celular='4422580662',
+                email='pmartinez@gmail.com',
+                direccion=Lugar.objects.get(calle='Paraiso'),
+                metodo_captacion='Facebook',
+                estado_civil='Soltero',
+                ocupacion='Estudiante',
+                hijos=1,
+                activo=True,
             )
             Prospecto_acum = Prospecto.objects.all().count()
             self.assertEqual(Prospecto_acum, 0)
@@ -365,34 +365,34 @@ class ProspectoTest(TestCase):
     # ID_AC 4.1, 4.2
     def test_editar_prospecto(self):
         Lugar.objects.create(
-            Calle='Lourdes',
-            Numero_Interior='4',
-            Numero_Exterior='105',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Lourdes',
+            numero_interior='4',
+            numero_exterior='105',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
         Prospecto.objects.create(
             id='1',
-            Nombre='Marco Antonio',
-            Apellidos='Luna Calvillo',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='a01209537@itesm.mx',
-            Direccion=Lugar.objects.get(Calle='Lourdes'),
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre='Marco Antonio',
+            apellidos='Luna Calvillo',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='a01209537@itesm.mx',
+            direccion=Lugar.objects.get(calle='Lourdes'),
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
         resp = self.client.post(reverse('prospectos:editar_prospecto', kwargs={'id': 1}),{
-            'Nombre': 'Luis Alfredo', 'Apellidos': 'Rodriguez Santos',
-            'Telefono_Casa': '4422232226', 'Telefono_Celular': '4422580662','Direccion':Lugar.objects.get(Calle='Lourdes'),
-            'Email': 'a01209537@itesm.mx', 'Metodo_Captacion': 'Facebook',
-            'Estado_Civil': 'SOLTERO', 'Ocupacion': 'Estudiante', 'Hijos': 1
+            'nombre': 'Luis Alfredo', 'apellidos': 'Rodriguez Santos',
+            'telefono_casa': '4422232226', 'telefono_celular': '4422580662','direccion':Lugar.objects.get(calle='Lourdes'),
+            'email': 'a01209537@itesm.mx', 'metodo_captacion': 'Facebook',
+            'estado_civil': 'SOLTERO', 'ocupacion': 'Estudiante', 'hijos': 1
         },follow=True)
         actualizado = Prospecto.objects.get(id=1)
         self.assertEqual(resp.status_code, 200)
@@ -401,28 +401,28 @@ class ProspectoTest(TestCase):
     #Acceptance Criteria 8.1
     def test_baja_prospecto(self):
         Lugar.objects.create(
-            Calle='Lourdes',
-            Numero_Interior='4',
-            Numero_Exterior='105',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Lourdes',
+            numero_interior='4',
+            numero_exterior='105',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
         Prospecto.objects.create(
             id='1',
-            Nombre='Marco Antonio',
-            Apellidos='Luna Calvillo',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='a01209537@itesm.mx',
-            Direccion=Lugar.objects.get(Calle='Lourdes'),
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre='Marco Antonio',
+            apellidos='Luna Calvillo',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='a01209537@itesm.mx',
+            direccion=Lugar.objects.get(calle='Lourdes'),
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
         resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'id': 1}),follow=True)
         actualizado = Prospecto.objects.get(id=1)
@@ -511,40 +511,40 @@ class CargaMasivaTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         lugar, created = Lugar.objects.get_or_create(
-            Calle='Paraiso',
-            Numero_Interior='',
-            Numero_Exterior='38',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+            calle='Paraiso',
+            numero_interior='',
+            numero_exterior='38',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
         prospecto = Prospecto.objects.create(
-            Nombre='Alejandro',
-            Apellidos='Salmon FD',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='asalmon@cadhu.com',
-            Direccion=lugar,
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre='Alejandro',
+            apellidos='Salmon FD',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='asalmon@cadhu.com',
+            direccion=lugar,
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
         prospecto2 = Prospecto.objects.create(
-            Nombre=' Alejandro',
-            Apellidos='Salmon FD',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='prospecto2@cadhu.com',
-            Direccion=lugar,
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+            nombre=' Alejandro',
+            apellidos='Salmon FD',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='prospecto2@cadhu.com',
+            direccion=lugar,
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
         evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
         curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Fecha_Fin='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
@@ -564,8 +564,8 @@ class CargaMasivaTest(TestCase):
         archivo.close()
         os.remove('test.csv')
         os.remove('static/files/resultado.xls')
-        prospecto = Prospecto.objects.get(Email='mancha@cadhu.com')
-        prospecto2 = Prospecto.objects.get(Email='prospecto2@cadhu.com')
+        prospecto = Prospecto.objects.get(email='mancha@cadhu.com')
+        prospecto2 = Prospecto.objects.get(email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         prospecto2_rel = ProspectoEvento.objects.filter(Prospecto_id=prospecto2.id).count()
@@ -598,7 +598,7 @@ class CargaMasivaTest(TestCase):
         curso = Curso.objects.get(Nombre='CursoPrueba').id
         csv = 'Nombre,Apellidos,Email,Telefono casa,Telefono celular,Metodo captacion,Estado civil,Ocupacion,Hijos,Recomendacion,Pais,Estado,Ciudad,Colonia,Calle,Numero exterior,Numero interior,Codigo postal,ID curso' \
               '\n Alejandro,Salmon FD,asalmon@cadhu.com,4422232226,4422580662,Facebook,Soltero,Estudiante,1,,Mexico,Queretaro,Queretaro,Satelite,Paraiso,38,,76125,'+str(curso)
-        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto = Prospecto.objects.get(email='asalmon@cadhu.com')
         prospecto_count_antes = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel_antes = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         with open('test.csv', 'w') as f:
@@ -610,7 +610,7 @@ class CargaMasivaTest(TestCase):
         archivo.close()
         os.remove('test.csv')
         os.remove('static/files/resultado.xls')
-        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto = Prospecto.objects.get(email='asalmon@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, prospecto_count_antes)
@@ -630,7 +630,7 @@ class CargaMasivaTest(TestCase):
         archivo.close()
         os.remove('test.csv')
         os.remove('static/files/resultado.xls')
-        prospecto = Prospecto.objects.get(Email='asalmon@cadhu.com')
+        prospecto = Prospecto.objects.get(email='asalmon@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         self.assertEqual(prospecto_count, 1)
 
@@ -648,7 +648,7 @@ class CargaMasivaTest(TestCase):
         archivo.close()
         os.remove('test.csv')
         os.remove('static/files/resultado.xls')
-        prospecto = Prospecto.objects.get(Email='prospecto2@cadhu.com')
+        prospecto = Prospecto.objects.get(email='prospecto2@cadhu.com')
         prospecto_count = Prospecto.objects.filter(id=prospecto.id).count()
         prospecto_rel = ProspectoEvento.objects.filter(Prospecto=prospecto).count()
         self.assertEqual(prospecto_count, 1)

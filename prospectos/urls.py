@@ -23,6 +23,7 @@ urlpatterns = [
     # Lista prospectos inactivos
     path('prospectos/inactivo', views.lista_prospectos_inactivo, name='lista_prospectos_inactivo'),
 
+    # Dar de baja prospectos
     path('<int:id>/baja_prospecto', views.baja_prospecto, name='baja_prospecto'),
 
     # Carga masiva de prospectos

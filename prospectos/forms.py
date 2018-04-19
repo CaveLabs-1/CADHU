@@ -28,40 +28,39 @@ class Inscribir_EmpresaForm(ModelForm):
             'Empresa',
         )
 
-class ProspectoForm(ModelForm):
+class Prospecto_form(ModelForm):
     class Meta:
         model = Prospecto
         fields = (
-            'Nombre',
-            'Apellidos',
-            'Telefono_Casa',
-            'Telefono_Celular',
-            'Email',
-            'Metodo_Captacion',
-            'Estado_Civil',
-            'Ocupacion',
-            'Hijos',
-            'Recomendacion',
-            'Activo',
+            'nombre',
+            'apellidos',
+            'telefono_casa',
+            'telefono_celular',
+            'email',
+            'metodo_captacion',
+            'estado_civil',
+            'ocupacion',
+            'hijos',
+            'recomendacion',
             'comentarios',
         )
         exclude = [
-            'Activo',
+            'activo',
         ]
 
 
-class LugarForm(ModelForm):
+class Lugar_form(ModelForm):
     class Meta:
         model = Lugar
         fields = (
-            'Calle',
-            'Numero_Interior',
-            'Numero_Exterior',
-            'Colonia',
-            'Ciudad',
-            'Estado',
-            'Pais',
-            'Codigo_Postal',
+            'calle',
+            'numero_interior',
+            'numero_exterior',
+            'colonia',
+            'ciudad',
+            'estado',
+            'pais',
+            'codigo_Postal',
         )
 
 
