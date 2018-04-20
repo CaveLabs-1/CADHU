@@ -185,6 +185,7 @@ def editar_cliente(request, pk):
     id_cliente = Cliente.objects.get(prospecto_grupo=prospecto_grupo)
     new_cliente_form = ClienteForm(instance=id_cliente)
     new_lugar_form = LugarForm(instance=id_cliente.direccion_facturacion)
+    prospecto = Prospecto.objects.get(id=prospecto_grupo.prospecto_id)
     # Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         # Crear y llenar la forma
@@ -211,14 +212,14 @@ def editar_cliente(request, pk):
             'Error': error,
             'NewClienteForm': new_cliente_form,
             'NewLugarForm': new_lugar_form,
-            'titulo': 'Editar Cliente',
+            'titulo': 'Editar Cliente: ' + prospecto.Nombre + " " + prospecto.Apellidos,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
     context = {
         'NewClienteForm': new_cliente_form,
         'NewLugarForm': new_lugar_form,
-        'titulo': 'Editar Cliente',
+        'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
@@ -236,7 +237,7 @@ def info_cliente(request, pk):
         'lugar': lugar,
         'relacion': relacion,
         'prospecto': prospecto,
-        'titulo': prospecto.nombre,
+        'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellido,
     }
     return render(request, 'clientes/info_cliente.html', context)
 
@@ -787,7 +788,7 @@ def crear_actividad(request, pk):
             context = {
                 'Error': error,
                 'form': new_actividad_form,
-                'titulo': 'Agregar actividad',
+                'titulo': 'Registrar actividad',
                 'id': pk
             }
             return render(request, 'actividades/form_actividad.html', context)
@@ -872,7 +873,7 @@ def nuevo_pago(request, id_pe):
         # se renderiza la página
         context = {
             'form': forma_pago,
-            'titulo': 'Agregar Pago',
+            'titulo': 'Registrar Pago',
             'monto_maximo': monto_maximo,
         }
         return render(request, 'pagos/nuevo_pago.html', context)

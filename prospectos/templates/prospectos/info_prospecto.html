@@ -7,11 +7,14 @@
 
     <div class="row">
         <div class="col s12">
-            <div class="card">
-                <div class="card-image">
-                    <img class="activator" src="{% static 'img/loginImg.jpg' %}" alt="">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
+          <ul class="collapsible">
+            <li>
+              <div class="collapsible-header">
+                <div class="col l4 s12 center">
+                  <i class="material-icons left">person</i>
+                  {{ prospecto.Nombre }} {{ prospecto.Apellidos }}
                 </div>
+
                 <div class="card-content">
                     <span class="card-title activator">{{ prospecto.nombre }} {{ prospecto.apellidos }}</span>
                 </div>
@@ -70,6 +73,43 @@
                     </div>
 
 
+              </div>
+              <div class="collapsible-body">
+                <span>
+                  {#----------------Info-------------#}
+                  <div class="row">
+                      <span class=" grey-text text-darken-4" >Información personal</span>
+                  </div>
+                  <div class="row">
+                      <div class="col s12 m4 l4">
+                          <label>Tel&eacute;fono Casa</label>
+                          {{ prospecto.Telefono_Casa }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label for="ocupacion">Ocupaci&oacute;n</label>
+                          {{ prospecto.Ocupacion }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label>M&eacute;todo de captaci&oacute;n</label>
+                          {{ prospecto.Metodo_Captacion }}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12 m4 l4">
+                          <label for="otro">Radio/Recomendacion </label>
+                          {{ prospecto.Recomendacion }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label>Estado civil</label>
+                          {{ prospecto.Estado_Civil }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label>Hijos</label>
+                          {{ prospecto.Hijos }}
+                      </div>
+                  </div>
+
+
 
 
                     {#----------------direccion-------------#}
@@ -115,18 +155,36 @@
                         </div>
                     </div>
 
+                  {#----------------Direccion-------------#}
+                  <div class="row">
+                      <div class="col s12">
+                          <label>Dirección</label>
+                          {% if not prospecto.Direccion.Numero_Interior %}
+                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }}, {{ prospecto.Direccion.Colonia }},
+                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                          {% else %}
+                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }} Int( {{ prospecto.Direccion.Numero_Interior }} ), {{ prospecto.Direccion.Colonia }},
+                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                          {% endif %}
 
-                    {#----------------Comentarios-------------#}
-                    <div class="row">
-                        <span class=" grey-text text-darken-4" >Comentarios</span>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            {{ prospecto.comentarios }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+                      </div>
+
+                  </div>
+
+                  {#----------------Comentarios-------------#}
+                  <div class="row">
+                      <span class=" grey-text text-darken-4" >Comentarios</span>
+                  </div>
+                  <div class="row">
+                      <div class="col s12 m4 l4">
+                          {{ prospecto.comentarios }}
+                      </div>
+                  </div>
+                </span>
+              </div>
+            </li>
+          </ul>
         </div>
     </div>
 
