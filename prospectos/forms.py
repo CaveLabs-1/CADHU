@@ -40,7 +40,7 @@ class ProspectoForm(ModelForm):
             'telefono_celular',
             'email',
             'metodo_captacion',
-            'estado_civil'
+            'estado_civil',
             'ocupacion',
             'hijos',
             'recomendacion',
@@ -72,14 +72,14 @@ class FormaActividad(ModelForm):
         model = models.Actividad
         fields = [
             'titulo',
-            'prospecto_evento',
+            'prospecto_grupo',
             'fecha',
             'hora',
             'notas',
             'terminado',
         ]
         exclude = [
-            'prospecto_evento'
+            'prospecto_grupo'
         ]
         help_texts = {
             'fecha': 'Para agendar una actividad en un futuro, seleccione la fecha a realizarla.',

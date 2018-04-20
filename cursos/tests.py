@@ -14,7 +14,7 @@ class CursoModelTest(TestCase):
         self.usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
 
-    # Prueba que la url para lista curso exista.
+    # Prueba que la url para lista grupo exista.
     def test_view_url_exists_lista_curso(self):
         resp = self.client.get('/cursos/')
         self.assertEqual(resp.status_code, 200)
@@ -25,7 +25,7 @@ class CursoModelTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'cursos/cursos.html')
 
-    #Prueba que la url para crear curso exista.
+    #Prueba que la url para crear grupo exista.
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/cursos/crear_curso')
         self.assertEqual(resp.status_code, 200)
@@ -40,7 +40,7 @@ class CursoModelTest(TestCase):
     def test_view_crear_curso(self):
         resp = self.client.post(reverse('cursos:crear_curso'), {
             'nombre': 'Taller',
-            'descripcion': 'Este es el curso de pruebas automoatizadas.'})
+            'descripcion': 'Este es el grupo de pruebas automoatizadas.'})
         self.assertEqual(resp.status_code, 302)
         cant= Curso.objects.count()
         self.assertEqual(cant,1)
@@ -53,7 +53,7 @@ class CursoModelTest(TestCase):
             descripcion='DBI'
         )
         resp = self.client.post(reverse('cursos:editar_curso', kwargs={'pk': curso.id}), {
-            'nombre': 'Taller', 'descripcion': 'Este es el curso de pruebas automoatizadas.'
+            'nombre': 'Taller', 'descripcion': 'Este es el grupo de pruebas automoatizadas.'
             },follow=True)
         actualizado = Curso.objects.get(pk=curso.id)
         self.assertEqual(resp.status_code, 200)

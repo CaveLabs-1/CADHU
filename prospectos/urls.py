@@ -45,7 +45,7 @@ urlpatterns = [
     # Info prospecto
     path('informacion/<int:pk>', views.info_prospecto, name='info_prospecto'),
 
-    # Info curso-prospecto
+    # Info grupo-prospecto
     path('interes/<int:rel>', views.info_prospecto_grupo, name='info_prospecto_grupo'),
 
     # Registrar Cursos a Prospecto
@@ -67,10 +67,10 @@ urlpatterns = [
     path('editar_empresa/<int:pk>', views.editar_empresa, name='editar_empresa'),
 
     #Lista de pagos
-    path('lista_pagos/<int:idPE>', views.lista_pagos, name='lista_pagos'),
+    path('lista_pagos/<int:id_pe>', views.lista_pagos, name='lista_pagos'),
 
     #Nuevo pago
-    path('nuevo_pago/<int:idPE>', views.nuevo_pago, name='nuevo_pago'),
+    path('nuevo_pago/<int:id_pe>', views.nuevo_pago, name='nuevo_pago'),
 
     # Crear Cliente
     path('crear_cliente/<int:pk>/', views.crear_cliente, name='crear_cliente'),

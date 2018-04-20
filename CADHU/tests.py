@@ -75,7 +75,7 @@ class PendientesViewTests(TestCase):
             hijos=1,
             activo=True,
         )
-        cls.curso = Curso.objects.create(nombre='Mi Evento', descripcion='Este es el curso de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(nombre='Mi Evento', descripcion='Este es el grupo de pruebas automoatizadas.')
         cls.grupo = Grupo.objects.create(nombre='GrupoPrueba', curso=cls.curso, fecha_inicio='2018-03-16', direccion='Calle',
                                      descripcion='Grupo de marzo', costo=1000)
         cls.relacion = ProspectoGrupo.objects.create(prospecto=cls.prospecto, grupo=cls.grupo, interes='ALTO', flag_cadhu=False)

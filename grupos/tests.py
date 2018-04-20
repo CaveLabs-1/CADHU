@@ -18,7 +18,7 @@ class CursoModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
-        cls.curso = Curso.objects.create(nombre='Mi curso', descripcion='Este es el curso de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(nombre='Mi grupo', descripcion='Este es el grupo de pruebas automoatizadas.')
         cls.curso = Grupo.objects.create(nombre='Grupo', curso=cls.curso, fecha_inicio='2018-03-16', fecha_fin='2018-03-20',
                                          direccion='Calle', descripcion='Grupo de marzo', costo=1000)
 
@@ -36,10 +36,10 @@ class CursoModelTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_crear_grupo(self):
-        curso = Curso.objects.create(nombre='Mi Curso 2', descripcion='Este es el curso de pruebas automoatizadas.')
+        curso = Curso.objects.create(nombre='Mi Curso 2', descripcion='Este es el grupo de pruebas automoatizadas.')
         resp = self.client.post('/grupos/nuevo_grupo',  {
             'nombre': 'Grupo',
-            'curso': curso,
+            'grupo': curso,
             'fecha_inicio': '2018-03-16',
             'fecha_fin': '2018-03-16',
             'direccion': 'Calle',
@@ -60,17 +60,17 @@ class CursoViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.curso = Curso.objects.create(nombre='Mi Curso', descripcion='Este es el curso de pruebas automoatizadas.')
+        cls.curso = Curso.objects.create(nombre='Mi Curso', descripcion='Este es el grupo de pruebas automoatizadas.')
         Grupo.objects.create(nombre='Grupo', curso=cls.curso, fecha_inicio='2018-03-16', fecha_fin='2018-03-16',
                              direccion='Calle', descripcion='Curso de marzo', costo=1000)
 
-    #Acceptance criteria: 29.1
+    # Acceptance criteria: 29.1
     def test_view_uses_correct_template(self):
         resp = self.client.get(reverse('grupos:grupos'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'grupos/grupos.html')
 
-    #Acceptance criteria: 29.2
+    # Acceptance criteria: 29.2
     def test_view_grupo_existe(self):
         resp = self.client.get(reverse('grupos:grupos'))
         self.assertEqual(resp.status_code, 200)

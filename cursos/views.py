@@ -33,7 +33,7 @@ def crear_curso(request):
             curso.activo = True
             curso.save()
             # Mensaje de exito
-            messages.success(request, 'El curso ha sido creado.')
+            messages.success(request, 'El grupo ha sido creado.')
             return redirect(reverse('cursos:lista_cursos'))
         else:
             # Mensaje de error
@@ -79,20 +79,20 @@ def editar_curso(request, pk):
             curso = new_curso_form.save(commit=False)
             curso.activo = True
             curso.save()
-            messages.success(request, 'El curso ha sido actualizado.')
+            messages.success(request, 'El grupo ha sido actualizado.')
             return redirect('cursos:lista_cursos')
         else:
             # Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
                 'new_curso_form': new_curso_form,
-                'curso': id_curso,
+                'grupo': id_curso,
                 'titulo': 'Editar Curso',
             }
             return render(request, 'cursos/form_curso.html', context)
     context = {
         'new_curso_form': new_curso_form,
-        'curso': id_curso,
+        'grupo': id_curso,
         'titulo': 'Editar Curso',
     }
     return render(request, 'cursos/form_curso.html', context)
