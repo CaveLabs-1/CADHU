@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Prospecto: {{ prospecto.Nombre }} {{ prospecto.Apellidos }} {% endblock %}
+{% block title %} Prospecto: {{ prospecto.nombre }} {{ prospecto.apellidos }} {% endblock %}
 {% block content %}
 
     <div class="row">
@@ -13,105 +13,105 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
                 </div>
                 <div class="card-content">
-                    <span class="card-title activator">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                    <span class="card-title activator">{{ prospecto.nombre }} {{ prospecto.apellidos }}</span>
                 </div>
                 <div class="card-reveal">
                     <div class="row">
-                        <span class="card-title grey-text text-darken-4">{{ prospecto.Nombre }} {{ prospecto.Apellidos }}<i class="material-icons right">close</i></span>
+                        <span class="card-title grey-text text-darken-4">{{ prospecto.nombre }} {{ prospecto.apellidos }}<i class="material-icons right">close</i></span>
                     </div>
                     {#----------------Info-------------#}
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label for="Nombre">Nombre(s)</label>
-                            {{ prospecto.Nombre }}
+                            {{ prospecto.nombre }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="apellido_p">Apellidos</label>
-                            {{ prospecto.Apellidos }}
+                            {{ prospecto.apellidos }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Email</label>
-                            {{ prospecto.Email }}
+                            {{ prospecto.email }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Celular</label>
-                            {{ prospecto.Telefono_Celular }}
+                            {{ prospecto.telefono_celular }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Casa</label>
-                            {{ prospecto.Telefono_Casa }}
+                            {{ prospecto.telefono_casa }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="ocupacion">Ocupaci&oacute;n</label>
-                            {{ prospecto.Ocupacion }}
+                            {{ prospecto.ocupacion }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>M&eacute;todo de captaci&oacute;n</label>
-                            {{ prospecto.Metodo_Captacion }}
+                            {{ prospecto.metodo_captacion }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="otro">Radio/Recomendacion </label>
-                            {{ prospecto.Recomendacion }}
+                            {{ prospecto.recomendacion }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Estado civil</label>
-                            {{ prospecto.Estado_Civil }}
+                            {{ prospecto.estado_civil }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Hijos</label>
-                            {{ prospecto.Hijos }}
+                            {{ prospecto.hijos }}
                         </div>
                     </div>
 
 
 
 
-                    {#----------------Direccion-------------#}
+                    {#----------------direccion-------------#}
                     <div class="row">
                         <span class=" grey-text text-darken-4" >Direcci&oacute;n</span>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Pa&iacute;s</label>
-                            {{ prospecto.Direccion.Pais }}
+                            {{ prospecto.direccion.pais }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Estado</label>
-                            {{ prospecto.Direccion.Estado }}
+                            {{ prospecto.direccion.estado }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Ciudad</label>
-                            {{ prospecto.Direccion.Ciudad }}
+                            {{ prospecto.direccion.ciudad }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m6">
                             <label for="colonia">Colonia</label>
-                            {{ prospecto.Direccion.Colonia }}
+                            {{ prospecto.direccion.colonia }}
                         </div>
                         <div class="col s12 m6">
                             <label for="calle">Calle</label>
-                            {{ prospecto.Direccion.Calle }}
+                            {{ prospecto.direccion.calle }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s6 m4">
                             <label for="num_ext">N&uacute;mero exterior</label>
-                            {{ prospecto.Direccion.Numero_Exterior }}
+                            {{ prospecto.direccion.numero_exterior }}
                         </div>
                         <div class="col s6 m4">
                             <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
-                            {{ prospecto.Direccion.Numero_Interior }}
+                            {{ prospecto.direccion.numero_interior }}
                         </div>
                         <div class="col s12 m4">
                             <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
-                            {{ prospecto.Direccion.Codigo_Postal }}
+                            {{ prospecto.direccion.codigo_postal }}
                         </div>
                     </div>
 
@@ -158,24 +158,24 @@
             </tr>
             </thead>
             <tbody>
-            {% for prospecto_evento in cursos %}
+            {% for prospecto_grupo in relacion %}
                 <tr>
-                    <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.pk %}">{{ prospecto_evento.Curso }}</a></td>
-                    <td>{{ prospecto_evento.Interes }}</td>
-                    <td>{{ prospecto_evento.Fecha }}</td>
-                    {% if prospecto_evento.FlagCADHU == True %}
+                    <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.curso }}</a></td>
+                    <td>{{ prospecto_grupo.interes }}</td>
+                    <td>{{ prospecto_grupo.fecha }}</td>
+                    {% if prospecto_grupo.flag_cadhu %}
                         <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                     {% else %}
                         <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                     {% endif %}
                     <td>
-                        <a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.id %}"><i class="material-icons">info</i></a>
-                        <a href="{% url 'prospectos:editar_curso' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="{% url 'prospectos:eliminar_curso' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}"><i class="material-icons">info</i></a>
+                        <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'prospectos:eliminar_grupo' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     </td>
                     <td class="center">
 
-                      {% if prospecto_evento.Curso.Activo %}
+                      {% if prospecto.grupo.activo %}
                         <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                       {% else %}
                         <p>-</p>
@@ -197,11 +197,11 @@
                 <div class="row center">
                     <div class="col s12">
                         <div class="input-field col l8 offset-l2 s12">
-                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
-                            <label for="Curso">Curso</label>
+                            {{ new_prospecto_grupo_form.grupo | add_class:'form-control' }}
+                            <label for="Grupo">Grupo</label>
                         </div>
                         <div class="input-field col l8 offset-l2 s12">
-                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
+                            {{ new_prospecto_grupo_form.interes | add_class:'form-control' }}
                             <label for="Interes">Interes</label>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -232,7 +232,7 @@
                 {% for actividad in agenda %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis">
@@ -268,7 +268,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -279,7 +279,7 @@
                 {% for actividad in bitacora %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
