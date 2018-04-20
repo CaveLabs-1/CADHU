@@ -360,7 +360,7 @@ def registrar_cursos(request, pk):
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un grupo repetido
             try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.Curso)
+                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.grupo)
                 messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
@@ -529,7 +529,7 @@ def baja_prospecto(request, pk):
 def info_prospecto(request, pk):
     new_prospecto_grupo_form = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=pk)
-    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
     agenda = []
