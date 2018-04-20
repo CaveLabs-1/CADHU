@@ -17,7 +17,7 @@ from django.utils.timezone import now
 
 # US43
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def carga_masiva(request):
     if request.method == 'POST':
         # Guarda el archivo csv mandando por POST y lo guarda como un DataSet
@@ -266,15 +266,15 @@ def crear_prospecto(request):
         # Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'new_prospecto_form': new_prospecto_form,
-            'new_lugar_form': new_lugar_form,
+            'newProspectoForm': new_prospecto_form,
+            'newLugarForm': new_lugar_form,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
     # Si no es POST, volverla a mandar
     context = {
-        'new_prospecto_form': new_prospecto_form,
-        'new_lugar_form': new_lugar_form,
+        'newProspectoForm': new_prospecto_form,
+        'newLugarForm': new_lugar_form,
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
@@ -317,7 +317,7 @@ def editar_prospecto(request, pk):
 
 # US39
 @login_required
-@group_required('vendedora', 'administrador')
+@group_required('administrador')
 def baja_cliente(request, pk):
     cliente = Cliente.objects.get(id=pk)
     if cliente.activo:
@@ -529,7 +529,7 @@ def baja_prospecto(request, pk):
 def info_prospecto(request, pk):
     new_prospecto_grupo_form = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=pk)
-    relacion = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    cursos = ProspectoGrupo.objects.filter(Prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
     agenda = []
@@ -547,16 +547,16 @@ def info_prospecto(request, pk):
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un grupo repetido
             try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.grupo)
+                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.curso)
                 messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
+                    'newProspectoEventoForm': new_prospecto_grupo_form,
                     'titulo': titulo,
                     'actividades': actividades,
                     'agenda': agenda,
                     'bitacora': bitacora,
-                    'relacion': relacion,
+                    'grupos': cursos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
             # Guardar la forma en la BD
@@ -568,23 +568,23 @@ def info_prospecto(request, pk):
                 messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
-                    'titulo': titulo,
+                    'newProspectoEventoForm': new_prospecto_grupo_form,
                     'actividades': actividades,
                     'agenda': agenda,
                     'bitacora': bitacora,
-                    'relacion': relacion,
+                    'titulo': titulo,
+                    'grupos': cursos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
-        'prospecto': prospecto,
-        'new_prospecto_grupo_form': new_prospecto_grupo_form,
         'titulo': titulo,
+        'newProspectoEventoForm': new_prospecto_grupo_form,
         'actividades': actividades,
         'agenda': agenda,
         'bitacora': bitacora,
-        'relacion': relacion,
+        'grupos': cursos,
+        'prospecto': prospecto,
     }
     return render(request, 'prospectos/info_prospecto.html', context)
 
@@ -831,7 +831,7 @@ def estado_flag(request, pk):
 
 # US41
 @login_required
-@group_required('vendedora', 'administrador')
+@group_required('administrador')
 def nuevo_pago(request, id_pe):
     # recibir forma
     forma_pago = PagoForm()
@@ -881,7 +881,7 @@ def nuevo_pago(request, id_pe):
 
 # US42
 @login_required
-@group_required('vendedora', 'administrador')
+@group_required('administrador')
 def lista_pagos(request, id_pe):
     pagos = Pago.objects.filter(prospecto_grupo_id=id_pe).count()
     pe = ProspectoGrupo.objects.get(id=id_pe)

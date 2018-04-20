@@ -8,7 +8,7 @@ from django.contrib import messages
 
 # US36 y US34
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def lista_cursos(request):
     # Se hacer render de la lista de prospectos
     cursos = Curso.objects.filter(activo=True)
@@ -52,7 +52,7 @@ def crear_curso(request):
 
 #US 35
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def eliminar_curso(request, pk):
     curso = Curso.objects.get(id=pk)
     grupos = Grupo.objects.filter(curso_id=pk).count()
@@ -67,7 +67,7 @@ def eliminar_curso(request, pk):
 
 # US 33
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def editar_curso(request, pk):
     # Obtener el pk del evento, hacer nueva forma del evento
     id_curso = Curso.objects.get(id=pk)
