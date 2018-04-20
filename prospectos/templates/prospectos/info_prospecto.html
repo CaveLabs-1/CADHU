@@ -7,194 +7,185 @@
 
     <div class="row">
         <div class="col s12">
-          <ul class="collapsible">
-            <li>
-              <div class="collapsible-header">
-                <div class="col l4 s12 center">
-                  <i class="material-icons left">person</i>
-                  {{ prospecto.Nombre }} {{ prospecto.Apellidos }}
-                </div>
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <div class="col l4 s12 center">
+                            <i class="material-icons left">person</i>
+                            {{ prospecto.Nombre }} {{ prospecto.Apellidos }}
+                        </div>
 
-                <div class="card-content">
-                    <span class="card-title activator">{{ prospecto.nombre }} {{ prospecto.apellidos }}</span>
-                </div>
-                <div class="card-reveal">
-                    <div class="row">
-                        <span class="card-title grey-text text-darken-4">{{ prospecto.nombre }} {{ prospecto.apellidos }}<i class="material-icons right">close</i></span>
+                        <div class="card-content">
+                            <span class="card-title activator">{{ prospecto.nombre }} {{ prospecto.apellidos }}</span>
+                        </div>
+                        <div class="card-reveal">
+                            <div class="row">
+                                <span class="card-title grey-text text-darken-4">{{ prospecto.nombre }} {{ prospecto.apellidos }}<i class="material-icons right">close</i></span>
+                            </div>
+                            {#----------------Info-------------#}
+                            <div class="row">
+                                <div class="col s12 m4 l4">
+                                    <label for="Nombre">Nombre(s)</label>
+                                    {{ prospecto.nombre }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label for="apellido_p">Apellidos</label>
+                                    {{ prospecto.apellidos }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label>Email</label>
+                                    {{ prospecto.email }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m4 l4">
+                                    <label>Tel&eacute;fono Celular</label>
+                                    {{ prospecto.telefono_celular }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label>Tel&eacute;fono Casa</label>
+                                    {{ prospecto.telefono_casa }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label for="ocupacion">Ocupaci&oacute;n</label>
+                                    {{ prospecto.ocupacion }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m4 l4">
+                                    <label>M&eacute;todo de captaci&oacute;n</label>
+                                    {{ prospecto.metodo_captacion }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label for="otro">Radio/Recomendacion </label>
+                                    {{ prospecto.recomendacion }}
+                                </div>
+                                <div class="col s12 m4 l4">
+                                    <label>Estado civil</label>
+                                    {{ prospecto.estado_civil }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m4 l4">
+                                    <label>Hijos</label>
+                                    {{ prospecto.hijos }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapsible-body">
+                            <span>
+                              {#----------------Info-------------#}
+                              <div class="row">
+                                  <span class=" grey-text text-darken-4" >Información personal</span>
+                              </div>
+                              <div class="row">
+                                  <div class="col s12 m4 l4">
+                                      <label>Tel&eacute;fono Casa</label>
+                                      {{ prospecto.Telefono_Casa }}
+                                  </div>
+                                  <div class="col s12 m4 l4">
+                                      <label for="ocupacion">Ocupaci&oacute;n</label>
+                                      {{ prospecto.Ocupacion }}
+                                  </div>
+                                  <div class="col s12 m4 l4">
+                                      <label>M&eacute;todo de captaci&oacute;n</label>
+                                      {{ prospecto.Metodo_Captacion }}
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col s12 m4 l4">
+                                      <label for="otro">Radio/Recomendacion </label>
+                                      {{ prospecto.Recomendacion }}
+                                  </div>
+                                  <div class="col s12 m4 l4">
+                                      <label>Estado civil</label>
+                                      {{ prospecto.Estado_Civil }}
+                                  </div>
+                                  <div class="col s12 m4 l4">
+                                      <label>Hijos</label>
+                                      {{ prospecto.Hijos }}
+                                  </div>
+                              </div>
+
+                                {#----------------direccion-------------#}
+                                <div class="row">
+                                    <span class=" grey-text text-darken-4" >Direcci&oacute;n</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m4 l4">
+                                        <label>Pa&iacute;s</label>
+                                        {{ prospecto.direccion.pais }}
+                                    </div>
+                                    <div class="col s12 m4 l4">
+                                        <label>Estado</label>
+                                        {{ prospecto.direccion.estado }}
+                                    </div>
+                                    <div class="col s12 m4 l4">
+                                        <label>Ciudad</label>
+                                        {{ prospecto.direccion.ciudad }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m6">
+                                        <label for="colonia">Colonia</label>
+                                        {{ prospecto.direccion.colonia }}
+                                    </div>
+                                    <div class="col s12 m6">
+                                        <label for="calle">Calle</label>
+                                        {{ prospecto.direccion.calle }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s6 m4">
+                                        <label for="num_ext">N&uacute;mero exterior</label>
+                                        {{ prospecto.direccion.numero_exterior }}
+                                    </div>
+                                    <div class="col s6 m4">
+                                        <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+                                        {{ prospecto.direccion.numero_interior }}
+                                    </div>
+                                    <div class="col s12 m4">
+                                        <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+                                        {{ prospecto.direccion.codigo_postal }}
+                                    </div>
+                                </div>
+
+                              {#----------------Direccion-------------#}
+                              <div class="row">
+                                  <div class="col s12">
+                                      <label>Dirección</label>
+                                      {% if not prospecto.Direccion.Numero_Interior %}
+                                          {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }}, {{ prospecto.Direccion.Colonia }},
+                                          {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                                      {% else %}
+                                          {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }} Int( {{ prospecto.Direccion.Numero_Interior }} ), {{ prospecto.Direccion.Colonia }},
+                                          {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                                      {% endif %}
+                                  </div>
+                              </div>
+
+                              {#----------------Comentarios-------------#}
+                              <div class="row">
+                                  <span class=" grey-text text-darken-4" >Comentarios</span>
+                              </div>
+                              <div class="row">
+                                  <div class="col s12 m4 l4">
+                                      {{ prospecto.comentarios }}
+                                  </div>
+                              </div>
+                            </span>
+                        </div>
                     </div>
-                    {#----------------Info-------------#}
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label for="Nombre">Nombre(s)</label>
-                            {{ prospecto.nombre }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label for="apellido_p">Apellidos</label>
-                            {{ prospecto.apellidos }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Email</label>
-                            {{ prospecto.email }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>Tel&eacute;fono Celular</label>
-                            {{ prospecto.telefono_celular }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Tel&eacute;fono Casa</label>
-                            {{ prospecto.telefono_casa }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label for="ocupacion">Ocupaci&oacute;n</label>
-                            {{ prospecto.ocupacion }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>M&eacute;todo de captaci&oacute;n</label>
-                            {{ prospecto.metodo_captacion }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label for="otro">Radio/Recomendacion </label>
-                            {{ prospecto.recomendacion }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Estado civil</label>
-                            {{ prospecto.estado_civil }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>Hijos</label>
-                            {{ prospecto.hijos }}
-                        </div>
-                    </div>
-
-
-              </div>
-              <div class="collapsible-body">
-                <span>
-                  {#----------------Info-------------#}
-                  <div class="row">
-                      <span class=" grey-text text-darken-4" >Información personal</span>
-                  </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          <label>Tel&eacute;fono Casa</label>
-                          {{ prospecto.Telefono_Casa }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label for="ocupacion">Ocupaci&oacute;n</label>
-                          {{ prospecto.Ocupacion }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>M&eacute;todo de captaci&oacute;n</label>
-                          {{ prospecto.Metodo_Captacion }}
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          <label for="otro">Radio/Recomendacion </label>
-                          {{ prospecto.Recomendacion }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>Estado civil</label>
-                          {{ prospecto.Estado_Civil }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>Hijos</label>
-                          {{ prospecto.Hijos }}
-                      </div>
-                  </div>
-
-
-
-
-                    {#----------------direccion-------------#}
-                    <div class="row">
-                        <span class=" grey-text text-darken-4" >Direcci&oacute;n</span>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m4 l4">
-                            <label>Pa&iacute;s</label>
-                            {{ prospecto.direccion.pais }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Estado</label>
-                            {{ prospecto.direccion.estado }}
-                        </div>
-                        <div class="col s12 m4 l4">
-                            <label>Ciudad</label>
-                            {{ prospecto.direccion.ciudad }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m6">
-                            <label for="colonia">Colonia</label>
-                            {{ prospecto.direccion.colonia }}
-                        </div>
-                        <div class="col s12 m6">
-                            <label for="calle">Calle</label>
-                            {{ prospecto.direccion.calle }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s6 m4">
-                            <label for="num_ext">N&uacute;mero exterior</label>
-                            {{ prospecto.direccion.numero_exterior }}
-                        </div>
-                        <div class="col s6 m4">
-                            <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
-                            {{ prospecto.direccion.numero_interior }}
-                        </div>
-                        <div class="col s12 m4">
-                            <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
-                            {{ prospecto.direccion.codigo_postal }}
-                        </div>
-                    </div>
-
-                  {#----------------Direccion-------------#}
-                  <div class="row">
-                      <div class="col s12">
-                          <label>Dirección</label>
-                          {% if not prospecto.Direccion.Numero_Interior %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }}, {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
-                          {% else %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }} Int( {{ prospecto.Direccion.Numero_Interior }} ), {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
-                          {% endif %}
-
-
-                      </div>
-
-                  </div>
-
-                  {#----------------Comentarios-------------#}
-                  <div class="row">
-                      <span class=" grey-text text-darken-4" >Comentarios</span>
-                  </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          {{ prospecto.comentarios }}
-                      </div>
-                  </div>
-                </span>
-              </div>
-            </li>
-          </ul>
+                </li>
+            </ul>
         </div>
     </div>
-
 
     <ul id="tabs" class="tabs">
         <li class="tab col s4"><a href="#cursos">Grupos</a></li>
         <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
         <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
     </ul>
-
 
     <div id="cursos" class="col s12">
         <div class="row">
@@ -233,11 +224,11 @@
                     </td>
                     <td class="center">
 
-                      {% if prospecto.grupo.activo %}
-                        <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
-                      {% else %}
-                        <p>-</p>
-                      {% endif %}
+                        {% if prospecto.grupo.activo %}
+                            <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+                        {% else %}
+                            <p>-</p>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

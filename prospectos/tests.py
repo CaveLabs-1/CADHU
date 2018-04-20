@@ -380,7 +380,6 @@ class ProspectoTest(TestCase):
             codigo_postal='76125'
         )
         prospecto = Prospecto.objects.create(
-            id='1',
             nombre='Marco Antonio',
             apellidos='Luna Calvillo',
             telefono_casa='4422232226',
@@ -416,7 +415,6 @@ class ProspectoTest(TestCase):
             codigo_postal='76125'
         )
         Prospecto.objects.create(
-            id='1',
             nombre='Marco Antonio',
             apellidos='Luna Calvillo',
             telefono_casa='4422232226',

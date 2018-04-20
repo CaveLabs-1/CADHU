@@ -481,9 +481,9 @@ def info_prospecto_grupo(request, rel):
 def lista_prospectos(request):
     # Tomar los  los prospectos de la base
     # prospectos = Prospecto.objects.all()
-    prostpecto_activo = Prospecto.objects.filter(activo=True)
+    prospecto_activo = Prospecto.objects.filter(activo=True)
     context = {
-        'prospectos': prostpecto_activo,
+        'prospectos': prospecto_activo,
         'titulo': 'Prospectos',
         }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
