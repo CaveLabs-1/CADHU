@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load grupos %}
 
 {% block title %}Prospectos{% endblock %}
 {% block content %}
@@ -7,10 +8,12 @@
         <a href="{% url 'prospectos:crear_prospecto' %}" class="btn-floating btn-large orange">
             <i class="large material-icons">add</i>
         </a>
+        {% if request.user|has_group:"administrador"%}
         <ul>
             <li><a class="btn-floating blue" href="{% static 'files/TemplateCargaMasiva.xlsx'%}"><i class="material-icons">get_app</i></a></li>
             <li><a class="btn-floating green modal-trigger" href="#modalCarga"><i class="material-icons">publish</i></a></li>
         </ul>
+        {% endif %}
     </div>
 
     <table class="dataTable">
@@ -26,10 +29,10 @@
         <tbody>
         {% for prospecto in prospectos   %}
             <tr>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
-                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
-                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
-                <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.nombre }}</a></td>
+                <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.apellidos }}</a></td>
+                <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.telefono_celular }}</a></td>
+                <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.email }}</a></td>
                 <td  class="center">
                     <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                     <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
