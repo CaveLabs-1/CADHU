@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load grupos %}
 
 {% block title %}Grupos{% endblock %}
 {% block content %}
 
+    {% if request.user|has_group:"administrador"%}
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large orange" href="{% url 'grupos:nuevo_grupo' %}">
             <i class="large material-icons">add</i>
         </a>
     </div>
+    {% endif %}
 
     <table class="dataTable">
         <thead>
