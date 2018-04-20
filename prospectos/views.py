@@ -212,7 +212,7 @@ def editar_cliente(request, pk):
             'Error': error,
             'NewClienteForm': new_cliente_form,
             'NewLugarForm': new_lugar_form,
-            'titulo': 'Editar Cliente: ' + prospecto.Nombre + " " + prospecto.Apellidos,
+            'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
