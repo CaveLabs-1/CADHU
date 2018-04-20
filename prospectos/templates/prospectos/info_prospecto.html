@@ -12,7 +12,7 @@
               <div class="collapsible-header">
                 <div class="col l4 s12 center">
                   <i class="material-icons left">person</i>
-                  {{ prospecto.Nombre }} {{ prospecto.Apellidos }}
+                  {{ prospecto.nombre }} {{ prospecto.apellidos }}
                 </div>
                 <div class="col l4 s12 center">
                   <i class="material-icons left">contact_mail</i>
@@ -33,29 +33,29 @@
                   <div class="row">
                       <div class="col s12 m4 l4">
                           <label>Tel&eacute;fono Casa</label>
-                          {{ prospecto.Telefono_Casa }}
+                          {{ prospecto.telefono_casa }}
                       </div>
                       <div class="col s12 m4 l4">
                           <label for="ocupacion">Ocupaci&oacute;n</label>
-                          {{ prospecto.Ocupacion }}
+                          {{ prospecto.ocupacion }}
                       </div>
                       <div class="col s12 m4 l4">
                           <label>M&eacute;todo de captaci&oacute;n</label>
-                          {{ prospecto.Metodo_Captacion }}
+                          {{ prospecto.metodo_captacion }}
                       </div>
                   </div>
                   <div class="row">
                       <div class="col s12 m4 l4">
                           <label for="otro">Radio/Recomendacion </label>
-                          {{ prospecto.Recomendacion }}
+                          {{ prospecto.recomendacion }}
                       </div>
                       <div class="col s12 m4 l4">
                           <label>Estado civil</label>
-                          {{ prospecto.Estado_Civil }}
+                          {{ prospecto.estado_civil }}
                       </div>
                       <div class="col s12 m4 l4">
                           <label>Hijos</label>
-                          {{ prospecto.Hijos }}
+                          {{ prospecto.hijos }}
                       </div>
                   </div>
 
@@ -66,12 +66,12 @@
                   <div class="row">
                       <div class="col s12">
                           <label>Dirección</label>
-                          {% if not prospecto.Direccion.Numero_Interior %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }}, {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                          {% if not prospecto.direccion.numero_interior %}
+                            {{ prospecto.direccion.calle }} #{{ prospecto.direccion.numero_exterior }}, {{ prospecto.direccion.Colonia }},
+                            {{ prospecto.direccion.ciudad }}, {{ prospecto.direccion.estado }}, {{ prospecto.direccion.pais }}. C.P: {{ prospecto.direccion.codigo_postal }}
                           {% else %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }} Int( {{ prospecto.Direccion.Numero_Interior }} ), {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
+                            {{ prospecto.direccion.calle }} #{{ prospecto.direccion.numero_exterior }} Int( {{ prospecto.direccion.numero_interior }} ), {{ prospecto.direccion.colonia }},
+                            {{ prospecto.direccion.ciudad }}, {{ prospecto.direccion.estado }}, {{ prospecto.direccion.pais }}. C.P: {{ prospecto.direccion.codigo_postal }}
                           {% endif %}
 
 
