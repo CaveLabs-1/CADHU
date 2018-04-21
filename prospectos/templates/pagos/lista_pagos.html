@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
     {% block title %}Lista de Pagos{% endblock %}
 {% block content %}
 
@@ -10,7 +9,7 @@
       <div class="row">
         <div class="col l6 s12">
           <h6 style="text-transform: uppercase">
-            <b> {{ prospecto.Nombre }} {{ prospecto.Apellidos }}  </b>
+            <b> {{ prospecto.nombre }} {{ prospecto.apellidos }}  </b>
           </h6>
         </div>
         <div class="col l6 s12 ">
@@ -46,12 +45,6 @@
                     <b>Tipo de pago:</b> {{ pago.tipo_pago }}
                   </div>
                 </div>
-                <!-- <div class="row">
-                  <div class="col s12">
-                    <i class="material-icons left">event</i>
-                    <b>Fecha:</b> {{ pago.fecha }}
-                  </div>
-                </div> -->
                 <div class="row">
                   <div class="col s12">
                     <i class="material-icons left">label</i>
@@ -84,7 +77,7 @@
       <div class="row">
         <div class="col s12">
           <h6>
-            Costo Total: $ {{ curso.Costo }}
+            Costo Total: $ {{ curso.costo }}
           </h6>
           <h6>
             Saldo Pagado: $ {{ subtotal }}

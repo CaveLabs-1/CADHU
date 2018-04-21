@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
     {% block title %}Nuevo Pago{% endblock %}
 {% block content %}
 
@@ -46,59 +45,6 @@
                 <label for="{{form.comentarios.html_name}}">Comentarios</label>
               </div>
             </div>
-            <!-- <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
-                <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="{{form.Evento.html_name}}" id="{{ form.Evento.id_for_label }}" oninvalid="setCustomValidity('Selecciona un evento de la lista')" required>
-                  <option value="" disabled selected>Selecciona el tipo de evento</option>
-                  {% for evento in eventos %}
-                    <option value="{{ evento.id }}">{{ evento.Nombre }}</option>
-                  {% endfor %}
-                </select>
-                <label>Eventos</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Fecha_Inicio.html_name}}" id="{{ form.Fecha_Inicio.id_for_label }}"  class="datepicker" required>
-                <label for="{{form.Fecha_Inicio.id_for_label}}" >Fecha de Inicio</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Fecha_Fin.html_name}}" id="{{ form.Fecha_Fin.id_for_label }}"  class="datepicker" required>
-                <label for="{{form.Fecha_Fin.id_for_label}}" >Fecha de Fin</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Direccion.html_name}}" id="{{ form.Direccion.id_for_label }}"   required>
-                <label for="{{form.Direccion.id_for_label}}">Dirección</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}"  required>
-                <label for="{{form.Descripcion.id_for_label}}">Descripción</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.Costo.html_name}}" id="{{ form.Costo.id_for_label }}" required step=".01" min="0">
-                <label for="{{form.Costo.id_for_label}}">Costo</label>
-              </div>
-            </div>
-              <div class="row no-margin">
-                <div class="input-field col l8 offset-l2 s10 offset-s1">
-                  {{ form.Encargado }}
-                  <label>Encargado</label>
-                </div>
-            </div> -->
             <br>
             <div class="row">
               <center>
