@@ -35,7 +35,7 @@
                 <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.email }}</a></td>
                 <td  class="center">
                     <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                    <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
+                    <a href="{% url 'prospectos:registrar_grupos' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
                     {% if titulo == 'Prospectos' %}
                         <a href="{% url 'prospectos:baja_prospecto' prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     {% else %}

@@ -398,7 +398,7 @@ class ProspectoTest(TestCase):
                                     Lugar.objects.get(calle='Lourdes'), 'email': 'a01209537@itesm.mx',
                                  'metodo_captacion': 'Facebook', 'estado_civil': 'SOLTERO', 'ocupacion': 'Estudiante',
                                  'hijos': 1}, follow=True)
-        actualizado = Prospecto.objects.get(id=1)
+        actualizado = Prospecto.objects.get(id=prospecto.id)
         self.assertEqual(resp.status_code, 200)
         self.assertNotEqual(actualizado, 'Marco Antonio Luna Calvillo')
 
@@ -414,7 +414,7 @@ class ProspectoTest(TestCase):
             pais='Mexico',
             codigo_postal='76125'
         )
-        Prospecto.objects.create(
+        p = Prospecto.objects.create(
             nombre='Marco Antonio',
             apellidos='Luna Calvillo',
             telefono_casa='4422232226',
@@ -427,8 +427,8 @@ class ProspectoTest(TestCase):
             hijos=1,
             activo=True,
         )
-        resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'pk': 1}), follow=True)
-        actualizado = Prospecto.objects.get(id=1)
+        resp = self.client.post(reverse('prospectos:baja_prospecto', kwargs={'pk': p.id}), follow=True)
+        actualizado = Prospecto.objects.get(id=p.id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(actualizado.activo, False)
 

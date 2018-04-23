@@ -262,7 +262,7 @@ def crear_prospecto(request):
             prospecto.fecha_creacion = now()
             prospecto.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
-            return redirect('prospectos:registrar_cursos', pk=prospecto.id)
+            return redirect('prospectos:registrar_grupos', pk=prospecto.id)
         # Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -296,7 +296,7 @@ def editar_prospecto(request, pk):
             prospecto.direccion = lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
-            return redirect('prospectos:registrar_cursos', pk=prospecto.id)
+            return redirect('prospectos:registrar_grupos', pk=prospecto.id)
         else:
             messages.success(request, 'Existe una falla en los campos.')
             context = {

@@ -53,16 +53,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for prospecto_evento in cursos %}
+                    {% for prospecto_evento in grupos %}
                         <tr>
                           <td class="center">
-                              <a href="{% url 'prospectos:editar_curso' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                              <a href="{% url 'prospectos:eliminar_curso' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                              <a href="{% url 'prospectos:editar_grupo' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                              <a href="{% url 'prospectos:eliminar_grupo' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                           </td>
                           <td>{{ prospecto_evento.Curso }}</td>
                           <td>{{ prospecto_evento.Interes }}</td>
-                          <!-- <td>{{ curso.id }}</td> -->
-                         <td>{{ curso.Fecha }}</td>
+                          <!-- <td>{{ grupo.id }}</td> -->
+                         <td>{{ grupo.Fecha }}</td>
                           {% if prospecto_evento.FlagCADHU == True %}
                               <td class="center"><a><i class="material-icons">check</i></a></td>
                           {% else %}
