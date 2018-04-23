@@ -66,10 +66,10 @@ urlpatterns = [
     # Editar Empresa
     path('editar_empresa/<int:pk>', views.editar_empresa, name='editar_empresa'),
 
-    #Lista de pagos
+    # Lista de pagos
     path('lista_pagos/<int:id_pe>', views.lista_pagos, name='lista_pagos'),
 
-    #Nuevo pago
+    # Nuevo pago
     path('nuevo_pago/<int:id_pe>', views.nuevo_pago, name='nuevo_pago'),
 
     # Crear Cliente

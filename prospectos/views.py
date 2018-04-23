@@ -547,7 +547,7 @@ def info_prospecto(request, pk):
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un grupo repetido
             try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.curso)
+                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo
                 messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
@@ -867,9 +867,9 @@ def nuevo_pago(request, id_pe):
         for pago in query_pagos:
             total_pagos += pago.monto
         pe = ProspectoGrupo.objects.get(id=id_pe)
-        curso = Grupo.objects.get(id=pe.curso_id)
+        grupo = Grupo.objects.get(id=pe.grupo_id)
         # VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
-        monto_maximo = curso.costo - total_pagos
+        monto_maximo = grupo.costo - total_pagos
         # se renderiza la página
         context = {
             'form': forma_pago,
@@ -889,7 +889,7 @@ def lista_pagos(request, id_pe):
     pagos2 = Pago.objects.filter(prospecto_grupo_id=id_pe)
     for pago in pagos2:
         total_pagos += pago.monto
-    curso = Grupo.objects.get(id=pe.grupo_id)
+    grupo = Grupo.objects.get(id=pe.grupo_id)
     if pagos > 0:
         context = {
             'titulo': 'Lista de Pagos',
@@ -897,9 +897,9 @@ def lista_pagos(request, id_pe):
             'pagos': Pago.objects.filter(prospecto_grupo=pe).order_by('fecha'),
             'cliente': Cliente.objects.get(prospecto_grupo=pe),
             'id_pe': id_pe,
-            'grupo': curso,
+            'grupo': grupo,
             'subtotal': total_pagos,
-            'restante': curso.costo - total_pagos,
+            'restante': grupo.costo - total_pagos,
         }
         return render(request, 'pagos/lista_pagos.html', context)
     else:
