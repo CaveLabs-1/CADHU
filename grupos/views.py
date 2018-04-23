@@ -155,12 +155,12 @@ def cambiar_prospectos(request, pk_antiguo, pk_nuevo):
     grupo_nuevo = Grupo.objects.get(id=pk_nuevo)
     prospecto_grupo =ProspectoGrupo.objects.filter(grupo=grupo_actual)
     for prospecto in prospecto_grupo:
-        print(prospecto.prospecto.nombre)
         try:
             Cliente.objects.get(prospecto_grupo=prospecto)
             prospecto.save()
         except Cliente.DoesNotExist:
-            prospecto.grupo = grupo_nuevo
-            prospecto.save()
+            if grupo_nuevo.activo:
+                prospecto.grupo = grupo_nuevo
+                prospecto.save()
 
     return redirect('grupos:info_grupo', grupo_nuevo.id)

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from grupos.models import Grupo
 from cursos.models import Curso
-from prospectos.models import Lugar, Prospecto, ProspectoGrupo
+from prospectos.models import Lugar, Prospecto, ProspectoGrupo, Cliente
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 # Create your tests here.
@@ -110,3 +110,58 @@ class BorrarGrupoTest(TestCase):
         grupo_actualizado = Grupo.objects.get(pk=self.grupo1.id)
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(grupo_actualizado.activo, False)
+
+
+
+class CambiarGrupoTest(TestCase):
+    def setUp(self):
+        Group.objects.create(name="administrador")
+        Group.objects.create(name="vendedora")
+        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1.save()
+        login = self.client.login(username='testuser1', password='12345')
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.lugar = Lugar.objects.create(calle='Paraiso', numero_interior='', numero_exterior='38', colonia='Satelite',
+                                         estado='Queretaro', ciudad='Queretaro', pais='Mexico', codigo_postal='76125')
+        cls.curso = Curso.objects.create(nombre='Curso 1', descripcion='Curso para desactivar')
+        cls.grupo1 = Grupo.objects.create(nombre='Grupo 1', curso=cls.curso, fecha_inicio='2018-03-16',
+                                          fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo', costo=1000)
+        cls.grupo2 = Grupo.objects.create(nombre='Grupo 2', curso=cls.curso, fecha_inicio='2018-03-16',
+                                          fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo', costo=1000)
+        cls.grupo_inactivo = Grupo.objects.create(nombre='Grupo 2', curso=cls.curso, fecha_inicio='2018-03-16',
+                                          fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo',
+                                          costo=1000, activo=False)
+        cls.prospecto = Prospecto.objects.create(nombre='Pablo', apellidos='Martinez Villareal',
+                                                 telefono_casa='4422232226', telefono_celular='4422580662', email='asdas@gmail.com',
+                                                 direccion=cls.lugar, ocupacion='Estudiante', activo=True)
+        cls.prospecto2 = Prospecto.objects.create(nombre='Jorge', apellidos='Jimenez Arroyo',
+                                                 telefono_casa='4422232226', telefono_celular='4422580662',
+                                                 email='asd@gmail.com',
+                                                 direccion=cls.lugar, ocupacion='Estudiante', activo=True)
+        cls.prospecto3 = Prospecto.objects.create(nombre='Jaime', apellidos='Vilen',
+                                                  telefono_casa='4422232226', telefono_celular='4422580662',
+                                                  email='jvilen@gmail.com',
+                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
+        cls.prospecto_grupo = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
+                                                            status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto)
+        cls.prospecto_grupo2 = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
+                                                            status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto2)
+        cls.prospecto_grupo3 = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
+                                                             status='INTERESADO', grupo=cls.grupo1,
+                                                             prospecto=cls.prospecto3)
+        cls.cliente = Cliente.objects.create(prospecto_grupo=cls.prospecto_grupo, matricula='A01209599')
+
+    def test_ac_42_1(self):
+        resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo2.id}))
+        grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(grupo_actualizado, 1)
+
+    def test_ac_42_2(self):
+        resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo_inactivo.id}))
+        grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(grupo_actualizado, 1)
+
