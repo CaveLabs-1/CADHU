@@ -266,15 +266,15 @@ def crear_prospecto(request):
         # Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
-            'newProspectoForm': new_prospecto_form,
-            'newLugarForm': new_lugar_form,
+            'new_prospecto_form': new_prospecto_form,
+            'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar un Prospecto',
         }
         return render(request, 'prospectos/prospectos_form.html', context)
     # Si no es POST, volverla a mandar
     context = {
-        'newProspectoForm': new_prospecto_form,
-        'newLugarForm': new_lugar_form,
+        'new_prospecto_form': new_prospecto_form,
+        'new_lugar_form': new_lugar_form,
         'titulo': 'Registrar un Prospecto',
     }
     return render(request, 'prospectos/prospectos_form.html', context)
@@ -300,15 +300,15 @@ def editar_prospecto(request, pk):
         else:
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'newProspectoForm': new_prospecto_form,
-                'newLugarForm': new_lugar_form,
+                'new_prospecto_form': new_prospecto_form,
+                'new_lugar_form': new_lugar_form,
                 'prospecto': id_prospecto,
                 'titulo': 'Editar Prospecto',
             }
             return render(request, 'prospectos/prospectos_form.html', context)
     context = {
-        'newProspectoForm': new_prospecto_form,
-        'newLugarForm': new_lugar_form,
+        'new_prospecto_form': new_prospecto_form,
+        'new_lugar_form': new_lugar_form,
         'prospecto': id_prospecto,
         'titulo': 'Editar Prospecto',
     }
