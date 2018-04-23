@@ -155,7 +155,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for prospecto_grupo in relacion %}
+            {% for prospecto_grupo in grupos %}
                 <tr>
                     <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.curso }}</a></td>
                     <td>{{ prospecto_grupo.interes }}</td>
