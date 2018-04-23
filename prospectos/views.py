@@ -529,7 +529,7 @@ def baja_prospecto(request, pk):
 def info_prospecto(request, pk):
     new_prospecto_grupo_form = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=pk)
-    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
     titulo = 'Información de prospecto'
     agenda = []
@@ -547,16 +547,16 @@ def info_prospecto(request, pk):
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un grupo repetido
             try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.curso)
+                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
                 messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': new_prospecto_grupo_form,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
                     'titulo': titulo,
                     'actividades': actividades,
                     'agenda': agenda,
                     'bitacora': bitacora,
-                    'grupos': cursos,
+                    'grupos': grupos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
             # Guardar la forma en la BD
@@ -568,23 +568,22 @@ def info_prospecto(request, pk):
                 messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': new_prospecto_grupo_form,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
                     'actividades': actividades,
                     'agenda': agenda,
                     'bitacora': bitacora,
                     'titulo': titulo,
-                    'grupos': cursos,
+                    'grupos': grupos,
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
-        'titulo': titulo,
-        'newProspectoEventoForm': new_prospecto_grupo_form,
+        'prospecto': prospecto,
+        'new_prospecto_grupo_form': new_prospecto_grupo_form,
         'actividades': actividades,
         'agenda': agenda,
         'bitacora': bitacora,
-        'grupos': cursos,
-        'prospecto': prospecto,
+        'grupos': grupos,
     }
     return render(request, 'prospectos/info_prospecto.html', context)
 
@@ -867,9 +866,9 @@ def nuevo_pago(request, id_pe):
         for pago in query_pagos:
             total_pagos += pago.monto
         pe = ProspectoGrupo.objects.get(id=id_pe)
-        curso = Grupo.objects.get(id=pe.curso_id)
+        grupo = Grupo.objects.get(id=pe.grupo_id)
         # VALIDAR QUE EL PAGO NO SUPERE EL MONTO MÁXIMO
-        monto_maximo = curso.costo - total_pagos
+        monto_maximo = grupo.costo - total_pagos
         # se renderiza la página
         context = {
             'form': forma_pago,
@@ -889,7 +888,7 @@ def lista_pagos(request, id_pe):
     pagos2 = Pago.objects.filter(prospecto_grupo_id=id_pe)
     for pago in pagos2:
         total_pagos += pago.monto
-    curso = Grupo.objects.get(id=pe.grupo_id)
+    grupo = Grupo.objects.get(id=pe.grupo_id)
     if pagos > 0:
         context = {
             'titulo': 'Lista de Pagos',
@@ -897,9 +896,9 @@ def lista_pagos(request, id_pe):
             'pagos': Pago.objects.filter(prospecto_grupo=pe).order_by('fecha'),
             'cliente': Cliente.objects.get(prospecto_grupo=pe),
             'id_pe': id_pe,
-            'grupo': curso,
+            'grupo': grupo,
             'subtotal': total_pagos,
-            'restante': curso.costo - total_pagos,
+            'restante': grupo.costo - total_pagos,
         }
         return render(request, 'pagos/lista_pagos.html', context)
     else:
