@@ -140,17 +140,10 @@ class CambiarGrupoTest(TestCase):
                                                  telefono_casa='4422232226', telefono_celular='4422580662',
                                                  email='asd@gmail.com',
                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
-        cls.prospecto3 = Prospecto.objects.create(nombre='Jaime', apellidos='Vilen',
-                                                  telefono_casa='4422232226', telefono_celular='4422580662',
-                                                  email='jvilen@gmail.com',
-                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
         cls.prospecto_grupo = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
                                                             status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto)
         cls.prospecto_grupo2 = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
                                                             status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto2)
-        cls.prospecto_grupo3 = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
-                                                             status='INTERESADO', grupo=cls.grupo1,
-                                                             prospecto=cls.prospecto3)
         cls.cliente = Cliente.objects.create(prospecto_grupo=cls.prospecto_grupo, matricula='A01209599')
 
     def test_ac_42_1(self):
