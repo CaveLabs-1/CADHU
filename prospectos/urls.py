@@ -49,13 +49,13 @@ urlpatterns = [
     path('interes/<int:rel>', views.info_prospecto_grupo, name='info_prospecto_grupo'),
 
     # Registrar Cursos a Prospecto
-    path('<int:pk>/registrar_cursos', views.registrar_cursos, name='registrar_cursos'),
+    path('<int:pk>/registrar_grupos', views.registrar_grupos, name='registrar_grupos'),
 
     #Editar Grupo del Prospecto
-    path('editar_curso/<int:pk>', views.editar_curso, name='editar_curso'),
+    path('editar_grupo/<int:pk>', views.editar_grupo, name='editar_grupo'),
 
     #Eliminar Grupo de Prospecto
-    path('eliminar_curso/<int:pk>', views.eliminar_curso, name='eliminar_curso'),
+    path('eliminar_grupo/<int:pk>', views.eliminar_grupo, name='eliminar_grupo'),
 
     # Editar Prospecto
     path('<int:pk>/editar_prospecto', views.editar_prospecto, name='editar_prospecto'),

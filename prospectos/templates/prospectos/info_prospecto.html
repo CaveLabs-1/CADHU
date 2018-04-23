@@ -130,12 +130,12 @@
     </div>
 
     <ul id="tabs" class="tabs pendientes">
-        <li class="tab col s4"><a href="#cursos">Grupos</a></li>
+        <li class="tab col s4"><a href="#grupos">Grupos</a></li>
         <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
         <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
     </ul>
 
-    <div id="cursos" class="col s12">
+    <div id="grupos" class="col s12">
         <div class="row">
         </div>
         <div class="fixed-action-btn">
@@ -157,7 +157,7 @@
             <tbody>
             {% for prospecto_grupo in grupos %}
                 <tr>
-                    <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.curso }}</a></td>
+                    <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.grupo }}</a></td>
                     <td>{{ prospecto_grupo.interes }}</td>
                     <td>{{ prospecto_grupo.fecha }}</td>
                     {% if prospecto_grupo.flag_cadhu %}
@@ -173,7 +173,7 @@
                     <td class="center">
 
                         {% if prospecto.grupo.activo %}
-                            <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+                            <a href="{% url 'prospectos:lista_pagos' prospecto_grupo.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                         {% else %}
                             <p>-</p>
                         {% endif %}

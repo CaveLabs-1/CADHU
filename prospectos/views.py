@@ -347,7 +347,7 @@ def lista_clientes_inactivos(request):
 # US26
 @login_required
 @group_required('vendedora', 'administrador')
-def registrar_cursos(request, pk):
+def registrar_grupos(request, pk):
     new_prospecto_grupo_form = ProspectoEventoForm()
     prospecto = Prospecto.objects.get(id=pk)
     cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
@@ -396,7 +396,7 @@ def registrar_cursos(request, pk):
 # US11
 @login_required
 @group_required('vendedora', 'administrador')
-def editar_curso(request, pk):
+def editar_grupo(request, pk):
     old_prospecto_grupo_form = ProspectoEventoForm()
     curso_editar = ProspectoGrupo.objects.get(id=pk)
     new_prospecto_grupo_form = ProspectoEventoEdit(instance=curso_editar)
@@ -433,7 +433,7 @@ def editar_curso(request, pk):
 # US10
 @login_required
 @group_required('vendedora', 'administrador')
-def eliminar_curso(request, pk):
+def eliminar_grupo(request, pk):
     curso = ProspectoGrupo.objects.get(id=pk)
     new_prospecto_grupo_form = ProspectoEventoForm()
     prospecto = curso.prospecto
