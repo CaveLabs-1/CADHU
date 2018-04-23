@@ -110,13 +110,13 @@
                         {% else %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                         {% endif %}
-                        <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_grupo.id %}">{{ prospecto_grupo.Prospecto.Nombre }}</a></td>
-                        <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_grupo.id %}">{{ prospecto_grupo.Prospecto.Apellidos }}</a></td>
-                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.Prospecto.Telefono_Celular }});" href="#">{{ prospecto_grupo.Prospecto.Telefono_Celular }}</a></td>
-                        <td><a href="mailto:{{ prospecto_grupo.Prospecto.Email }}">{{ prospecto_grupo.Prospecto.Email }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto_grupo.prospecto.email }}">{{ prospecto_grupo.prospecto.email }}</a></td>
                         <td>
                             {% if  prospecto_grupo.agenda %}
-                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.Prospecto.pk }}" href="#modalActividadesVenta{{ prospecto_grupo.Prospecto.pk }}">Ver lista</a>
+                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.prospecto.pk }}" href="#modalActividadesVenta{{ prospecto_grupo.prospecto.pk }}">Ver lista</a>
                             {% else %}
                                 Ningún pendiente
                             {% endif %}
@@ -129,7 +129,7 @@
                     </tr>
 
                     <!-- Modal actividades Structure -->
-                    <div id="modalActividadesVenta{{ prospecto_grupo.Prospecto.pk }}" class="modal bottom-sheet" >
+                    <div id="modalActividadesVenta{{ prospecto_grupo.prospecto.pk }}" class="modal bottom-sheet" >
                         <div class="modal-header">
                             <h4 class="header text-blue-cadhu">Pendientes</h4>
                         </div>
@@ -226,36 +226,36 @@
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                         {% endif %}
                         <td>{{ prospecto_grupo.Curso.Direccion }}</td>
-                        <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_grupo.id %}">{{ prospecto_grupo.Prospecto.Nombre }}</a></td>
-                        <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_grupo.id %}">{{ prospecto_grupo.Prospecto.Apellidos }}</a></td>
-                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.Prospecto.Telefono_Celular }});" href="#">{{ prospecto_grupo.Prospecto.Telefono_Celular }}</a></td>
-                        <td><a href="mailto:{{ prospecto_grupo.Prospecto.Email }}">{{ prospecto_grupo.Prospecto.Email }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto_grupo.prospecto.email }}">{{ prospecto_grupo.prospecto.email }}</a></td>
                         <td>
                             {% if  prospecto_grupo.agenda %}
-                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.Prospecto.pk }}" href="#modalActividades{{ prospecto_grupo.Prospecto.pk }}">Ver lista</a>
+                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.prospecto.pk }}" href="#modalActividades{{ prospecto_grupo.prospecto.pk }}">Ver lista</a>
                             {% else %}
                                 Ningún pendiente
                             {% endif %}
                         </td>
                         <td>
-                            {{ prospecto_grupo.Prospecto.Metodo_Captacion }}
+                            {{ prospecto_grupo.prospecto.metodo_captacion }}
                         </td>
-                        <td>{{ prospecto_grupo.Prospecto.Recomendacion }}</td>
+                        <td>{{ prospecto_grupo.prospecto.recomendacion }}</td>
                         <td class="'truncate elipsis">
-                            <a class="modal-trigger" id="notas{{ prospecto_grupo.Prospecto.pk }}" href="#modal{{ prospecto_grupo.Prospecto.pk }}">{{ prospecto_grupo.Prospecto.comentarios }}</a>
+                            <a class="modal-trigger" id="notas{{ prospecto_grupo.prospecto.pk }}" href="#modal{{ prospecto_grupo.prospecto.pk }}">{{ prospecto_grupo.prospecto.comentarios }}</a>
                         </td>
                         <td class="center">
                             <a href="{% url 'prospectos:crear_actividad' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">note_ad</i></a>
                             <a href="{% url 'prospectos:nuevo_pago' prospecto_grupo.id %}"><i class="material-icons text-verde-cadhu">attach_money</i></a>
-                            <a href="{% url 'prospectos:editar_curso' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                            <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                         </td>
                     </tr>
 
                     <!-- Modal Comentario Structure -->
-                    <div id="modal{{ prospecto_grupo.Prospecto.pk }}" class="modal modal-fixed-footer">
+                    <div id="modal{{ prospecto_grupo.prospecto.pk }}" class="modal modal-fixed-footer">
                         <div class="modal-content">
                             <h4>Comentarios de cliente</h4>
-                            <p>{{ prospecto_grupo.Prospecto.comentarios }}</p>
+                            <p>{{ prospecto_grupo.prospecto.comentarios }}</p>
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
@@ -263,7 +263,7 @@
                     </div>
 
                     <!-- Modal actividades Structure -->
-                    <div id="modalActividades{{ prospecto_grupo.Prospecto.pk }}" class="modal bottom-sheet" >
+                    <div id="modalActividades{{ prospecto_grupo.prospecto.pk }}" class="modal bottom-sheet" >
                         <div class="modal-header">
                             <h4 class="header text-blue-cadhu">Pendientes</h4>
                         </div>
@@ -348,17 +348,17 @@
                         <td>{{ cliente.matricula }}</td>
                         <td>{{ cliente.rfc }}</td>
                         <td>{{ cliente.razonSocial }}</td>
-                        <td><a href="{% url 'prospectos:info_prospecto' cliente.ProspectoEvento.Prospecto.id %}">{{ cliente.ProspectoEvento.Prospecto.Nombre }}</a></td>
-                        <td><a href="{% url 'prospectos:info_prospecto' cliente.ProspectoEvento.Prospecto.id %}">{{ cliente.ProspectoEvento.Prospecto.Apellidos }}</a></td>
-                        <td><a class="whatsapp" onclick="whatsapp({{ cliente.ProspectoEvento.Prospecto.Telefono_Celular }});" href="#">{{ cliente.ProspectoEvento.Prospecto.Telefono_Celular }}</a></td>
-                        <td><a href="mailto:{{ prospecto.Email }}">{{ cliente.ProspectoEvento.Prospecto.Email }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ cliente.prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ cliente.prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto.Email }}">{{ cliente.prospecto_grupo.prospecto.email }}</a></td>
                         <td>
-                            <a href="{% url 'prospectos:editar_prospecto' cliente.ProspectoEvento.Prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                            <a href="{% url 'prospectos:registrar_cursos' cliente.ProspectoEvento.Prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
+                            <a href="{% url 'prospectos:editar_prospecto' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                            <a href="{% url 'prospectos:registrar_grupos' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
                             {% if titulo == 'Prospectos' %}
-                                <a href="{% url 'prospectos:baja_prospecto' cliente.ProspectoEvento.Prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                                <a href="{% url 'prospectos:baja_prospecto' cliente.prospecto_grupo.prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                             {% else %}
-                                <a href="{% url 'prospectos:baja_prospecto' cliente.ProspectoEvento.Prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-verde-cadhu">add_circle</i></a>
+                                <a href="{% url 'prospectos:baja_prospecto' cliente.prospecto_grupo.prospecto.id %}" onclick="cambiar_estatusProspecto(this, event)"><i class="material-icons text-verde-cadhu">add_circle</i></a>
                             {% endif %}
                         </td>
                     </tr>
