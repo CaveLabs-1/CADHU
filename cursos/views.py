@@ -33,7 +33,7 @@ def crear_curso(request):
             curso.activo = True
             curso.save()
             # Mensaje de exito
-            messages.success(request, 'El grupo ha sido creado.')
+            messages.success(request, 'El curso ha sido creado.')
             return redirect(reverse('cursos:lista_cursos'))
         else:
             # Mensaje de error
