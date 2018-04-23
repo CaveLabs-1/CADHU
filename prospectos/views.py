@@ -899,6 +899,7 @@ def lista_pagos(request, id_pe):
             'grupo': grupo,
             'subtotal': total_pagos,
             'restante': grupo.costo - total_pagos,
+            'costo': grupo.costo,
         }
         return render(request, 'pagos/lista_pagos.html', context)
     else:

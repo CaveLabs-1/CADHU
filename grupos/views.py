@@ -133,3 +133,34 @@ def info_grupo(request, pk):
         'prospectos': prospectos,
     }
     return render(request, 'grupos/info_grupo.html', context)
+
+# US44
+@login_required
+@group_required('administrador', 'vendedora')
+def grupo_cambio(request, pk):
+    grupo_actual = Grupo.objects.get(id=pk)
+    grupos = Grupo.objects.filter(activo=True).exclude(nombre=grupo_actual.nombre)
+    context = {
+        'titulo': 'Cambiar Prospectos de ' + grupo_actual.nombre,
+        'grupo_actual': grupo_actual,
+        'grupos': grupos,
+    }
+    return render(request, 'grupos/cambio_grupo.html', context)
+
+# US44
+@login_required
+@group_required('vendedora', 'administrador')
+def cambiar_prospectos(request, pk_antiguo, pk_nuevo):
+    grupo_actual = Grupo.objects.get(id=pk_antiguo)
+    grupo_nuevo = Grupo.objects.get(id=pk_nuevo)
+    prospecto_grupo =ProspectoGrupo.objects.filter(grupo=grupo_actual)
+    for prospecto in prospecto_grupo:
+        print(prospecto.prospecto.nombre)
+        try:
+            Cliente.objects.get(prospecto_grupo=prospecto)
+            prospecto.save()
+        except Cliente.DoesNotExist:
+            prospecto.grupo = grupo_nuevo
+            prospecto.save()
+
+    return redirect('grupos:info_grupo', grupo_nuevo.id)

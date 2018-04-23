@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import nuevo_grupo, grupos, eliminar_grupo, info_grupo, editar_grupo, grupos_inactivos
+from .views import nuevo_grupo, grupos, eliminar_grupo, info_grupo, editar_grupo, grupos_inactivos, grupo_cambio, cambiar_prospectos
 
 app_name = 'grupos'
 urlpatterns = [
@@ -20,4 +20,12 @@ urlpatterns = [
 
     # Informacion de un grupo
     path('<int:pk>/info', info_grupo, name='info_grupo'),
+
+    # Seleccion de nuevo grupo
+    path('grupo_cambio/<int:pk>/', grupo_cambio, name='grupo_cambio'),
+
+    # Cambio de prospectos a otro grupo
+    path('cambiar_prospectos/<int:pk_antiguo>/<int:pk_nuevo>', cambiar_prospectos, name='cambiar_prospectos')
 ]
+
+

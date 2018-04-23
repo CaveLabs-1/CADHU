@@ -124,7 +124,7 @@
                         <td class="center">
                             <a href="{% url 'prospectos:crear_actividad' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">note_add</i></a>
                             <a href="{% url 'prospectos:nuevo_pago' prospecto_grupo.id %}"><i class="material-icons text-verde-cadhu">attach_money</i></a>
-                            <a href="{% url 'prospectos:editar_curso' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                            <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                         </td>
                     </tr>
 
@@ -219,8 +219,8 @@
                                 Sin contacto
                             {% endif %}
                         </td>
-                        <td>{{ prospecto_grupo.Interes }}</td>
-                        {% if prospecto_grupo.FlagCADHU == True %}
+                        <td>{{ prospecto_grupo.interes }}</td>
+                        {% if prospecto_grupo.flag_cadhu == True %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                         {% else %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
@@ -367,6 +367,17 @@
             </table>
         </div>
     </div>
+
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a href="{% url 'grupos:grupo_cambio' grupo.id %}" class="btn-floating blue"><i class="material-icons">people_outline</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">group_add</i></a></li>
+        </ul>
+</div>
 
 
 {% endblock %}
