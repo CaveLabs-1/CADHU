@@ -4,8 +4,8 @@ from grupos.models import Grupo
 from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
-from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoEventoForm, \
-    ProspectoEventoEdit, PagoForm, InscribirEmpresaForm
+from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoGrupoForm, \
+    ProspectoGrupoEdit, PagoForm, InscribirEmpresaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
@@ -163,15 +163,15 @@ def crear_cliente(request, pk):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': error,
-            'NewClienteForm': new_cliente_form,
-            'NewLugarForm': new_lugar_form,
+            'new_cliente_form': new_cliente_form,
+            'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar un Cliente',
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewClienteForm': new_cliente_form,
-        'NewLugarForm': new_lugar_form,
+        'new_cliente_form': new_cliente_form,
+        'new_lugar_form': new_lugar_form,
         'titulo': 'Registrar Cliente',
     }
     return render(request, 'clientes/crear_cliente.html', context)
@@ -210,15 +210,15 @@ def editar_cliente(request, pk):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': error,
-            'NewClienteForm': new_cliente_form,
-            'NewLugarForm': new_lugar_form,
+            'new_cliente_form': new_cliente_form,
+            'new_lugar_form': new_lugar_form,
             'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewClienteForm': new_cliente_form,
-        'NewLugarForm': new_lugar_form,
+        'new_cliente_form': new_cliente_form,
+        'new_lugar_form': new_lugar_form,
         'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
     }
     return render(request, 'clientes/crear_cliente.html', context)
@@ -348,27 +348,27 @@ def lista_clientes_inactivos(request):
 @login_required
 @group_required('vendedora', 'administrador')
 def registrar_grupos(request, pk):
-    new_prospecto_grupo_form = ProspectoEventoForm()
+    new_prospecto_grupo_form = ProspectoGrupoForm()
     prospecto = Prospecto.objects.get(id=pk)
-    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
         # Crear la instancia de la forma y llenarla con los datos
-        new_prospecto_grupo_form = ProspectoEventoForm(request.POST)
+        new_prospecto_grupo_form = ProspectoGrupoForm(request.POST)
         # Validar la forma
         if new_prospecto_grupo_form.is_valid():
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             # Validar que no se este agregando un grupo repetido
             try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, curso=prospecto_grupo.grupo)
+                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
                 messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': new_prospecto_grupo_form,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
                     'titulo': 'Registrar Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-                    'grupos': cursos,
+                    'grupos': grupos,
                 }
-                return render(request, 'grupos/prospectoevento_form.html', context)
+                return render(request, 'grupos/prospecto_grupo_form.html', context)
             # Guardar la forma en la BD
             except ProspectoGrupo.DoesNotExist:
                 prospecto_grupo.prospecto = prospecto
@@ -378,85 +378,85 @@ def registrar_grupos(request, pk):
                 messages.success(request, 'Grupo asignado a prospecto')
                 context = {
                     'prospecto': prospecto,
-                    'newProspectoEventoForm': new_prospecto_grupo_form,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
                     'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-                    'grupos': cursos,
+                    'grupos': grupos,
                 }
-                return render(request, 'grupos/prospectoevento_form.html', context)
+                return render(request, 'grupos/prospecto_grupo_form.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'newProspectoEventoForm': new_prospecto_grupo_form,
+        'new_prospecto_grupo_form': new_prospecto_grupo_form,
         'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-        'grupos': cursos,
+        'grupos': grupos,
     }
-    return render(request, 'grupos/prospectoevento_form.html', context)
+    return render(request, 'grupos/prospecto_grupo_form.html', context)
 
 
 # US11
 @login_required
 @group_required('vendedora', 'administrador')
 def editar_grupo(request, pk):
-    old_prospecto_grupo_form = ProspectoEventoForm()
-    curso_editar = ProspectoGrupo.objects.get(id=pk)
-    new_prospecto_grupo_form = ProspectoEventoEdit(instance=curso_editar)
-    prospecto = curso_editar.prospecto
-    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    old_prospecto_grupo_form = ProspectoGrupoForm()
+    grupo_editar = ProspectoGrupo.objects.get(id=pk)
+    new_prospecto_grupo_form = ProspectoGrupoEdit(instance=grupo_editar)
+    prospecto = grupo_editar.prospecto
+    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     # Si es petición POST, procesar la información de la forma
     if request.method == 'POST':
         # Crear la instancia de la forma y llenarla con los datos
-        new_prospecto_grupo_form = ProspectoEventoEdit(request.POST or None, instance=curso_editar)
+        new_prospecto_grupo_form = ProspectoGrupoEdit(request.POST or None, instance=grupo_editar)
         # Validar la forma y guardarla en la BD
         if new_prospecto_grupo_form.is_valid():
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
             prospecto_grupo.prospecto = prospecto
-            prospecto_grupo.curso = curso_editar.curso
+            prospecto_grupo.grupo = grupo_editar.grupo
             prospecto_grupo.save()
             messages.success(request, 'Grupo Modificado a prospecto')
             context = {
                 'prospecto': prospecto,
-                'newProspectoEventoForm': old_prospecto_grupo_form,
+                'new_prospecto_grupo_form': old_prospecto_grupo_form,
                 'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-                'grupos': cursos,
+                'grupos': grupos,
             }
-            return render(request, 'grupos/prospectoevento_form.html', context)
+            return render(request, 'grupos/prospecto_grupo_form.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
-        'newProspectoEventoForm': new_prospecto_grupo_form,
-        'titulo': 'Editar Grupo - ' + curso_editar.curso.nombre,
-        'grupos': cursos,
+        'new_prospecto_grupo_form': new_prospecto_grupo_form,
+        'titulo': 'Editar Grupo - ' + grupo_editar.grupo.nombre,
+        'grupos': grupos,
     }
-    return render(request, 'grupos/prospectoevento_edit.html', context)
+    return render(request, 'grupos/prospecto_grupo_edit.html', context)
 
 
 # US10
 @login_required
 @group_required('vendedora', 'administrador')
 def eliminar_grupo(request, pk):
-    curso = ProspectoGrupo.objects.get(id=pk)
-    new_prospecto_grupo_form = ProspectoEventoForm()
-    prospecto = curso.prospecto
-    cursos = ProspectoGrupo.objects.filter(prospecto=prospecto)
-    if Pago.objects.filter(prospecto_grupo=curso).count() > 0:
+    grupo = ProspectoGrupo.objects.get(id=pk)
+    new_prospecto_grupo_form = ProspectoGrupoForm()
+    prospecto = grupo.prospecto
+    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    if Pago.objects.filter(prospecto_grupo=grupo).count() > 0:
         messages.success(request, 'El prospecto ya ha realizado un pago, por ende, el grupo no puede ser eliminado')
         context = {
             'prospecto': prospecto,
-            'newProspectoEventoForm': new_prospecto_grupo_form,
+            'new_prospecto_grupo_form': new_prospecto_grupo_form,
             'titulo': 'Registrar Grupo - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-            'grupos': cursos,
+            'grupos': grupos,
         }
-        return render(request, 'grupos/prospectoevento_form.html', context)
+        return render(request, 'grupos/prospecto_grupo_form.html', context)
     else:
-        curso.delete()
+        grupo.delete()
         messages.success(request, 'Grupo eliminado de manera exitosa')
         context = {
             'prospecto': prospecto,
-            'newProspectoEventoForm': new_prospecto_grupo_form,
+            'new_prospecto_grupo_form': new_prospecto_grupo_form,
             'titulo': 'Registrar Grupo - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-            'grupos': cursos,
+            'grupos': grupos,
         }
-        return render(request, 'grupos/prospectoevento_form.html', context)
+        return render(request, 'grupos/prospecto_grupo_form.html', context)
 
 
 # US23
@@ -472,7 +472,7 @@ def info_prospecto_grupo(request, rel):
         'prospecto': prospecto,
         'titulo': titulo,
     }
-    return render(request, 'grupos/info_prospectocurso.html', context)
+    return render(request, 'grupos/info_prospecto_grupo.html', context)
 
 
 # US7
@@ -527,7 +527,7 @@ def baja_prospecto(request, pk):
 @login_required
 @group_required('vendedora', 'administrador')
 def info_prospecto(request, pk):
-    new_prospecto_grupo_form = ProspectoEventoForm()
+    new_prospecto_grupo_form = ProspectoGrupoForm()
     prospecto = Prospecto.objects.get(id=pk)
     grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
     actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
@@ -541,7 +541,7 @@ def info_prospecto(request, pk):
             bitacora.append(actividad)
     if request.method == 'POST':
         # Crear la instancia de la forma y llenarla con los datos
-        new_prospecto_grupo_form = ProspectoEventoForm(request.POST)
+        new_prospecto_grupo_form = ProspectoGrupoForm(request.POST)
         # Validar la forma
         if new_prospecto_grupo_form.is_valid():
             prospecto_grupo = new_prospecto_grupo_form.save(commit=False)

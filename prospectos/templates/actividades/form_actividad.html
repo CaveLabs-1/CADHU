@@ -18,15 +18,17 @@
                         <input type="number" name="prospecto_evento"
                                id="id_prospecto_evento" value="{{id}}"hidden>
                         <div class="row">
+
                             <div class="input-field col l6">
                                 <input type="text" name="{{ form.titulo.html_name }}"
                                        id="{{ form.titulo.id_for_label }}" required>
                                 <label for="{{ form.titulo.id_for_label }}">Descripción:*</label>
                             </div>
+
                             <div class="input-field col l6">
                                 <input type="text" name="{{ form.tipo.html_name }}"
                                        id="{{ form.tipo.id_for_label }}" required>
-                                <label for="{{ form.tipo.id_for_label }}">Descripción:*</label>
+                                <label for="{{ form.tipo.id_for_label }}">Tipo:*</label>
                             </div>
                         </div>
 

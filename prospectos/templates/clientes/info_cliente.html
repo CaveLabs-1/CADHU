@@ -18,7 +18,7 @@
                             </div>
                             <div class="col s12 m4 l4">
                                 <label for="razonSocial">Razón Social</label>
-                                {{ cliente.razonSocial }}
+                                {{ cliente.razon_social }}
                             </div>
                         </div>
                         <div class="row center">
@@ -27,11 +27,11 @@
                         <div class="row center">
                             <div class="col s12 m3 l3">
                                 <label for="Pais">Pais</label>
-                                {{ lugar.Pais }}
+                                {{ lugar.pais }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="Estado">Estado</label>
-                                {{ lugar.Estado }}
+                                {{ lugar.estado }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="Ciudad">Ciudad</label>
@@ -39,25 +39,25 @@
                             </div>
                             <div class="col s12 m2 l2">
                                 <label for="Colonia">Colonia</label>
-                                {{ lugar.Colonia }}
+                                {{ lugar.colonia }}
                             </div>
                         </div>
                         <div class="row center">
                             <div class="col s12 m3 l3">
                                 <label for="Calle">Calle</label>
-                                {{ lugar.Calle }}
+                                {{ lugar.calle }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="NumExteror">Exterior</label>
-                                {{ lugar.Numero_Exterior }}
+                                {{ lugar.numero_exterior }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="NumInterior">Interior</label>
-                                {{ lugar.Numero_Interior }}
+                                {{ lugar.numero_interior }}
                             </div>
                             <div class="col s12 m2 l2">
                                 <label for="CodigoPostal">Codigo Postal</label>
-                                {{ lugar.Codigo_Postal }}
+                                {{ lugar.codigo_postal }}
                             </div>
                         </div><div class="row center">
                             <a href="{% url 'prospectos:lista_clientes'%}" class="btn waves-effect waves-light form_button blue">Regresar</a>
@@ -69,44 +69,3 @@
           </div>
   {% endblock %}
 
-
-    <!-- {% block js %}
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
-
-    <script>
-
-          function eliminar_cliente(element, event){
-            event.preventDefault();
-            $.confirm({
-              title: '¿Deseas eliminar el cliente?',
-              content: 'No podrá ser utilizado en un futuro.',
-              type: 'red',
-              closeIcon: true,
-              columnClass: 'col l6 offset-l3 s12',
-              typeAnimated: true,
-              buttons: {
-                continuar: {
-                    text: 'Eliminar',
-                    btnClass: 'btn-red',
-
-                  action: function(){
-                    window.location.href = $(element).attr("href");
-                  }
-                }
-              }
-            });
-          }
-
-
-          {% if messages %}
-            {%for message in messages %}
-                {% if message.level == 40 %}
-                    var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
-                    M.toast({html: mensaje, displayLength: 60000})
-                {% endif %}
-            {% endfor %}
-          {% endif %}
-
-    </script>
-    {% endblock %} -->

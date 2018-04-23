@@ -91,10 +91,11 @@ class FormaActividad(ModelForm):
             'time': forms.TimeInput(),
             'notas': forms.Textarea(),
             'terminado': forms.CheckboxInput(),
+            'tipo': forms.Select
         }
 
 
-class ProspectoEventoForm(ModelForm):
+class ProspectoGrupoForm(ModelForm):
     class Meta:
         model = ProspectoGrupo
         fields = (
@@ -104,7 +105,7 @@ class ProspectoEventoForm(ModelForm):
         )
 
 
-class ProspectoEventoEdit(ModelForm):
+class ProspectoGrupoEdit(ModelForm):
     class Meta:
         model = ProspectoGrupo
         fields = (

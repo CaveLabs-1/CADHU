@@ -51,10 +51,10 @@ ACTIVO = (
 )
 
 TIPO_ACTIVIDAD = (
-    ('Whatsapp', 'Whatsapp'),
-    ('E-mail', 'E-Mail'),
-    ('Llamada OK', 'Llamada OK'),
-    ('Llamada No Responde', 'Llamada No Responde'),
+    ('WHATSAPP', 'WHATSAPP'),
+    ('E-MAIL', 'E-MAIL'),
+    ('LLAMADA OK', 'LLAMADA OK'),
+    ('LLAMADA NO RESPONDE', 'LLAMADA NO RESPONDE'),
 )
 
 
@@ -132,7 +132,7 @@ class Actividad(models.Model):
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     terminado = models.BooleanField(default=False, verbose_name='Terminada')
-    tipo = models.CharField(choices=TIPO_ACTIVIDAD, null=True, blank=True, max_length=20,
+    tipo = models.CharField(null=True, blank=True, max_length=20, choices=TIPO_ACTIVIDAD,
                             verbose_name='Tipo de activdad.')
 
     def __str__(self):

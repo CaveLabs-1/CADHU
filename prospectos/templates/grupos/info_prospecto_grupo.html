@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} {{ relacion.Curso }} {% endblock %}
+{% block title %} {{ relacion.grupo }} {% endblock %}
 {% block content %}
     <div class="row">
         {#-------------------------PROSPECTO---------------#}
@@ -13,49 +13,49 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons">edit</i></a>
                 </div>
                 <div class="card-content">
-                        <span class="card-title activator">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}</span>
+                        <span class="card-title activator">{{ relacion.prospecto.nombre }} {{ relacion.prospecto.apellidos }}</span>
                 </div>
                 <div class="card-reveal">
                     <div class="row">
-                        <span class="card-title grey-text text-darken-4">{{ relacion.Prospecto.Nombre }} {{ relacion.Prospecto.Apellidos }}<i class="material-icons right">close</i></span>
+                        <span class="card-title grey-text text-darken-4">{{ relacion.prospecto.nombre }} {{ relacion.prospecto.apellidos }}<i class="material-icons right">close</i></span>
                     </div>
                     {#----------------Info-------------#}
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Celular</label>
-                            <a class="whatsapp" onclick="whatsapp({{ relacion.Prospecto.Telefono_Celular }});" href="#">{{ relacion.Prospecto.Telefono_Celular }}</a>
+                            <a class="whatsapp" onclick="whatsapp({{ relacion.prospecto.telefono_celular }});" href="#">{{ relacion.prospecto.telefono_celular }}</a>
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Tel&eacute;fono Casa</label>
-                            {{ relacion.Prospecto.Telefono_Casa }}
+                            {{ relacion.prospecto.telefono_casa }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Email</label>
-                            <a href="mailto:{{ relacion.Prospecto.Email }}" target="_blank">{{ relacion.Prospecto.Email }}</a>
+                            <a href="mailto:{{ relacion.prospecto.email }}" target="_blank">{{ relacion.prospecto.email }}</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Hijos</label><br>
-                            {{ relacion.Prospecto.Hijos }}
+                            {{ relacion.prospecto.hijos }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Estado civil</label><br>
-                            {{ relacion.Prospecto.Estado_Civil }}
+                            {{ relacion.prospecto.estado_Civil }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="ocupacion">Ocupaci&oacute;n</label><br>
-                            {{ relacion.Prospecto.Ocupacion }}
+                            {{ relacion.prospecto.ocupacion }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>M&eacute;todo de captaci&oacute;n</label><br>
-                            {{ relacion.Prospecto.Metodo_Captacion }}
+                            {{ relacion.prospecto.metodo_captacion }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="otro">Radio/Recomendacion </label><br>
-                            {{ relacion.Prospecto.Recomendacion }}
+                            {{ relacion.prospecto.recomendacion }}
                         </div>
                     </div>
 
@@ -67,39 +67,39 @@
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Pa&iacute;s</label><br>
-                            {{ relacion.Prospecto.Direccion.Pais }}
+                            {{ relacion.prospecto.direccion.pais }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Estado</label><br>
-                            {{ relacion.Prospecto.Direccion.Estado }}
+                            {{ relacion.prospecto.direccion.estado }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Ciudad</label><br>
-                            {{ relacion.Prospecto.Direccion.Ciudad }}
+                            {{ relacion.prospecto.direccion.ciudad }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m6">
                             <label for="colonia">Colonia</label><br>
-                            {{ relacion.Prospecto.Direccion.Colonia }}
+                            {{ relacion.prospecto.direccion.colonia }}
                         </div>
                         <div class="col s12 m6">
                             <label for="calle">Calle</label><br>
-                            {{ relacion.Prospecto.Direccion.Calle }}
+                            {{ relacion.prospecto.direccion.calle }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s6 m4">
                             <label for="num_ext">N&uacute;mero exterior</label><br>
-                            {{ relacion.Prospecto.Direccion.Numero_Exterior }}
+                            {{ relacion.prospecto.direccion.numero_exterior }}
                         </div>
                         <div class="col s6 m4">
                             <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label><br>
-                            {{ relacion.Prospecto.Direccion.Numero_Interior }}
+                            {{ relacion.prospecto.direccion.numero_interior }}
                         </div>
                         <div class="col s12 m4">
                             <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label><br>
-                            {{ relacion.Prospecto.Direccion.Codigo_Postal }}
+                            {{ relacion.prospecto.direccion.codigo_postal }}
                         </div>
                     </div>
 
@@ -132,7 +132,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -143,7 +143,7 @@
                 {% for actividad in relacion.agenda %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis">
@@ -160,7 +160,7 @@
                             <p>{{ actividad.notas }}</p>
                         </div>
                         <div class="modal-footer">
-                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                            <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                         </div>
                     </div>
 
@@ -179,7 +179,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -190,7 +190,7 @@
                     {% for actividad in relacion.bitacora %}
                         <tr>
                             <td>{{ actividad.titulo }}</td>
-                            <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                            <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                             <td>{{ actividad.fecha }}</td>
                             <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                             <td class="'truncate elipsis">
@@ -207,7 +207,7 @@
                                 <p>{{ actividad.notas }}</p>
                             </div>
                             <div class="modal-footer">
-                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                                <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -220,8 +220,8 @@
             <i class="large material-icons">note_add</i>
         </a>
         <ul>
-            <li><a class="btn-floating blue" href="mailto:{{ relacion.Prospecto.Email }}" target="_blank"><i class="material-icons">email</i></a></li>
-            <li><a class="btn-floating green" onclick="whatsapp({{  relacion.Prospecto.Telefono_Celular }});" href="#"><i class="material-icons">sms</i></a></li>
+            <li><a class="btn-floating blue" href="mailto:{{ relacion.prospecto.email }}" target="_blank"><i class="material-icons">email</i></a></li>
+            <li><a class="btn-floating green" onclick="whatsapp({{  relacion.prospecto.telefono_celular }});" href="#"><i class="material-icons">sms</i></a></li>
         </ul>
     </div>
 {% endblock %}
