@@ -172,7 +172,7 @@
                     </td>
                     <td class="center">
 
-                        {% if prospecto.grupo.activo %}
+                        {% if prospecto_grupo.grupo.activo %}
                             <a href="{% url 'prospectos:lista_pagos' prospecto_grupo.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
                         {% else %}
                             <p>-</p>
