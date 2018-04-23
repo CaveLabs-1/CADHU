@@ -71,6 +71,7 @@ class FormaActividad(ModelForm):
     class Meta:
         model = models.Actividad
         fields = [
+            'tipo',
             'titulo',
             'prospecto_grupo',
             'fecha',

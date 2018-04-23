@@ -50,6 +50,13 @@ ACTIVO = (
     (False, 'Inactivo'),
 )
 
+TIPO_ACTIVIDAD = (
+    ('Whatsapp', 'Whatsapp'),
+    ('E-mail', 'E-Mail'),
+    ('Llamada OK', 'Llamada OK'),
+    ('Llamada No Responde', 'Llamada No Responde'),
+)
+
 
 class Lugar(models.Model):
     calle = models.CharField(max_length=50, blank=True, null=True)
@@ -125,6 +132,8 @@ class Actividad(models.Model):
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
     prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     terminado = models.BooleanField(default=False, verbose_name='Terminada')
+    tipo = models.CharField(choices=TIPO_ACTIVIDAD, null=True, blank=True, max_length=20,
+                            verbose_name='Tipo de activdad.')
 
     def __str__(self):
         return self.titulo
