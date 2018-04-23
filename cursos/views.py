@@ -69,7 +69,7 @@ def eliminar_curso(request, pk):
 @login_required
 @group_required('vendedora', 'administrador')
 def editar_curso(request, pk):
-    # Obtener el pk del evento, hacer nueva forma del evento
+    # Obtener el pk del curso, hacer nueva forma del curso
     id_curso = Curso.objects.get(id=pk)
     new_curso_form = CursoForm(instance=id_curso)
     if request.method == 'POST':
@@ -79,20 +79,20 @@ def editar_curso(request, pk):
             curso = new_curso_form.save(commit=False)
             curso.activo = True
             curso.save()
-            messages.success(request, 'El grupo ha sido actualizado.')
+            messages.success(request, 'El curso ha sido actualizado.')
             return redirect('cursos:lista_cursos')
         else:
             # Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
                 'new_curso_form': new_curso_form,
-                'grupo': id_curso,
+                'curso': id_curso,
                 'titulo': 'Editar Curso',
             }
             return render(request, 'cursos/form_curso.html', context)
     context = {
         'new_curso_form': new_curso_form,
-        'grupo': id_curso,
+        'curso': id_curso,
         'titulo': 'Editar Curso',
     }
     return render(request, 'cursos/form_curso.html', context)
