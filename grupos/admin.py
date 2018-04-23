@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Evento
+from .models import Grupo
 
 # Register your models here.
-admin.site.register(Evento)
+admin.site.register(Grupo)

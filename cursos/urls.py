@@ -1,24 +1,16 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import nuevo_curso, cursos, eliminar_grupo, info_grupo, editar_grupo
+from .views import lista_cursos, crear_curso, eliminar_curso, editar_curso
 
 app_name = 'cursos'
 urlpatterns = [
-    # path('nuevo_curso', views.CreaCurso.as_view(), name= 'nuevo_curso'),
 
-    #Crear nuevo grupo
-    path('nuevo_curso', nuevo_curso, name='nuevo_curso'),
+    path('', lista_cursos, name='lista_cursos'),
 
-    #Lista de grupos
-    path('lista_cursos', cursos, name='cursos'),
+    path('crear_curso', crear_curso, name='crear_curso'),
 
-    #Eliminar un grupo
-    path('eliminar_grupo/<int:id>', eliminar_grupo, name='eliminar_grupo'),
+    path('eliminar_curso/<int:pk>', eliminar_curso, name='eliminar_curso'),
 
-    #Editar un grupo
-    path('editar_grupo/<int:id>', editar_grupo, name='editar_grupo'),
-
-    # Informacion de un curso
-    path('<int:id>/info', info_grupo, name='info_grupo'),
+    path('editar_curso/<int:pk>', editar_curso, name='editar_curso'),
 ]

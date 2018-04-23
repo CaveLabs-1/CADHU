@@ -1,12 +1,9 @@
 from django.db import models
-from cursos.models import Curso
-from django import forms
+from grupos.models import Grupo
 from django.utils import timezone
-import datetime
 from cursos.models import Curso
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
-from django.conf import settings
 # Create your models here.
 
 METODO_CAPTACION = (
@@ -20,7 +17,7 @@ METODO_CAPTACION = (
     ('Otro', 'Otro'),
 )
 
-ESTATUS= (
+ESTATUS = (
     ('INTERESADO', 'INTERESADO'),
     ('CURSANDO', 'CURSANDO'),
     ('FINALIZADO', 'FINALIZADO'),
@@ -53,88 +50,76 @@ ACTIVO = (
     (False, 'Inactivo'),
 )
 
-
-class Empresa(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
-    Contacto1 = models.CharField(max_length=50, blank=True, null=False)
-    Contacto2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: '999999999'. Se permiten 10 digitos.")
-    Telefono1 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
-    Telefono2 = models.CharField(validators=[phone_regex], max_length=10,blank=True, null=True)
-    Email1 = models.EmailField(max_length=50, blank=True, null=False)
-    Email2 = models.EmailField(max_length=50, blank=True, null=False)
-    Puesto1 = models.CharField(max_length=50, blank=True, null=False)
-    Puesto2 = models.CharField(max_length=50, blank=True, null=False)
-    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE)
-    Razon_Social = models.CharField(max_length=50, blank=True, null=True)
-    Activo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nombre
-
-
-class Prospecto(models.Model):
-    Nombre = models.CharField(max_length=50, blank=False, null=False)
-    Apellidos = models.CharField(max_length=120, blank=False, null=False)
-    Telefono_Casa = models.CharField(max_length=10, blank=True, null=True)
-    Telefono_Celular = models.CharField(max_length=10, blank=True, null=True)
-    Email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
-    Direccion = models.ForeignKey('Lugar', on_delete=models.CASCADE, null=True, blank=True)
-    Metodo_Captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
-    Estado_Civil = models.CharField(max_length=15, blank=True, null=True, choices=ESTADO_CIVIL)
-    Ocupacion = models.CharField(max_length=15, blank=True, null=True)
-    Hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
-    Recomendacion = models.CharField(max_length=150, blank=True, null=True)
-    Cursos = models.ManyToManyField(Curso, through='ProspectoEvento', through_fields=('Prospecto', 'Curso'))
-    Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    Fecha_Creacion = models.DateField(null=True)
-    Activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
-    Empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True, blank=True)
-    comentarios = models.CharField(max_length=300, blank=True, null=True)
-
-    def __str__(self):
-        return self.Nombre + ' ' + self.Apellidos
+TIPO_ACTIVIDAD = (
+    ('Whatsapp', 'Whatsapp'),
+    ('E-mail', 'E-Mail'),
+    ('Llamada OK', 'Llamada OK'),
+    ('Llamada No Responde', 'Llamada No Responde'),
+)
 
 
 class Lugar(models.Model):
-    Calle = models.CharField(max_length=50, blank=True, null=True)
-    Numero_Interior = models.CharField(max_length=6, blank=True, null=True)
-    Numero_Exterior = models.CharField(max_length=6, blank=True, null=True)
-    Colonia = models.CharField(max_length=50, blank=True, null=True)
-    Ciudad = models.CharField(max_length=50, blank=True, null=True)
-    Estado = models.CharField(max_length=50, blank=True, null=True)
-    Pais = models.CharField(max_length=50, blank=True, null=True, )
-    Codigo_Postal = models.CharField(max_length=5, blank=True, null=True)
+    calle = models.CharField(max_length=50, blank=True, null=True)
+    numero_interior = models.CharField(max_length=6, blank=True, null=True)
+    numero_exterior = models.CharField(max_length=6, blank=True, null=True)
+    colonia = models.CharField(max_length=50, blank=True, null=True)
+    ciudad = models.CharField(max_length=50, blank=True, null=True)
+    estado = models.CharField(max_length=50, blank=True, null=True)
+    pais = models.CharField(max_length=50, blank=True, null=True, )
+    codigo_postal = models.CharField(max_length=5, blank=True, null=True)
 
 
-class ProspectoEvento(models.Model):
-    Prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
-    Fecha = models.DateField(null=True, blank=True)
-    Interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
-    FlagCADHU = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
+class Prospecto(models.Model):
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    apellidos = models.CharField(max_length=120, blank=False, null=False)
+    telefono_casa = models.CharField(max_length=10, blank=True, null=True)
+    telefono_celular = models.CharField(max_length=10, blank=True, null=True)
+    email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
+    direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True, blank=True)
+    metodo_captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
+    estado_civil = models.CharField(max_length=15, blank=True, null=True, choices=ESTADO_CIVIL)
+    ocupacion = models.CharField(max_length=15, blank=True, null=True)
+    hijos = models.PositiveIntegerField(blank=True, null=True, default=0)
+    recomendacion = models.CharField(max_length=150, blank=True, null=True)
+    grupos = models.ManyToManyField(Grupo, through='ProspectoGrupo', through_fields=('prospecto', 'grupo'))
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+    fecha_creacion = models.DateField(null=True)
+    activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
+    empresa = models.ForeignKey('Empresa', null=True, on_delete=models.SET_NULL, blank=True)
+    comentarios = models.CharField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellidos
+
+
+class ProspectoGrupo(models.Model):
+    prospecto = models.ForeignKey(Prospecto, on_delete=models.CASCADE, null=True)
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, null=True)
+    fecha = models.DateField(null=True, blank=True)
+    interes = models.CharField(max_length=50, blank=True, null=True, choices=TIPOS_INTERES)
+    flag_cadhu = models.NullBooleanField(default=False, null=True, verbose_name='Bandera de interes')
     status = models.CharField(max_length=50, choices=ESTATUS, default='INTERESADO')
-    #Pago = models.ForeignKey('Pago', on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id)
 
     def bitacora(self):
-        return Actividad.objects.filter(prospecto_evento=self.id, terminado=True).order_by('fecha').reverse()
+        return Actividad.objects.filter(prospecto_grupo=self.id, terminado=True).order_by('fecha').reverse()
 
     def agenda(self):
-        return Actividad.objects.filter(prospecto_evento=self.id, terminado=False).order_by('fecha')
+        return Actividad.objects.filter(prospecto_grupo=self.id, terminado=False).order_by('fecha')
 
 
 class Cliente(models.Model):
-    ProspectoEvento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     matricula = models.CharField(max_length=12, unique=True, blank=False, null=False)
-    Fecha = models.DateField(null=True, blank=True, default=datetime.datetime.now().date())
-    rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$', message="El RFC debe de contar con el formato oficial")
+    fecha = models.DateField(null=True, blank=True, default=timezone.now().date())
+    rfc_regex = RegexValidator(regex=r'^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$',
+                               message="El RFC debe de contar con el formato oficial")
     rfc = models.CharField(validators=[rfc_regex], max_length=13, blank=True, null=True)
-    direccionFacturacion = models.ForeignKey('Lugar', on_delete=models.CASCADE, blank=True, null=True)
-    razonSocial = models.CharField(max_length=50, blank=True, null=True)
-    Activo = models.BooleanField(default=True)
+    direccion_facturacion = models.ForeignKey('Lugar', on_delete=models.SET_NULL, blank=True, null=True)
+    razon_social = models.CharField(max_length=50, blank=True, null=True)
+    activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.matricula
@@ -145,8 +130,10 @@ class Actividad(models.Model):
     fecha = models.DateField(verbose_name='Fecha de la actividad', blank=False, null=False)
     hora = models.TimeField(verbose_name='Hora de la actividad', blank=True, null=True)
     notas = models.CharField(verbose_name='Notas de la actividad', max_length=4000, blank=True, null=True)
-    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     terminado = models.BooleanField(default=False, verbose_name='Terminada')
+    tipo = models.CharField(choices=TIPO_ACTIVIDAD, null=True, blank=True, max_length=20,
+                            verbose_name='Tipo de activdad.')
 
     def __str__(self):
         return self.titulo
@@ -154,10 +141,30 @@ class Actividad(models.Model):
 
 class Pago(models.Model):
     # cliente
-    prospecto_evento = models.ForeignKey('ProspectoEvento', on_delete=models.CASCADE)
+    prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
     validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     tipo_pago = models.CharField(max_length=50, blank=True, null=True)
+
+
+class Empresa(models.Model):
+    nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    contacto_1 = models.CharField(max_length=50, blank=True, null=False)
+    contacto_2 = models.CharField(max_length=50, blank=True, null=False)
+    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: "
+                                                               "'999999999'. Se permiten 10 digitos.")
+    telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    email_1 = models.EmailField(max_length=50, blank=True, null=False)
+    email_2 = models.EmailField(max_length=50, blank=True, null=False)
+    puesto_1 = models.CharField(max_length=50, blank=True, null=False)
+    puesto_2 = models.CharField(max_length=50, blank=True, null=False)
+    direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True)
+    razon_social = models.CharField(max_length=50, blank=True, null=True)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre

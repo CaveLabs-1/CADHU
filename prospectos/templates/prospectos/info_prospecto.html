@@ -2,106 +2,138 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Prospecto: {{ prospecto.Nombre }} {{ prospecto.Apellidos }} {% endblock %}
+{% block title %} Prospecto: {{ prospecto.nombre }} {{ prospecto.apellidos }} {% endblock %}
 {% block content %}
 
+
     <div class="row">
-        <div class="col s12">
-          <ul class="collapsible">
-            <li>
-              <div class="collapsible-header">
-                <div class="col l4 s12 center">
-                  <i class="material-icons left">person</i>
-                  {{ prospecto.Nombre }} {{ prospecto.Apellidos }}
+      <div class="col s12">
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header"><i class="material-icons left">person</i> {{ prospecto.nombre }} {{ prospecto.apellidos }}</div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="col s12">
+                      <div class="row">
+                          <div class="col s12 m4 l4">
+                              <label for="Nombre">Nombre(s)</label>
+                              {{ prospecto.nombre }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label for="apellido_p">Apellidos</label>
+                              {{ prospecto.apellidos }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label>Email</label>
+                              {{ prospecto.email }}
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col s12 m4 l4">
+                              <label>Tel&eacute;fono Celular</label>
+                              {{ prospecto.telefono_celular }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label>Tel&eacute;fono Casa</label>
+                              {{ prospecto.telefono_casa }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label for="ocupacion">Ocupaci&oacute;n</label>
+                              {{ prospecto.ocupacion }}
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col s12 m4 l4">
+                              <label>M&eacute;todo de captaci&oacute;n</label>
+                              {{ prospecto.metodo_captacion }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label for="otro">Radio/Recomendacion </label>
+                              {{ prospecto.recomendacion }}
+                          </div>
+                          <div class="col s12 m4 l4">
+                              <label>Estado civil</label>
+                              {{ prospecto.estado_civil }}
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col s12 m4 l4">
+                              <label>Hijos</label>
+                              {{ prospecto.hijos }}
+                          </div>
+                      </div>
+                    </div>
                 </div>
-                <div class="col l4 s12 center">
-                  <i class="material-icons left">contact_mail</i>
-                  {{ prospecto.Email }}
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header"><i class="material-icons left">location_on</i>Dirección</div>
+            <div class="collapsible-body">
+              <div class="row">
+                <div class="col s12">
+                  <div class="row">
+                      <div class="col s12 m4 l4">
+                          <label>Pa&iacute;s</label>
+                          {{ prospecto.direccion.pais }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label>Estado</label>
+                          {{ prospecto.direccion.estado }}
+                      </div>
+                      <div class="col s12 m4 l4">
+                          <label>Ciudad</label>
+                          {{ prospecto.direccion.ciudad }}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12 m4">
+                          <label for="colonia">Colonia</label>
+                          {{ prospecto.direccion.colonia }}
+                      </div>
+                      <div class="col s12 m4">
+                          <label for="calle">Calle</label>
+                          {{ prospecto.direccion.calle }}
+                      </div>
+                      <div class="col s6 m4">
+                          <label for="num_ext">N&uacute;mero exterior</label>
+                          {{ prospecto.direccion.numero_exterior }}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s6 m4">
+                          <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
+                          {{ prospecto.direccion.numero_interior }}
+                      </div>
+                      <div class="col s12 m4">
+                          <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
+                          {{ prospecto.direccion.codigo_postal }}
+                      </div>
+                  </div>
                 </div>
-                <div class="col l4 s12 center">
-                  <i class="material-icons left">contact_phone</i>
-                  {{ prospecto.Telefono_Celular }}
-                </div>
-
               </div>
-              <div class="collapsible-body">
-                <span>
-                  {#----------------Info-------------#}
-                  <div class="row">
-                      <span class=" grey-text text-darken-4" >Información personal</span>
+            </div>
+          </li>
+          {% if prospecto.comentarios %}
+          <li>
+            <div class="collapsible-header"><i class="material-icons left">reorder</i>Comentarios</div>
+            <div class="collapsible-body">
+              <div class="row">
+                  <div class="col s12">
+                      {{ prospecto.comentarios }}
                   </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          <label>Tel&eacute;fono Casa</label>
-                          {{ prospecto.Telefono_Casa }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label for="ocupacion">Ocupaci&oacute;n</label>
-                          {{ prospecto.Ocupacion }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>M&eacute;todo de captaci&oacute;n</label>
-                          {{ prospecto.Metodo_Captacion }}
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          <label for="otro">Radio/Recomendacion </label>
-                          {{ prospecto.Recomendacion }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>Estado civil</label>
-                          {{ prospecto.Estado_Civil }}
-                      </div>
-                      <div class="col s12 m4 l4">
-                          <label>Hijos</label>
-                          {{ prospecto.Hijos }}
-                      </div>
-                  </div>
-
-
-
-
-                  {#----------------Direccion-------------#}
-                  <div class="row">
-                      <div class="col s12">
-                          <label>Dirección</label>
-                          {% if not prospecto.Direccion.Numero_Interior %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }}, {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
-                          {% else %}
-                            {{ prospecto.Direccion.Calle }} #{{ prospecto.Direccion.Numero_Exterior }} Int( {{ prospecto.Direccion.Numero_Interior }} ), {{ prospecto.Direccion.Colonia }},
-                            {{ prospecto.Direccion.Ciudad }}, {{ prospecto.Direccion.Estado }}, {{ prospecto.Direccion.Pais }}. C.P: {{ prospecto.Direccion.Codigo_Postal }}
-                          {% endif %}
-
-
-                      </div>
-
-                  </div>
-
-                  {#----------------Comentarios-------------#}
-                  <div class="row">
-                      <span class=" grey-text text-darken-4" >Comentarios</span>
-                  </div>
-                  <div class="row">
-                      <div class="col s12 m4 l4">
-                          {{ prospecto.comentarios }}
-                      </div>
-                  </div>
-                </span>
               </div>
-            </li>
-          </ul>
-        </div>
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
 
-
-    <ul id="tabs" class="tabs">
+    <ul id="tabs" class="tabs pendientes">
         <li class="tab col s4"><a href="#cursos">Grupos</a></li>
         <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
         <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
     </ul>
-
 
     <div id="cursos" class="col s12">
         <div class="row">
@@ -123,28 +155,28 @@
             </tr>
             </thead>
             <tbody>
-            {% for prospecto_evento in cursos %}
+            {% for prospecto_grupo in relacion %}
                 <tr>
-                    <td><a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.pk %}">{{ prospecto_evento.Curso }}</a></td>
-                    <td>{{ prospecto_evento.Interes }}</td>
-                    <td>{{ prospecto_evento.Fecha }}</td>
-                    {% if prospecto_evento.FlagCADHU == True %}
+                    <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.curso }}</a></td>
+                    <td>{{ prospecto_grupo.interes }}</td>
+                    <td>{{ prospecto_grupo.fecha }}</td>
+                    {% if prospecto_grupo.flag_cadhu %}
                         <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                     {% else %}
                         <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                     {% endif %}
                     <td>
-                        <a href="{% url 'prospectos:info_prospecto_curso' prospecto_evento.id %}"><i class="material-icons">info</i></a>
-                        <a href="{% url 'prospectos:editar_curso' prospecto_evento.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="{% url 'prospectos:eliminar_curso' prospecto_evento.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}"><i class="material-icons">info</i></a>
+                        <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        <a href="{% url 'prospectos:eliminar_grupo' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     </td>
                     <td class="center">
 
-                      {% if prospecto_evento.Curso.Activo %}
-                        <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
-                      {% else %}
-                        <p>-</p>
-                      {% endif %}
+                        {% if prospecto.grupo.activo %}
+                            <a href="{% url 'prospectos:lista_pagos' prospecto_evento.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+                        {% else %}
+                            <p>-</p>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -152,7 +184,7 @@
         </table>
     </div>
 
-    {#    --------------------------Modal Agregar Curso ------------------#}
+    {#    --------------------------Modal Agregar Grupo ------------------#}
     <div id="modalCursos" class="modal">
         <div class="modal-content" style="padding: 40px">
             <h5 class="center">Registrar Grupo</h5>
@@ -162,11 +194,11 @@
                 <div class="row center">
                     <div class="col s12">
                         <div class="input-field col l8 offset-l2 s12">
-                            {{ newProspectoEventoForm.Curso | add_class:'form-control' }}
-                            <label for="Curso">Curso</label>
+                            {{ new_prospecto_grupo_form.grupo | add_class:'form-control' }}
+                            <label for="Grupo">Grupo</label>
                         </div>
                         <div class="input-field col l8 offset-l2 s12">
-                            {{ newProspectoEventoForm.Interes | add_class:'form-control' }}
+                            {{ new_prospecto_grupo_form.interes | add_class:'form-control' }}
                             <label for="Interes">Interes</label>
                         </div>
                     </div>
@@ -186,7 +218,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -197,7 +229,7 @@
                 {% for actividad in agenda %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis">
@@ -233,7 +265,7 @@
                 <thead>
                 <tr>
                     <th>Descripción</th>
-                    <th>Curso</th>
+                    <th>Grupo</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Notas</th>
@@ -244,7 +276,7 @@
                 {% for actividad in bitacora %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_evento.Curso.Nombre }}</td>
+                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                         <td>{{ actividad.fecha }}</td>
                         <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
                         <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"

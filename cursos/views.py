@@ -1,131 +1,98 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .models import Curso
-from prospectos.models import ProspectoEvento
-from eventos.models import Evento
-from prospectos.models import Prospecto, ProspectoEvento, Cliente, Actividad
-from django.views import generic
-from .forms import FormaCurso
-from django.contrib import messages
+from grupos.models import Grupo
+from .forms import CursoForm
 from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
+from django.contrib import messages
 
-
-# US29
+# US36 y US34
 @login_required
 @group_required('vendedora', 'administrador')
-def cursos(request):
+def lista_cursos(request):
+    # Se hacer render de la lista de prospectos
+    cursos = Curso.objects.filter(activo=True)
     context = {
-        'titulo': 'Grupo',
-        # 'eventos': Evento.objects.all().order_by('Nombre'),
-        'cursos': Curso.objects.filter(Activo = True),
+        'cursos': cursos,
+        'titulo': 'Cursos',
     }
     return render(request, 'cursos/cursos.html', context)
 
-
+# US32
 @login_required
 @group_required('administrador')
-def nuevo_curso(request):
-    # recibir forma
-    Forma_nuevo_curso = FormaCurso()
-    # si se recibe una forma con post
+def crear_curso(request):
+    # Crea la forma en la vista
+    new_curso_form = CursoForm()
+    # Pide el método post
     if request.method == 'POST':
-        Forma_nuevo_curso = FormaCurso(request.POST)
-        # si la forma es válida
-        if Forma_nuevo_curso.is_valid():
-            # se guarda la forma
-            actividad = Forma_nuevo_curso.save()
-            # se redirige a la próxima vista
-            messages.success(request, '¡Grupo agregado exitosamente!')
-
-            # return redirect('cursos:lista_cursos')
-            return redirect('/cursos/lista_cursos')
-        # se renderea la forma nuevamente con los errores marcados
-        context = {
-            'form': Forma_nuevo_curso,
-            'titulo': 'Agregar Grupo',
-            'error_message': Forma_nuevo_curso.errors
-        }
-        return render(request, 'cursos/nuevo_curso.html', context)
-    # se renderea la página
+        new_curso_form = CursoForm(request.POST or None)
+        # Valida la forma, la guarda y redirecciona
+        if new_curso_form.is_valid():
+            curso = new_curso_form.save(commit=False)
+            curso.activo = True
+            curso.save()
+            # Mensaje de exito
+            messages.success(request, 'El grupo ha sido creado.')
+            return redirect(reverse('cursos:lista_cursos'))
+        else:
+            # Mensaje de error
+            messages.success(request, 'Existe una falla en los campos.')
+            # Envia la información necesaria.
+            context = {
+                'new_curso_form': new_curso_form,
+                'titulo': 'Registrar un Curso',
+            }
+            return render(request, 'cursos/form_curso.html', context)
     context = {
-        'form': Forma_nuevo_curso,
-        'titulo': 'Agregar Grupo',
-        'eventos': Evento.objects.filter(Activo = True).order_by('Nombre')
+        'new_curso_form': new_curso_form,
+        'titulo': 'Registrar un Curso',
     }
-    return render(request, 'cursos/nuevo_curso.html', context)
+    return render(request, 'cursos/form_curso.html', context)
 
-#US 28
+#US 35
 @login_required
-@group_required('vendedora','administrador')
-def eliminar_grupo(request, id):
-    # evento = Evento.objects.get(id=id)
-    curso = Curso.objects.get(id=id)
-    gruposUtilizados = ProspectoEvento.objects.filter(Curso_id = curso.id).count()
-    # print(id)
-    # print(curso)
-
-    if(gruposUtilizados > 0):
-        curso.Activo = False
+@group_required('vendedora', 'administrador')
+def eliminar_curso(request, pk):
+    curso = Curso.objects.get(id=pk)
+    grupos = Grupo.objects.filter(curso_id=pk).count()
+    if grupos > 0:
+        curso.activo = False
         curso.save()
-        # print(evento.Activo)
-        return redirect('cursos:cursos')
+        return redirect('cursos:lista_cursos')
     else:
         curso.delete()
-        return redirect('cursos:cursos')
+        return redirect('cursos:lista_cursos')
 
-# US27
+
+# US 33
 @login_required
-@group_required('vendedora','administrador')
-def editar_grupo(request, id):
-    #Hacer asignaciones desde la BD
-    grupo = Curso.objects.get(id=id)
-    forma_curso = FormaCurso(instance=grupo)
-
-    #Checar que el metodo sea POST
+@group_required('vendedora', 'administrador')
+def editar_curso(request, pk):
+    # Obtener el pk del evento, hacer nueva forma del evento
+    id_curso = Curso.objects.get(id=pk)
+    new_curso_form = CursoForm(instance=id_curso)
     if request.method == 'POST':
-        forma_curso = FormaCurso(request.POST or None, instance=grupo)
-
-        #Checar que la forma sea valida y guardarla
-        if forma_curso.is_valid():
-            forma_curso.save()
-            messages.success(request, '¡Grupo editado exitosamente!')
-            return redirect('/cursos/lista_cursos')
-
-        #Si la forma no es valida, hacer render y mandar errores
-        context = {
-            'form': forma_curso,
-            'titulo': 'Editar Grupo',
-            'error_message': forma_curso.errors
-        }
-        return redirect('cursos:editar_grupo', id=id)
-
-    #Render a la pagina
-    context = {
-        'form': forma_curso,
-        'titulo': 'Editar Grupo',
-        'eventos': Evento.objects.filter(Activo = True).order_by('Nombre')
-    }
-    return render(request, 'cursos/editar_curso.html', context)
-
-
-# US25
-@login_required
-@group_required('administrador', 'vendedora')
-def info_grupo(request, id):
-    curso = Curso.objects.get(id=id)
-    prospectos_lista = ProspectoEvento.objects.filter(Curso=curso)
-    prospectos = []
-    clientes = []
-    for prospecto in prospectos_lista:
-        if prospecto.cliente_set.exists():
-            cliente = Cliente.objects.get(ProspectoEvento=prospecto.id)
-            clientes.append(cliente)
+        new_curso_form = CursoForm(request.POST or None, instance=id_curso)
+        # Si es válida, instanciar nueva empresa Y guardarla
+        if new_curso_form.is_valid():
+            curso = new_curso_form.save(commit=False)
+            curso.activo = True
+            curso.save()
+            messages.success(request, 'El grupo ha sido actualizado.')
+            return redirect('cursos:lista_cursos')
         else:
-            prospectos.append(prospecto)
+            # Si no es válida, notificar al usuario
+            messages.success(request, 'Existe una falla en los campos.')
+            context = {
+                'new_curso_form': new_curso_form,
+                'grupo': id_curso,
+                'titulo': 'Editar Curso',
+            }
+            return render(request, 'cursos/form_curso.html', context)
     context = {
-        'titulo': 'Información: ' + curso.Nombre,
-        'curso': curso,
-        'clientes': clientes,
-        'prospectos': prospectos,
+        'new_curso_form': new_curso_form,
+        'grupo': id_curso,
+        'titulo': 'Editar Curso',
     }
-    return render(request, 'cursos/info_curso.html', context)
+    return render(request, 'cursos/form_curso.html', context)

@@ -15,7 +15,7 @@ $(document).ready(function() {
     console.log($("#monto_maximo").val());
 
     if (Number($("#monto").val()) > Number($("#monto_maximo").val())) {
-      M.toast({html: 'El monto supera el total del curso inscrito.'})
+      M.toast({html: 'El monto supera el total del grupo inscrito.'})
     } else {
       return;
     }

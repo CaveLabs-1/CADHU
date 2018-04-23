@@ -3,52 +3,52 @@
 {% load static %}
 {% load grupos %}
 
-{% block title %} Grupo: {{ curso.Nombre }}{% endblock %}
+{% block title %} Grupo: {{ grupo.nombre }}{% endblock %}
 {% block content %}
 
     <div class="row">
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h5 class="card-title center">{{ curso.Nombre }}</h5>
+                    <h5 class="card-title center">{{ grupo.nombre }}</h5>
                 </div>
                 <div class="card-content">
                     {#----------------Info-------------#}
                     <div class="row">
                         <div class="col s12 m6">
                             <label for="Nombre">Nombre(s)</label>
-                            {{ curso.Nombre }}
+                            {{ grupo.nombre }}
                         </div>
                         <div class="col s12 m6">
                             <label for="apellido_p">Curso</label>
-                            {{ curso.Evento }}
+                            {{ grupo.curso }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Fecha de inicio</label>
-                            {{ curso.Fecha_Inicio }}
+                            {{ grupo.fecha_inicio }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label>Fecha de fin</label>
-                            {{ curso.Fecha_Fin }}
+                            {{ grupo.fecha_fin }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="ocupacion">Costo</label>
-                            {{ curso.Costo }}
+                            {{ grupo.costo }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Encargad@</label>
-                            {{ curso.Encargado.first_name }} {{ curso.Encargado.last_name }}
+                            {{ grupo.encargado.first_name }} {{ grupo.encargado.last_name }}
                         </div>
                         <div class="col s12 m4 l4">
                             <label for="otro">Direccion/Sede</label>
-                            {{ curso.Direccion }}
+                            {{ grupo.direccion }}
                         </div>
                         <div class="col s12 m4">
-                            {% if curso.Activo %}
+                            {% if grupo.activo %}
                                 <label class="text-verde-cadhu">Activo</label>
                             {% else %}
                                 <label class="text-rojo-cadhu">Inactivo</label>
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col s12 ">
                             <h5 class="card-title">Descripción</h5><br>
-                            {{ curso.Descripcion }}
+                            {{ grupo.descripcion }}
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     <tr>
                         <td>
                             {% if  prospecto_grupo.bitacora %}
-                            {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
+                                {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
                                 {% with ultima=prospecto_grupo.bitacora|dictsort:'fecha'|last %}
                                     {{ ultima.fecha }}
                                 {% endwith %}
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                     </div>
 
                 {% endfor %}
@@ -211,7 +211,7 @@
                     <tr>
                         <td>
                             {% if  prospecto_grupo.bitacora %}
-                            {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
+                                {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
                                 {% with ultima=prospecto_grupo.bitacora|dictsort:'fecha'|last %}
                                     {{ ultima.fecha }}
                                 {% endwith %}
@@ -258,7 +258,7 @@
                             <p>{{ prospecto_grupo.Prospecto.comentarios }}</p>
                         </div>
                         <div class="modal-footer">
-                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                            <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                         </div>
                     </div>
 
@@ -313,7 +313,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                     </div>
 
                 {% endfor %}

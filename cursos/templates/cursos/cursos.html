@@ -2,77 +2,73 @@
 {% load staticfiles %}
 
     {% block title %}Cursos{% endblock %}
-    {% block content %}
-
+      {% block content %}
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large orange" href='nuevo_curso'>
+        <a href="{% url 'cursos:crear_curso' %}" class="btn-floating btn-large orange">
           <i class="large material-icons">add</i>
         </a>
       </div>
-
-      <!-- <div class="row">
-        <div class="col l10 offset-l1 s12"> -->
-          <table class="dataTable">
-              <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Término</th>
-                    <th>Dirección</th>
-                    <th>Descripción</th>
-                    <th>Costo</th>
-                    <th>Evento</th>
-                    <th>Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for curso in cursos %}
+            <table class="dataTable">
+                <thead>
                   <tr>
-                      <td><a href="{% url 'cursos:info_grupo' curso.id %}">{{ curso.Nombre }}</a></td>
-                      <td>{{ curso.Fecha_Inicio  }}</td>
-                      <td>{{ curso.Fecha_Fin  }}</td> <!--| date:'d/m/y' -->
-                      <td>{{ curso.Direccion }}</td>
-                      <td>{{ curso.Descripcion }}</td>
-                      <td>{{ curso.Costo }}</td>
-                      <td>{{ curso.Evento }}</td>
-                      <td>
-                        <a href="{% url 'cursos:editar_grupo' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="{% url 'cursos:eliminar_grupo' curso.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
-                      </td>
+                      <th class="center">Nombre</th>
+                      <th class="center">Descripción</th>
+                      <th class="center">Acciones</th>
                   </tr>
-              {% endfor %}
-              </tbody>
-          </table>
-        <!-- </div>
-      </div> -->
+                </thead>
+                <tbody>
+                {% for curso in cursos %}
+                    <tr>
+                        <td>{{ curso.nombre }}</td>
+                        <td>{{ curso.descripcion }}</td>
+                        <td class="center">
+                          <a href="{% url 'cursos:editar_curso' curso.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                          <a href="{% url 'cursos:eliminar_curso' curso.id %}" onclick="eliminar_curso(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
   {% endblock %}
 
   {% block js %}
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
 
-    <script>
-    function eliminar_grupo(element, event){
-      event.preventDefault();
-      $.confirm({
-        title: '¿Deseas eliminar el grupo?',
-        content: 'No podrá ser utilizado en un futuro.',
-        type: 'red',
-        closeIcon: true,
-        columnClass: 'col l6 offset-l3 s12',
-        typeAnimated: true,
-        buttons: {
-          continuar: {
-              text: 'Eliminar',
-              btnClass: 'btn-red',
+  <script>
 
-            action: function(){
-              window.location.href = $(element).attr("href");
+        function eliminar_curso(element, event){
+          event.preventDefault();
+          $.confirm({
+            title: '¿Deseas eliminar el curso?',
+            content: 'No podrá ser utilizado en un futuro.',
+            type: 'red',
+            closeIcon: true,
+            columnClass: 'col l6 offset-l3 s12',
+            typeAnimated: true,
+            buttons: {
+              continuar: {
+                  text: 'Eliminar',
+                  btnClass: 'btn-red',
+
+                action: function(){
+                  window.location.href = $(element).attr("href");
+                }
+              }
             }
-          }
+          });
         }
-      });
-    }
 
-    </script>
-  {% endblock js %}
+
+        {% if messages %}
+          {%for message in messages %}
+              {% if message.level == 40 %}
+                  var mensaje = '<span>{{message}}</span><a href="/media/resultado.xls" class="btn-flat toast-action">Resultados</a>';
+                  M.toast({html: mensaje, displayLength: 60000})
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+
+  </script>
+  {% endblock %}
