@@ -396,7 +396,7 @@ class ProspectoTest(TestCase):
                                 {'nombre': 'Luis Alfredo', 'apellidos': 'Rodriguez Santos','telefono_casa':
                                     '4422232226', 'telefono_celular': '4422580662', 'direccion':
                                     Lugar.objects.get(calle='Lourdes'), 'email': 'a01209537@itesm.mx',
-                                 'metodo_captacion': 'Facebook','estado_civil': 'SOLTERO', 'ocupacion': 'Estudiante',
+                                 'metodo_captacion': 'Facebook', 'estado_civil': 'SOLTERO', 'ocupacion': 'Estudiante',
                                  'hijos': 1}, follow=True)
         actualizado = Prospecto.objects.get(id=1)
         self.assertEqual(resp.status_code, 200)

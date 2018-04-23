@@ -65,7 +65,7 @@ def nuevo_grupo(request):
 
 # US27
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def editar_grupo(request, pk):
     # Hacer asignaciones desde la BD
     grupo = Grupo.objects.get(id=pk)
@@ -98,7 +98,7 @@ def editar_grupo(request, pk):
 
 # US 28
 @login_required
-@group_required('administrador')
+@group_required('vendedora', 'administrador')
 def eliminar_grupo(request, pk):
     grupo = Grupo.objects.get(id=pk)
     grupos_utilizados = ProspectoGrupo.objects.filter(grupo=grupo).count()
