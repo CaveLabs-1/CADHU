@@ -83,7 +83,7 @@ class BorrarGrupoTest(TestCase):
         Group.objects.create(name="vendedora")
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
-        login = self.client.login(username='testuser1', password='12345')
+        self.client.login(username='testuser1', password='12345')
 
     @classmethod
     def setUpTestData(cls):
@@ -112,14 +112,13 @@ class BorrarGrupoTest(TestCase):
         self.assertEqual(grupo_actualizado.activo, False)
 
 
-
 class CambiarGrupoTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
-        login = self.client.login(username='testuser1', password='12345')
+        self.client.login(username='testuser1', password='12345')
 
     @classmethod
     def setUpTestData(cls):
@@ -146,13 +145,15 @@ class CambiarGrupoTest(TestCase):
                                                             status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto2)
         cls.cliente = Cliente.objects.create(prospecto_grupo=cls.prospecto_grupo, matricula='A01209599')
 
-    def test_ac_42_1(self):
+    # ACCEPTANCE CRITERIA: 42.1 y 42.3
+    def test_cambiar_grupo_de_prospecto_cliente(self):
         resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo2.id}))
         grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(grupo_actualizado, 1)
 
-    def test_ac_42_2(self):
+    # ACCEPTANCE CRITERIA: 42.2
+    def test_cambiar_grupo_de_prospecto_a_grupo_inactivo(self):
         resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo_inactivo.id}))
         grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
         self.assertEqual(resp.status_code, 302)
