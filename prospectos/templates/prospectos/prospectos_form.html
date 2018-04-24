@@ -7,23 +7,23 @@
 
         {% block js %}
             <script type="text/javascript">
-            {% if newProspectoForm.errors %}
-                {% for field in newProspectoForm %}
+            {% if new_prospecto_form.errors %}
+                {% for field in new_prospecto_form %}
                     {% for error in field.errors %}
                         M.toast({html: '{{ error|escape }}'})
                     {% endfor %}
                 {% endfor %}
-                {% for error in newProspectoForm.non_field_errors %}
+                {% for error in new_prospecto_form.non_field_errors %}
                     M.toast({html: '{{ error|escape }}'})
                 {% endfor %}
             {% endif %}
-            {% if newLugarForm.errors %}
-                {% for field in newLugarForm %}
+            {% if new_lugar_form.errors %}
+                {% for field in new_lugar_form %}
                     {% for error in field.errors %}
                         M.toast({html: '{{ error|escape }}'})
                     {% endfor %}
                 {% endfor %}
-                {% for error in newLugarForm.non_field_errors %}
+                {% for error in new_lugar_form.non_field_errors %}
                     M.toast({html: '{{ error|escape }}'})
                 {% endfor %}
             {% endif %}
@@ -47,49 +47,49 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Nombre | add_class:'form-control' }}
-                            <label for="Nombre">Nombre(s)</label>
+                            {{ new_prospecto_form.nombre | add_class:'form-control' }}
+                            <label for="Nombre">Nombre(s)*</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Apellidos | add_class:'form-control' }}
-                            <label for="apellido_p">Apellidos</label>
+                            {{ new_prospecto_form.apellidos | add_class:'form-control' }}
+                            <label for="apellido_p">Apellidos*</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Email | add_class:'form-control' }}
-                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email</label>
+                            {{ new_prospecto_form.email | add_class:'form-control' }}
+                            <label for="email" data-error="Use el formato ejemplo@mail.com">Email*</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Telefono_Celular | add_class:'form-control' }}
+                            {{ new_prospecto_form.telefono_celular | add_class:'form-control' }}
                             <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Celular</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Telefono_Casa | add_class:'form-control' }}
+                            {{ new_prospecto_form.telefono_casa | add_class:'form-control' }}
                             <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Casa</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Ocupacion | add_class:'form-control' }}
+                            {{ new_prospecto_form.ocupacion | add_class:'form-control' }}
                             <label for="ocupacion">Ocupaci&oacute;n</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Metodo_Captacion | add_class:'form-control' }}
+                            {{ new_prospecto_form.metodo_captacion | add_class:'form-control' }}
                             <label>M&eacute;todo de captaci&oacute;n</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Recomendacion | add_class:'form-control' }}
+                            {{ new_prospecto_form.recomendacion | add_class:'form-control' }}
                             <label for="otro">Como te enteraste? </label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Estado_Civil | add_class:'form-control' }}
+                            {{ new_prospecto_form.estado_civil | add_class:'form-control' }}
                             <label>Estado civil</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.Hijos | add_class:'form-control' }}
+                            {{ new_prospecto_form.hijos | add_class:'form-control' }}
                             <label for="hijos" data-error="Use valores num&eacute;ricos">Hijos</label>
                         </div>
                     </div>
@@ -98,45 +98,45 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ newLugarForm.Pais | add_class:'form-control' }}
+                            {{ new_lugar_form.pais | add_class:'form-control' }}
                             <label>Pa&iacute;s</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newLugarForm.Estado | add_class:'form-control' }}
+                            {{ new_lugar_form.estado | add_class:'form-control' }}
                             <label>Estado</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            {{ newLugarForm.Ciudad | add_class:'form-control' }}
+                            {{ new_lugar_form.ciudad | add_class:'form-control' }}
                             <label>Ciudad</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m6">
-                            {{ newLugarForm.Colonia | add_class:'form-control' }}
+                            {{ new_lugar_form.colonia | add_class:'form-control' }}
                             <label for="colonia">Colonia</label>
                         </div>
                         <div class="input-field col s12 m6">
-                            {{ newLugarForm.Calle | add_class:'form-control' }}
+                            {{ new_lugar_form.calle | add_class:'form-control' }}
                             <label for="calle">Calle</label>
                         </div>
                         <div class="input-field col s6 m4">
-                            {{ newLugarForm.Numero_Exterior | add_class:'form-control' }}
+                            {{ new_lugar_form.numero_exterior | add_class:'form-control' }}
                             <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
                         </div>
                         <div class="input-field col s6 m4">
-                            {{ newLugarForm.Numero_Interior | add_class:'form-control' }}
+                            {{ new_lugar_form.numero_interior | add_class:'form-control' }}
                             <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
                         </div>
                         <div class="input-field col s12 m4">
-                            {{ newLugarForm.Codigo_Postal | add_class:'form-control' }}
+                            {{ new_lugar_form.codigo_postal | add_class:'form-control' }}
                             <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
                         </div>
 
                     </div>
                     <div class="row">
-                        <div class="input-field col s12 m4 l4">
-                            {{ newProspectoForm.comentarios | add_class:'form-control' }}
-                            <label>Comentarios</label>
+                        <div class="input-field col s12">
+                          {{ new_prospecto_form.comentarios | add_class:'form-control' }}
+                          <label for="comentarios">Comentarios</label>
                         </div>
                     </div>
                     <div class="row center">

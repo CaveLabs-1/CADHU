@@ -7,7 +7,7 @@ with open('/etc/secret_key.txt') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sistemacadhu.com','159.89.229.54']
+ALLOWED_HOSTS = ['sistemacadhu.com', '159.89.229.54']
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

@@ -1,38 +1,19 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
     {% block title %}Nuevo Pago{% endblock %}
 {% block content %}
+{% load widget_tweaks %}
 
   <div class="row no-margin padding-top-20">
       <div class="card ">
         <div class="card-content">
           <form method="post" id="nuevo_pago">
             {% csrf_token %}
-            <!-- <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="cliente" id="cliente" oninvalid="setCustomValidity('Selecciona un cliente de la lista')" required>
-                  <option value="" disabled selected>Selecciona el cliente</option>
-                  <option value="1">Mauricio Hernández</option>
-                  <option value="1">Santiago Valencia</option>
-                </select>
-                <label>Cliente</label>
-              </div>
-            </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="curso" id="curso" oninvalid="setCustomValidity('Selecciona un curso de la lista')" required>
-                  <option value="" disabled selected>Selecciona el curso</option>
-                  <option value="1">Diplomado 1</option>
-                  <option value="1">Diplomado 2</option>
-                </select>
-                <label>Curso</label>
-              </div>
-            </div> -->
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.monto.html_name}}" id="{{ form.monto.id_for_label }}" required validate step=".01" min="0" max="{{ monto_maximo }}" oninvalid="setCustomValidity('El monto super el total del curso inscrito.')">
-                <label for="{{form.monto.html_name}}">Monto de Pago</label>
+                <input type="number" name="monto" id="monto" required>
+                <label for="{{form.monto.html_name}}">Monto de Pago (Saldo restante: ${{ monto_maximo }})</label>
+                <input style="display:none;" id="monto_maximo" value="{{ monto_maximo }}">
               </div>
             </div>
             <div class="row no-margin">
@@ -43,69 +24,28 @@
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('No. de referencia solo debe contener letras o números.')" required>
+                <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" required>
                 <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia</label>
               </div>
             </div>
-            <!-- <div class="row no-margin">
+            <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Nombre.html_name}}" id="{{ form.Nombre.id_for_label }}" pattern="[a-zA-Z0-9\s]+" class="validate"  oninvalid="setCustomValidity('Nombre solo debe contener letras o números.')" oninput="setCustomValidity('')" required>
-                <label for="{{form.Nombre.id_for_label}}" data-error="Nombre inválido" data-success="Nombre correcto">Nombre</label>
+                {{ form.tipo_pago|add_class:'form-control' }}
+                <label>Tipo de Pago</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select class="browser-default"  name="{{form.Evento.html_name}}" id="{{ form.Evento.id_for_label }}" oninvalid="setCustomValidity('Selecciona un evento de la lista')" required>
-                  <option value="" disabled selected>Selecciona el tipo de evento</option>
-                  {% for evento in eventos %}
-                    <option value="{{ evento.id }}">{{ evento.Nombre }}</option>
-                  {% endfor %}
-                </select>
-                <label>Eventos</label>
+                <input type="text" name="{{form.comentarios.html_name}}" id="{{form.comentarios.html_name}}">
+                <label for="{{form.comentarios.html_name}}">Comentarios</label>
               </div>
             </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Fecha_Inicio.html_name}}" id="{{ form.Fecha_Inicio.id_for_label }}"  class="datepicker" required>
-                <label for="{{form.Fecha_Inicio.id_for_label}}" >Fecha de Inicio</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Fecha_Fin.html_name}}" id="{{ form.Fecha_Fin.id_for_label }}"  class="datepicker" required>
-                <label for="{{form.Fecha_Fin.id_for_label}}" >Fecha de Fin</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Direccion.html_name}}" id="{{ form.Direccion.id_for_label }}"   required>
-                <label for="{{form.Direccion.id_for_label}}">Dirección</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="text" name="{{form.Descripcion.html_name}}" id="{{ form.Descripcion.id_for_label }}"  required>
-                <label for="{{form.Descripcion.id_for_label}}">Descripción</label>
-              </div>
-            </div>
-            <div class="row no-margin">
-              <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="{{form.Costo.html_name}}" id="{{ form.Costo.id_for_label }}" required step=".01" min="0">
-                <label for="{{form.Costo.id_for_label}}">Costo</label>
-              </div>
-            </div>
-              <div class="row no-margin">
-                <div class="input-field col l8 offset-l2 s10 offset-s1">
-                  {{ form.Encargado }}
-                  <label>Encargado</label>
-                </div>
-            </div> -->
             <br>
             <div class="row">
-              <center>
+              <div class="center">
                 <a href="{{request.META.HTTP_REFERER}}" class="btn waves-effect waves-light form_button red">Cancelar</a>
                 <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</button>
-              </center>
+              </div>
             </div>
           </form>
 

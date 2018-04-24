@@ -2,10 +2,8 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Prospecto: {{ prospecto.nombre }} {{ prospecto.apellidos }} {% endblock %}
+{% block title %} {{ relacion.grupo }} {% endblock %}
 {% block content %}
-
-
     <div class="row">
         <div class="col s12">
             <ul class="collapsible">
@@ -34,7 +32,7 @@
                                         {{ prospecto.ocupacion }}
                                     </div>
                                     <div class="col s12 m4 l4">
-                                        <label>M&eacute;todo de captaci&oacute;n</label>
+                                        <label>¿Cómo se enteró?</label>
                                         {{ prospecto.metodo_captacion }}
                                     </div>
                                     <div class="col s12 m4 l4">
@@ -52,15 +50,7 @@
                                         {{ prospecto.hijos }}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons left">location_on</i>Dirección</div>
-                    <div class="collapsible-body">
-                        <div class="row">
-                            <div class="col s12">
+                                <h4 class="center">Dirección</h4>
                                 <div class="row">
                                     <div class="col s12 m4 l4">
                                         <label>Pa&iacute;s</label>
@@ -119,86 +109,12 @@
         </div>
     </div>
 
-    <ul id="tabs" class="tabs pendientes">
-        <li class="tab col s4"><a href="#grupos">Grupos</a></li>
-        <li class="tab col s4"><a href="#agenda" class="active">Agenda</a></li>
-        <li class="tab col s4"><a href="#bitacora">Bitácora</a></li>
+
+    <ul id="tabs" class="tabs">
+        <li class="tab col s4 offset-s1"><a href="#agenda" class="active">Agenda</a></li>
+        <li class="tab col s5 offset-s1"><a href="#bitacora">Bitácora</a></li>
     </ul>
 
-    <div id="grupos" class="col s12">
-        <div class="row">
-        </div>
-        <div class="fixed-action-btn">
-            <a class="btn-floating btn-large waves-effect waves-light form_button modal-trigger tooltipped" href="#modalCursos" data-position="left" data-delay="50" data-tooltip="Agregar Grupo">
-                <i class="large material-icons">add</i>
-            </a>
-        </div>
-        <table class="dataTable">
-            <thead>
-            <tr>
-                <th>Grupo</th>
-                <th>Interes</th>
-                <th>Fecha de Registro</th>
-                <th>Flag</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for prospecto_grupo in grupos %}
-                <tr>
-                    <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.pk %}">{{ prospecto_grupo.grupo }}</a></td>
-                    <td>{{ prospecto_grupo.interes }}</td>
-                    <td>{{ prospecto_grupo.fecha }}</td>
-                    {% if prospecto_grupo.flag_cadhu %}
-                        <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
-                    {% else %}
-                        <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
-                    {% endif %}
-                    <td>
-                        <a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}"><i class="material-icons">info</i></a>
-                        <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
-                        <a href="{% url 'prospectos:eliminar_grupo' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
-                    </td>
-                    <td class="center">
-
-                        {% if prospecto_grupo.grupo.activo %}
-                            <a href="{% url 'prospectos:lista_pagos' prospecto_grupo.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
-                        {% else %}
-                            <p>-</p>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    {#    --------------------------Modal Agregar Grupo ------------------#}
-    <div id="modalCursos" class="modal">
-        <div class="modal-content" style="padding: 40px">
-            <h5 class="center">Registrar Grupo</h5>
-            <br/><br />
-            <form method="post">
-                {% csrf_token %}
-                <div class="row center">
-                    <div class="col s12">
-                        <div class="input-field col l8 offset-l2 s12">
-                            {{ new_prospecto_grupo_form.grupo|add_class:'form-control' }}
-                            <label for="Grupo">Grupo</label>
-                        </div>
-                        <div class="input-field col l8 offset-l2 s12">
-                            {{ new_prospecto_grupo_form.interes | add_class:'form-control' }}
-                            <label for="Interes">Interes</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row center">
-                    <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Grupo</button>
-                </div>
-            </form>
-        </div>
-    </div>
     {#------------------------Agenda ----------------------------#}
     <div id="agenda" class="col s12">
         <div class="">
@@ -216,7 +132,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for actividad in agenda %}
+                {% for actividad in relacion.agenda %}
                     <tr>
                         <td>{{ actividad.titulo }}</td>
                         <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
@@ -233,10 +149,10 @@
                     <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
                         <div class="modal-content">
                             <h4>Notas</h4>
-                            <p>{{ actividad.notas|linebreaks}}</p>
+                            <p>{{ actividad|linebreaks }}</p>
                         </div>
                         <div class="modal-footer">
-                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                            <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
                         </div>
                     </div>
 
@@ -263,34 +179,42 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for actividad in bitacora %}
-                    <tr>
-                        <td>{{ actividad.titulo }}</td>
-                        <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
-                        <td>{{ actividad.fecha }}</td>
-                        <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
-                        <td class="'truncate elipsis"><a class="modal-trigger" id="notas{{ actividad.pk }}"
-                                                         href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
-                        </td>
-                        <td>
-                            <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-blue-cadhu">radio_button_checked</i></a>
-                        </td>
-                    </tr>
-                    <!-- Modal Structure -->
-                    <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
-                        <div class="modal-content">
-                            <h4>Notas</h4>
-                            <p>{{ actividad.notas|linebreaks }}</p>
+                    {% for actividad in relacion.bitacora %}
+                        <tr>
+                            <td>{{ actividad.titulo }}</td>
+                            <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
+                            <td>{{ actividad.fecha }}</td>
+                            <td>{{ actividad.hora }}</td> <!--|time:'h i A'}}-->
+                            <td class="'truncate elipsis">
+                                <a class="modal-trigger" id="notas{{ actividad.pk }}" href="#modal{{ actividad.pk }}">{{ actividad.notas }}</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons  text-blue-cadhu">radio_button_checked</i></a>
+                            </td>
+                        </tr>
+                        <!-- Modal Structure -->
+                        <div id="modal{{ actividad.pk }}" class="modal modal-fixed-footer">
+                            <div class="modal-content">
+                                <h4>Notas</h4>
+                                <p>{{ actividad.notas|linebreaks }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
-                        </div>
-                    </div>
-
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large orange" href="{% url 'prospectos:crear_actividad' relacion.id %}">
+            <i class="large material-icons">note_add</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating blue" href="mailto:{{ relacion.prospecto.email }}" target="_blank"><i class="material-icons">email</i></a></li>
+            <li><a class="btn-floating green" onclick="whatsapp({{  relacion.prospecto.telefono_celular }});" href="#"><i class="material-icons">sms</i></a></li>
+        </ul>
     </div>
 {% endblock %}
 

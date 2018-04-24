@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %} Cambio de Grupos {% endblock %}
+{% block content %}
+    <table class="dataTable">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Término</th>
+            <th>Dirección</th>
+            <th>Descripción</th>
+            <th>Costo</th>
+            <th>Curso</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for grupo in grupos %}
+            <tr>
+                <td>{{ grupo.nombre }}</td>
+                <td>{{ grupo.fecha_inicio  }}</td>
+                <td>{{ grupo.fecha_fin  }}</td> <!--| date:'d/m/y' -->
+                <td>{{ grupo.direccion }}</td>
+                <td>{{ grupo.descripcion }}</td>
+                <td>{{ grupo.costo }}</td>
+                <td>{{ grupo.curso }}</td>
+                <td>
+                    <a href="{% url 'grupos:cambiar_prospectos' grupo_actual.id grupo.id %}"><i class="material-icons text-blue-ligero">swap_horiz</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

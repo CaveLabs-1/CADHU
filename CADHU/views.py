@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from CADHU.decorators import group_required
 from prospectos.models import Actividad
 
+# US21
 @login_required
 @group_required('vendedora', 'administrador')
 def index(request):
@@ -17,6 +18,6 @@ def index(request):
 
 
 @login_required
-@group_required('vendedora','admininistrador')
+@group_required('vendedora', 'admininistrador')
 def regresar(request, url):
     return redirect(request.META.get('HTTP_REFERER', '/'))

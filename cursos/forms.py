@@ -1,22 +1,14 @@
+from .models import Curso
 from django import forms
 
-from .models import Curso
-
-class FormaCurso(forms.ModelForm):
-
+#ID US32 Forma
+class CursoForm(forms.ModelForm):
     class Meta:
         model = Curso
-        fields = [
-            'Nombre',
-            'Evento',
-            'Fecha_Inicio',
-            'Fecha_Fin',
-            'Direccion',
-            'Descripcion',
-            'Costo',
-            'Encargado',
-        ]
-        widgets = {
-            'Fecha': forms.DateInput(),
-
+        fields = (
+            'nombre',
+            'descripcion',
+        )
+        exclude = {
+            'activo',
         }
