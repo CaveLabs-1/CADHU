@@ -19,48 +19,48 @@
                             </div>
                             <div class="col s12 m6 l6">
                                 <label for="RazonSocial">Razón Social</label>
-                                {{ empresa.Razon_Social }}
+                                {{ empresa.razon_rocial }}
                             </div>
                         </div>
-                        {% if empresa.Contacto1 %}
+                        {% if empresa.contacto_1 %}
                             <div class="row center">
                                 <h5>Contactos</h5>
                             </div>
                             <div class="row center">
                                 <div class="col s12 m3 l3">
                                     <label for="Nombre">Nombre</label>
-                                    {{ empresa.Contacto1 }}
+                                    {{ empresa.contacto_1 }}
                                 </div>
                                 <div class="col s12 m3 l3">
                                     <label for="Puesto">Puesto</label>
-                                    {{ empresa.Puesto1 }}
+                                    {{ empresa.puesto_1 }}
                                 </div>
                                 <div class="col s12 m3 l3">
                                     <label for="Telefono">Telefono</label>
-                                    {{ empresa.Telefono1 }}
+                                    {{ empresa.telefono_1 }}
                                 </div>
                                 <div class="col s12 m3 l3">
                                     <label for="Email">Email</label>
-                                    {{ empresa.Email1 }}
+                                    {{ empresa.email_1 }}
                                 </div>
                             </div>
-                            {% if empresa.Contacto2 %}
+                            {% if empresa.contacto_2 %}
                                 <div class="row center">
                                     <div class="col s12 m3 l3">
                                         <label for="Nombre">Nombre</label>
-                                        {{ empresa.Contacto2 }}
+                                        {{ empresa.contacto_2 }}
                                     </div>
                                     <div class="col s12 m3 l3">
                                         <label for="Puesto">Puesto</label>
-                                        {{ empresa.Puesto2 }}
+                                        {{ empresa.puesto_2 }}
                                     </div>
                                     <div class="col s12 m3 l3">
                                         <label for="Telefono">Telefono</label>
-                                        {{ empresa.Telefono2 }}
+                                        {{ empresa.telefono_2 }}
                                     </div>
                                     <div class="col s12 m3 l3">
                                         <label for="Email">Email</label>
-                                        {{ empresa.Email2 }}
+                                        {{ empresa.email_2 }}
                                     </div>
                                 </div>
                             {% endif %}
@@ -71,37 +71,37 @@
                         <div class="row center">
                             <div class="col s12 m3 l3">
                                 <label for="Pais">Pais</label>
-                                {{ lugar.Pais }}
+                                {{ lugar.pais }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="Estado">Estado</label>
-                                {{ lugar.Estado }}
+                                {{ lugar.estado }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="Ciudad">Ciudad</label>
-                                {{ lugar.Ciudad }}
+                                {{ lugar.ciudad }}
                             </div>
                             <div class="col s12 m2 l2">
                                 <label for="Colonia">Colonia</label>
-                                {{ lugar.Colonia }}
+                                {{ lugar.colonia }}
                             </div>
                         </div>
                         <div class="row center">
                             <div class="col s12 m3 l3">
                                 <label for="Calle">Calle</label>
-                                {{ lugar.Calle }}
+                                {{ lugar.calle }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="NumExteror">Exterior</label>
-                                {{ lugar.Numero_Exterior }}
+                                {{ lugar.numero_exterior }}
                             </div>
                             <div class="col s12 m3 l3">
                                 <label for="NumInterior">Interior</label>
-                                {{ lugar.Numero_Interior }}
+                                {{ lugar.numero_interior }}
                             </div>
                             <div class="col s12 m2 l2">
                                 <label for="CodigoPostal">Codigo Postal</label>
-                                {{ lugar.Codigo_Postal }}
+                                {{ lugar.codigo_postal }}
                             </div>
                         <br><br>
                         </div>
@@ -120,10 +120,10 @@
                     <tbody>
                     {% for prospecto in prospectos   %}
                         <tr>
-                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Nombre }}</a></td>
-                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.Apellidos }}</a></td>
-                            <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.Telefono_Celular }}</a></td>
-                            <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.Email }}</a></td>
+                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.nombre }}</a></td>
+                            <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.apellidos }}</a></td>
+                            <td><a class="whatsapp" onclick="whatsapp({{ prospecto.Telefono_Celular }});" href="#">{{ prospecto.telefono_celular }}</a></td>
+                            <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.email }}</a></td>
                             <td>
                               <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                             </td>

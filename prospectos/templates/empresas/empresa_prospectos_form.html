@@ -17,12 +17,12 @@
                                     <tr>
                                         <td>
                                             <label>
-                                                {%  if prospecto.Empresa %}
+                                                {%  if prospecto.empresa %}
                                                 <input name="prospectos[]" type="checkbox" value="{{ prospecto.id }}" checked="checked"/>
                                                 {%  else %}
                                                 <input name="prospectos[]" type="checkbox" value="{{ prospecto.id }}"/>
                                                 {%  endif %}
-                                                <span>{{ prospecto.Nombre }} {{ prospecto.Apellidos }}</span>
+                                                <span>{{ prospecto.nombre }} {{ prospecto.apellidos }}</span>
                                             </label>
                                         </td>
                                     </tr>

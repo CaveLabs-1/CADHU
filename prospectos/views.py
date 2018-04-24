@@ -104,7 +104,7 @@ def lista_clientes(request):
         'clientes': clientes,
         'titulo': 'Clientes',
         'estatus': 'activo',
-        }
+    }
     # Desplegar la página de clientes con enlistados con la información de la base de datos
     return render(request, 'clientes/clientes.html', context)
 
@@ -126,7 +126,7 @@ def eliminar_cliente(request, pk):
         'clientes': clientes,
         'titulo': 'Clientes',
         'estatus': 'activo',
-        }
+    }
     # Desplegar la lista de clientes actualizada
     return render(request, 'clientes/clientes.html', context)
 
@@ -237,7 +237,7 @@ def info_cliente(request, pk):
         'lugar': lugar,
         'relacion': relacion,
         'prospecto': prospecto,
-        'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellido,
+        'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellidos,
     }
     return render(request, 'clientes/info_cliente.html', context)
 
@@ -339,7 +339,7 @@ def lista_clientes_inactivos(request):
     context = {
         'cliente': cliente_inactivo,
         'titulo': 'Clientes',
-        }
+    }
     # Desplegar la página de cliente con enlistados con la información de la base de datos
     return render(request, 'clientes/clientes.html', context)
 
@@ -485,7 +485,7 @@ def lista_prospectos(request):
     context = {
         'prospectos': prospecto_activo,
         'titulo': 'Prospectos',
-        }
+    }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
@@ -500,7 +500,7 @@ def lista_prospectos_inactivo(request):
     context = {
         'prospectos': prostpecto_inactivo,
         'titulo': 'Prospectos inactivos',
-        }
+    }
     # Desplegar la página de prospectos con enlistados con la información de la base de datos
     return render(request, 'prospectos/prospectos.html', context)
 
@@ -598,7 +598,7 @@ def lista_empresas(request):
         'empresas': empresas,
         'titulo': 'Empresas',
         'estatus': 'activo',
-        }
+    }
     return render(request, 'empresas/empresas.html', context)
 
 
@@ -611,7 +611,7 @@ def lista_empresas_inactivo(request):
         'empresas': empresa_inactivo,
         'titulo': 'Empresas inactivas',
         'estatus': 'inactivo',
-        }
+    }
     # Desplegar la página de empresas con enlistados con la información de la base de datos
     return render(request, 'empresas/empresas.html', context)
 
@@ -639,15 +639,15 @@ def editar_empresa(request, pk):
             # Si no es válida, notificar al usuario
             messages.success(request, 'Existe una falla en los campos.')
             context = {
-                'NewEmpresaForm': new_empresa_form,
-                'NewLugarForm': new_lugar_form,
+                'new_empresa_form': new_empresa_form,
+                'new_lugar_form': new_lugar_form,
                 'empresa': id_empresa,
                 'titulo': 'Editar Empresa',
             }
             return render(request, 'empresas/empresas_form.html', context)
     context = {
-        'NewEmpresaForm': new_empresa_form,
-        'NewLugarForm': new_lugar_form,
+        'new_empresa_form': new_empresa_form,
+        'new_lugar_form': new_lugar_form,
         'empresa': id_empresa,
         'titulo': 'Editar Empresa',
     }
@@ -678,15 +678,15 @@ def crear_empresa(request):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': error,
-            'NewEmpresaForm': new_empresa_form,
-            'NewLugarForm': new_lugar_form,
+            'new_empesa_form': new_empresa_form,
+            'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar una Empresa',
         }
         return render(request, 'empresas/empresas_form.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
     context = {
-        'NewEmpresaForm': new_empresa_form,
-        'NewLugarForm': new_lugar_form,
+        'new_empresa_form': new_empresa_form,
+        'new_lugar_form': new_lugar_form,
         'titulo': 'Registrar una Empresa',
     }
     return render(request, 'empresas/empresas_form.html', context)
@@ -742,10 +742,10 @@ def inscribir_empresa(request, pk):
             prospect.save()
         return empresa_info(request, pk)
     context = {
-            'prospectos': prospectos,
-            'empresa': empresa,
-            'titulo': 'Asignar prospectos a: '+empresa.nombre,
-        }
+        'prospectos': prospectos,
+        'empresa': empresa,
+        'titulo': 'Asignar prospectos a: '+empresa.nombre,
+    }
     return render(request, 'empresas/empresa_prospectos_form.html', context)
 
 
@@ -758,7 +758,7 @@ def lista_actividades(request, pk):
     context = {
         'actividades': actividades,
         'id': pk
-        }
+    }
     return render(request, 'actividades/actividades.html', context)
 
 

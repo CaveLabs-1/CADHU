@@ -48,7 +48,7 @@ class ClienteTest(TestCase):
 
     # ACCEPTANCE CRITERIA: 31.2
     def test_validar_campos(self):
-        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'pk': self.cliente.id}),
+        resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'pk': self.pago.id}),
                                 {'rfc': 'RODR621124FY9'})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['Error'], 'Forma invalida, favor de revisar sus respuestas de nuevo')
@@ -57,8 +57,8 @@ class ClienteTest(TestCase):
     def test_baja_cliente(self):
         resp = self.client.post(reverse('prospectos:crear_cliente', kwargs={'pk': self.pago.id}), {'matricula': 'A01206199'})
         self.assertEqual(resp.status_code, 302)
-        resp2 = self.client.post(reverse('prospectos:baja_cliente', kwargs={'pk': self.cliente.id}), follow=True)
-        actualizado = Cliente.objects.get(id=1)
+        resp2 = self.client.post(reverse('prospectos:baja_cliente', kwargs={'pk': self.cliente.id+1}), follow=True)
+        actualizado = Cliente.objects.get(id=self.cliente.id+1)
         self.assertEqual(resp2.status_code, 200)
         self.assertEqual(actualizado.activo, False)
 

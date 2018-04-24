@@ -112,14 +112,13 @@ class BorrarGrupoTest(TestCase):
         self.assertEqual(grupo_actualizado.activo, False)
 
 
-
 class CambiarGrupoTest(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
         usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
         usuario1.save()
-        login = self.client.login(username='testuser1', password='12345')
+        self.client.login(username='testuser1', password='12345')
 
     @classmethod
     def setUpTestData(cls):
@@ -131,19 +130,19 @@ class CambiarGrupoTest(TestCase):
         cls.grupo2 = Grupo.objects.create(nombre='Grupo 2', curso=cls.curso, fecha_inicio='2018-03-16',
                                           fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo', costo=1000)
         cls.grupo_inactivo = Grupo.objects.create(nombre='Grupo 2', curso=cls.curso, fecha_inicio='2018-03-16',
-                                          fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo',
-                                          costo=1000, activo=False)
+                                                  fecha_fin='2018-03-16', direccion='Calle', descripcion='Curso de marzo',
+                                                  costo=1000, activo=False)
         cls.prospecto = Prospecto.objects.create(nombre='Pablo', apellidos='Martinez Villareal',
                                                  telefono_casa='4422232226', telefono_celular='4422580662', email='asdas@gmail.com',
                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
         cls.prospecto2 = Prospecto.objects.create(nombre='Jorge', apellidos='Jimenez Arroyo',
-                                                 telefono_casa='4422232226', telefono_celular='4422580662',
-                                                 email='asd@gmail.com',
-                                                 direccion=cls.lugar, ocupacion='Estudiante', activo=True)
+                                                  telefono_casa='4422232226', telefono_celular='4422580662',
+                                                  email='asd@gmail.com',
+                                                  direccion=cls.lugar, ocupacion='Estudiante', activo=True)
         cls.prospecto_grupo = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
                                                             status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto)
         cls.prospecto_grupo2 = ProspectoGrupo.objects.create(fecha='2025-03-15', interes='ALTO', flag_cadhu=False,
-                                                            status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto2)
+                                                             status='INTERESADO', grupo=cls.grupo1, prospecto=cls.prospecto2)
         cls.cliente = Cliente.objects.create(prospecto_grupo=cls.prospecto_grupo, matricula='A01209599')
 
     def test_ac_42_1(self):
