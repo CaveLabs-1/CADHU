@@ -6,25 +6,13 @@
 {% block title %} Grupo: {{ grupo.nombre }}{% endblock %}
 {% block content %}
 
-    <div class="row">
+<div class="row">
         <div class="col s12">
-            <div class="card">
-                <div class="card-content">
-                    <h5 class="card-title center">{{ grupo.nombre }}</h5>
-                </div>
-                <div class="card-content">
-                    {#----------------Info-------------#}
-                    <div class="row">
-                        <div class="col s12 m6">
-                            <label for="Nombre">Nombre(s)</label>
-                            {{ grupo.nombre }}
-                        </div>
-                        <div class="col s12 m6">
-                            <label for="apellido_p">Curso</label>
-                            {{ grupo.curso }}
-                        </div>
-                    </div>
-                    <div class="row">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons left">person</i> {{ grupo.nombre }}</div>
+                    <div class="collapsible-body">
+                                            <div class="row">
                         <div class="col s12 m4 l4">
                             <label>Fecha de inicio</label>
                             {{ grupo.fecha_inicio }}
@@ -61,11 +49,11 @@
                             {{ grupo.descripcion }}
                         </div>
                     </div>
-                </div>
-            </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
-
 
     <ul id="tabs" class="tabs">
         <li class="tab col s6"><a href="#prospectos" class="active">Prospectos</a></li>
