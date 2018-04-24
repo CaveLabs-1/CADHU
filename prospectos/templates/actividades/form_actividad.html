@@ -18,10 +18,16 @@
                         <input type="number" name="prospecto_evento"
                                id="id_prospecto_evento" value="{{id}}"hidden>
                         <div class="row">
-                            <div class="input-field col l10 offset-l1">
+
+                            <div class="input-field col l4 offset-l1 s12">
                                 <input type="text" name="{{ form.titulo.html_name }}"
                                        id="{{ form.titulo.id_for_label }}" required>
-                                <label for="{{ form.titulo.id_for_label }}">Descripción:</label>
+                                <label for="{{ form.titulo.id_for_label }}">Descripción:*</label>
+                            </div>
+
+                            <div class="input-field col l4 offset-l1 s12">
+                                {{ form.tipo | add_class:'form-control' }}
+                                <label for="Grupo">Tipo:</label>
                             </div>
                         </div>
 
@@ -33,9 +39,9 @@
                                 <label for="{{ form.fecha.id_for_label }}">Fecha:</label>
                             </div>
                             <div class="input-field col s12 m4">
+                                <label for="{{ form.hora.id_for_label }}">Hora:</label>
                                 <input type="text" class="timepicker" name="{{ form.hora.html_name }}"
                                        id="{{ form.hora.id_for_label }}" value="{{form.hora.value}}" >
-                                <label for="{{ form.hora.id_for_label }}">Hora:</label>
                             </div>
                             <div  class="input-field col s12 m3">
                                 <label>

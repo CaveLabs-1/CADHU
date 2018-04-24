@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
-    {% block title %}Nuevo Pago{% endblock %}
+    {% block title %}Lista de Pagos{% endblock %}
 {% block content %}
 
 <div class="row no-margin padding-top-20">
@@ -10,12 +9,12 @@
       <div class="row">
         <div class="col l6 s12">
           <h6 style="text-transform: uppercase">
-            <b> {{ prospecto.Nombre }} {{ prospecto.Apellidos }}  </b>
+            <b> {{ prospecto.nombre }} {{ prospecto.apellidos }}  </b>
           </h6>
         </div>
         <div class="col l6 s12 ">
           <h6 style="text-align: right">
-            Matrícula: {{ cliente.Matricula }}
+            Matrícula: {{ cliente.cliente_set.last.matricula }}
           </h6>
         </div>
       </div>
@@ -30,18 +29,36 @@
         <ul class="collapsible expandable">
           {% for pago in pagos %}
             <li>
-              <div class="collapsible-header">$ {{ pago.monto }}</div>
+              <div class="collapsible-header">
+                <div class="p-left">$ {{ pago.monto }}</div>
+                <div class="p-center">{{ pago.fecha }}</div>
+                <div class="p-right">{% if pago.validado == False %}
+                    <a href="{% url 'prospectos:autorizar_pago' pago.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                    {% else %}
+                        <a><i class="material-icons text-green">check</i></a>
+                    {% endif %}</div>
+              </div>
               <div class="collapsible-body">
                 <div class="row">
                   <div class="col s12">
-                    <i class="material-icons left">event</i>
-                    <b>Fecha:</b> {{ pago.fecha }}
+                    <i class="material-icons left">local_atm</i>
+                    <b>Tipo de pago:</b> {{ pago.tipo_pago }}
                   </div>
                 </div>
                 <div class="row">
                   <div class="col s12">
                     <i class="material-icons left">label</i>
                     <b>No. de referencia:</b> {{ pago.referencia }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <i class="material-icons left">textsms</i>
+                    {% if comentarios != "none" %}
+                    <b>Comentarios:</b> {{ pago.comentarios }}
+                    {% else %}
+                    <b>Comentarios:</b> -
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -52,7 +69,7 @@
       {% if restante > 0 %}
         <div class="row">
           <div class="col s12">
-            <a href="{% url 'prospectos:nuevo_pago' idPE %}" class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</a>
+            <a href="{% url 'prospectos:nuevo_pago' id_pe %}" class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</a>
           </div>
         </div>
       {% endif %}
@@ -60,7 +77,7 @@
       <div class="row">
         <div class="col s12">
           <h6>
-            Costo Total: $ {{ curso.Costo }}
+            Costo Total: $ {{ costo }}
           </h6>
           <h6>
             Saldo Pagado: $ {{ subtotal }}
@@ -77,7 +94,7 @@
 <div class="row">
   <div class="col s12 center">
     <br />
-    <a href="{% url 'prospectos:registrar_cursos' prospecto.id %}" class="btn waves-effect waves-light back_button" type="submit" name="action">
+    <a href="{% url 'prospectos:info_prospecto' prospecto.id %}" class="btn waves-effect waves-light back_button" type="submit" name="action">
       <i class="material-icons left">arrow_back</i>
       Regresar
     </a>

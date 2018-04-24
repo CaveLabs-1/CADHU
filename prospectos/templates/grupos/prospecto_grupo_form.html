@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}Asignar Curso a Prospecto{% endblock %}
+{% block content %}
+    <div class="card ">
+        <div class="card-content">
+            <div class="row">
+                <div class="col l4 offset-l4 s12 center">
+                    <h5 class="center">Grupos Interesados</h5>
+                </div>
+                <div class="col l4 s12" style="text-align: right">
+                    <a class="btn-floating btn-large waves-effect waves-light form_button modal-trigger tooltipped" href="#modalCursos" data-position="left" data-delay="50" data-tooltip="Agregar Grupo">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+            </div>
+
+            <div id="modalCursos" class="modal">
+                <div class="modal-content" style="padding: 40px">
+                    <h5 class="center">Registrar Grupo</h5>
+                    <br/><br />
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row center">
+                            <div class="col s12">
+                                <div class="input-field col l8 offset-l2 s12">
+                                    {{ new_prospecto_grupo_form.grupo | add_class:'form-control' }}
+                                    <label for="Curso">Curso</label>
+                                </div>
+                                <div class="input-field col l8 offset-l2 s12">
+                                    {{ new_prospecto_grupo_form.interes | add_class:'form-control' }}
+                                    <label for="Interes">Interes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <button type="submit" class="btn waves-effect waves-light form_button">Guardar y Agregar Grupo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="dataTable">
+                <thead>
+                <tr>
+                    <th class="center">Acciones</th>
+                    <th class="center">Grupo</th>
+                    <th class="center">Interes</th>
+                    <th>Fecha de Registro</th>
+                    <th class="center">Flag</th>
+                    <th class="center">Pagos</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for grupo in grupos %}
+                    <tr>
+                        <td class="center">
+                            <a href="{% url 'prospectos:editar_grupo' grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                            <a href="{% url 'prospectos:eliminar_grupo' grupo.id %}"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        </td>
+                        <td>{{ grupo.grupo }}</td>
+                        <td>{{ grupo.interes }}</td>
+                        <td>{{ grupo.fecha }}</td>
+                        {% if grupo.flag_cadhu == True %}
+                            <td class="center"><a><i class="material-icons">check</i></a></td>
+                        {% else %}
+                            <td class="center"><a><i class="material-icons text-rojo-cadhu">cancel</i></a></td>
+                        {% endif %}
+                        <td class="center">
+                            <a href="{% url 'prospectos:lista_pagos' grupo.id %}"  class="btn waves-effect waves-light form_button">+ Pago</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <br><br>
+        </div>
+    </div>
+
+    <br>
+    <div class="center">
+        <button onclick="location.href='{% url 'prospectos:info_prospecto' prospecto.id %}'" class="btn waves-effect waves-light back_button">
+            <i class="material-icons left">arrow_back</i>
+            Regresar a la informacion del prospecto
+        </button>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load grupos %}
+
+{% block title %} Grupo: {{ grupo.nombre }}{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons left">person</i> {{ grupo.nombre }}</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div class="col s12 m4 l4">
+                                <label>Fecha de inicio</label>
+                                {{ grupo.fecha_inicio }}
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <label>Fecha de fin</label>
+                                {{ grupo.fecha_fin }}
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <label for="ocupacion">Costo</label>
+                                {{ grupo.costo }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m4 l4">
+                                <label>Encargad@</label>
+                                {{ grupo.encargado.first_name }} {{ grupo.encargado.last_name }}
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <label for="otro">Direccion/Sede</label>
+                                {{ grupo.direccion }}
+                            </div>
+                            <div class="col s12 m4">
+                                {% if grupo.activo %}
+                                    <label class="text-verde-cadhu">Activo</label>
+                                {% else %}
+                                    <label class="text-rojo-cadhu">Inactivo</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 ">
+                                <h5 class="card-title">Descripción</h5><br>
+                                {{ grupo.descripcion }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <ul id="tabs" class="tabs">
+        <li class="tab col s6"><a href="#prospectos" class="active">Prospectos</a></li>
+        <li class="tab col s6"><a href="#clientes">Clientes</a></li>
+    </ul>
+
+    <!--- PROSPECTOs ------->
+    <div id="prospectos" class="col s12">
+        <div class="row">
+        </div>
+        {% if request.user|has_group:"vendedora"%}
+            <table class="dataTable">
+                <thead>
+                <tr>
+                    <th>Último contacto</th>
+                    <th>Grado de interés</th>
+                    <th>Flag</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>WhatsApp</th>
+                    <th>Email</th>
+                    <th>Pendientes</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prospecto_grupo in prospectos %}
+                    <tr>
+                        <td>
+                            {% if  prospecto_grupo.bitacora %}
+                                {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
+                                {% with ultima=prospecto_grupo.bitacora|dictsort:'fecha'|last %}
+                                    {{ ultima.fecha }}
+                                {% endwith %}
+                            {% else %}
+                                Sin contacto
+                            {% endif %}
+                        </td>
+                        <td>{{ prospecto_grupo.Interes }}</td>
+                        {% if prospecto_grupo.FlagCADHU == True %}
+                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
+                        {% else %}
+                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
+                        {% endif %}
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto_grupo.prospecto.email }}">{{ prospecto_grupo.prospecto.email }}</a></td>
+                        <td>
+                            {% if  prospecto_grupo.agenda %}
+                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.prospecto.pk }}" href="#modalActividadesVenta{{ prospecto_grupo.prospecto.pk }}">Ver lista</a>
+                            {% else %}
+                                Ningún pendiente
+                            {% endif %}
+                        </td>
+                        <td class="center">
+                            <a href="{% url 'prospectos:crear_actividad' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">note_add</i></a>
+                            <a href="{% url 'prospectos:nuevo_pago' prospecto_grupo.id %}"><i class="material-icons text-verde-cadhu">attach_money</i></a>
+                            <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal actividades Structure -->
+                    <div id="modalActividadesVenta{{ prospecto_grupo.prospecto.pk }}" class="modal bottom-sheet" >
+                        <div class="modal-header">
+                            <h4 class="header text-blue-cadhu">Pendientes</h4>
+                        </div>
+                        <div class="modal-content">
+                            <ul class="collection">
+                                <li class="collection-item avatar valign-wrapper">
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Título</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Fecha</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Hora</h5>
+                                    </div>
+                                    <div class="col s5 text-blue-cadhu">
+                                        <h5>Notas</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Terminado</h5>
+                                    </div>
+                                </li>
+                                {% for actividad in prospecto_grupo.agenda %}
+                                    <li class="collection-item avatar valign-wrapper">
+                                        <div class="col s2">
+                                            {{ actividad.titulo }}
+                                        </div>
+                                        <div class="col s2">
+                                            {{ actividad.fecha }}
+                                        </div>
+                                        <div class="col s2">
+                                            {{ actividad.hora }}
+                                        </div>
+                                        <div class="col s5">
+                                            {{ actividad.notas }}
+                                        </div>
+                                        <div class="col s2">
+                                            {% if actividad.terminado %}
+                                                <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
+                                            {% else %}
+                                                <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                    </div>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% elif request.user|has_group:"administrador" %}
+
+            <table class="dataTableX">
+                <thead>
+                <tr>
+                    <th>Último contacto</th>
+                    <th>Grado de interés</th>
+                    <th>Flag</th>
+                    <th>Sede</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>WhatsApp</th>
+                    <th>Email</th>
+                    <th>Pendientes</th>
+                    <th>¿Cómo te enteraste?</th>
+                    <th>Estación/Recomendador</th>
+                    <th>Comentarios</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prospecto_grupo in prospectos %}
+                    <tr>
+                        <td>
+                            {% if  prospecto_grupo.bitacora %}
+                                {#/------------------ te devuelve la ultima fecha de una actividad terminada -------------#}
+                                {% with ultima=prospecto_grupo.bitacora|dictsort:'fecha'|last %}
+                                    {{ ultima.fecha }}
+                                {% endwith %}
+                            {% else %}
+                                Sin contacto
+                            {% endif %}
+                        </td>
+                        <td>{{ prospecto_grupo.interes }}</td>
+                        {% if prospecto_grupo.flag_cadhu == True %}
+                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
+                        {% else %}
+                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
+                        {% endif %}
+                        <td>{{ prospecto_grupo.Curso.Direccion }}</td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto_grupo.prospecto.email }}">{{ prospecto_grupo.prospecto.email }}</a></td>
+                        <td>
+                            {% if  prospecto_grupo.agenda %}
+                                <a class="modal-trigger" id="actividades{{ prospecto_grupo.prospecto.pk }}" href="#modalActividades{{ prospecto_grupo.prospecto.pk }}">Ver lista</a>
+                            {% else %}
+                                Ningún pendiente
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ prospecto_grupo.prospecto.metodo_captacion }}
+                        </td>
+                        <td>{{ prospecto_grupo.prospecto.recomendacion }}</td>
+                        <td class="'truncate elipsis">
+                            <a class="modal-trigger" id="notas{{ prospecto_grupo.prospecto.pk }}" href="#modal{{ prospecto_grupo.prospecto.pk }}">{{ prospecto_grupo.prospecto.comentarios }}</a>
+                        </td>
+                        <td class="center">
+                            <a href="{% url 'prospectos:crear_actividad' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">note_ad</i></a>
+                            <a href="{% url 'prospectos:nuevo_pago' prospecto_grupo.id %}"><i class="material-icons text-verde-cadhu">attach_money</i></a>
+                            <a href="{% url 'prospectos:editar_grupo' prospecto_grupo.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal Comentario Structure -->
+                    <div id="modal{{ prospecto_grupo.prospecto.pk }}" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>Comentarios de cliente</h4>
+                            <p>{{ prospecto_grupo.prospecto.comentarios }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        </div>
+                    </div>
+
+                    <!-- Modal actividades Structure -->
+                    <div id="modalActividades{{ prospecto_grupo.prospecto.pk }}" class="modal bottom-sheet" >
+                        <div class="modal-header">
+                            <h4 class="header text-blue-cadhu">Pendientes</h4>
+                        </div>
+                        <div class="modal-content">
+                            <ul class="collection">
+                                <li class="collection-item avatar valign-wrapper">
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Título</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Fecha</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Hora</h5>
+                                    </div>
+                                    <div class="col s5 text-blue-cadhu">
+                                        <h5>Notas</h5>
+                                    </div>
+                                    <div class="col s2 text-blue-cadhu">
+                                        <h5>Terminado</h5>
+                                    </div>
+                                </li>
+                                {% for actividad in prospecto_grupo.agenda %}
+                                    <li class="collection-item avatar valign-wrapper">
+                                        <div class="col s2">
+                                            {{ actividad.titulo }}
+                                        </div>
+                                        <div class="col s2">
+                                            {{ actividad.fecha }}
+                                        </div>
+                                        <div class="col s2">
+                                            {{ actividad.hora }}
+                                        </div>
+                                        <div class="col s5">
+                                            {{ actividad.notas }}
+                                        </div>
+                                        <div class="col s2">
+                                            {% if actividad.terminado %}
+                                                <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons">check</i></a>
+                                            {% else %}
+                                                <a href="{% url 'prospectos:estado_actividad' actividad.id %}"><i class="material-icons text-rojo-cadhu">cancel</i></a>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                    </div>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% endif %}
+    </div>
+
+    {#------------------------Clientes ----------------------------#}
+
+    <div id="clientes" class="col s12">
+        <div class="">
+            <div class="row">
+            </div>
+            <table class="dataTable">
+                <thead>
+                <tr>
+                    <th class="center">Matricula</th>
+                    <th class="center">RFC</th>
+                    <th class="center">Razón Social</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>WhatsApp</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.matricula }}</td>
+                        <td>{{ cliente.rfc }}</td>
+                        <td>{{ cliente.razonSocial }}</td>
+                        <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.nombre }}</a></td>
+                        <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.apellidos }}</a></td>
+                        <td><a class="whatsapp" onclick="whatsapp({{ cliente.prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ cliente.prospecto_grupo.prospecto.telefono_celular }}</a></td>
+                        <td><a href="mailto:{{ prospecto.Email }}">{{ cliente.prospecto_grupo.prospecto.email }}</a></td>
+                        <td>
+                            <a href="{% url 'prospectos:editar_prospecto' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
+                            <a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
+                            <a href="{% url 'prospectos:eliminar_cliente' cliente.id %}" onclick="eliminar_cliente(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a href="{% url 'grupos:grupo_cambio' grupo.id %}" class="btn-floating blue"><i class="material-icons">people_outline</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">group_add</i></a></li>
+        </ul>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        {% for actividad in actividades %}
+            $("#notas{{ actividad.pk }}").on("click", function () {
+                $('#modal{{ actividad.pk }}').modal('open');
+            });
+        {% endfor %}
+    </script>
+{% endblock %}

@@ -7,23 +7,23 @@
 
   {% block js %}
       <script type="text/javascript">
-      {% if NewEmpresaForm.errors %}
-          {% for field in NewEmpresaForm %}
+      {% if new_empresa_form.errors %}
+          {% for field in new_empresa_form %}
               {% for error in field.errors %}
                   M.toast({html: '{{ error|escape }}'})
               {% endfor %}
           {% endfor %}
-          {% for error in NewEmpresaForm.non_field_errors %}
+          {% for error in new_empresa_form.non_field_errors %}
               M.toast({html: '{{ error|escape }}'})
           {% endfor %}
       {% endif %}
-      {% if NewLugarForm.errors %}
-          {% for field in NewLugarForm %}
+      {% if new_lugar_form.errors %}
+          {% for field in new_lugar_form %}
               {% for error in field.errors %}
                   M.toast({html: '{{ error|escape }}'})
               {% endfor %}
           {% endfor %}
-          {% for error in NewLugarForm.non_field_errors %}
+          {% for error in new_lugar_form.non_field_errors %}
               M.toast({html: '{{ error|escape }}'})
           {% endfor %}
       {% endif %}
@@ -36,47 +36,47 @@
                 {% csrf_token %}
                 <div class="row">
                     <div class="input-field col s6">
-                        {{ NewEmpresaForm.Nombre | add_class:'form-control' }}
-                        <label for="nombre1">Nombre de la empresa</label>
+                        {{ new_empresa_form.nombre | add_class:'form-control' }}
+                        <label for="nombre1">Nombre de la empresa*</label>
                     </div>
                     <div class="input-field col s6">
-                        {{ NewEmpresaForm.Razon_Social | add_class:'form-control' }}
+                        {{ new_empresa_form.razon_social | add_class:'form-control' }}
                         <label for="razon_social">Raz&oacute;n Social</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Contacto1 | add_class:'form-control' }}
+                        {{ new_empresa_form.contacto_1 | add_class:'form-control' }}
                         <label for="contacto1">Contacto 1</label>
                     </div>
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Telefono1 | add_class:'form-control' }}
+                        {{ new_empresa_form.telefono_1 | add_class:'form-control' }}
                         <label for="telefono1" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
                     </div>
                     <div class="input-field col s3">
-                      {{ NewEmpresaForm.Puesto1 | add_class:'form-control' }}
+                      {{ new_empresa_form.puesto_1 | add_class:'form-control' }}
                       <label for="puesto1">Puesto</label>
                     </div>
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Email1 | add_class:'form-control' }}
+                        {{ new_empresa_form.email_1 | add_class:'form-control' }}
                         <label for="email1" data-error="Use el formato ejemplo@mail.com">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Contacto2 | add_class:'form-control' }}
+                        {{ new_empresa_form.contacto_2 | add_class:'form-control' }}
                         <label for="contacto2">Contacto 2</label>
                     </div>
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Telefono2 | add_class:'form-control' }}
+                        {{ new_empresa_form.telefono_2 | add_class:'form-control' }}
                         <label for="telefono2" data-error="Use valores num&eacute;ricos">Tel&eacute;fono</label>
                     </div>
                     <div class="input-field col s3">
-                      {{ NewEmpresaForm.Puesto2 | add_class:'form-control' }}
+                      {{ new_empresa_form.puesto_2 | add_class:'form-control' }}
                       <label for="puesto2">Puesto</label>
                     </div>
                     <div class="input-field col s3">
-                        {{ NewEmpresaForm.Email2 | add_class:'form-control' }}
+                        {{ new_empresa_form.email_2 | add_class:'form-control' }}
                         <label for="email2" data-error="Use el formato ejemplo@mail.com">Email</label>
                     </div>
                 </div>
@@ -85,37 +85,37 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m4 l4">
-                        {{ NewLugarForm.Pais | add_class:'form-control' }}
+                        {{ new_lugar_form.pais | add_class:'form-control' }}
                         <label>Pa&iacute;s</label>
                     </div>
                     <div class="input-field col s12 m4 l4">
-                        {{ NewLugarForm.Estado | add_class:'form-control' }}
+                        {{ new_lugar_form.estado | add_class:'form-control' }}
                         <label>Estado</label>
                     </div>
                     <div class="input-field col s12 m4 l4">
-                        {{ NewLugarForm.Ciudad | add_class:'form-control' }}
+                        {{ new_lugar_form.ciudad | add_class:'form-control' }}
                         <label>Ciudad</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m6 l3">
-                        {{ NewLugarForm.Colonia | add_class:'form-control' }}
+                        {{ new_lugar_form.colonia | add_class:'form-control' }}
                         <label for="colonia">Colonia</label>
                     </div>
                     <div class="input-field col s12 m6 l3">
-                        {{ NewLugarForm.Calle | add_class:'form-control' }}
+                        {{ new_lugar_form.calle | add_class:'form-control' }}
                         <label for="calle">Calle</label>
                     </div>
                     <div class="input-field col s6 m4 l2">
-                        {{ NewLugarForm.Numero_Exterior | add_class:'form-control' }}
+                        {{ new_lugar_form.numero_exterior | add_class:'form-control' }}
                         <label for="num_ext" data-error="Use valores num&eacute;ricos">N&uacute;mero exterior</label>
                     </div>
                     <div class="input-field col s6 m4 l2">
-                         {{ NewLugarForm.Numero_Interior | add_class:'form-control' }}
+                         {{ new_lugar_form.numero_interior | add_class:'form-control' }}
                         <label for="num_int" data-error="Use valores num&eacute;ricos">N&uacute;mero interior</label>
                     </div>
                     <div class="input-field col s12 m4 l2">
-                        {{ NewLugarForm.Codigo_Postal | add_class:'form-control' }}
+                        {{ new_lugar_form.codigo_postal | add_class:'form-control' }}
                         <label for="codigo_p" data-error="Use valores num&eacute;ricos">C&oacute;digo postal</label>
                     </div>
                 </div>

@@ -1,17 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
-from prospectos.models import Lugar, Actividad, Prospecto, ProspectoEvento
-from eventos.models import Evento
+from prospectos.models import Lugar, Actividad, Prospecto, ProspectoGrupo
 from cursos.models import Curso
-import datetime
+from grupos.models import Grupo
+from django.contrib.auth.models import timezone
 
 
 class NoAuthenticationViewTests(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
-        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
         usuario1.save()
 
     # Acceptance Criteria: 1.1
@@ -46,46 +46,47 @@ class PendientesViewTests(TestCase):
     def setUp(self):
         Group.objects.create(name="administrador")
         Group.objects.create(name="vendedora")
-        usuario1 = User.objects.create_user(username='testuser1', password='12345',is_superuser=True)
+        usuario1 = User.objects.create_user(username='testuser1', password='12345', is_superuser=True)
         usuario1.save()
         login = self.client.login(username='testuser1', password='12345')
 
     @classmethod
     def setUpTestData(cls):
-        lugar = Lugar.objects.create(
-            Calle='Paraiso',
-            Numero_Interior='',
-            Numero_Exterior='38',
-            Colonia='Satelite',
-            Estado='Queretaro',
-            Ciudad='Queretaro',
-            Pais='Mexico',
-            Codigo_Postal='76125'
+        cls.lugar = Lugar.objects.create(
+            calle='Paraiso',
+            numero_interior='',
+            numero_exterior='38',
+            colonia='Satelite',
+            estado='Queretaro',
+            ciudad='Queretaro',
+            pais='Mexico',
+            codigo_postal='76125'
         )
-        prospecto = Prospecto.objects.create(
-            Nombre='Pablo',
-            Apellidos='Martinez Villareal',
-            Telefono_Casa='4422232226',
-            Telefono_Celular='4422580662',
-            Email='pmartinez@gmail.com',
-            Direccion=lugar,
-            Metodo_Captacion='Facebook',
-            Estado_Civil='Soltero',
-            Ocupacion='Estudiante',
-            Hijos=1,
-            Activo=True,
+        cls.prospecto = Prospecto.objects.create(
+            nombre='Pablo',
+            apellidos='Martinez Villareal',
+            telefono_casa='4422232226',
+            telefono_celular='4422580662',
+            email='pmartinez@gmail.com',
+            direccion=cls.lugar,
+            metodo_captacion='Facebook',
+            estado_civil='Soltero',
+            ocupacion='Estudiante',
+            hijos=1,
+            activo=True,
         )
-        evento = Evento.objects.create(Nombre='Mi Evento', Descripcion='Este es el evento de pruebas automoatizadas.')
-        curso = Curso.objects.create(Nombre='CursoPrueba', Evento=evento, Fecha_Inicio='2018-03-16', Direccion='Calle', Descripcion='Evento de marzo', Costo=1000)
-        relacion = ProspectoEvento.objects.create(Prospecto=prospecto,Curso=curso,Interes='ALTO',FlagCADHU=False)
+        cls.curso = Curso.objects.create(nombre='Mi Evento', descripcion='Este es el grupo de pruebas automoatizadas.')
+        cls.grupo = Grupo.objects.create(nombre='GrupoPrueba', curso=cls.curso, fecha_inicio='2018-03-16', direccion='Calle',
+                                     descripcion='Grupo de marzo', costo=1000)
+        cls.relacion = ProspectoGrupo.objects.create(prospecto=cls.prospecto, grupo=cls.grupo, interes='ALTO', flag_cadhu=False)
 
     def test_crear_actividad(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad',kwargs={'id':1}),{
-            'titulo':'Llamada con el prospecto',
-            'fecha':datetime.datetime.now().date(),
-            'notas':'Llamada con el prosecto',
-            'prospecto_evento':1})
-        self.assertQuerysetEqual(resp.context['actividades'],['<Actividad: Llamada con el prospecto>'])
+        resp = self.client.post(reverse('prospectos:crear_actividad', kwargs={'pk': self.relacion}), {
+            'titulo': 'Llamada con el prospecto',
+            'fecha': timezone.now().date(),
+            'notas': 'Llamada con el prosecto',
+            'prospecto_grupo': self.grupo})
+        self.assertQuerysetEqual(resp.context['actividades'], ['<Actividad: Llamada con el prospecto>'])
 
     # Accepatnce criteria 20.1 - 20.2
     def test_mostrar_pendientes(self):
