@@ -40,6 +40,11 @@ ESTADO_CIVIL = (
 
 TIPO_PAGO = (
     ('EFECTIVO', 'EFECTIVO'),
+    ('CHEQUES', 'CHEQUES'),
+    ('CLIP', 'CLIP'),
+    ('DEPOSITO BANCARIO', 'DEPOSITO BANCARIO'),
+    ('DEPOSITO OXXO', 'DEPOSITO OXXO'),
+    ('PAYPAL', 'PAYPAL'),
     ('TARJETA DE CRÉDITO', 'TARJETA DE CRÉDITO'),
     ('TARJETA DE DÉBITO', 'TARJETA DE DÉBITO'),
     ('TRASFERENCIA ELECTRÓNICA', 'TRANSFERENCIA ELECTRÓNICA'),
@@ -147,7 +152,7 @@ class Pago(models.Model):
     referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
     validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
-    tipo_pago = models.CharField(max_length=50, blank=True, null=True)
+    tipo_pago = models.CharField(choices=TIPO_PAGO, max_length=50, blank=True, null=True)
 
 
 class Empresa(models.Model):

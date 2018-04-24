@@ -1,4 +1,5 @@
 from .models import Empresa, Prospecto, Lugar, ProspectoGrupo, Cliente, Pago
+from grupos.models import Grupo
 from django.forms import ModelForm
 from django import forms
 from . import models
@@ -103,6 +104,15 @@ class ProspectoGrupoForm(ModelForm):
             'interes',
             'flag_cadhu',
         )
+        exclude = {
+            'fecha',
+            'prospecto',
+            'user',
+            'status',
+        }
+    def __init__(self, *args, **kwargs):
+        super(ProspectoGrupoForm, self).__init__(*args, **kwargs)
+        self.fields['grupo'].queryset = Grupo.objects.filter(activo=True)
 
 
 class ProspectoGrupoEdit(ModelForm):

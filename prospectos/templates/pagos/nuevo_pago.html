@@ -2,6 +2,7 @@
 {% load staticfiles %}
     {% block title %}Nuevo Pago{% endblock %}
 {% block content %}
+{% load widget_tweaks %}
 
   <div class="row no-margin padding-top-20">
       <div class="card ">
@@ -29,13 +30,7 @@
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <select required name="{{form.tipo_pago.html_name}}">
-                  <option value="" disabled selected>Elige una opción</option>
-                  <option value="Transferencia">Transferencia</option>
-                  <option value="Efectivo">Efectivo</option>
-                  <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-                  <option value="Tarjeta de Débito">Tarjeta de Débito</option>
-                </select>
+                {{ form.tipo_pago|add_class:'form-control' }}
                 <label>Tipo de Pago</label>
               </div>
             </div>
@@ -47,10 +42,10 @@
             </div>
             <br>
             <div class="row">
-              <center>
+              <div class="center">
                 <a href="{{request.META.HTTP_REFERER}}" class="btn waves-effect waves-light form_button red">Cancelar</a>
                 <button class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</button>
-              </center>
+              </div>
             </div>
           </form>
 
