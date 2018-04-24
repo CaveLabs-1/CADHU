@@ -573,7 +573,7 @@ def info_prospecto(request, pk):
                     'agenda': agenda,
                     'bitacora': bitacora,
                     'titulo': titulo,
-                    'grupos': grupos,
+                    'grupos': grupos
                 }
                 return render(request, 'prospectos/info_prospecto.html', context)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
