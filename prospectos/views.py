@@ -5,14 +5,15 @@ from tablib import Dataset
 import datetime
 from django.db.utils import IntegrityError
 from .forms import FormaActividad, ClienteForm, EmpresaForm, ProspectoForm, LugarForm, ProspectoGrupoForm, \
-    ProspectoGrupoEdit, PagoForm, InscribirEmpresaForm
+    ProspectoGrupoEdit, PagoForm
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from CADHU.decorators import group_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import *
 from django.utils.timezone import now
+
+# --------------------------- PROSPECTO ------------------------------
 
 
 # US43
@@ -94,154 +95,6 @@ def carga_masiva(request):
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
-# US38
-@login_required
-@group_required('vendedora', 'administrador')
-def lista_clientes(request):
-    # Tomar los  los clientes de la base de datos
-    clientes = Cliente.objects.filter(activo=True)
-    context = {
-        'clientes': clientes,
-        'titulo': 'Clientes',
-        'estatus': 'activo',
-    }
-    # Desplegar la página de clientes con enlistados con la información de la base de datos
-    return render(request, 'clientes/clientes.html', context)
-
-
-# US30
-@login_required
-@group_required('vendedora', 'administrador')
-def eliminar_cliente(request, pk):
-    # Seleccionar el cliente y sus pagos de la base de datos
-    cliente = Cliente.objects.get(id=pk)
-    pagos = Pago.objects.filter(prospecto_grupo=cliente.prospecto_grupo)
-    # Eliminar el cliente selecciondo
-    cliente.delete()
-    # Eliminar los pagos del cliente
-    for pago in pagos:
-        pago.delete()
-    clientes = Cliente.objects.filter(activo=True).order_by('fecha')
-    context = {
-        'clientes': clientes,
-        'titulo': 'Clientes',
-        'estatus': 'activo',
-    }
-    # Desplegar la lista de clientes actualizada
-    return render(request, 'clientes/clientes.html', context)
-
-
-# US31
-@login_required
-@group_required('vendedora', 'administrador')
-def crear_cliente(request, pk):
-    new_cliente_form = ClienteForm()
-    new_lugar_form = LugarForm()
-    # Si el método HTTP es post procesar la información de la forma:
-    if request.method == "POST":
-        # Crear y llenar la forma
-        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        new_cliente_form = ClienteForm(request.POST)
-        new_lugar_form = LugarForm(request.POST)
-        pago = Pago.objects.get(id=pk)
-        fecha = pago.fecha
-        prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_grupo_id)
-        # Si la forma es válida guardar la información en la base de datos:
-        if new_cliente_form.is_valid():
-            lugar = new_lugar_form.save()
-            cliente = new_cliente_form.save(commit=False)
-            cliente.prospecto_grupo = prospecto_grupo
-            cliente.fecha = fecha
-            cliente.direccion_facturacion = lugar
-            prospecto_grupo.status = 'CURSANDO'
-            prospecto_grupo.save()
-            cliente.save()
-            clientes = Cliente.objects.all()
-            prospecto_grupo = ProspectoGrupo.objects.get(id=pago.prospecto_grupo_id)
-            return redirect('prospectos:lista_pagos', id_pe=prospecto_grupo.id)
-        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
-        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
-        context = {
-            'Error': error,
-            'new_cliente_form': new_cliente_form,
-            'new_lugar_form': new_lugar_form,
-            'titulo': 'Registrar un Cliente',
-        }
-        return render(request, 'clientes/crear_cliente.html', context)
-    # Si el método HTTP no es post, volver a enviar la forma:
-    context = {
-        'new_cliente_form': new_cliente_form,
-        'new_lugar_form': new_lugar_form,
-        'titulo': 'Registrar Cliente',
-    }
-    return render(request, 'clientes/crear_cliente.html', context)
-
-
-# US37
-@login_required
-@group_required('vendedora', 'administrador')
-def editar_cliente(request, pk):
-    prospecto_grupo = ProspectoGrupo.objects.get(id=pk)
-    id_cliente = Cliente.objects.get(prospecto_grupo=prospecto_grupo)
-    new_cliente_form = ClienteForm(instance=id_cliente)
-    new_lugar_form = LugarForm(instance=id_cliente.direccion_facturacion)
-    prospecto = Prospecto.objects.get(id=prospecto_grupo.prospecto_id)
-    # Si el método HTTP es post procesar la información de la forma:
-    if request.method == "POST":
-        # Crear y llenar la forma
-        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
-        new_cliente_form = ClienteForm(request.POST or None, instance=id_cliente)
-        new_lugar_form = LugarForm(request.POST or None, instance=id_cliente.direccion_facturacion)
-        pago = Pago.objects.filter(prospecto_grupo=prospecto_grupo).order_by('fecha')
-        fecha = pago[0].fecha
-        # Si la forma es válida guardar la información en la base de datos:
-        if new_cliente_form.is_valid():
-            lugar = new_lugar_form.save()
-            cliente = new_cliente_form.save(commit=False)
-            cliente.prospecto_grupo = prospecto_grupo
-            cliente.fecha = fecha
-            cliente.direccion_facturacion = lugar
-            prospecto_grupo.status = 'CURSANDO'
-            prospecto_grupo.save()
-            cliente.save()
-            clientes = Cliente.objects.all()
-            return redirect('prospectos:lista_pagos', id_pe=prospecto_grupo.id)
-        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
-        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
-        context = {
-            'Error': error,
-            'new_cliente_form': new_cliente_form,
-            'new_lugar_form': new_lugar_form,
-            'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
-        }
-        return render(request, 'clientes/crear_cliente.html', context)
-    # Si el método HTTP no es post, volver a enviar la forma:
-    context = {
-        'new_cliente_form': new_cliente_form,
-        'new_lugar_form': new_lugar_form,
-        'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
-    }
-    return render(request, 'clientes/crear_cliente.html', context)
-
-
-# US38
-@login_required
-@group_required('vendedora', 'administrador')
-def info_cliente(request, pk):
-    cliente = Cliente.objects.get(id=pk)
-    lugar = Lugar.objects.get(id=cliente.direccion_facturacion.id)
-    relacion = ProspectoGrupo.objects.get(id=cliente.prospecto_grupo.id)
-    prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
-    context = {
-        'cliente': cliente,
-        'lugar': lugar,
-        'relacion': relacion,
-        'prospecto': prospecto,
-        'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellidos,
-    }
-    return render(request, 'clientes/info_cliente.html', context)
-
-
 # US3
 @login_required
 @group_required('vendedora', 'administrador')
@@ -262,7 +115,7 @@ def crear_prospecto(request):
             prospecto.fecha_creacion = now()
             prospecto.save()
             messages.success(request, 'El prospecto ha sido creado exitosamente')
-            return redirect('prospectos:registrar_grupos', pk=prospecto.id)
+            return redirect('prospectos:info_prospecto', pk=prospecto.id)
         # Si la forma no es válida, volverla a mandar
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -296,7 +149,7 @@ def editar_prospecto(request, pk):
             prospecto.direccion = lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
-            return redirect('prospectos:registrar_grupos', pk=prospecto.id)
+            return redirect('prospectos:info_prospecto', pk=prospecto.id)
         else:
             messages.success(request, 'Existe una falla en los campos.')
             context = {
@@ -315,33 +168,120 @@ def editar_prospecto(request, pk):
     return render(request, 'prospectos/prospectos_form.html', context)
 
 
-# US39
-@login_required
-@group_required('administrador')
-def baja_cliente(request, pk):
-    cliente = Cliente.objects.get(id=pk)
-    if cliente.activo:
-        cliente.activo = False
-        cliente.save()
-        return redirect(reverse('prospectos:lista_prospectos'))
-    else:
-        cliente.activo = True
-        cliente.save()
-        return redirect(reverse('prospectos:lista_prospectos_inactivos'))
-
-
-# US39
+# US7
 @login_required
 @group_required('vendedora', 'administrador')
-def lista_clientes_inactivos(request):
-    # Tomar los  los clientes inactivos de la base
-    cliente_inactivo = Cliente.objects.filter(activo=False).order_by('fecha')
+def lista_prospectos(request):
+    # Tomar los  los prospectos de la base
+    # prospectos = Prospecto.objects.all()
+    prospecto_activo = Prospecto.objects.filter(activo=True)
     context = {
-        'cliente': cliente_inactivo,
-        'titulo': 'Clientes',
+        'prospectos': prospecto_activo,
+        'titulo': 'Prospectos',
     }
-    # Desplegar la página de cliente con enlistados con la información de la base de datos
-    return render(request, 'clientes/clientes.html', context)
+    # Desplegar la página de prospectos con enlistados con la información de la base de datos
+    return render(request, 'prospectos/prospectos.html', context)
+
+
+# US6
+@login_required
+@group_required('vendedora', 'administrador')
+def lista_prospectos_inactivo(request):
+    # Tomar los  los prospectos de la base
+    # prospectos = Prospecto.objects.all()
+    prostpecto_inactivo = Prospecto.objects.filter(activo=False)
+    context = {
+        'prospectos': prostpecto_inactivo,
+        'titulo': 'Prospectos inactivos',
+    }
+    # Desplegar la página de prospectos con enlistados con la información de la base de datos
+    return render(request, 'prospectos/prospectos.html', context)
+
+
+# US6
+@login_required
+@group_required('vendedora', 'administrador')
+def baja_prospecto(request, pk):
+    # Obtener el prospecto
+    prospecto = Prospecto.objects.get(id=pk)
+    # Si el prospecto es activo, cambiarlo a inactivo
+    if prospecto.activo:
+        prospecto.activo = False
+        prospecto.save()
+        return redirect(reverse('prospectos:lista_prospectos'))
+    # Si el prospecto es activo, guardarlo
+    else:
+        prospecto.activo = True
+        prospecto.save()
+        return redirect(reverse('prospectos:lista_prospectos_inactivo'))
+
+
+# US5
+@login_required
+@group_required('vendedora', 'administrador')
+def info_prospecto(request, pk):
+    new_prospecto_grupo_form = ProspectoGrupoForm()
+    prospecto = Prospecto.objects.get(id=pk)
+    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
+    actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
+    titulo = 'Información de prospecto'
+    agenda = []
+    bitacora = []
+    for actividad in actividades:
+        if not actividad.terminado:
+            agenda.append(actividad)
+        else:
+            bitacora.append(actividad)
+    if request.method == 'POST':
+        # Crear la instancia de la forma y llenarla con los datos
+        new_prospecto_grupo_form = ProspectoGrupoForm(request.POST)
+        # Validar la forma
+        if new_prospecto_grupo_form.is_valid():
+            prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
+            # Validar que no se este agregando un grupo repetido
+            try:
+                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
+                messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
+                context = {
+                    'prospecto': prospecto,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
+                    'titulo': titulo,
+                    'actividades': actividades,
+                    'agenda': agenda,
+                    'bitacora': bitacora,
+                    'grupos': grupos,
+                }
+                return render(request, 'prospectos/info_prospecto.html', context)
+            # Guardar la forma en la BD
+            except ProspectoGrupo.DoesNotExist:
+                prospecto_grupo.prospecto = prospecto
+                prospecto_grupo.flag_cadhu = False
+                prospecto_grupo.fecha = now()
+                prospecto_grupo.save()
+                messages.success(request, 'Grupo asignado a prospecto')
+                context = {
+                    'prospecto': prospecto,
+                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
+                    'actividades': actividades,
+                    'agenda': agenda,
+                    'bitacora': bitacora,
+                    'titulo': titulo,
+                    'grupos': grupos
+                }
+                return render(request, 'prospectos/info_prospecto.html', context)
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+    context = {
+        'prospecto': prospecto,
+        'new_prospecto_grupo_form': new_prospecto_grupo_form,
+        'actividades': actividades,
+        'agenda': agenda,
+        'bitacora': bitacora,
+        'grupos': grupos,
+    }
+    return render(request, 'prospectos/info_prospecto.html', context)
+
+
+# ---------------------------------- PROSPECTO GRUPO ----------------------------------
 
 
 # US26
@@ -475,118 +415,7 @@ def info_prospecto_grupo(request, rel):
     return render(request, 'grupos/info_prospecto_grupo.html', context)
 
 
-# US7
-@login_required
-@group_required('vendedora', 'administrador')
-def lista_prospectos(request):
-    # Tomar los  los prospectos de la base
-    # prospectos = Prospecto.objects.all()
-    prospecto_activo = Prospecto.objects.filter(activo=True)
-    context = {
-        'prospectos': prospecto_activo,
-        'titulo': 'Prospectos',
-    }
-    # Desplegar la página de prospectos con enlistados con la información de la base de datos
-    return render(request, 'prospectos/prospectos.html', context)
-
-
-# US6
-@login_required
-@group_required('vendedora', 'administrador')
-def lista_prospectos_inactivo(request):
-    # Tomar los  los prospectos de la base
-    # prospectos = Prospecto.objects.all()
-    prostpecto_inactivo = Prospecto.objects.filter(activo=False)
-    context = {
-        'prospectos': prostpecto_inactivo,
-        'titulo': 'Prospectos inactivos',
-    }
-    # Desplegar la página de prospectos con enlistados con la información de la base de datos
-    return render(request, 'prospectos/prospectos.html', context)
-
-
-# US6
-@login_required
-@group_required('vendedora', 'administrador')
-def baja_prospecto(request, pk):
-    # Obtener el prospecto
-    prospecto = Prospecto.objects.get(id=pk)
-    # Si el prospecto es activo, cambiarlo a inactivo
-    if prospecto.activo:
-        prospecto.activo = False
-        prospecto.save()
-        return redirect(reverse('prospectos:lista_prospectos'))
-    # Si el prospecto es activo, guardarlo
-    else:
-        prospecto.activo = True
-        prospecto.save()
-        return redirect(reverse('prospectos:lista_prospectos_inactivo'))
-
-
-# US5
-@login_required
-@group_required('vendedora', 'administrador')
-def info_prospecto(request, pk):
-    new_prospecto_grupo_form = ProspectoGrupoForm()
-    prospecto = Prospecto.objects.get(id=pk)
-    grupos = ProspectoGrupo.objects.filter(prospecto=prospecto)
-    actividades = Actividad.objects.filter(prospecto_grupo__prospecto=prospecto).order_by('fecha', 'hora')
-    titulo = 'Información de prospecto'
-    agenda = []
-    bitacora = []
-    for actividad in actividades:
-        if not actividad.terminado:
-            agenda.append(actividad)
-        else:
-            bitacora.append(actividad)
-    if request.method == 'POST':
-        # Crear la instancia de la forma y llenarla con los datos
-        new_prospecto_grupo_form = ProspectoGrupoForm(request.POST)
-        # Validar la forma
-        if new_prospecto_grupo_form.is_valid():
-            prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
-            # Validar que no se este agregando un grupo repetido
-            try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
-                messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
-                context = {
-                    'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
-                    'titulo': titulo,
-                    'actividades': actividades,
-                    'agenda': agenda,
-                    'bitacora': bitacora,
-                    'grupos': grupos,
-                }
-                return render(request, 'prospectos/info_prospecto.html', context)
-            # Guardar la forma en la BD
-            except ProspectoGrupo.DoesNotExist:
-                prospecto_grupo.prospecto = prospecto
-                prospecto_grupo.flag_cadhu = False
-                prospecto_grupo.fecha = now()
-                prospecto_grupo.save()
-                messages.success(request, 'Grupo asignado a prospecto')
-                context = {
-                    'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
-                    'actividades': actividades,
-                    'agenda': agenda,
-                    'bitacora': bitacora,
-                    'titulo': titulo,
-                    'grupos': grupos
-                }
-                return render(request, 'prospectos/info_prospecto.html', context)
-        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
-    context = {
-        'prospecto': prospecto,
-        'new_prospecto_grupo_form': new_prospecto_grupo_form,
-        'actividades': actividades,
-        'agenda': agenda,
-        'bitacora': bitacora,
-        'grupos': grupos,
-    }
-    return render(request, 'prospectos/info_prospecto.html', context)
-
+# ------------------------------------ EMPRESAS ----------------------------------------
 
 # US17
 @login_required
@@ -749,6 +578,9 @@ def inscribir_empresa(request, pk):
     return render(request, 'empresas/empresa_prospectos_form.html', context)
 
 
+# ------------------------------------------- ACTIVIDADES ---------------------------------
+
+
 # US15
 @login_required
 @group_required('vendedora', 'administrador')
@@ -828,6 +660,9 @@ def estado_flag(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+# --------------------------------- PAGOS ------------------------------
+
+
 # US41
 @login_required
 @group_required('administrador')
@@ -847,8 +682,8 @@ def nuevo_pago(request, id_pe):
             # se redirige a la próxima vista
             messages.success(request, 'Pago agregado exitosamente!')
             pagos = Pago.objects.filter(prospecto_grupo_id=id_pe).count()
-            if pagos > 1:
-                pe = ProspectoGrupo.objects.get(id=id_pe)
+            pe = ProspectoGrupo.objects.get(id=id_pe)
+            if pe.cliente_set.exists():
                 return redirect('prospectos:lista_pagos', id_pe=id_pe)
             else:
                 return redirect('prospectos:crear_cliente', pk=pago.id)
@@ -894,7 +729,7 @@ def lista_pagos(request, id_pe):
             'titulo': 'Lista de Pagos',
             'prospecto': Prospecto.objects.get(id=pe.prospecto.id),
             'pagos': Pago.objects.filter(prospecto_grupo=pe).order_by('fecha'),
-            'cliente': Cliente.objects.get(prospecto_grupo=pe),
+            'cliente': pe,
             'id_pe': id_pe,
             'grupo': grupo,
             'subtotal': total_pagos,
@@ -915,3 +750,184 @@ def autorizar_pago(request, pk):
         pago.validado = True
         pago.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# ---------------------------- CLIENTES -------------------------------
+
+
+# US38
+@login_required
+@group_required('vendedora', 'administrador')
+def lista_clientes(request):
+    # Tomar los  los clientes de la base de datos
+    clientes = Cliente.objects.filter(activo=True)
+    context = {
+        'clientes': clientes,
+        'titulo': 'Clientes',
+        'estatus': 'activo',
+    }
+    # Desplegar la página de clientes con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
+
+
+# US39
+@login_required
+@group_required('vendedora', 'administrador')
+def lista_clientes_inactivos(request):
+    # Tomar los  los clientes inactivos de la base
+    cliente_inactivo = Cliente.objects.filter(activo=False).order_by('fecha')
+    context = {
+        'cliente': cliente_inactivo,
+        'titulo': 'Clientes',
+    }
+    # Desplegar la página de cliente con enlistados con la información de la base de datos
+    return render(request, 'clientes/clientes.html', context)
+
+
+# US30
+@login_required
+@group_required('vendedora', 'administrador')
+def eliminar_cliente(request, pk):
+    # Seleccionar el cliente y sus pagos de la base de datos
+    cliente = Cliente.objects.get(id=pk)
+    pagos = Pago.objects.filter(prospecto_grupo=cliente.prospecto_grupo)
+    # Eliminar el cliente selecciondo
+    cliente.delete()
+    # Eliminar los pagos del cliente
+    for pago in pagos:
+        pago.delete()
+    clientes = Cliente.objects.filter(activo=True).order_by('fecha')
+    context = {
+        'clientes': clientes,
+        'titulo': 'Clientes',
+        'estatus': 'activo',
+    }
+    # Desplegar la lista de clientes actualizada
+    return render(request, 'clientes/clientes.html', context)
+
+
+# US31
+@login_required
+@group_required('vendedora', 'administrador')
+def crear_cliente(request, pk):
+    new_cliente_form = ClienteForm()
+    new_lugar_form = LugarForm()
+    # Si el método HTTP es post procesar la información de la forma:
+    if request.method == "POST":
+        # Crear y llenar la forma
+        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        new_cliente_form = ClienteForm(request.POST)
+        new_lugar_form = LugarForm(request.POST)
+        pago = Pago.objects.get(id=pk)
+        fecha = pago.fecha
+        prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_grupo_id)
+        # Si la forma es válida guardar la información en la base de datos:
+        if new_cliente_form.is_valid():
+            lugar = new_lugar_form.save()
+            cliente = new_cliente_form.save(commit=False)
+            cliente.prospecto_grupo = prospecto_grupo
+            cliente.fecha = fecha
+            cliente.direccion_facturacion = lugar
+            prospecto_grupo.status = 'CURSANDO'
+            prospecto_grupo.save()
+            cliente.save()
+            clientes = Cliente.objects.all()
+            prospecto_grupo = ProspectoGrupo.objects.get(id=pago.prospecto_grupo_id)
+            return redirect('prospectos:lista_pagos', id_pe=prospecto_grupo.id)
+        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        context = {
+            'Error': error,
+            'new_cliente_form': new_cliente_form,
+            'new_lugar_form': new_lugar_form,
+            'titulo': 'Registrar un Cliente',
+        }
+        return render(request, 'clientes/crear_cliente.html', context)
+    # Si el método HTTP no es post, volver a enviar la forma:
+    context = {
+        'new_cliente_form': new_cliente_form,
+        'new_lugar_form': new_lugar_form,
+        'titulo': 'Registrar Cliente',
+    }
+    return render(request, 'clientes/crear_cliente.html', context)
+
+
+# US37
+@login_required
+@group_required('vendedora', 'administrador')
+def editar_cliente(request, pk):
+    prospecto_grupo = ProspectoGrupo.objects.get(id=pk)
+    id_cliente = Cliente.objects.get(prospecto_grupo=prospecto_grupo)
+    new_cliente_form = ClienteForm(instance=id_cliente)
+    new_lugar_form = LugarForm(instance=id_cliente.direccion_facturacion)
+    prospecto = Prospecto.objects.get(id=prospecto_grupo.prospecto_id)
+    # Si el método HTTP es post procesar la información de la forma:
+    if request.method == "POST":
+        # Crear y llenar la forma
+        error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
+        new_cliente_form = ClienteForm(request.POST or None, instance=id_cliente)
+        new_lugar_form = LugarForm(request.POST or None, instance=id_cliente.direccion_facturacion)
+        pago = Pago.objects.filter(prospecto_grupo=prospecto_grupo).order_by('fecha')
+        fecha = pago[0].fecha
+        # Si la forma es válida guardar la información en la base de datos:
+        if new_cliente_form.is_valid():
+            lugar = new_lugar_form.save()
+            cliente = new_cliente_form.save(commit=False)
+            cliente.prospecto_grupo = prospecto_grupo
+            cliente.fecha = fecha
+            cliente.direccion_facturacion = lugar
+            prospecto_grupo.status = 'CURSANDO'
+            prospecto_grupo.save()
+            cliente.save()
+            clientes = Cliente.objects.all()
+            return redirect('prospectos:lista_pagos', id_pe=prospecto_grupo.id)
+        # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
+        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        context = {
+            'Error': error,
+            'new_cliente_form': new_cliente_form,
+            'new_lugar_form': new_lugar_form,
+            'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+        }
+        return render(request, 'clientes/crear_cliente.html', context)
+    # Si el método HTTP no es post, volver a enviar la forma:
+    context = {
+        'new_cliente_form': new_cliente_form,
+        'new_lugar_form': new_lugar_form,
+        'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+    }
+    return render(request, 'clientes/crear_cliente.html', context)
+
+
+# US39
+@login_required
+@group_required('administrador')
+def baja_cliente(request, pk):
+    cliente = Cliente.objects.get(id=pk)
+    if cliente.activo:
+        cliente.activo = False
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos'))
+    else:
+        cliente.activo = True
+        cliente.save()
+        return redirect(reverse('prospectos:lista_prospectos_inactivos'))
+
+
+# US38
+@login_required
+@group_required('vendedora', 'administrador')
+def info_cliente(request, pk):
+    cliente = Cliente.objects.get(id=pk)
+    lugar = Lugar.objects.get(id=cliente.direccion_facturacion.id)
+    relacion = ProspectoGrupo.objects.get(id=cliente.prospecto_grupo.id)
+    prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
+    context = {
+        'cliente': cliente,
+        'lugar': lugar,
+        'relacion': relacion,
+        'prospecto': prospecto,
+        'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellidos,
+    }
+    return render(request, 'clientes/info_cliente.html', context)
+

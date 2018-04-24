@@ -45,6 +45,7 @@ urlpatterns = [
     # Info grupo-prospecto
     path('interes/<int:rel>', views.info_prospecto_grupo, name='info_prospecto_grupo'),
 
+    # No se usa!! ------
     # Registrar Cursos a Prospecto
     path('<int:pk>/registrar_grupos', views.registrar_grupos, name='registrar_grupos'),
 

@@ -14,7 +14,7 @@
         </div>
         <div class="col l6 s12 ">
           <h6 style="text-align: right">
-            Matrícula: {{ cliente.matricula }}
+            Matrícula: {{ cliente.cliente_set.last.matricula }}
           </h6>
         </div>
       </div>
@@ -94,7 +94,7 @@
 <div class="row">
   <div class="col s12 center">
     <br />
-    <a href="{% url 'prospectos:registrar_grupos' prospecto.id %}" class="btn waves-effect waves-light back_button" type="submit" name="action">
+    <a href="{% url 'prospectos:info_prospecto' prospecto.id %}" class="btn waves-effect waves-light back_button" type="submit" name="action">
       <i class="material-icons left">arrow_back</i>
       Regresar
     </a>
