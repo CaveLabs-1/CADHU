@@ -151,9 +151,9 @@
                     <td>{{ prospecto_grupo.interes }}</td>
                     <td>{{ prospecto_grupo.fecha }}</td>
                     {% if prospecto_grupo.flag_cadhu %}
-                        <td><a><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
+                        <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
                     {% else %}
-                        <td><a><i class="material-icons text-rojo-cadhu">flag</i></a></td>
+                        <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                     {% endif %}
                     <td>
                         <a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}"><i class="material-icons">info</i></a>

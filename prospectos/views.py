@@ -108,6 +108,8 @@ def crear_prospecto(request):
         new_lugar_form = LugarForm(request.POST, prefix='NewLugarForm')
         # Validar la forma y guardar en BD
         if new_prospecto_form.is_valid() and new_lugar_form.is_valid():
+            print(new_lugar_form.is_valid())
+            print(new_prospecto_form.is_valid())
             lugar = new_lugar_form.save()
             prospecto = new_prospecto_form.save(commit=False)
             prospecto.direccion = lugar
@@ -359,7 +361,7 @@ def editar_grupo(request, pk):
                 'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
                 'grupos': grupos,
             }
-            return render(request, 'grupos/prospecto_grupo_form.html', context)
+            return redirect('prospectos:info_prospecto_grupo', pk)
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
     context = {
         'prospecto': prospecto,
@@ -502,7 +504,7 @@ def crear_empresa(request):
             empresa = new_empresa_form.save(commit=False)
             empresa.direccion = lugar
             empresa.save()
-            return lista_empresas(request)
+            return redirect('prospectos:lista_empresas')
         # Si la forma es inválida mostrar el error y volver a crear la form para llenarla de nuevo
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
@@ -611,7 +613,7 @@ def crear_actividad(request, pk):
             actividad.save()
             # Mensaje éxito
             messages.success(request, 'La actividad ha sido agregada')
-            return info_prospecto_grupo(request, pk)
+            return redirect('prospectos:info_prospecto_grupo', pk)
         else:
             # Mensaje error
             error = 'Forma inválida'
@@ -651,11 +653,11 @@ def estado_actividad(request, pk):
 @group_required('vendedora', 'administrador')
 def estado_flag(request, pk):
     rel = ProspectoGrupo.objects.get(id=pk)
-    if rel.FlagCADHU:
-        rel.FlagCADHU = False
+    if rel.flag_cadhu:
+        rel.flag_cadhu = False
         rel.save()
     else:
-        rel.FlagCADHU = True
+        rel.flag_cadhu = True
         rel.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

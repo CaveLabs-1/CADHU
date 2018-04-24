@@ -208,10 +208,10 @@
                             {% endif %}
                         </td>
                         <td>{{ prospecto_grupo.interes }}</td>
-                        {% if prospecto_grupo.flag_cadhu == True %}
-                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
-                        {% else %}
+                        {% if prospecto_grupo.flag_cadhu %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
+                        {% else %}
+                            <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                         {% endif %}
                         <td>{{ prospecto_grupo.Curso.Direccion }}</td>
                         <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
@@ -299,9 +299,9 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        <div class="modal-footer">
+                            <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">Cerrar</a>
+                        </div>
                     </div>
 
                 {% endfor %}
