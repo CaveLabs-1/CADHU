@@ -148,14 +148,14 @@ class CambiarGrupoTest(TestCase):
     # ACCEPTANCE CRITERIA: 42.1 y 42.3
     def test_cambiar_grupo_de_prospecto_cliente(self):
         resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo2.id}))
-        grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
+        grupo_actualizado = ProspectoGrupo.objects.filter(grupo=self.grupo2).count()
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(grupo_actualizado, 1)
 
     # ACCEPTANCE CRITERIA: 42.2
     def test_cambiar_grupo_de_prospecto_a_grupo_inactivo(self):
         resp = self.client.get(reverse('grupos:cambiar_prospectos', kwargs={'pk_antiguo': self.grupo1.id, 'pk_nuevo': self.grupo_inactivo.id}))
-        grupo_actualizado = ProspectoGrupo.objects.filter(pk=self.grupo1.id).count()
+        grupo_actualizado = ProspectoGrupo.objects.filter(grupo=self.grupo_inactivo).count()
         self.assertEqual(resp.status_code, 302)
-        self.assertEqual(grupo_actualizado, 1)
+        self.assertEqual(grupo_actualizado, 0)
 
