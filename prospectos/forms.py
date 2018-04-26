@@ -110,6 +110,7 @@ class ProspectoGrupoForm(ModelForm):
             'user',
             'status',
         }
+
     def __init__(self, *args, **kwargs):
         super(ProspectoGrupoForm, self).__init__(*args, **kwargs)
         self.fields['grupo'].queryset = Grupo.objects.filter(activo=True)

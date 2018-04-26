@@ -297,35 +297,37 @@ def registrar_grupos(request, pk):
     if request.method == 'POST':
         # Crear la instancia de la forma y llenarla con los datos
         new_prospecto_grupo_form = ProspectoGrupoForm(request.POST)
-        # Validar la forma
-        if new_prospecto_grupo_form.is_valid():
-            prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
-            # Validar que no se este agregando un grupo repetido
-            try:
-                ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
-                messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
-                context = {
-                    'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
-                    'titulo': 'Registrar Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-                    'grupos': grupos,
-                }
-                return render(request, 'grupos/prospecto_grupo_form.html', context)
-            # Guardar la forma en la BD
-            except ProspectoGrupo.DoesNotExist:
-                prospecto_grupo.prospecto = prospecto
-                prospecto_grupo.flag_cadhu = False
-                prospecto_grupo.fecha = now()
-                prospecto_grupo.save()
-                messages.success(request, 'Grupo asignado a prospecto')
-                context = {
-                    'prospecto': prospecto,
-                    'new_prospecto_grupo_form': new_prospecto_grupo_form,
-                    'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
-                    'grupos': grupos,
-                }
-                return render(request, 'grupos/prospecto_grupo_form.html', context)
-        messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        if new_prospecto_grupo_form.grupo.activo:
+            # Validar la forma
+            if new_prospecto_grupo_form.is_valid():
+                prospecto_grupo = new_prospecto_grupo_form.save(commit=False)
+                # Validar que no se este agregando un grupo repetido
+                try:
+                    ProspectoGrupo.objects.get(prospecto=prospecto, grupo=prospecto_grupo.grupo)
+                    messages.success(request, 'El grupo que quiere asignar ya ha sido asignado')
+                    context = {
+                        'prospecto': prospecto,
+                        'new_prospecto_grupo_form': new_prospecto_grupo_form,
+                        'titulo': 'Registrar Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
+                        'grupos': grupos,
+                    }
+                    return render(request, 'grupos/prospecto_grupo_form.html', context)
+                # Guardar la forma en la BD
+                except ProspectoGrupo.DoesNotExist:
+                    prospecto_grupo.prospecto = prospecto
+                    prospecto_grupo.flag_cadhu = False
+                    prospecto_grupo.fecha = now()
+                    prospecto_grupo.save()
+                    messages.success(request, 'Grupo asignado a prospecto')
+                    context = {
+                        'prospecto': prospecto,
+                        'new_prospecto_grupo_form': new_prospecto_grupo_form,
+                        'titulo': 'Registrar Grupos - ' + prospecto.nombre + ' ' + prospecto.apellidos,
+                        'grupos': grupos,
+                    }
+                    return render(request, 'grupos/prospecto_grupo_form.html', context)
+            messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
+        messages.success(request, 'No se puede inscribir a un grupo inactivo.')
     context = {
         'prospecto': prospecto,
         'new_prospecto_grupo_form': new_prospecto_grupo_form,
