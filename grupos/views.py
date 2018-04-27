@@ -110,6 +110,10 @@ def eliminar_grupo(request, pk):
         else:
             grupo.delete()
             return redirect('grupos:grupos')
+    else:
+        grupo.activo = True
+        grupo.save()
+        return redirect('grupos:grupos')
 
 
 # US25

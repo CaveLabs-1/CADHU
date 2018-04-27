@@ -41,7 +41,7 @@
                     {% if grupo.activo %}
                         <a href="{% url 'grupos:eliminar_grupo' grupo.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
                     {% else %}
-                        <a href="{% url 'grupos:eliminar_grupo' grupo.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-rojo-cadhu">delete</i></a>
+                        <a href="{% url 'grupos:eliminar_grupo' grupo.id %}" onclick="eliminar_grupo(this, event)"><i class="material-icons text-verde-cadhu">add_circle</i></a>
                     {% endif %}
                 </td>
             </tr>
