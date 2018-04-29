@@ -12,7 +12,7 @@ def index(request):
     context = {
         'agenda': agenda,
         'bitacora': bitacora,
-        'titulo': 'Pendientes',
+        'titulo': 'Bienvenido',
         }
     return render(request, 'index/index.html', context)
 
