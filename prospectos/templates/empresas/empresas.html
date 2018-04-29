@@ -21,7 +21,7 @@
                   {% for empresa in empresas   %}
                       <tr>
                           <td><a href="{% url 'prospectos:empresa_info' empresa.id %}">{{ empresa.nombre }}</a></td>
-                          <td>{{ empresa.Razon_Social }}</td>
+                          <td>{{ empresa.razon_social }}</td>
                           <td class="center">
                               <a href="{% url 'prospectos:editar_empresa' empresa.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                               {% if estatus == "activo" %}
