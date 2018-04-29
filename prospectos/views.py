@@ -277,6 +277,7 @@ def info_prospecto(request, pk):
         'new_prospecto_grupo_form': new_prospecto_grupo_form,
         'actividades': actividades,
         'agenda': agenda,
+        'titulo': titulo,
         'bitacora': bitacora,
         'grupos': grupos,
     }
@@ -934,4 +935,3 @@ def info_cliente(request, pk):
         'titulo': 'Cliente:' + prospecto.nombre + " " + prospecto.apellidos,
     }
     return render(request, 'clientes/info_cliente.html', context)
-

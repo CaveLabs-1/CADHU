@@ -22,4 +22,19 @@ $(document).ready(function() {
 
     e.preventDefault();
   });
+
+  $('#forma_grupo').on('submit', function(e){
+
+
+    var inicio = new Date($("#id_fecha_inicio").val());
+    var fin = new Date($("#id_fecha_fin").val());
+
+    if (inicio > fin) {
+      M.toast({html: 'La fecha de fin es antes que la de inicio.'})
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+  });
 });
