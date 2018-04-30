@@ -1,0 +1,2 @@
+id,nombre,fecha_inicio,fecha_fin,direccion,descripcion,costo,activo,curso_id,encargado_id
+1,AR_Octubre2018,15/08/2016,15/08/2018,,,500,FALSE,1,1

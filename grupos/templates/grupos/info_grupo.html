@@ -92,8 +92,8 @@
                                 Sin contacto
                             {% endif %}
                         </td>
-                        <td>{{ prospecto_grupo.Interes }}</td>
-                        {% if prospecto_grupo.FlagCADHU == True %}
+                        <td>{{ prospecto_grupo.interes }}</td>
+                        {% if prospecto_grupo.flag_cadhu %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                         {% else %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons text-rojo-cadhu">flag</i></a></td>
@@ -335,11 +335,11 @@
                     <tr>
                         <td>{{ cliente.matricula }}</td>
                         <td>{{ cliente.rfc }}</td>
-                        <td>{{ cliente.razonSocial }}</td>
+                        <td>{{ cliente.razon_social }}</td>
                         <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.nombre }}</a></td>
                         <td><a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}">{{ cliente.prospecto_grupo.prospecto.apellidos }}</a></td>
                         <td><a class="whatsapp" onclick="whatsapp({{ cliente.prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ cliente.prospecto_grupo.prospecto.telefono_celular }}</a></td>
-                        <td><a href="mailto:{{ prospecto.Email }}">{{ cliente.prospecto_grupo.prospecto.email }}</a></td>
+                        <td><a href="mailto:{{ prospecto.email }}">{{ cliente.prospecto_grupo.prospecto.email }}</a></td>
                         <td>
                             <a href="{% url 'prospectos:editar_prospecto' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                             <a href="{% url 'prospectos:info_prospecto' cliente.prospecto_grupo.prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
