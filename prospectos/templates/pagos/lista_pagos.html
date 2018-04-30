@@ -68,8 +68,8 @@
       </div>
       {% if restante > 0 %}
         <div class="row">
-          <div class="col s12">
-            <a href="{% url 'prospectos:nuevo_pago' id_pe %}" class="btn waves-effect waves-light form_button" type="submit" name="action">+ Agregar Pago</a>
+          <div class="col s12 center">
+            <a href="{% url 'prospectos:nuevo_pago' id_pe %}" class="btn waves-effect waves-light form_button">+ Agregar Pago</a>
           </div>
         </div>
       {% endif %}
@@ -94,7 +94,7 @@
 <div class="row">
   <div class="col s12 center">
     <br />
-    <a href="{% url 'prospectos:info_prospecto' prospecto.id %}" class="btn waves-effect waves-light back_button" type="submit" name="action">
+    <a href="{% url 'prospectos:info_prospecto' prospecto.id %}" class="btn waves-effect waves-light back_button">
       <i class="material-icons left">arrow_back</i>
       Regresar
     </a>
