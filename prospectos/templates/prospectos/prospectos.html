@@ -32,7 +32,7 @@
                 <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.nombre }}</a></td>
                 <td><a href="{% url 'prospectos:info_prospecto' prospecto.id %}">{{ prospecto.apellidos }}</a></td>
                 <td><a class="whatsapp" onclick="whatsapp({{ prospecto.telefono_celular }});" href="#">{{ prospecto.telefono_celular }}</a></td>
-                <td><a href="mailto:{{ prospecto.Email }}">{{ prospecto.email }}</a></td>
+                <td><a href="mailto:{{ prospecto.email }}">{{ prospecto.email }}</a></td>
                 <td  class="center">
                     <a href="{% url 'prospectos:editar_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">edit</i></a>
                     <a href="{% url 'prospectos:info_prospecto' prospecto.id %}"><i class="material-icons text-blue-ligero">person</i></a>
