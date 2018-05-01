@@ -31,7 +31,7 @@ def grupos_inactivos(request):
 
 # US ???
 @login_required
-@group_required('vendedora', 'administrador')
+@group_required('administrador', 'vendedora')
 def nuevo_grupo(request):
     # recibir forma
     forma_nuevo_grupo = FormaGrupo()
@@ -110,6 +110,10 @@ def eliminar_grupo(request, pk):
         else:
             grupo.delete()
             return redirect('grupos:grupos')
+    else:
+        grupo.activo = True
+        grupo.save()
+        return redirect('grupos:grupos')
 
 
 # US25
@@ -133,3 +137,34 @@ def info_grupo(request, pk):
         'prospectos': prospectos,
     }
     return render(request, 'grupos/info_grupo.html', context)
+
+# US44
+@login_required
+@group_required('administrador', 'vendedora')
+def grupo_cambio(request, pk):
+    grupo_actual = Grupo.objects.get(id=pk)
+    grupos = Grupo.objects.filter(activo=True).exclude(nombre=grupo_actual.nombre)
+    context = {
+        'titulo': 'Cambiar Prospectos de ' + grupo_actual.nombre,
+        'grupo_actual': grupo_actual,
+        'grupos': grupos,
+    }
+    return render(request, 'grupos/cambio_grupo.html', context)
+
+# US44
+@login_required
+@group_required('vendedora', 'administrador')
+def cambiar_prospectos(request, pk_antiguo, pk_nuevo):
+    grupo_actual = Grupo.objects.get(id=pk_antiguo)
+    grupo_nuevo = Grupo.objects.get(id=pk_nuevo)
+    prospecto_grupo =ProspectoGrupo.objects.filter(grupo=grupo_actual)
+    for prospecto in prospecto_grupo:
+        try:
+            Cliente.objects.get(prospecto_grupo=prospecto)
+            prospecto.save()
+        except Cliente.DoesNotExist:
+            if grupo_nuevo.activo:
+                prospecto.grupo = grupo_nuevo
+                prospecto.save()
+
+    return redirect('grupos:info_grupo', grupo_nuevo.id)
