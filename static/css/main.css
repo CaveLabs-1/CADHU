@@ -12,6 +12,9 @@
 .headerTitle{
   position: fixed;
 }
+.bold {
+  font-weight: bold;
+}
 
 .form_button{
   border-radius: 50px;
