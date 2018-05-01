@@ -67,16 +67,27 @@
         function eliminar_grupo(element, event){
             event.preventDefault();
             $.confirm({
-                title: '¿Deseas eliminar el grupo?',
-                content: 'No podrá ser utilizado en un futuro.',
-                type: 'red',
+                title: '¿Deseas cambiar el estatus del grupo?',
+                content: '¿Deseas continuar?',
+                {% if titulo == 'Grupos' %}
+                    type: 'red',
+                {% endif %}
+                {% if titulo == 'Grupos inactivos' %}
+                    type: 'green',
+                {% endif %}
                 closeIcon: true,
                 columnClass: 'col l6 offset-l3 s12',
                 typeAnimated: true,
                 buttons: {
                     continuar: {
-                        text: 'Eliminar',
-                        btnClass: 'btn-red',
+                        {% if titulo == 'Grupos' %}
+                            text: 'Inactivar',
+                            btnClass: 'btn-red',
+                        {% endif %}
+                        {% if titulo == 'Grupos inactivos' %}
+                            text: 'Activar',
+                            btnClass: 'btn-green',
+                        {% endif %}
 
                         action: function(){
                             window.location.href = $(element).attr("href");
