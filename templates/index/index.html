@@ -24,6 +24,7 @@
     <table class="dataTable">
         <thead>
           <tr>
+              <th>Prospecto</th>
               <th>Pendiente</th>
               <th>Curso</th>
               <th>Fecha</th>
@@ -35,8 +36,9 @@
         <tbody>
         {% for actividad in agenda %}
             <tr>
+                <td>{{ actividad.prospecto_grupo.prospecto.nombre }}</td>
                 <td>{{ actividad.titulo }}</td>
-                <td>{{ actividad.prospecto_evento.Grupo.nombre }}</td>
+                <td>{{ actividad.prospecto_grupo.grupo.nombre }}</td>
                 <td>{{ actividad.fecha }}</td>
                 <td>{{ actividad.hora }}</td>
                 <td class="'truncate elipsis">
@@ -65,6 +67,7 @@
     <table class="dataTable">
         <thead>
           <tr>
+              <th>Prospecto</th>
             <th>Pendiente</th>
             <th>Curso</th>
             <th>Fecha</th>
@@ -76,6 +79,7 @@
         <tbody>
         {% for actividad in bitacora %}
           <tr>
+              <td>{{ actividad.prospecto_grupo.prospecto.nombre }}</td>
               <td>{{ actividad.titulo }}</td>
               <td>{{ actividad.prospecto_evento.Grupo.Nombre }}</td>
               <td>{{ actividad.fecha }}</td>

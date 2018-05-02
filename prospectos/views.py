@@ -670,7 +670,7 @@ def estado_flag(request, pk):
 
 # US41
 @login_required
-@group_required('administrador')
+@group_required('administrador', 'vendedora')
 def nuevo_pago(request, id_pe):
     # recibir forma
     forma_pago = PagoForm()
@@ -720,7 +720,7 @@ def nuevo_pago(request, id_pe):
 
 # US42
 @login_required
-@group_required('administrador')
+@group_required('administrador', 'vendedora')
 def lista_pagos(request, id_pe):
     pagos = Pago.objects.filter(prospecto_grupo_id=id_pe).count()
     pe = ProspectoGrupo.objects.get(id=id_pe)

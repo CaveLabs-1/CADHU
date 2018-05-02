@@ -4,8 +4,30 @@
 
     {% block title %}Prospecto{% endblock %}
     {% block content %}
+    {% block js %}
 
-        {% block js %}
+    <div class="fixed-action-btn">
+        <a href="#modal1" class="btn-floating btn-large black modal-trigger">
+            <i class="large material-icons">live_help</i>
+        </a>
+    </div>
+
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Formato para WhatsApp</h4>
+        <p> <span class="bold">México:</span> 52 + 10 dígitos </br>
+          Ejemplo: 524421111111 </br>
+        </p>
+        <p> <span class="bold">España:</span> 34 + 9 dígitos </br>
+          Ejemplo: 34642111111 </br>
+        </p>
+        <p>(sin espacios, guiones u otro tipo de caracteres)</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+      </div>
+    </div>
+
             <script type="text/javascript">
             {% if new_prospecto_form.errors %}
                 {% for field in new_prospecto_form %}
@@ -61,8 +83,8 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m4 l4">
-                            {{ new_prospecto_form.telefono_celular | add_class:'form-control' }}
-                            <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Celular</label>
+                          {{ new_prospecto_form.telefono_celular | add_class:'form-control' }}
+                          <label for="telefono" data-error="Use valores num&eacute;ricos">Tel&eacute;fono Celular</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
                             {{ new_prospecto_form.telefono_casa | add_class:'form-control' }}

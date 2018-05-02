@@ -31,7 +31,7 @@ def grupos_inactivos(request):
 
 # US ???
 @login_required
-@group_required('administrador')
+@group_required('administrador', 'vendedora')
 def nuevo_grupo(request):
     # recibir forma
     forma_nuevo_grupo = FormaGrupo()

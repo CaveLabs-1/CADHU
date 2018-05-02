@@ -58,8 +58,8 @@ ACTIVO = (
 TIPO_ACTIVIDAD = (
     ('WHATSAPP', 'WHATSAPP'),
     ('E-MAIL', 'E-MAIL'),
-    ('LLAMADA OK', 'LLAMADA OK'),
-    ('LLAMADA NO RESPONDE', 'LLAMADA NO RESPONDE'),
+    ('LLAMADA', 'LLAMADA'),
+    ('SMS', 'SMS'),
 )
 
 
