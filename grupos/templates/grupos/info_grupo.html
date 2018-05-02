@@ -213,7 +213,7 @@
                         {% else %}
                             <td><a href="{% url 'prospectos:estado_flag' prospecto_grupo.id %}"><i class="material-icons grey-text text-lighten-1">flag</i></a></td>
                         {% endif %}
-                        <td>{{ prospecto_grupo.Curso.Direccion }}</td>
+                        <td>{{ prospecto_grupo.grupo.direccion }}</td>
                         <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.nombre }}</a></td>
                         <td><a href="{% url 'prospectos:info_prospecto_grupo' prospecto_grupo.id %}">{{ prospecto_grupo.prospecto.apellidos }}</a></td>
                         <td><a class="whatsapp" onclick="whatsapp({{ prospecto_grupo.prospecto.telefono_celular }});" href="#">{{ prospecto_grupo.prospecto.telefono_celular }}</a></td>

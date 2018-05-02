@@ -118,11 +118,9 @@ class EmpresaTest(TestCase):
 
     # ACCEPTANCE CRITERIA: 13.2
     def test_crear_empresa(self):
-        resp = self.client.post(reverse('prospectos:crear_empresa'), {
-            'nombre': 'ITESM',
-            'telefono_1': '4422232226',
-            'email_1': 'escuela@itesm.com',
-            'razon_social': 'Escuela'})
+        resp = self.client.post(reverse('prospectos:crear_empresa'), {'nombre': 'ITESM', 'telefono_1': '4422232226',
+                                                                      'email_1': 'escuela@itesm.com',
+                                                                      'razon_social': 'Escuela'})
         itesm = Empresa.objects.filter(nombre='ITESM').count()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(itesm, 1)

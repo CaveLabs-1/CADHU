@@ -77,16 +77,19 @@ class PendientesViewTests(TestCase):
         )
         cls.curso = Curso.objects.create(nombre='Mi Evento', descripcion='Este es el grupo de pruebas automoatizadas.')
         cls.grupo = Grupo.objects.create(nombre='GrupoPrueba', curso=cls.curso, fecha_inicio='2018-03-16', direccion='Calle',
-                                     descripcion='Grupo de marzo', costo=1000)
-        cls.relacion = ProspectoGrupo.objects.create(prospecto=cls.prospecto, grupo=cls.grupo, interes='ALTO', flag_cadhu=False)
+                                         descripcion='Grupo de marzo', costo=1000)
+        cls.relacion = ProspectoGrupo.objects.create(prospecto=cls.prospecto, grupo=cls.grupo, interes='ALTO',
+                                                     flag_cadhu=False)
 
     def test_crear_actividad(self):
-        resp = self.client.post(reverse('prospectos:crear_actividad', kwargs={'pk': self.relacion}), {
+        resp = self.client.post(reverse('prospectos:crear_actividad', kwargs={'pk': self.relacion.pk}), {
             'titulo': 'Llamada con el prospecto',
+            'tipo': 'SMS',
             'fecha': timezone.now().date(),
             'notas': 'Llamada con el prosecto',
             'prospecto_grupo': self.grupo})
-        self.assertQuerysetEqual(resp.context['actividades'], ['<Actividad: Llamada con el prospecto>'])
+        count = Actividad.objects.filter(prospecto_grupo=self.relacion)
+        self.assertQuerysetEqual(count, ['<Actividad: Llamada con el prospecto>'])
 
     # Accepatnce criteria 20.1 - 20.2
     def test_mostrar_pendientes(self):
