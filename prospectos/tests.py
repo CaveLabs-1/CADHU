@@ -122,8 +122,8 @@ class EmpresaTest(TestCase):
                                                                       'email_1': 'escuela@itesm.com',
                                                                       'razon_social': 'Escuela'})
         itesm = Empresa.objects.filter(nombre='ITESM').count()
-        self.assertEqual(resp.status_code, 200)
         self.assertEqual(itesm, 1)
+        self.assertEqual(resp.status_code, 302)
 
     # ACCEPTANCE CRITERIA: 13.3
     def test_validar_campos(self):
