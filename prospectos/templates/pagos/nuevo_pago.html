@@ -11,27 +11,27 @@
             {% csrf_token %}
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
-                <input type="number" name="monto" id="monto" required>
-                <label for="{{form.monto.html_name}}">Monto de Pago (Saldo restante: ${{ monto_maximo }})</label>
+                <input type="number" name="monto" id="monto" min='0.01' step='.01' required>
+                <label for="{{form.monto.html_name}}">Monto de Pago (Saldo restante: ${{ monto_maximo }})*</label>
                 <input style="display:none;" id="monto_maximo" value="{{ monto_maximo }}">
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.fecha.html_name}}" id="{{form.fecha.html_name}}"  class="datepicker" required>
-                <label for="{{form.fecha.html_name}}" >Fecha de pago</label>
+                <label for="{{form.fecha.html_name}}" >Fecha de pago*</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" name="{{form.referencia.html_name}}" id="{{form.referencia.html_name}}" required>
-                <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia</label>
+                <label for="{{form.referencia.html_name}}" data-error="No. referencia inválido">No. Referencia*</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 {{ form.tipo_pago|add_class:'form-control' }}
-                <label>Tipo de Pago</label>
+                <label>Tipo de Pago*</label>
               </div>
             </div>
             <div class="row no-margin">
