@@ -6,8 +6,8 @@ import psycopg2
 def abrir_db():
     # Conexiòn a la Base de Datos
     try:
-        #db = psycopg2.connect("host=localhost dbname=cadhu user=cadhu password=8qX8vx1P*Xpu")
-        db = psycopg2.connect("host=localhost dbname=cadhu user=postgres password=postgres")
+        db = psycopg2.connect("host=localhost dbname=cadhu user=cadhu password=8qX8vx1P*Xpu")
+        #db = psycopg2.connect("host=localhost dbname=cadhu user=postgres password=postgres")
         print("CONEXIÓN EXITOSA")
         return db
     except psycopg2.Error:
@@ -73,7 +73,7 @@ def cargar_informacion(db):
     subir_archivo(cursor, 'grupos_grupo', 'data/Grupo_data.csv')
     subir_archivo(cursor, 'prospectos_empresa', 'data/Empresa_data.csv')
     subir_archivo(cursor, 'prospectos_prospecto', 'data/Prospecto_data.csv')
-    #subir_archivo(cursor, 'prospectos_prospectogrupo', 'data/ProspectoGrupo_data.csv')
+    subir_archivo(cursor, 'prospectos_prospectogrupo', 'data/ProspectoGrupo_data.csv')
     # Guardar cambios en la Base de Datos
     db.commit()
 
