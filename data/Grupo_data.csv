@@ -1,2 +1,10 @@
 id,nombre,fecha_inicio,fecha_fin,direccion,descripcion,costo,activo,curso_id,encargado_id
-1,AR_Octubre2018,15/08/2016,15/08/2018,,,500,FALSE,1,1
+1,DBO Sobrepeso MTY,01/06/18,03/06/18,,,8250,TRUE,1,4
+2,DBO Sobrepeso QRO,04/06/18,06/06/18,,,8250,TRUE,1,4
+3,DBO Sobrepeso CDMX,08/06/18,10/06/18,,,8250,TRUE,1,4
+4,AwakeJUN18,22/07/18,24/07/18,,,5400,TRUE,2,6
+5,CaminoJUN18,01/06/18,03/06/18,,,6900,TRUE,3,6
+6,TCEMAY18,02/05/18,26/07/18,,,4750,TRUE,4,6
+7,IntroTASJun18,27/07/18,29/07/18,,,6900,TRUE,5,5
+8,IntroTASMay18BAR,18/05/18,20/06/18,,Costo en euros,295,TRUE,5,5
+9,IntroTASJun18SS,29/06/18,01/07/18,,Costo en euros,295,TRUE,5,5

@@ -77,8 +77,8 @@ class Lugar(models.Model):
 class Prospecto(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     apellidos = models.CharField(max_length=120, blank=False, null=False)
-    telefono_casa = models.CharField(max_length=10, blank=True, null=True)
-    telefono_celular = models.CharField(max_length=10, blank=True, null=True)
+    telefono_casa = models.CharField(max_length=11, blank=True, null=True)
+    telefono_celular = models.CharField(max_length=11, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True, blank=True)
     metodo_captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
@@ -91,7 +91,7 @@ class Prospecto(models.Model):
     fecha_creacion = models.DateField(null=True)
     activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     empresa = models.ForeignKey('Empresa', null=True, on_delete=models.SET_NULL, blank=True)
-    comentarios = models.CharField(max_length=300, blank=True, null=True)
+    comentarios = models.CharField(max_length=3000, blank=True, null=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos
