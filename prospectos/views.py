@@ -410,7 +410,7 @@ def eliminar_grupo(request, pk):
 def info_prospecto_grupo(request, rel):
     relacion = ProspectoGrupo.objects.get(id=rel)
     prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
-    titulo = relacion.grupo
+    titulo = 'Relación con: ' + str(relacion.grupo)
     context = {
         'relacion': relacion,
         'actividades': relacion.actividad_set.all(),
@@ -817,13 +817,13 @@ def eliminar_cliente(request, pk):
 def crear_cliente(request, pk):
     new_cliente_form = ClienteForm()
     new_lugar_form = LugarForm()
+    pago = Pago.objects.get(id=pk)
     # Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         # Crear y llenar la forma
         error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         new_cliente_form = ClienteForm(request.POST)
         new_lugar_form = LugarForm(request.POST)
-        pago = Pago.objects.get(id=pk)
         fecha = pago.fecha
         prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_grupo_id)
         # Si la forma es válida guardar la información en la base de datos:
@@ -846,6 +846,7 @@ def crear_cliente(request, pk):
             'new_cliente_form': new_cliente_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar un Cliente',
+            'id_pe': pago.prospecto_grupo.id,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
@@ -853,6 +854,7 @@ def crear_cliente(request, pk):
         'new_cliente_form': new_cliente_form,
         'new_lugar_form': new_lugar_form,
         'titulo': 'Registrar Cliente',
+        'id_pe': pago.prospecto_grupo.id,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
@@ -893,6 +895,7 @@ def editar_cliente(request, pk):
             'new_cliente_form': new_cliente_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+            'id_pe': pk,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
@@ -900,6 +903,7 @@ def editar_cliente(request, pk):
         'new_cliente_form': new_cliente_form,
         'new_lugar_form': new_lugar_form,
         'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+        'id_pe': pk,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
