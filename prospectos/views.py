@@ -512,7 +512,7 @@ def crear_empresa(request):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': error,
-            'new_empesa_form': new_empresa_form,
+            'new_empresa_form': new_empresa_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar una Empresa',
         }
