@@ -159,8 +159,8 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     contacto_1 = models.CharField(max_length=50, blank=True, null=False)
     contacto_2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: "
-                                                               "'999999999'. Se permiten 10 digitos.")
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: "
+                                                               "'999999999'. Se permiten de 9 a 15 digitos.")
     telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     email_1 = models.EmailField(max_length=50, blank=True, null=False)
