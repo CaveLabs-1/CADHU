@@ -149,7 +149,7 @@ class Pago(models.Model):
     prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
-    referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
+    referencia = models.CharField(max_length=50, blank=True, null=True, unique=True)
     validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     tipo_pago = models.CharField(choices=TIPO_PAGO, max_length=50, blank=True, null=True)

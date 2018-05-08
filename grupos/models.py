@@ -7,7 +7,7 @@ import datetime
 
 class Grupo(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=25, blank=False, null=False)
+    nombre = models.CharField(max_length=100, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
     direccion = models.CharField(max_length=100, blank=True, null=True)
