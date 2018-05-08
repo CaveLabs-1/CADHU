@@ -77,8 +77,8 @@ class Lugar(models.Model):
 class Prospecto(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     apellidos = models.CharField(max_length=120, blank=False, null=False)
-    telefono_casa = models.CharField(max_length=10, blank=True, null=True)
-    telefono_celular = models.CharField(max_length=10, blank=True, null=True)
+    telefono_casa = models.CharField(max_length=11, blank=True, null=True)
+    telefono_celular = models.CharField(max_length=11, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True, blank=True)
     metodo_captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
@@ -91,7 +91,7 @@ class Prospecto(models.Model):
     fecha_creacion = models.DateField(null=True)
     activo = models.BooleanField(default=True, blank=True, choices=ACTIVO)
     empresa = models.ForeignKey('Empresa', null=True, on_delete=models.SET_NULL, blank=True)
-    comentarios = models.CharField(max_length=300, blank=True, null=True)
+    comentarios = models.CharField(max_length=3000, blank=True, null=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos
@@ -149,7 +149,7 @@ class Pago(models.Model):
     prospecto_grupo = models.ForeignKey(ProspectoGrupo, on_delete=models.CASCADE)
     fecha = models.DateField(blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
-    referencia = models.CharField(max_length=25, blank=True, null=True, unique=True)
+    referencia = models.CharField(max_length=50, blank=True, null=True, unique=True)
     validado = models.BooleanField(blank=False, default=False)
     comentarios = models.CharField(max_length=300, blank=True, null=True)
     tipo_pago = models.CharField(choices=TIPO_PAGO, max_length=50, blank=True, null=True)
@@ -159,8 +159,8 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False, unique=True)
     contacto_1 = models.CharField(max_length=50, blank=True, null=False)
     contacto_2 = models.CharField(max_length=50, blank=True, null=False)
-    phone_regex = RegexValidator(regex=r'^[0-9]{10}$', message="El telefono debe de contar con el siguiente formato: "
-                                                               "'999999999'. Se permiten 10 digitos.")
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: "
+                                                               "'999999999'. Se permiten de 9 a 15 digitos.")
     telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     email_1 = models.EmailField(max_length=50, blank=True, null=False)

@@ -19,21 +19,21 @@
                 <div class="row no-margin">
                     <div class="input-field col l8 offset-l2 s10 offset-s1">
                         {{ form.curso }}
-                        <label>Curso</label>
+                        <label>Curso*</label>
                     </div>
                 </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" value="{{ form.fecha_inicio.value|date:'Y-m-d' }}" name="{{form.fecha_inicio.html_name}}"
                        id="{{ form.fecha_inicio.id_for_label }}" class="datepicker" required>
-                <label for="{{form.fecha_inicio.id_for_label}}" >Fecha de Inicio</label>
+                <label for="{{form.fecha_inicio.id_for_label}}" >Fecha de Inicio*</label>
               </div>
             </div>
             <div class="row no-margin">
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="text" value="{{ form.fecha_fin.value|date:'Y-m-d' }}" name="{{form.fecha_fin.html_name}}"
                        id="{{ form.fecha_fin.id_for_label }}" class="datepicker" required>
-                <label for="{{form.fecha_fin.id_for_label}}" >Fecha de Fin</label>
+                <label for="{{form.fecha_fin.id_for_label}}" >Fecha de Fin*</label>
               </div>
             </div>
             <div class="row no-margin">
@@ -52,13 +52,13 @@
               <div class="input-field col l8 offset-l2 s10 offset-s1">
                 <input type="number" name="{{form.costo.html_name}}" id="{{ form.costo.id_for_label }}" required step=".01" min="0"
                        value="{{ form.costo.value }}">
-                <label for="{{form.costo.id_for_label}}">Costo</label>
+                <label for="{{form.costo.id_for_label}}">Costo*</label>
               </div>
             </div>
               <div class="row no-margin">
                 <div class="input-field col l8 offset-l2 s10 offset-s1">
                   {{ form.encargado }}
-                  <label>Encargado</label>
+                  <label>Encargado*</label>
                 </div>
             </div>
             <br>

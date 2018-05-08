@@ -36,12 +36,12 @@
                             <div class="input-field col offset-m1 s12 m4">
                                 <input type="text" class="datepicker" name="{{ form.fecha.html_name }}"
                                        id="{{ form.fecha.id_for_label }}" value="{{form.fecha.value}}"  required>
-                                <label for="{{ form.fecha.id_for_label }}">Fecha:</label>
+                                <label for="{{ form.fecha.id_for_label }}">Fecha:*</label>
                             </div>
                             <div class="input-field col s12 m4">
-                                <label for="{{ form.hora.id_for_label }}">Hora:</label>
+                                <label for="{{ form.hora.id_for_label }}">Hora:*</label>
                                 <input type="text" class="timepicker" name="{{ form.hora.html_name }}"
-                                       id="{{ form.hora.id_for_label }}" value="{{form.hora.value}}" >
+                                       id="{{ form.hora.id_for_label }}" value="{{form.hora.value}}" required>
                             </div>
                             <div  class="input-field col s12 m3">
                                 <label>

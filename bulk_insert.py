@@ -6,9 +6,10 @@ import psycopg2
 def abrir_db():
     # Conexiòn a la Base de Datos
     try:
-        dtb = psycopg2.connect("host=localhost dbname=cadhu user=cadhu password=8qX8vx1P*Xpu")
+        db = psycopg2.connect("host=localhost dbname=cadhu user=cadhu password=8qX8vx1P*Xpu")
+        #db = psycopg2.connect("host=localhost dbname=cadhu user=postgres password=postgres")
         print("CONEXIÓN EXITOSA")
-        return dtb
+        return db
     except psycopg2.Error:
         print('LA CONEXIÓN A LA BASE DE DATOS NO FUE EXITOSA')
 
@@ -79,8 +80,10 @@ def cargar_informacion(db):
 
 # Abrir Conexion
 db = abrir_db()
-# borrar_informacion(db)
-# cargar_informacion(db)
+borrar_informacion(db)
+cargar_informacion(db)
 # Cerrar Conexión
 if db.close():
     print("CONEXIÓN TERMINADA")
+
+# 29, 47, 70, 76

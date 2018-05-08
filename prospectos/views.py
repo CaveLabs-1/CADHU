@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect, reverse
-from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoGrupo, Grupo, Pago
+from django.shortcuts import render, redirect
+from .models import Cliente, Empresa, Prospecto, Lugar, Actividad, ProspectoGrupo, Pago
 from grupos.models import Grupo
 from tablib import Dataset
 import datetime
@@ -54,6 +54,9 @@ def carga_masiva(request):
                         ocupacion=imported_data['Ocupacion'][i],
                         hijos=int(imported_data['Hijos'][i]),
                         recomendacion=imported_data['Recomendacion'][i],
+                        # grupos=None,
+                        usuario=None,
+                        fecha_creacion=datetime.datetime.now().date(),
                         direccion=lugar,
                         activo=True,
                         empresa=None,
@@ -84,14 +87,15 @@ def carga_masiva(request):
                 except IntegrityError:
                     resultado[i] = 'Hubo un error al subir este prospecto, revisar información y buscar ' \
                                    'repetidos en el sistema'
-            except:
-                resultado[i] = ''
+            except Lugar.DoesNotExist:
+                resultado[i] = 'Error desde lugar'
         # escribe el resultado en ultima columna del excel
         dataset.append_col(resultado, header='Estado')
         with open('static/files/resultado.xls', 'wb') as f:
             f.write(dataset.export('xls'))
             f.close()
         messages.error(request, 'La carga masiva ha sido exitosa')
+        dataset.wipe()
         return HttpResponseRedirect(reverse('prospectos:lista_prospectos'))
 
 
@@ -110,7 +114,7 @@ def crear_prospecto(request):
         if new_prospecto_form.is_valid() and new_lugar_form.is_valid():
             print(new_lugar_form.is_valid())
             print(new_prospecto_form.is_valid())
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             prospecto = new_prospecto_form.save(commit=False)
             prospecto.direccion = lugar
             prospecto.usuario = request.user
@@ -147,7 +151,7 @@ def editar_prospecto(request, pk):
         new_lugar_form = LugarForm(request.POST or None, instance=id_prospecto.direccion)
         if new_prospecto_form.is_valid() and new_lugar_form.is_valid():
             prospecto = new_prospecto_form.save(commit=False)
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             prospecto.direccion = lugar
             prospecto.save()
             messages.success(request, 'El prospecto ha sido actualizado.')
@@ -410,7 +414,7 @@ def eliminar_grupo(request, pk):
 def info_prospecto_grupo(request, rel):
     relacion = ProspectoGrupo.objects.get(id=rel)
     prospecto = Prospecto.objects.get(id=relacion.prospecto.id)
-    titulo = relacion.grupo
+    titulo = 'Relación con: ' + str(relacion.grupo)
     context = {
         'relacion': relacion,
         'actividades': relacion.actividad_set.all(),
@@ -464,7 +468,7 @@ def editar_empresa(request, pk):
         # Si es válida, instanciar nueva empresa Y guardarla
         if new_empresa_form.is_valid() and new_lugar_form.is_valid():
             empresa = new_empresa_form.save(commit=False)
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             empresa.direccion = lugar
             empresa.save()
             messages.success(request, 'La empresa ha sido actualizada.')
@@ -503,7 +507,7 @@ def crear_empresa(request):
         new_lugar_form = LugarForm(request.POST)
         # Si la forma es válida guardar la información en la base de datos:
         if new_empresa_form.is_valid() and new_lugar_form.is_valid():
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             empresa = new_empresa_form.save(commit=False)
             empresa.direccion = lugar
             empresa.save()
@@ -512,7 +516,7 @@ def crear_empresa(request):
         messages.success(request, 'Forma invalida, favor de revisar sus respuestas de nuevo')
         context = {
             'Error': error,
-            'new_empesa_form': new_empresa_form,
+            'new_empresa_form': new_empresa_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar una Empresa',
         }
@@ -817,18 +821,18 @@ def eliminar_cliente(request, pk):
 def crear_cliente(request, pk):
     new_cliente_form = ClienteForm()
     new_lugar_form = LugarForm()
+    pago = Pago.objects.get(id=pk)
     # Si el método HTTP es post procesar la información de la forma:
     if request.method == "POST":
         # Crear y llenar la forma
         error = 'Forma invalida, favor de revisar sus respuestas de nuevo'
         new_cliente_form = ClienteForm(request.POST)
         new_lugar_form = LugarForm(request.POST)
-        pago = Pago.objects.get(id=pk)
         fecha = pago.fecha
         prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_grupo_id)
         # Si la forma es válida guardar la información en la base de datos:
         if new_cliente_form.is_valid():
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             cliente = new_cliente_form.save(commit=False)
             cliente.prospecto_grupo = prospecto_grupo
             cliente.fecha = fecha
@@ -846,6 +850,7 @@ def crear_cliente(request, pk):
             'new_cliente_form': new_cliente_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Registrar un Cliente',
+            'id_pe': pago.prospecto_grupo.id,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
@@ -853,6 +858,7 @@ def crear_cliente(request, pk):
         'new_cliente_form': new_cliente_form,
         'new_lugar_form': new_lugar_form,
         'titulo': 'Registrar Cliente',
+        'id_pe': pago.prospecto_grupo.id,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
@@ -876,7 +882,7 @@ def editar_cliente(request, pk):
         fecha = pago[0].fecha
         # Si la forma es válida guardar la información en la base de datos:
         if new_cliente_form.is_valid():
-            lugar = new_lugar_form.save()
+            lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             cliente = new_cliente_form.save(commit=False)
             cliente.prospecto_grupo = prospecto_grupo
             cliente.fecha = fecha
@@ -893,6 +899,7 @@ def editar_cliente(request, pk):
             'new_cliente_form': new_cliente_form,
             'new_lugar_form': new_lugar_form,
             'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+            'id_pe': pk,
         }
         return render(request, 'clientes/crear_cliente.html', context)
     # Si el método HTTP no es post, volver a enviar la forma:
@@ -900,6 +907,7 @@ def editar_cliente(request, pk):
         'new_cliente_form': new_cliente_form,
         'new_lugar_form': new_lugar_form,
         'titulo': 'Editar Cliente: ' + prospecto.nombre + " " + prospecto.apellidos,
+        'id_pe': pk,
     }
     return render(request, 'clientes/crear_cliente.html', context)
 
