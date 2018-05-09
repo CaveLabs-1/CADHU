@@ -831,7 +831,7 @@ def crear_cliente(request, pk):
         fecha = pago.fecha
         prospecto_grupo = ProspectoGrupo.objects.get(pk=pago.prospecto_grupo_id)
         # Si la forma es válida guardar la información en la base de datos:
-        if new_cliente_form.is_valid():
+        if new_cliente_form.is_valid() and new_lugar_form.is_valid():
             lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             cliente = new_cliente_form.save(commit=False)
             cliente.prospecto_grupo = prospecto_grupo
@@ -881,7 +881,7 @@ def editar_cliente(request, pk):
         pago = Pago.objects.filter(prospecto_grupo=prospecto_grupo).order_by('fecha')
         fecha = pago[0].fecha
         # Si la forma es válida guardar la información en la base de datos:
-        if new_cliente_form.is_valid():
+        if new_cliente_form.is_valid() and new_lugar_form.is_valid():
             lugar, created = Lugar.objects.get_or_create(**new_lugar_form.cleaned_data)
             cliente = new_cliente_form.save(commit=False)
             cliente.prospecto_grupo = prospecto_grupo
