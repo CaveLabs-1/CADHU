@@ -86,4 +86,5 @@ cargar_informacion(db)
 if db.close():
     print("CONEXIÓN TERMINADA")
 
+# Registros repetidos en Prospectos.data
 # 29, 47, 70, 76

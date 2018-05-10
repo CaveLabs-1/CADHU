@@ -1,16 +1,16 @@
 id,nombre,apellidos,telefono_casa,telefono_celular,email,metodo_captacion,estado_civil,ocupacion,hijos,recomendacion,fecha_creacion,activo,comentarios,direccion_id,empresa_id,usuario_id
 1,Denali,López,,4422964400,info@mx.eckerle-gruppe.com,,,,0,,01/05/18,TRUE,es para empresa,1,1,1
-2,María,Quezada,5558172626,5521296237,maryquezadag@hotmail.com,,,,0,,20/02/18,TRUE,Carrera exitosa en Dannone se salió porque era mucha ansiedad; concursó hace poco en un proyeto (eso no le gustó). No es un problema económico; quiere también checar si a sus hermanas (menor y mayor) les gustaría participar. Quería DBO pero ya tiene dos propuestas de trabajo que tal vez puedan concretarse,1,1,1
+2,María,Quezada,5558172626,5521296237,maryquezadag@hotmail.com,,,,0,,20/02/18,TRUE,Carrera exitosa en Dannone se salió porque era mucha ansiedad,1,1,1
 3,Delia,NO TIENE,,,fedayeya44@yahoo.com.mx,,,,0,,01/05/18,TRUE,,1,1,1
-4,Cristiana,Anguiano,,4423766330,cristi1775@homtial.com,,,,0,,01/03/18,TRUE,Se siente muy deprimida; está muy int en el taller. Necesita salir adelante con sus emociones y le parecía muy interesante el enfoque.,1,1,1
+4,Cristiana,Anguiano,,4423766330,cristi1775@homtial.com,,,,0,,01/03/18,TRUE,Se siente muy deprimida,1,1,1
 5,Elsa,ontiveros Ortiz,,4423377565,elsa.ontiveros@gmail.com,,,,0,,01/03/18,TRUE,,1,1,1
 6,Alejandra,Guerrero Bermúdez,,4423226813,aleguerrerobermudez@gmail.com,,,,0,,01/03/18,TRUE,para TCE y cam,1,1,1
 7,Araceli,Parra,,4423026868,4423026868@no.com,,,,0,,05/03/18,TRUE,,1,1,1
 8,Carlos,Álvarez,,5535512599,carlos.alvarez@isla.mx,,,,0,,07/03/18,TRUE,,1,1,1
 9,Victor,Hernández,,4422821665,4422821665@no.com,,,,0,,01/05/18,TRUE,,1,1,1
 10,Rafael,Meza,,4421559799,altamiranorafael27@gmail.com,,,,0,,05/03/18,TRUE,Tiene mucha ansiedad está batallando con el cáncer. Mail con ifo y WA con ubic,1,1,1
-11,Marco Antonio,Martínez Hernández,,4427117167,4427117167@no.com,,,,0,,13/03/18,TRUE,Marco Antonio padre el hijo tiene 23 años; muchas deudas; no es estable y bebe mucho,1,1,1
-12,Sonia,Naif,,4422010919,chinana1977@gmail.com,,,,0,,16/03/18,TRUE,Vinieron a sesión intro 18-abr. se está divorciando. Ella tiene una hija de 15 y con él una bebé de un año aprox. Él es mitómano y no ha hecho nada sobre trabajo personal. Ella va a terapia; toma talleres; etc. Eran los mejores amigos,1,1,1
+11,Marco Antonio,Martínez Hernández,,4427117167,4427117167@no.com,,,,0,,13/03/18,TRUE,Marco Antonio padre el hijo tiene 23 años,1,1,1
+12,Sonia,Naif,,4422010919,chinana1977@gmail.com,,,,0,,16/03/18,TRUE,Vinieron a sesión intro 18-abr. se está divorciando. Ella tiene una hija de 15 y con él una bebé de un año aprox. Él es mitómano y no ha hecho nada sobre trabajo personal. Ella va a terapia,1,1,1
 13,Ramiro,Quezada,,7224988361,ra_quezada@yahoo.com,,,,0,,03/04/18,TRUE,Maru,1,1,1
 14,Alexandra,Campos,,8448925421,alexandracsc@homtail.com,paciente BG,,,0,,03/04/18,TRUE,paciente de Banquis que también van para 5,1,1,1
 15,Angélica,Negrete,,5520306643,anegrete2011@gmail.com,,,,0,,04/04/18,TRUE,Le interesa 6 pero no puede acudri cada martes ya que vive en CDMX. Le ofreceré AWA,1,1,1
@@ -187,34 +187,34 @@ id,nombre,apellidos,telefono_casa,telefono_celular,email,metodo_captacion,estado
 190,Dalila,MERCADO SANCHEZ,,,dalilamiguel2712@hotmail.com,Recomendacion,,,0,,01/01/18,TRUE,Nr whats,1,1,1
 191,Veronica,Zorrilla,,,verozorrilla@gmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
 192,Jesus,Gomez Werner,,5529192604,5529192604@no.com,Recomendacion,,,0,,01/01/18,TRUE,correo,1,1,1
-193,Ma Teresa,1,1,1,maitelopez@hotmail.com,,,,0,,01/01/18,TRUE,ya tomo intro,1,1,1
-194,Maria Elena,1,1,1,elena.miramontes@yahoo.com.mx,Recomendacion,,,0,,01/01/18,TRUE,no puede,1,1,1
-195,ADRIANA,1,1,1,adrianagil27@hotmail.com,Recomendacion,,,0,,01/01/18,TRUE,,1,1,1
-196,Adriana,1,1,1,adrymora2007@gmail.com,,,,0,,01/01/18,TRUE,llamar 15-nov,1,1,1
-197,Mayra,1,1,1,m.zmng.fl@gmail.com,,,,0,,01/01/18,TRUE,,1,1,1
-198,Araceli,1,1,1,4662988558@no.com,,,,0,,01/01/18,TRUE,whats,1,1,1
-199,Norma,1,1,1,normaescobar87@gmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
-200,Javier,1,1,1,atemazcalli@yahoo.com.mx,,,,0,,01/01/18,TRUE,llamada envio de inf para checar fechas,1,1,1
-201,Claudia,1,1,1,claudia.transparente@hotmail.com.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
-202,Patricia,1,1,1,patyschwarzkopf@hotmail.com,,,,0,,01/01/18,TRUE,11/11/16,1,1,1
-203,Norma Alicia,1,1,1,normaali.gonzalez@gmail.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
-204,Adrian,1,1,1,asnellv@yahoo.com.mx,,,,0,,01/01/18,TRUE,PROXIMO,1,1,1
-205,Arturo Benjamin,1,1,1,art.urodelacruz@hotmail.com,,,,0,,01/01/18,TRUE,proximo intro,1,1,1
-206,José Antonio,1,1,1,joanlipe@hotmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
-207,Edith,1,1,1,bodybrite_diamante@hotmail.com,,,,0,,01/01/18,TRUE,llamar 8-nov,1,1,1
-208,Sin nombre,1,1,1,burbuja32@hotmail.com,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
-209,Claudia,1,1,1,cicipq70@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-210,Maribel,1,1,1,maribelsolorio13@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-211,Denis,1,1,1,denis.montoya@difson.gob.mx,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
-212,Iramy,1,1,1,iramyvillarreal@gmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
-213,Genaro,1,1,1,foto_berus@yahoo.com.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
-214,Alejandra,1,1,1,info@meditacionurbana.mx,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
-215,Josefina,1,1,1,mapy2001@hotmail.com,,,,0,,01/01/18,TRUE,prox intro 2017,1,1,1
-216,Miguel Angel,1,1,1,4422810153@no.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
-217,Marcela,1,1,1,marcelavelasco@hotmail.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
-218,Jose,1,1,1,rochaperitajes@prodigy.net.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
-219,Hugo Ochoa,1,1,1,hugoochoanavarro@gmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-220,Cynthia,1,1,1,cynthiagmaldonado@hotmail.com,,,,0,,27/07/16,TRUE,,1,1,1
+193,Ma Teresa,Lopez,,5527243406,maitelopez@hotmail.com,,,,0,,01/01/18,TRUE,ya tomo intro,1,1,1
+194,Maria Elena,Miramontes,,,elena.miramontes@yahoo.com.mx,Recomendacion,,,0,,01/01/18,TRUE,no puede,1,1,1
+195,ADRIANA,GIL,,5520463500,adrianagil27@hotmail.com,Recomendacion,,,0,,01/01/18,TRUE,,1,1,1
+196,Adriana,Morales,,5536587706,adrymora2007@gmail.com,,,,0,,01/01/18,TRUE,llamar 15-nov,1,1,1
+197,Mayra,Zamaniego,,6861893893,m.zmng.fl@gmail.com,,,,0,,01/01/18,TRUE,,1,1,1
+198,Araceli,Ortega Garcia,,4662988558,4662988558@no.com,,,,0,,01/01/18,TRUE,whats,1,1,1
+199,Norma,Escobar,,5545056809,normaescobar87@gmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
+200,Javier,Herrera,,,atemazcalli@yahoo.com.mx,,,,0,,01/01/18,TRUE,llamada envio de inf para checar fechas,1,1,1
+201,Claudia,Transparente,,5536908146,claudia.transparente@hotmail.com.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
+202,Patricia,Schwarzkopf,,9982144900,patyschwarzkopf@hotmail.com,,,,0,,01/01/18,TRUE,11/11/16,1,1,1
+203,Norma Alicia,Sin apellido,,5531120925,normaali.gonzalez@gmail.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
+204,Adrian,snell,,5554152864,asnellv@yahoo.com.mx,,,,0,,01/01/18,TRUE,PROXIMO,1,1,1
+205,Arturo Benjamin,Pineda,,5540956584,art.urodelacruz@hotmail.com,,,,0,,01/01/18,TRUE,proximo intro,1,1,1
+206,José Antonio,Moreno Castañón,,7471302051,joanlipe@hotmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
+207,Edith,ramirez,,4321003628,bodybrite_diamante@hotmail.com,,,,0,,01/01/18,TRUE,llamar 8-nov,1,1,1
+208,Sin nombre,rivera soto,,5514653633,burbuja32@hotmail.com,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
+209,Claudia,Perez,,5543593434,cicipq70@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+210,Maribel,Solorio Hernandez,,4421164025,maribelsolorio13@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+211,Denis,Sin apellido,,,denis.montoya@difson.gob.mx,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
+212,Iramy,Osuna,,8112124330,iramyvillarreal@gmail.com,,,,0,,01/01/18,TRUE,whats,1,1,1
+213,Genaro,Berumen,,5514149934,foto_berus@yahoo.com.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
+214,Alejandra,Torres,,5513338632,info@meditacionurbana.mx,,,,0,,01/01/18,TRUE,Nr whats,1,1,1
+215,Josefina,Arellano Reyes,,4421561480,mapy2001@hotmail.com,,,,0,,01/01/18,TRUE,prox intro 2017,1,1,1
+216,Miguel Angel,Zaavedra,,4422810153,4422810153@no.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
+217,Marcela,Velasco,,,marcelavelasco@hotmail.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
+218,Jose,Sin apellido,,3336626860,rochaperitajes@prodigy.net.mx,,,,0,,01/01/18,TRUE,correo,1,1,1
+219,Hugo Ochoa,Ochoa,,4422730608,hugoochoanavarro@gmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+220,Cynthia,Lopez,,5527243406,cynthiagmaldonado@hotmail.com,,,,0,,27/07/16,TRUE,,1,1,1
 221,Elba,Torres,,5524950345,elba@grupo-indigo.com,Buscador,,,0,,01/01/18,TRUE,,1,1,1
 222,Adriana,Aceves,,3336775809,acevesadriana@hotmail.com,Recomendacion,,,0,,01/01/18,TRUE,,1,1,1
 223,Luis,Lopez,,5591435045,mkt.luislopez@gmail.com,Recomendacion,,,0,,07/07/16,TRUE,,1,1,1
@@ -241,34 +241,34 @@ id,nombre,apellidos,telefono_casa,telefono_celular,email,metodo_captacion,estado
 244,Yara ,Villegas,,5563025494,yavihe@gmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
 245,Rodrigo,Martinez Romero,,5532320333,rodrigo.martinez@oxfordleadership.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
 246,Ma De Lourdes,Salazar,,8182876849,8182876849@no.com,,,,0,,01/01/18,TRUE,llamada,1,1,1
-247,Patricia,1,1,1,patynette5@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-248,Silvia,1,1,1,vaccsil@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-249,JUDITH,1,1,1,psicjudithmrm@hotmail.com,,,,0,,01/01/18,TRUE,11/11/16,1,1,1
-250,Noe,1,1,1,noerey17@hotmail.com,,,,0,,01/01/18,TRUE,,1,1,1
-251,Juan,1,1,1,juanrobertcachon@hotmail.com,Facebook,,,0,,09/02/17,TRUE,LLAMADA,1,1,1
-252,Linda,1,1,1,institutomedicopsicoanalitico@yahoo.com.mx,Facebook ,,,0,,08/02/18 ,TRUE,LLAMADA/CORREO/WHATS,1,1,1
-253,Carlos,1,1,1,car.acose@hotmail.com,Facebook ,,,0,,12/02/18 ,TRUE,LLAMADA/WHATS/CORREO,1,1,1
-254,Gabriela,1,1,1,gaguivel@gmail.com,Facebook,,,0,,12/02/18 ,TRUE,LLAMADA/WHATS/CORREO,1,1,1
-255,Roman,1,1,1,romanpayan@hotmail.com,Facebook ,,,0,,12/02/18 ,TRUE,PRÓXIMO,1,1,1
-256,Elena,1,1,1,egad20@yahoo.com,Facebook ,,,0,,14/02/18 ,TRUE,CORREO,1,1,1
-257,Karla,1,1,1,gallegoskarla@hotmail.com,Facebook ,,,0,,16/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
-258,Ale,1,1,1,aleglezsan@gmail.com,Facebook ,,,0,,16/02/18 ,TRUE,LLAMADA/CORREO,1,1,1
-259,Miguel Angel,1,1,1,drgalindezn@me.com,Facebook ,,,0,,01/01/18,TRUE,LLAMADA/WHATS,1,1,1
-260,Elizabeth,1,1,1,liz_01castillo@hotmail.com,Recomendacion,,,0,,23/02/18 ,TRUE,correo,1,1,1
-261,Faby,1,1,1,faby_ps82@hotmail.com,Facebook ,,,0,,26/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
-262,Fernando,1,1,1,fsotelo1122@hotmail.com,Facebook ,,,0,,26/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
-263,ARMANDO,1,1,1,fola69@hoymail.com,Facebook ,,,0,,01/03/18 ,TRUE,LLAMADA/WHATS,1,1,1
-264,Maria Antonieta,1,1,1,cuatrovientos@yahoo.com,Recomendacion,,,0,,02/03/18 ,TRUE,Llamada/correo,1,1,1
-265,Maria,1,1,1,rosariogtzrdz@hotmail.com,Facebook ,,,0,,09/03/18 ,TRUE,NR WHATS,1,1,1
-266,Marce,1,1,1,marce.gzz@hotmail.com,Facebook ,,,0,,10/03/18 ,TRUE,whats,1,1,1
-267,Dante,1,1,1,arqdantedilorenzo@yahoo.com.mx,Facebook ,,,0,,15/03/18 ,TRUE,LLAMADA/WHATS,1,1,1
-268,Manuel,1,1,1,5520797737@no.com,Facebook ,,,0,,27/03/18,TRUE,LLAMADA/WHATS,1,1,1
-269,Susana,1,1,1,susjial@yahoo.com.mx,Recomendacion,,,0,,01/01/18,TRUE,whats con link de preinsc,1,1,1
-270,Leticia,1,1,1,pilulopezz@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
-271,Araceli M,1,1,1,criquet64@hotmail.com,Recomendacion,,,0,,02/02/17,TRUE,nr correo,1,1,1
-272,Juan Manuel,1,1,1,juan-ticos@hotmail.com,,,,0,,01/01/18,TRUE,checando,1,1,1
-273,Rocío,1,1,1,5525589303@no.com,,,,0,,01/01/18,TRUE,,1,1,1
-274,Alejandra Berenice,1,1,1,5532252990@no.com,,,,0,,01/01/18,TRUE,,1,1,1
+247,Patricia,Mandujano,,,patynette5@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+248,Silvia,Sin apellido,,,vaccsil@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+249,JUDITH,R-ODRIGUEZ,,4521056778,psicjudithmrm@hotmail.com,,,,0,,01/01/18,TRUE,11/11/16,1,1,1
+250,Noe,Sin apellido,,4451021304,noerey17@hotmail.com,,,,0,,01/01/18,TRUE,,1,1,1
+251,Juan,Robert,,,juanrobertcachon@hotmail.com,Facebook,,,0,,09/02/17,TRUE,LLAMADA,1,1,1
+252,Linda,Martínez Rosales,,,institutomedicopsicoanalitico@yahoo.com.mx,Facebook ,,,0,,08/02/18 ,TRUE,LLAMADA/CORREO/WHATS,1,1,1
+253,Carlos,Acosta Escudero,,4831043204,car.acose@hotmail.com,Facebook ,,,0,,12/02/18 ,TRUE,LLAMADA/WHATS/CORREO,1,1,1
+254,Gabriela,Aguilar,,,gaguivel@gmail.com,Facebook,,,0,,12/02/18 ,TRUE,LLAMADA/WHATS/CORREO,1,1,1
+255,Roman,Payan,,,romanpayan@hotmail.com,Facebook ,,,0,,12/02/18 ,TRUE,PRÓXIMO,1,1,1
+256,Elena,Arrieta,,,egad20@yahoo.com,Facebook ,,,0,,14/02/18 ,TRUE,CORREO,1,1,1
+257,Karla,Gallegos Hernandez,,`,gallegoskarla@hotmail.com,Facebook ,,,0,,16/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
+258,Ale,Gonzalez,,,aleglezsan@gmail.com,Facebook ,,,0,,16/02/18 ,TRUE,LLAMADA/CORREO,1,1,1
+259,Miguel Angel,Galindez Negron,,,drgalindezn@me.com,Facebook ,,,0,,01/01/18,TRUE,LLAMADA/WHATS,1,1,1
+260,Elizabeth,Castillo,,,liz_01castillo@hotmail.com,Recomendacion,,,0,,23/02/18 ,TRUE,correo,1,1,1
+261,Faby,Peña,,,faby_ps82@hotmail.com,Facebook ,,,0,,26/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
+262,Fernando,Sotelo,,,fsotelo1122@hotmail.com,Facebook ,,,0,,26/02/18 ,TRUE,LLAMADA/WHATS,1,1,1
+263,ARMANDO,Sin apellido,,5557029157,fola69@hoymail.com,Facebook ,,,0,,01/03/18 ,TRUE,LLAMADA/WHATS,1,1,1
+264,Maria Antonieta,Claver�e,,,cuatrovientos@yahoo.com,Recomendacion,,,0,,02/03/18 ,TRUE,Llamada/correo,1,1,1
+265,Maria,Gtz,,,rosariogtzrdz@hotmail.com,Facebook ,,,0,,09/03/18 ,TRUE,NR WHATS,1,1,1
+266,Marce,González,,,marce.gzz@hotmail.com,Facebook ,,,0,,10/03/18 ,TRUE,whats,1,1,1
+267,Dante,Di Lorenzo,,,arqdantedilorenzo@yahoo.com.mx,Facebook ,,,0,,15/03/18 ,TRUE,LLAMADA/WHATS,1,1,1
+268,Manuel,Sin apellido,,5520797737,5520797737@no.com,Facebook ,,,0,,27/03/18,TRUE,LLAMADA/WHATS,1,1,1
+269,Susana,Jimenez,,,susjial@yahoo.com.mx,Recomendacion,,,0,,01/01/18,TRUE,whats con link de preinsc,1,1,1
+270,Leticia,Lopez,,8341012701,pilulopezz@hotmail.com,,,,0,,01/01/18,TRUE,correo,1,1,1
+271,Araceli M,Flores Zertruche,,3515481454,criquet64@hotmail.com,Recomendacion,,,0,,02/02/17,TRUE,nr correo,1,1,1
+272,Juan Manuel,Figueroa,,4621077192,juan-ticos@hotmail.com,,,,0,,01/01/18,TRUE,checando,1,1,1
+273,Rocío,Ordanana,,5525589303,5525589303@no.com,,,,0,,01/01/18,TRUE,,1,1,1
+274,Alejandra Berenice,Hoyos Juárez,,5532252990,5532252990@no.com,,,,0,,01/01/18,TRUE,,1,1,1
 275,Leticia,Martinez Delgado,,4625953899,4625953899@no.com,,,,0,,01/01/18,TRUE,,1,1,1
 276,Lupita,Reyna,,5521821818,gpereyna@yahoo.com.mx,,,,0,,01/01/18,TRUE,,1,1,1
 277,Daniela,Carrillo Selle,,5538853089,Dcarrillo00@yahoo.com,,,,0,,01/01/18,TRUE,,1,1,1
