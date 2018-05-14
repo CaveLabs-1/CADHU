@@ -14,6 +14,7 @@
     <table class="dataTable">
         <thead>
         <tr>
+            <th>ID</th>
             <th>Nombre</th>
             <th>Fecha Inicio</th>
             <th>Fecha Término</th>
@@ -27,6 +28,7 @@
         <tbody>
         {% for grupo in grupos %}
             <tr>
+                <td>{{ grupo.id }}</td>
                 <td><a href="{% url 'grupos:info_grupo' grupo.id %}">{{ grupo.nombre }}</a></td>
                 <td>{{ grupo.fecha_inicio  }}</td>
                 <td>{{ grupo.fecha_fin  }}</td> <!--| date:'d/m/y' -->

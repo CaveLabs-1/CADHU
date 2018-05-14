@@ -77,8 +77,8 @@ class Lugar(models.Model):
 class Prospecto(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     apellidos = models.CharField(max_length=120, blank=False, null=False)
-    telefono_casa = models.CharField(max_length=11, blank=True, null=True)
-    telefono_celular = models.CharField(max_length=11, blank=True, null=True)
+    telefono_casa = models.CharField(max_length=15, blank=True, null=True)
+    telefono_celular = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=False, null=False, unique=True)
     direccion = models.ForeignKey(Lugar, on_delete=models.SET_NULL, null=True, blank=True)
     metodo_captacion = models.CharField(max_length=50, blank=True, null=True, choices=METODO_CAPTACION)
@@ -161,8 +161,8 @@ class Empresa(models.Model):
     contacto_2 = models.CharField(max_length=50, blank=True, null=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El telefono debe de contar con el siguiente formato: "
                                                                "'999999999'. Se permiten de 9 a 15 digitos.")
-    telefono_1 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
-    telefono_2 = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    telefono_1 = models.CharField(validators=[phone_regex], max_length=12, blank=True, null=True)
+    telefono_2 = models.CharField(validators=[phone_regex], max_length=12, blank=True, null=True)
     email_1 = models.EmailField(max_length=50, blank=True, null=False)
     email_2 = models.EmailField(max_length=50, blank=True, null=False)
     puesto_1 = models.CharField(max_length=50, blank=True, null=False)
