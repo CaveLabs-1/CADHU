@@ -1,7 +1,7 @@
 # pip install -r requirements.txt
 Pillow
 Postgres
-Django==2.0.2
+Django==2.0.8
 psycopg2-binary
 django-widget-tweaks
 tablib==0.12.1
